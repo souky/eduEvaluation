@@ -1,23 +1,44 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+  	<b-header ></b-header>
+  	<transition name="slide-fade">
+    	<router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+	import BHeader from '@/components/BHeader'
+	import Vue from 'vue'
+	export default {
+	  name: 'app',
+   	components: {BHeader},
+    mounted:function(){
+      var height = document.documentElement.clientHeight;
+      document.getElementById("app").style.minHeight = height+"px";
+  	},
+  	methods:{
+  	}
+	}
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: '\u5FAE\u8F6F\u96C5\u9ED1', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  background-color: #F9F9F9
+}
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(0px);
+  opacity: 0;
 }
 </style>
