@@ -25,7 +25,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 Vue.prototype.$axios = axios
 
 /* 时间转化 */
-Vue.prototype.timeF = require('moment')
+Vue.prototype.timeF = require('moment');
+Vue.prototype.echarts = require('echarts');
 
 var querystring = require('querystring');
 
