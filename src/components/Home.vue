@@ -50,7 +50,7 @@ export default {
       option1:{
 	  		color: ['#D5D5D5'],
 	  		textStyle:{
-	  			color:'#D5D5D5'
+	  			color:'#E8E8E8'
 	  		},
 		    tooltip : {
 		        trigger: 'axis',
@@ -73,7 +73,9 @@ export default {
 		            axisTick: {
 		                alignWithLabel: true
 		            },
-		            
+		            axisLine:{
+		            	lineStyle:{color:'#E8E8E8'}
+		            },
 		            color:'red'
 		        }
 		    ],
@@ -86,6 +88,9 @@ export default {
 		                  interval: 'auto',  
 		                  formatter: '{value} %'  
 		                },
+		            axisLine:{
+		            	lineStyle:{color:'#E8E8E8'}
+		            },
 		            splitLine: {lineStyle:{type:'dashed'}}
             	
 		        }
@@ -125,23 +130,23 @@ export default {
 	width: 350px;
 	height: 200px;
 	position: absolute;
-	top: 180px;
-	left: 80px
+	top: 150px;
+	left: 70px
 }
 #home .center_box{
 	padding-top: 60px;
 	background-color: #44A9FF
 }
 #home .home_body{
-	width: 1200px;
+	width: 1100px;
 	margin: auto;
 	position: relative;
 }
 #home .home_body .backgroundImg{
-	width: 1200px;
+	width: 1100px;
 }
 #home .home_main_body{
-	width: 1200px;
+	width: 1100px;
 	margin: auto;
 	margin-top: 20px
 }
@@ -167,6 +172,7 @@ export default {
 	border-radius: 3px;
 	cursor: pointer;
 }
+#home .homeBox:hover{box-shadow: 1px 1px 14px rgba(0,0,0,.15);}
 #home .homeBox img{
 	margin: 52px
 }

@@ -10,14 +10,12 @@
 			</div>
 		</div>
 	</div>
-	
 </template>
 
 <script>
 export default {
   data () {
-
-    return {
+	return {
       msg: '顶部导航栏',
       username:'用户13974289150'
     }
