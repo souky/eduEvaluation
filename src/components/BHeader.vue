@@ -1,5 +1,5 @@
 <template>
-	<div id="header" class="fix box_s">
+	<div v-show="isShow" id="header" class="fix box_s">
 		<div class="logoImg">
 			<img src="../../static/img/header/logo.png" />
 			<span>金阳测评</span>
@@ -18,6 +18,7 @@ export default {
   data () {
 
     return {
+      isShow:true,
       msg: '顶部导航栏',
       username:'用户13974289150'
     }
@@ -27,6 +28,9 @@ export default {
   	
   },
   methods:{
+  	handleParentClick(e){
+  		this.isShow=false;
+  	},
   	//退出登陆操作
   	loginOut(){
   		//页面跳转
