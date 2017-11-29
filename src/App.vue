@@ -37,7 +37,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-color: #F9F9F9
+  background-color: white
 }
 .slide-fade-enter-active {
   transition: all .3s ease;
