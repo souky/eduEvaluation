@@ -1,15 +1,13 @@
 <template>
 	<div id="header" class="fix box_s">
-		<div class="leftPart l fix">
-			
-		</div>
-		<div class="rightPart r">
-			<div class="l search">
-				<el-input placeholder="搜索内容" icon="search"></el-input>
-			</div>
-		</div>
 		<div class="logoImg">
 			<img src="../../static/img/header/logo.png" />
+			<span>金阳测评</span>
+			<div class="rightPart r">
+				<div class="l">
+					<span class="userName">{{username}}</span>  <span @click="loginOut">退出</span>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -21,6 +19,7 @@ export default {
 
     return {
       msg: '顶部导航栏',
+      username:'用户13974289150'
     }
   },
   mounted:function(){
@@ -28,21 +27,14 @@ export default {
   	
   },
   methods:{
-
+  	//退出登陆操作
+  	loginOut(){
+  		//页面跳转
+  		 this.$router.push({path:'/'});
+  	}
   }
 }
 </script>
 
 <style>
-.inline__box{display: inline-block;}
-.inline__box .rightItems img{vertical-align: middle;}
-.inline__box .el-badge__content.is-fixed.is-dot{top:22px;right:8px;}
-.inline__box .el-dropdown-menu__item.is-disabled{color: #272727;}
-#header .rightPart .personRight {height:60px;text-align: center;cursor: pointer;font-size:16px;color:#666;margin-right: 30px;}
-#header .rightPart .personRight span{font-size:14px;}
-.menuStyle{text-decoration: none;color: #6ED56C;font-size: 16px;text-align: center;}
-.el-dropdown-menu__item a{text-decoration: none}
-.el-dropdown-menu--middles{width: 130px}
-.el-dropdown-menu__item--divided{margin-top: 3px}
-.el-dropdown-menu__item--divided:before{height:3px;}
 </style>

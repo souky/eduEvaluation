@@ -41,15 +41,26 @@
 	font-size:16px;
 	color:#666;
 }
+#header .rightPart .userName{
+	color: #44A9FF;
+	font-size: 16px;
+	margin-right: 18px
+}
+#header .rightPart span{
+	cursor: default;
+	color: #B9B9B9;
+}
 #header .logoImg{
-	width:60px;
+	width:1200px;
 	height:60px;
 	margin:auto;
 }
 #header .logoImg img{
-	width:100%;
+	width:60px;
 }
-
+#header .logoImg span{
+	vertical-align:text-bottom;
+}
 /*body css*/
 .main_body{
 	padding-top: 60px;
