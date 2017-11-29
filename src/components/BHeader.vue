@@ -14,6 +14,21 @@
     <div class="logoImg">
       <img src="../../static/img/header/logo.png" />
       <span class="titleJRY">金阳测评</span>
+      <div class="leftPart l">
+        <div class="l">
+          <router-link to="/report">
+            <div class="leftItems leftItemsActive l">成绩报告</div>
+          </router-link>
+          
+          <router-link to="/resource">
+            <div class="leftItems l">考试管理</div>
+          </router-link>
+          
+          <router-link to="/management">
+            <div class="leftItems l">资源中心</div>
+          </router-link>
+        </div>
+      </div>
       <div class="rightPart r">
         <div class="l">
           <span class="userName">{{username}}</span>  <span @click="loginOut">退出</span>
@@ -54,5 +69,12 @@ export default {
 <style>
 .titleJRY{
   font-size: 24px;
+}
+#header .leftItems{
+    padding: 0 20px;
+    color: white;
+}
+#header .leftItemsActive {
+  background-color: rgba(0,0,0,.24);
 }
 </style>
