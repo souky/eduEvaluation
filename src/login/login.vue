@@ -1,8 +1,5 @@
 <template>
 	<div id="login" ref="loginHight">
-		<div class="login-foot">
-			<p>© 2017-2018 苏州金瑞阳信息科技有限公司 苏ICP备17029802号</p>
-		</div>
 		<div class="login-main">
 			<div class="login-main-header">
 				<p>登录</p>
@@ -27,6 +24,9 @@
 				  </el-form-item>
 				</el-form>
 			</div>
+		</div>
+		<div class="login-foot">
+			<p>© 2017-2018 苏州金瑞阳信息科技有限公司 苏ICP备17029802号</p>
 		</div>
 	</div>
 </template>
@@ -74,7 +74,7 @@ export default {
 	background-size:100% 100%;
 	-moz-background-size:100% 100%;
 }
-.login-foot{
+#login .login-foot{
 	width: 100%;
 	height: 110px;
 	background: #fff;
@@ -82,13 +82,13 @@ export default {
 	bottom: 0px;
 	text-align: center;
 }
-.login-foot p{
+#login .login-foot p{
 	line-height: 110px;
 	font-size: 24px;
 	color: #3D3D3D;
 	letter-spacing: 0;
 }
-.login-main{
+#login .login-main{
 	position: absolute;
 	top: 27.7%;
 	left:55.9%;
@@ -97,7 +97,7 @@ export default {
 	background: #fff;
 	border-radius: 3px;
 }
-.login-main-header{
+#login .login-main-header{
 	width: 374px;
 	height: 43px;
 	margin: auto;
@@ -105,30 +105,30 @@ export default {
 	padding-top:40px;
 	border-bottom: 1px solid #44A9FF;
 }
-.login-main-header p{
+#login .login-main-header p{
 	font-size: 24px;
 	color: #818181;
 	letter-spacing: 0;
 }
-.login-main-body{
+#login .login-main-body{
 	width: 374px;
 	height: 43px;
 	margin: auto;
 	margin-top:40px;
 }
-.el-button{
+#login .el-button{
 	padding: 15px 171px;
 }
-.el-input__inner{
+#login .el-input__inner{
 	height: 50px;
 }
-.el-form-item{
+#login .el-form-item{
 	margin-bottom: 30px;
 }
-.login-main-foot .el-form-item__content{
+#login .login-main-foot .el-form-item__content{
 	line-height: 0;
 }
-.login-main-body i{
+#login .login-main-body i{
 	width: 20px;
 	margin-left:10px;
 }

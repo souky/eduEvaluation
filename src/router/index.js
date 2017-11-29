@@ -8,8 +8,8 @@ import Login from '@/login/login.vue'
 
 import SchoolLevel from '@/components/report/SchoolLevel'
 import TeachingLevel from '@/components/report/TeachingLevel'
-// import StudentLevel form '@/components/report/StudentLevel'
-// import ClassLevel form '@/components/report/ClassLevel'
+import StudentLevel from '@/components/report/studentLevel.vue'
+import ClassLevel from '@/components/report/classLevel.vue'
 
 
 
@@ -38,6 +38,14 @@ export default new Router({
         path:'/report/teachingLevel',
         name:'teachingLevel',
         component:TeachingLevel,
+      },{
+        path:'/report/studentLevel',
+        name:'studentLevel',
+        component:StudentLevel,
+      },{
+        path:'/report/calssLevel',
+        name:'classLevel',
+        component:ClassLevel,
       }]
     },{
       path:'/resource',
