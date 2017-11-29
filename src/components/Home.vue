@@ -17,19 +17,19 @@
 		<div class="home_main_body">
 			<el-row :gutter="20">
 			  <el-col :span="8">
-			  	<div class="gotoReport homeBox" @click="">
+			  	<div class="gotoReport homeBox" @click="gotoReport">
 			  		<img src="../../static/img/header/cj.png" />
 			  		<div class="bottomBtn">成绩报告</div>
 			    </div>
 			  </el-col>
 			  <el-col :span="8">
-			  	<div class="gotoResource homeBox" @click="">
+			  	<div class="gotoResource homeBox" @click="gotoResource">
 			  		<img src="../../static/img/header/zy.png" />
 			  		<div class="bottomBtn">资源中心</div>
 			  	</div>
 			  </el-col>
 			  <el-col :span="8">
-			  	<div class="gotoManagement homeBox" @click="">
+			  	<div class="gotoManagement homeBox" @click="gotoManagement">
 			  		<img src="../../static/img/header/ks.png" />
 			  		<div class="bottomBtn">考试管理</div>
 			  	</div>
@@ -110,12 +110,25 @@ export default {
 	  	}
     }
   },
+  created: function(){
+		this.$emit('refreshbizlines','home');
+  },
   mounted:function(){
   	//判断cookie登陆信息初始化
   	this.echarts.init(document.getElementById("average")).setOption(this.option1);
+
   },
   methods:{
-  	
+  	gotoReport:function(){
+  		//页面跳转
+  		 this.$router.push({path:'/report'});
+  	},
+  	gotoResource:function(){
+  		this.$router.push({path:'/resource'});
+  	},
+  	gotoManagement:function(){
+  		this.$router.push({path:'/management'});
+  	}
   }
 }
 

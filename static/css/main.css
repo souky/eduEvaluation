@@ -7,49 +7,7 @@
 	position: fixed;
 	z-index: 99999;
 }
-#header .leftPart .router-link-active .leftItems{
-	color: #6ED56C;
-}
-#header .rightPart .router-link-active .rightItems{
-	color: #6ED56C;
-}
-#header .rightPart .router-link-active .rightItems img{
-	width: 30px;
-	height: 30px;
-	border-radius: 15px;
-}
-#header .leftPart .leftItems{
-	width:100px;
-	height:60px;
-	text-align: center;
-	cursor: pointer;
-	font-size:16px;
-	color:#666;
-}
-#header .rightPart .search{
-	margin-right:30px;
-}
-#header .rightPart .search input{
-	border-radius: 25px;
-	height: 30px;
-}
-#header .rightPart .rightItems{
-	width:60px;
-	height:60px;
-	text-align: center;
-	cursor: pointer;
-	font-size:16px;
-	color:#666;
-}
-#header .rightPart .userName{
-	color: #44A9FF;
-	font-size: 16px;
-	margin-right: 18px
-}
-#header .rightPart span{
-	cursor: default;
-	color: #B9B9B9;
-}
+
 #header .logoImg{
 	width:1100px;
 	height:60px;
@@ -61,12 +19,27 @@
 #header .logoImg span{
 	vertical-align:text-bottom;
 }
+#header .rightPart .userName{
+	color: #44A9FF;
+	font-size: 16px;
+	margin-right: 18px
+}
+#header .rightPart span{
+	color: #B9B9B9;
+	cursor: default;
+}
 /*body css*/
 .main_body{
 	padding-top: 60px;
 	width:1100px;margin:auto;
 }
-
+.box_other{
+	background-color: #44A9FF!important
+}
+.box_other span{
+	color: white!important;
+	cursor: default;
+}
 /*滚动条*/
 ::-webkit-scrollbar{width: 10px;position: absolute;right: 0px;top: 0px;z-index: 9999;}
 ::-webkit-scrollbar-track{background-color:#E0E0E0;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius:5px;}

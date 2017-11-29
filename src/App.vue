@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-  	<b-header ></b-header>
+  	<b-header ref="BHeader"></b-header>
   	<transition name="slide-fade">
-    	<router-view></router-view>
+    	<router-view v-on:refreshbizlines="goToDetail"></router-view>
     </transition>
   </div>
 </template>
@@ -18,6 +18,15 @@
       document.getElementById("app").style.minHeight = height+"px";
   	},
   	methods:{
+      goToDetail:function(item){
+        if(item=="login"){
+          this.$refs.BHeader.handleParentClick("login");
+        }else if(item=="home"){
+          this.$refs.BHeader.handleParentClick("home");
+        }else{
+          this.$refs.BHeader.handleParentClick("other");
+        }
+      }
   	}
 	}
 </script>

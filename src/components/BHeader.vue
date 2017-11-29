@@ -1,8 +1,8 @@
 <template>
-	<div id="header" class="fix box_s">
+	<div v-if="isShow=='home'" id="header" class="fix box_s">
 		<div class="logoImg">
 			<img src="../../static/img/header/logo.png" />
-			<span>金阳测评</span>
+			<span class="titleJRY">金阳测评</span>
 			<div class="rightPart r">
 				<div class="l">
 					<span class="userName">{{username}}</span>  <span @click="loginOut">退出</span>
@@ -10,12 +10,26 @@
 			</div>
 		</div>
 	</div>
+  <div v-else-if="isShow=='other'" id="header" class="fix box_s box_other">
+    <div class="logoImg">
+      <img src="../../static/img/header/logo.png" />
+      <span class="titleJRY">金阳测评</span>
+      <div class="rightPart r">
+        <div class="l">
+          <span class="userName">{{username}}</span>  <span @click="loginOut">退出</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-else="isShow=='login'">
+  </div>
 </template>
 
 <script>
 export default {
   data () {
-	return {
+  return {
+      isShow:'',
       msg: '顶部导航栏',
       username:'用户13974289150'
     }
@@ -25,6 +39,9 @@ export default {
   	
   },
   methods:{
+  	handleParentClick(e){
+  		this.isShow=e;
+  	},
   	//退出登陆操作
   	loginOut(){
   		//页面跳转
@@ -35,4 +52,7 @@ export default {
 </script>
 
 <style>
+.titleJRY{
+  font-size: 24px;
+}
 </style>
