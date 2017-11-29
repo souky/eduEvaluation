@@ -74,7 +74,7 @@ export default {
     padding: 0 20px;
     color: white;
 }
-#header .leftItemsActive {
+#header .leftPart .router-link-active .leftItems{
   background-color: rgba(0,0,0,.24);
 }
 </style>

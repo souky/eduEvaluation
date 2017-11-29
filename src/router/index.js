@@ -6,6 +6,13 @@ import Resource from '@/components/Resource'
 import Management from '@/components/Management'
 import Login from '@/login/login.vue'
 
+import SchoolLevel from '@/components/report/SchoolLevel'
+import TeachingLevel from '@/components/report/TeachingLevel'
+// import StudentLevel form '@/components/report/StudentLevel'
+// import ClassLevel form '@/components/report/ClassLevel'
+
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -22,7 +29,16 @@ export default new Router({
     },{
       path:'/report',
       name:'report',
-      component:Report
+      component:Report,
+      children:[{
+        path:'/report/schoolLevel',
+        name:'schoolLevel',
+        component:SchoolLevel,
+      },{
+        path:'/report/teachingLevel',
+        name:'teachingLevel',
+        component:TeachingLevel,
+      }]
     },{
       path:'/resource',
       name:'resource',
