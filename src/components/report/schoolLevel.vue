@@ -15,34 +15,35 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="overallReport">
-		    <el-table :data="tableData" style="width: 100%"  >
-		      <el-table-column prop="subject"  label="学科">
+		    <el-table :data="tableData1" stripe style="width: 100%" header-cell-class-name="formatRow" >
+		      <el-table-column width="50" prop="subject" label="学科">
 		      </el-table-column>
 		      <el-table-column prop="countPeople" label="统计人数">
 		      </el-table-column>
 		      <el-table-column prop="fullMark" label="满分">
 		      </el-table-column>
-		      <el-table-column prop="average" label="平均分(学校)">
+		      <el-table-column prop="average" label="平均分<br>(学校)">
 		      </el-table-column>
-		      <el-table-column prop="averages" label="平均分(地区)">
+		      <el-table-column prop="averages" label="平均分 (地区)">
 		      </el-table-column>
 		      <el-table-column prop="deviation" label="离均差">
 		      </el-table-column>
-		      <el-table-column prop="ranking" label="排名 (地区)">
+		      <el-table-column prop="ranking" label=" 排名    (地区)">
 		      </el-table-column>
 		      <el-table-column prop="highest" label="最高分">
 		      </el-table-column>
-		      <el-table-column prop="highRate" label="高分率(90%以上)">
+		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="excellent" label="优秀率(80%-89%)">
+		      <el-table-column prop="excellent" label=" 优秀率 (80%-89%)">
 		      </el-table-column>
-		      <el-table-column prop="inCommission" label="良好率(70%-79%)">
+		      <el-table-column prop="inCommission" label=" 良好率 (70%-79%)">
 		      </el-table-column>
-		      <el-table-column prop="yield" label="合格率(60%-69%)">
+		      <el-table-column prop="yield" label=" 合格率 (60%-69%)">
 		      </el-table-column>
-		      <el-table-column prop="failure" label="不及格率(60%以下)">
+		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
+		    <p class="testTips">本次考试中，我校参与统计人数{{countP}}</p>
 		  </div>
 	</div>	
 </template>
@@ -65,7 +66,8 @@ export default {
 				name:'2015年金阳高中期末考试'
 			}],
 			showselect:false,
-			schoolTest:''
+			schoolTest:'',
+
 	    }
 	},
     methods: {
@@ -84,7 +86,7 @@ export default {
     	}
     },
     mounted:function(){
-    	this.tableData = this.IndexData.tableData;
+    	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     }
 }
 </script>
@@ -118,7 +120,8 @@ export default {
 	padding: 0 10px;
 	font-weight: normal;
 	text-align: center;
-	color: red
+	color: white;
+	background-color: #44A9FF
 }
 #schoolLevel .el-input__inner{
 	border: 0px;
@@ -138,7 +141,8 @@ export default {
 	list-style: none;position: absolute;margin: 0;padding:0;
 	border: 1px solid #f2f2f2;
 	left: 430px;
-
+	z-index: 999;
+    background-color: white;
 }
 #schoolLevel .showselect li{
 	margin: 0;padding:0;

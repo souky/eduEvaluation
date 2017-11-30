@@ -3,7 +3,7 @@
  */
 
 export default {
-    tableData:[
+    tableData1:[
     	{
 	  		subject:'总分',
 	  		countPeople:'500',

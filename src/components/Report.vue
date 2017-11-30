@@ -35,13 +35,16 @@ export default {
 	margin-top: 33px;
 	background-color: white
 }
+.el-menu--horizontal{
+	border-bottom: 0px
+}
 .el-menu--horizontal .el-menu-item{
 	background-color: white;
 	border-bottom: 0px;
 	padding: 0 25px;
     border-radius: 16px 16px 0 0;
 }
-.el-menu-item.is-active{
+.el-menu--horizontal>.el-menu-item.is-active{
 	color: white;
     background-color: #44A9FF;
     border-radius: 16px 16px 0 0;
