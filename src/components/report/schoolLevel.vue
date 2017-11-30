@@ -15,8 +15,8 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="overallReport">
-		    <el-table :data="tableData" style="width: 100%">
-		      <el-table-column prop="subject" label="学科">
+		    <el-table :data="tableData" style="width: 100%"  >
+		      <el-table-column prop="subject"  label="学科">
 		      </el-table-column>
 		      <el-table-column prop="countPeople" label="统计人数">
 		      </el-table-column>
@@ -28,19 +28,19 @@
 		      </el-table-column>
 		      <el-table-column prop="deviation" label="离均差">
 		      </el-table-column>
-		      <el-table-column prop="ranking" label="排名(地区)">
+		      <el-table-column prop="ranking" label="排名 (地区)">
 		      </el-table-column>
 		      <el-table-column prop="highest" label="最高分">
 		      </el-table-column>
 		      <el-table-column prop="highRate" label="高分率(90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="inCommission" label="优秀率(80%-89%)">
+		      <el-table-column prop="excellent" label="优秀率(80%-89%)">
 		      </el-table-column>
-		      <el-table-column prop="name" label="良好率(70%-79%)">
+		      <el-table-column prop="inCommission" label="良好率(70%-79%)">
 		      </el-table-column>
-		      <el-table-column prop="address" label="合格率(60%-69%)">
+		      <el-table-column prop="yield" label="合格率(60%-69%)">
 		      </el-table-column>
-		      <el-table-column prop="address" label="不及格率(60%以下)">
+		      <el-table-column prop="failure" label="不及格率(60%以下)">
 		      </el-table-column>
 		    </el-table>
 		  </div>
@@ -48,19 +48,21 @@
 </template>
 
 <script>
+import IndexData from '../../assets/data/schoolLevel.js'
 export default {
 	data(){
 		return {
 			autoplay:false,
+			IndexData,
 			schoolList:[{
 				id:'001',
-				name:'2017年金阳高中期末考试',
+				name:'2017年金阳高中期末考试'
 			},{
 				id:'002',
-				name:'2016年金阳高中期末考试',
+				name:'2016年金阳高中期末考试'
 			},{
 				id:'003',
-				name:'2015年金阳高中期末考试',
+				name:'2015年金阳高中期末考试'
 			}],
 			showselect:false,
 			schoolTest:''
@@ -72,7 +74,17 @@ export default {
     	},
     	changetest:function(e){
     		this.showselect = !this.showselect
+    	},
+    	rowsClassName:function({row, rowIndex}){
+	        if (rowIndex === 1) {
+	        	console.log(rowIndex);
+	        }
+	        return '';
+      
     	}
+    },
+    mounted:function(){
+    	this.tableData = this.IndexData.tableData;
     }
 }
 </script>
@@ -101,6 +113,12 @@ export default {
 }
 .alltest{
 	cursor: pointer;
+}
+.formatRow{
+	padding: 0 10px;
+	font-weight: normal;
+	text-align: center;
+	color: red
 }
 #schoolLevel .el-input__inner{
 	border: 0px;
@@ -134,5 +152,13 @@ export default {
 	text-align: center;
 	letter-spacing: 0;
 	margin-top: 35px
+}
+.header-title-foot{
+	width: 100px;
+    height: 2px;
+    background: #44A9FF;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 35px
 }
 </style>
