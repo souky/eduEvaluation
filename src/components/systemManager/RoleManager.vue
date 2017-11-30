@@ -1,6 +1,6 @@
 <template>
-	<div id="home" class="main_body">
-		home
+	<div id="roleManager" class="main_body">
+		roleManager
 	</div>
 	
 </template>
@@ -10,7 +10,7 @@ export default {
   data () {
 
     return {
-      msg: '顶部导航栏',
+      msg: 'roleManager',
     }
   },
   mounted:function(){

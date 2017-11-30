@@ -1,6 +1,6 @@
 <template>
-	<div id="home" class="main_body">
-		home
+	<div id="userManager" class="main_body">
+		userManager
 	</div>
 	
 </template>
@@ -10,7 +10,7 @@ export default {
   data () {
 
     return {
-      msg: '顶部导航栏',
+      msg: 'userManager',
     }
   },
   mounted:function(){

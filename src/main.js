@@ -4,7 +4,7 @@ import router from './router'
 
 import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import '../static/css/main.css'
 import '../static/css/apps.css'
 import axios from 'axios'
@@ -26,6 +26,7 @@ Vue.prototype.$axios = axios
 
 /* 时间转化 */
 Vue.prototype.timeF = require('moment');
+/* echarts*/
 Vue.prototype.echarts = require('echarts');
 
 var querystring = require('querystring');

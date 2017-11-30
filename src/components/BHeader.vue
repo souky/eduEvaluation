@@ -1,15 +1,20 @@
 <template>
-	<div id="header" class="fix box_s">
+	<div id="header" class="fix">
 		<div class="leftPart l fix">
-			
+			<div class="leftItems">
+				<img src="../../static/img/header/logo.png" />
+			</div>
 		</div>
-		<div class="rightPart r">
-			<div class="l search">
-				<el-input placeholder="搜索内容" icon="search"></el-input>
+		<div class="rightPart r fix">
+			<div class="userImg l">
+				<img src="../../static/img/header/touxiang.png" />
+			</div>
+			<div class="exit_btn l">
+				<img src="../../static/img/header/logout.png" style="width: 34px;"/>
 			</div>
 		</div>
 		<div class="logoImg">
-			<img src="../../static/img/header/logo.png" />
+			金瑞阳测评系统
 		</div>
 	</div>
 	

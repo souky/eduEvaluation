@@ -1,6 +1,7 @@
 <template>
   <div id="app">
   	<b-header ></b-header>
+  	<b-menu></b-menu>
   	<transition name="slide-fade">
     	<router-view></router-view>
     </transition>
@@ -9,10 +10,11 @@
 
 <script>
 	import BHeader from '@/components/BHeader'
+	import BMenu from '@/components/BMenu'
 	import Vue from 'vue'
 	export default {
 	  name: 'app',
-   	components: {BHeader},
+   	components: {BHeader,BMenu},
     mounted:function(){
       var height = document.documentElement.clientHeight;
       document.getElementById("app").style.minHeight = height+"px";
@@ -23,12 +25,14 @@
 </script>
 
 <style>
+body{
+	overflow: hidden;
+}
 #app {
   font-family: '\u5FAE\u8F6F\u96C5\u9ED1', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-color: #F9F9F9
 }
 .slide-fade-enter-active {
   transition: all .3s ease;
