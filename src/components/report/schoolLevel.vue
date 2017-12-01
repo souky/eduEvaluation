@@ -15,20 +15,20 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="overallReport">
-		    <el-table :data="tableData1" stripe style="width: 100%" header-cell-class-name="formatRow" >
+		    <el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
 		      <el-table-column width="50" prop="subject" label="学科">
 		      </el-table-column>
 		      <el-table-column prop="countPeople" label="统计人数">
 		      </el-table-column>
 		      <el-table-column prop="fullMark" label="满分">
 		      </el-table-column>
-		      <el-table-column prop="average" label="平均分<br>(学校)">
+		      <el-table-column prop="average" label="平均分(学校)">
 		      </el-table-column>
 		      <el-table-column prop="averages" label="平均分 (地区)">
 		      </el-table-column>
 		      <el-table-column prop="deviation" label="离均差">
 		      </el-table-column>
-		      <el-table-column prop="ranking" label=" 排名    (地区)">
+		      <el-table-column prop="ranking" label=" 排名 (地区)">
 		      </el-table-column>
 		      <el-table-column prop="highest" label="最高分">
 		      </el-table-column>
@@ -43,7 +43,15 @@
 		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
-		    <p class="testTips">本次考试中，我校参与统计人数{{countP}}</p>
+		    <p class="testTips">本次考试中，我校参与统计人数{{countP}}人，总分平均分{{totalCount}}分，高出全地区平均分{{hightCount}}分，地区排名第{{ranking}}。各学科中{{goodsuject}}平均分表现较好，高于地区平均分{{hightavarge}}分，列全区县第{{allNumber}}名；{{lowSuject}}科目表现较弱，低于地区平均分{{lowavarge}}分，位于全地区第{{allRanking}}名。</p>
+		  </div>
+
+		  <div class="header">
+			<p>学生等级分布图</p>
+			<div class="header-title-foot"></div>
+		  </div>
+		  <div id="ranked">
+		  		<div id="rankedchart"></div>
 		  </div>
 	</div>	
 </template>
@@ -66,9 +74,8 @@ export default {
 				name:'2015年金阳高中期末考试'
 			}],
 			showselect:false,
-			schoolTest:'',
-
-	    }
+			schoolTest:''
+		}
 	},
     methods: {
     	selectShow:function(){
@@ -78,15 +85,36 @@ export default {
     		this.showselect = !this.showselect
     	},
     	rowsClassName:function({row, rowIndex}){
-	        if (rowIndex === 1) {
-	        	console.log(rowIndex);
-	        }
-	        return '';
-      
+	       if(rowIndex%2===1)
+    			return 'tableBackground'
+      		else 
+      			return ''
+    	},
+
+    	eachWork:function(e,a){
+    		var eachWorks='';
+    		if(e.length>0){
+    		for(var i=0;i<e.length;i++){
+    				if(i==e.length-1)
+    					eachWorks +=e[i];
+    				else
+    					eachWorks +=e[i]+a;
+    			}
+    		}
+    		return eachWorks;
     	}
     },
     mounted:function(){
+    	//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
+    	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;
+    	this.ranking = this.IndexData.ranking;this.goodsuject = this.eachWork(this.IndexData.goodsuject,'、');
+    	this.hightavarge = this.eachWork(this.IndexData.hightavarge,'分、');this.allNumber = this.eachWork(this.IndexData.allNumber,'、');
+    	this.lowSuject = this.eachWork(this.IndexData.lowSuject,'、');this.lowavarge = this.eachWork(this.IndexData.lowavarge,'分、');
+    	this.allRanking = this.eachWork(this.IndexData.allRanking,'、');
+    	this.option1 = this.IndexData.option1
+    	//等级分布图
+    	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     }
 }
 </script>
@@ -112,6 +140,17 @@ export default {
     position: relative;
     height: 50px;
     margin: auto;
+}
+.testTips{
+	color:#3d3d3d;
+	font-size: 14px;
+	margin-top: 25px
+}
+.borders{
+	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
+}
+.el-table .tableBackground{
+	background-color: #f5fcff
 }
 .alltest{
 	cursor: pointer;
@@ -164,5 +203,9 @@ export default {
     margin: auto;
     margin-top: 5px;
     margin-bottom: 35px
+}
+#rankedchart{
+	width: 100%;
+	height: 530px
 }
 </style>
