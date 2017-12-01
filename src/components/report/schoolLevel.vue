@@ -1,13 +1,13 @@
 <template>
 	<div id="schoolLevel" class="mainbody">
 		  <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
-		    <el-carousel-item v-for="item in schoolList" :key="item.id">
+		    <el-carousel-item v-for="item in testList" :key="item.id">
 		      <p class="alltest" @click="selectShow">{{item.name}}</p>
 			</el-carousel-item>
 		  </el-carousel>
 		  <el-collapse-transition>
 			  <ul v-if='showselect' class="showselect">
-			  	<li v-for="item in schoolList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
+			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
 			  </ul>
 		  </el-collapse-transition>
 		  <div class="header">
@@ -52,6 +52,98 @@
 		  </div>
 		  <div id="ranked">
 		  		<div id="rankedchart"></div>
+		  		<div class="schoolSelectBox">
+					  <el-select v-model="changeSchool" class="myselect" placeholder="请选择">
+					    <el-option
+					      v-for="item in schoolList"
+					      :key="item.id"
+					      :label="item.name"
+					      :value="item.id">
+					    </el-option>
+					  </el-select>
+					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
+		  		</div>
+		  </div>
+		   <div class="header">
+			<p>各班成绩报告单</p>
+			<div class="header-title-foot"></div>
+		  </div>
+		  <div id="reportClass">
+		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
+		      <el-table-column width="50" prop="ranking" label="排名">
+		      </el-table-column>
+		      <el-table-column width="50" prop="class" label="班级">
+		      </el-table-column>
+		      <el-table-column prop="teachername" label="班主任">
+		      </el-table-column>
+		      <el-table-column prop="totalPoint" label="总分平均分">
+		      </el-table-column>
+		      <el-table-column prop="highest" label="最高分">
+		      </el-table-column>
+		      <el-table-column prop="lowest" label="最低分">
+		      </el-table-column>
+		      <el-table-column prop="standard" label="标准差">
+		      </el-table-column>
+		      <el-table-column prop="differentiation" label="分化程度">
+		      </el-table-column>
+		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
+		      </el-table-column>
+		      <el-table-column prop="excellent" label=" 优秀率 (80%-89%)">
+		      </el-table-column>
+		      <el-table-column prop="inCommission" label=" 良好率 (70%-79%)">
+		      </el-table-column>
+		      <el-table-column prop="yield" label=" 合格率 (60%-69%)">
+		      </el-table-column>
+		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
+		      </el-table-column>
+		    </el-table>
+		  </div>
+
+		  <div class="header">
+			<p>各班平均分对比</p>
+			<div class="header-title-foot"></div>
+		  </div>
+		  <div id="averageCompare">
+		  		<div id="averageChart"></div>
+		  		<p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p>
+		  </div>
+
+		  <div class="header">
+			<p>各班级等级分布对比</p>
+			<div class="header-title-foot"></div>
+		  </div>
+		  <div id="contrastive">
+		  	<div id="contrastiveChart">
+		  	
+		  	</div>
+		  	<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
+		  </div>
+
+		  <div class="header">
+			<p>各班前？名对比图</p>
+			<div class="header-title-foot"></div>
+		  </div>
+		  <div id="topCompared">
+		  		<div id="topComparedChart">
+		  		
+		  		</div>
+		  		<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
+		  </div>
+		  <div class="header">
+			<p>科目成绩报告单</p>
+			<div class="header-title-foot"></div>
+		  </div>
+		  <div id="">
+		  	<div class="schoolSelectBox">
+					<el-select v-model="changeSchool" class="myselect" placeholder="请选择">
+					    <el-option
+					      v-for="item in schoolList"
+					      :key="item.id"
+					      :label="item.name"
+					      :value="item.id">
+					    </el-option>
+					</el-select>
+		  		</div>
 		  </div>
 	</div>	
 </template>
@@ -62,8 +154,9 @@ export default {
 	data(){
 		return {
 			autoplay:false,
+			alse:'二中',
 			IndexData,
-			schoolList:[{
+			testList:[{
 				id:'001',
 				name:'2017年金阳高中期末考试'
 			},{
@@ -74,7 +167,15 @@ export default {
 				name:'2015年金阳高中期末考试'
 			}],
 			showselect:false,
-			schoolTest:''
+			schoolTest:'',
+			changeSchool:'',
+			schoolList:[{
+				id:'001',
+				name:'一中'
+			},{
+				id:'002',
+				name:'二中'
+			}]
 		}
 	},
     methods: {
@@ -102,6 +203,9 @@ export default {
     			}
     		}
     		return eachWorks;
+    	},
+    	
+    	compareSchool:function(){
     	}
     },
     mounted:function(){
@@ -112,9 +216,20 @@ export default {
     	this.hightavarge = this.eachWork(this.IndexData.hightavarge,'分、');this.allNumber = this.eachWork(this.IndexData.allNumber,'、');
     	this.lowSuject = this.eachWork(this.IndexData.lowSuject,'、');this.lowavarge = this.eachWork(this.IndexData.lowavarge,'分、');
     	this.allRanking = this.eachWork(this.IndexData.allRanking,'、');
-    	this.option1 = this.IndexData.option1
+    	this.option1 = this.IndexData.option1;
+    	this.tableData2 = this.IndexData.tableData2;
+    	this.option2 = this.IndexData.option2;
+    	this.classNumble = this.IndexData.classNumble;
+    	this.classS = this.eachWork(this.IndexData.classS,'班、');
+    	this.classH = this.IndexData.classH;
+    	this.missdistance = this.IndexData.missdistance;
+    	this.classL = this.eachWork(this.IndexData.classL,'班、');
+    	this.classLs = this.IndexData.classLs;
+    	this.option3 = this.IndexData.option3;
     	//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
+    	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
+    	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     }
 }
 </script>
@@ -141,16 +256,26 @@ export default {
     height: 50px;
     margin: auto;
 }
+.myselect{
+	border:1px solid #44a9ff;
+	width: 90px;
+	border-radius: 4px;
+}
 .testTips{
 	color:#3d3d3d;
 	font-size: 14px;
 	margin-top: 25px
 }
+.schoolSelectBox{
+	width: 200px;
+	margin: auto;
+	margin-bottom: 35px;
+}
 .borders{
 	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
 }
 .el-table .tableBackground{
-	background-color: #f5fcff
+	background-color: #f5fcff;
 }
 .alltest{
 	cursor: pointer;
@@ -167,7 +292,7 @@ export default {
 	text-align: center;
 }
 #schoolLevel .el-select .el-input .el-input__icon{
-	color: white
+	color: #44A9FF
 }
 #schoolLevel .el-carousel__arrow{
 	background-color: white;
@@ -205,6 +330,18 @@ export default {
     margin-bottom: 35px
 }
 #rankedchart{
+	width: 100%;
+	height: 530px
+}
+#averageChart{
+	width: 100%;
+	height: 530px
+}
+#contrastiveChart{
+	width: 100%;
+	height: 530px
+}
+#topComparedChart{
 	width: 100%;
 	height: 530px
 }
