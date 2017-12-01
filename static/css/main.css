@@ -155,6 +155,8 @@
 .el-select .el-input__inner:focus{border-color: #FFD100;}
 .el-select .el-input__inner:hover{border-color: #FFD100;}
 .el-select .el-input__inner:active{border-color: #FFD100;}
+.el-select{width: 100%;}
+.el-select .el-input.is-focus .el-input__inner{border-color:#FFD100!important;width:100%;}
 
 .el-pager li.active{background:#FFD100;border-color:#FFD100;color:#fff}
 .el-pager li.active:hover{color:#fff;}
@@ -170,7 +172,7 @@
 .el-checkbox:first-child{margin-right:15px;}
 .el-icon-information{color:#FFD100;}
 .el-checkbox__input.is-checked+.el-checkbox__label{color:#FFD100};
-.el-select .el-input.is-focus .el-input__inner{border-color:#FFD100}
+
 
 .el-select-dropdown__item.selected.hover{background:#FFD100;color:#fff}
 .el-select-dropdown__item.selected{background:#FFD100;color:#fff}
@@ -197,3 +199,7 @@
 
 
 .el-col-6{min-height: 1px;}
+
+.el-tree-node__content{height:40px;}
+.el-tree{background: #F9F9F9;}
+.el-tree-node:focus>.el-tree-node__content, .el-tree-node__content:hover{background: #ffd10073;}
