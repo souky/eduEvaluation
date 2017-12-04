@@ -3,7 +3,7 @@
 		 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
 		  <el-menu-item index="/report/schoolLevel">校级报告</el-menu-item>
 		  <el-menu-item index="/report/teachingLevel">教研报告</el-menu-item>
-		  <el-menu-item index="/report/calssLevel">班级报告</el-menu-item>
+		  <el-menu-item index="/report/classLevel">班级报告</el-menu-item>
 		  <el-menu-item index="/report/studentLevel">学生报告</el-menu-item>
 		</el-menu>
 		<router-view></router-view>

@@ -10,6 +10,17 @@
 			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
 			  </ul>
 		  </el-collapse-transition>
+		  <div id="rainbow" class="header-banner">
+			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
+			    <el-carousel-item v-for="item in subjects" :key="item.id">
+			     	<div class="header-banner-bit" v-for="(child,index) in item.childs">
+			     		<div class="header-banner-click" :style="'background:'+child.color" @click="rainbow(index,child.id)">
+			     			<p>{{child.name}}</p>
+			     		</div>
+			     	</div>
+			    </el-carousel-item>
+			</el-carousel>
+		</div>
 		  <div class="header">
 			<p>学校整体成绩报告单</p>
 			<div class="header-title-foot"></div>
@@ -133,8 +144,8 @@
 			<p>科目成绩报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
-		  <div id="">
-		  	<div class="schoolSelectBox">
+		  <div id="achievement">
+		  	<div class="achievementSelectBox">
 					<el-select v-model="changeSchool" class="myselect" placeholder="请选择">
 					    <el-option
 					      v-for="item in schoolList"
@@ -143,7 +154,32 @@
 					      :value="item.id">
 					    </el-option>
 					</el-select>
-		  		</div>
+		  	</div>
+		  	<div id="achievementTable">
+			  	<el-table :data="tableData3" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
+			      <el-table-column width="50" prop="rank" label="排名">
+			      </el-table-column>
+			      <el-table-column width="50" prop="class" label="班级">
+			      </el-table-column>
+			      <el-table-column width="100" prop="teacher" label="教师">
+			      </el-table-column>
+			      <el-table-column prop="subjectAerage" label="班级科目平均分">
+			      </el-table-column>
+			      <el-table-column prop="countAerage" label="班级总分平均分">
+			      </el-table-column>
+			      <el-table-column prop="subjectStandard" label="班级科目标准分">
+			      </el-table-column>
+			      <el-table-column prop="countStandard" label="班级总分标准分">
+			      </el-table-column>
+			      <el-table-column prop="contribution" label="科目贡献率(班级课目标准分/班级总分标准分*100)">
+			      </el-table-column>
+			    </el-table>
+		  	</div>
+		  	<div class="header">
+				<p>贡献率折线图</p>
+				<div class="header-title-foot"></div>
+		  	</div>
+		  	<div id="achievementChart"></div>
 		  </div>
 	</div>	
 </template>
@@ -175,7 +211,13 @@ export default {
 			},{
 				id:'002',
 				name:'二中'
-			}]
+			}],
+			tableData1:[],
+			countP:'',totalCount:'',hightCount:'',ranking:'',
+			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
+			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
+			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
+			tableData3:[],option4:{}
 		}
 	},
     methods: {
@@ -189,7 +231,7 @@ export default {
 	       if(rowIndex%2===1)
     			return 'tableBackground'
       		else 
-      			return ''
+      			return 'tableCenter'
     	},
 
     	eachWork:function(e,a){
@@ -226,14 +268,17 @@ export default {
     	this.classL = this.eachWork(this.IndexData.classL,'班、');
     	this.classLs = this.IndexData.classLs;
     	this.option3 = this.IndexData.option3;
+    	this.tableData3 = this.IndexData.tableData3;
+    	this.option4 = this.IndexData.option4;
     	//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
+    	this.echarts.init(document.getElementById("achievementChart")).setOption(this.option4);
     }
 }
 </script>
-
+czxc
 <style>
 .mainbody{
 	width: 1100px;
@@ -271,11 +316,19 @@ export default {
 	margin: auto;
 	margin-bottom: 35px;
 }
+.achievementSelectBox{
+	width: 90px;
+	margin: auto;
+	margin-bottom: 35px;
+}
 .borders{
 	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
 }
 .el-table .tableBackground{
-	background-color: #f5fcff;
+	background-color: #f5fcff;text-align: center;
+}
+.el-table .tableCenter{
+	text-align: center;
 }
 .alltest{
 	cursor: pointer;
@@ -283,7 +336,7 @@ export default {
 .formatRow{
 	padding: 0 10px;
 	font-weight: normal;
-	text-align: center;
+	text-align:center !important;
 	color: white;
 	background-color: #44A9FF
 }
@@ -342,6 +395,10 @@ export default {
 	height: 530px
 }
 #topComparedChart{
+	width: 100%;
+	height: 530px
+}
+#achievementChart{
 	width: 100%;
 	height: 530px
 }

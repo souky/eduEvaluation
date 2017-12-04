@@ -271,8 +271,8 @@ export default {
                 },
                 markLine : {
                     data : [
-                        { name: 'Y 轴值为 100 的水平线',lineStyle:{normal:{color:'#FFD244'}},yAxis: 412.06},
-                        { name: 'Y 轴值为 200 的水平线',lineStyle:{normal:{color:'#64CA72'}},yAxis: 410.25}
+                        { name: '全校平均分',lineStyle:{normal:{color:'#FFD244'}},yAxis: 412.06},
+                        { name: '区县平均分',lineStyle:{normal:{color:'#64CA72'}},yAxis: 410.25}
                     ]
                 },
                 data: [{value:684.5,itemStyle:{normal:{color:"#FF8585"}}},552.29,490.4,482.61,476.29,463.98,463.51,451.37,443.76,438.21,426.69,419.76,407.91,396.37,386.34,371.64,369.16,362.43,357.68,349.37]
@@ -392,6 +392,116 @@ export default {
                        {value:24,itemStyle:{normal:{color:"#EABA73"}}},
                        {value:24,itemStyle:{normal:{color:"#EABA73"}}},
                        {value:24,itemStyle:{normal:{color:"#EABA73"}}}]
+            }
+
+        ]
+    },
+    tableData3:[
+        {
+            rank:'1',
+            class:'5',
+            teacher:'李明',
+            subjectAerage:'115',
+            countAerage:'440',
+            subjectStandard:'68',
+            countStandard:'75',
+            contribution:'90.8'
+        },{
+            rank:'2',
+            class:'6',
+            teacher:'李明',
+            subjectAerage:'115',
+            countAerage:'440',
+            subjectStandard:'68',
+            countStandard:'75',
+            contribution:'90.8'
+        },{
+            rank:'3',
+            class:'7',
+            teacher:'李明',
+            subjectAerage:'115',
+            countAerage:'440',
+            subjectStandard:'68',
+            countStandard:'75',
+            contribution:'90.8'
+        }
+    ],
+    option4:{
+         tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
+        },
+        
+        calculable : true,
+        xAxis: [
+            {
+                type : 'category',
+                axisLine: {onZero: false},
+                data : ['19','18','17','16','15','14','13']
+            }
+        ],
+        yAxis: [
+            {
+                type : 'value',
+                nameGap:50,
+
+                min: 80,
+                max: 120
+            }
+
+        ],
+        series : [
+            {
+                name: '班级平均分',
+                type: 'line',
+                itemStyle:{
+                    normal:{color:'#70CDF3'}
+                },
+                markLine:{
+                    data : [
+                        { name: '全校平均分',lineStyle:{normal:{color:'red'}},yAxis: 100}
+                    ]
+                },
+                markArea: {
+                    silent: true,
+                    data:[[{
+                        name: '红线以下(贡献未到位)',
+                        label:{
+                            normal:{
+                                color:'red',
+                                position:'insideTopRight'
+                            }
+                        },
+                        yAxis:'100',
+                        itemStyle:{
+                            normal:{color:'rgba(112,243,229,0.30)'},
+                        }
+                    },{
+                        yAxis:'80',
+                    }],[
+                        {
+                        name: '红线以上(贡献到位)',
+                        label:{
+                            normal:{
+                                color:'red',
+                                position:'insideBottomRight'
+                            }
+                        },
+                        yAxis:'100',
+                        itemStyle:{
+                            normal:{color:'rgba(157,243,112,0.30)'},
+                        }
+                    },{
+                        yAxis:'120',
+                    }
+                    ]]
+                },
+                data: [103.5, 102.16, 99.73, 95.37, 101.03, 102.28, 97.26]
             }
 
         ]
