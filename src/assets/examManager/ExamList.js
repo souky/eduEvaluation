@@ -1,0 +1,53 @@
+/**
+ * @description examList
+ */
+
+export default {
+    data:[
+		{
+			examName:'王一',
+			examStartDate:1412356367160,
+			examEndDate:1512356367160,
+			classroom:'2017',
+			subject:'12312312541',
+			examStatus:'0',
+			id:'wdawdawd123123'
+		},
+		{
+			examName:'王二',
+			examStartDate:1412356367160,
+			examEndDate:1512356367160,
+			classroom:'2017',
+			subject:'12312312541',
+			examStatus:'1',
+			id:'wdawdawd123123'
+		},
+		{
+			examName:'王三',
+			examStartDate:1412356367160,
+			examEndDate:1512356367160,
+			classroom:'2017',
+			subject:'12312312541',
+			examStatus:'2',
+			id:'wdawdawd123123'
+		},
+		{
+			examName:'王四',
+			examStartDate:1412356367160,
+			examEndDate:1512356367160,
+			classroom:'2017',
+			subject:'12312312541',
+			examStatus:'0',
+			id:'wdawdawd123123'
+		},
+		{
+			examName:'王五',
+			examStartDate:1412356367160,
+			examEndDate:1512356367160,
+			classroom:'2017',
+			subject:'12312312541',
+			examStatus:'0',
+			id:'wdawdawd123123'
+		},
+    ]
+}

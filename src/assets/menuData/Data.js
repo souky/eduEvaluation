@@ -27,6 +27,18 @@ export default {
         	  ]
           },
           {
+        	  icon:'el-icon-share',
+        	  menuName:'资源管理',
+        	  path:null, 
+        	  children:[
+					{
+					  icon:'el-icon-arrow-right',
+					  menuName:'知识点',
+					  path:'knowledgePoint'
+					}
+        	  ]
+          },
+          {
         	  icon:'el-icon-date',
         	  menuName:'学校管理',
         	  path:null, 
@@ -80,17 +92,6 @@ export default {
 					}
         	  ]
           },
-          {
-        	  icon:'el-icon-share',
-        	  menuName:'资源管理',
-        	  path:null, 
-        	  children:[
-					{
-					  icon:'el-icon-arrow-right',
-					  menuName:'知识点',
-					  path:'knowledgePoint'
-					}
-        	  ]
-          },
+          
     ]
 }
