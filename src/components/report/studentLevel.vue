@@ -222,7 +222,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="knowledge">
+		<div id="knowledge" v-show="displayAll.knowledge">
 			<div class="header">
 				<p>知识点</p>
 				<div class="header-title-foot"></div>
@@ -230,7 +230,64 @@
 			<div class="body">
 				<div id="knowledge1"></div>
 				<div id="knowledge-table">
-					
+					<el-table id="knowledge-table-header" :data="falsetableData3" header-row-class-name="table-header" style="width: 100%">
+    					<el-table-column align="center" prop="date" label="知识点模块"></el-table-column>
+    					<el-table-column align="center" prop="date" label="知识点"></el-table-column>
+    						<el-table-column align="center" label="得分率%">
+    							<el-table-column align="center" prop="name" label="班级"></el-table-column>
+    							<el-table-column align="center" prop="name" label="校级"></el-table-column>
+    							<el-table-column align="center" prop="name" label="区级"></el-table-column>
+    							<el-table-column align="center" prop="name" label="差值(相对于校级)"></el-table-column>
+    						</el-table-column>
+    					<el-table-column align="center" prop="date" label="对应题目"></el-table-column>
+  					</el-table>
+  					<div v-for="truetableData3 in truetableDatas">
+	  					<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.truetableData3" style="width: 100%">
+	    					<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
+	    					<el-table-column align="center" prop="knowledge" label="知识点"></el-table-column>
+	    						<el-table-column align="center" label="得分率%">
+	    							<el-table-column align="center" prop="classscore" label="班级"></el-table-column>
+	    							<el-table-column align="center" prop="schoolscore" label="校级"></el-table-column>
+	    							<el-table-column align="center" prop="areascore" label="区级"></el-table-column>
+	    							<el-table-column align="center" prop="difference" label="差值(相对于校级)"></el-table-column>
+	    						</el-table-column>
+	    					<el-table-column align="center" prop="topic" label="对应题目"></el-table-column>
+	  					</el-table>
+	  					<div class="knowledge-table-trueTotle">
+	  						<div class="knowledge-table-trueTotleBit"><p>总分:{{truetableData3.totle}}分</p></div>
+	  						<div class="knowledge-table-trueTotleBit"><p>得分:{{truetableData3.score}}分</p></div>
+	  						<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.class}}</p></div>
+	  						<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.school}}</p></div>
+	  						<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.area}}</p></div>
+	  					</div>
+  					</div>
+				</div>
+				<div class="knowledge-foot">
+					<p>在本次考试中，得分率低于学校平均水平的知识点分别是函数模块中的指数函数，对应的题目为第5题；三角函数中的任意角、弧度，对应的题目为第3题；三角函数中借助单位圆中的三角函数推导出诱导公式，对应题目为16题，需要特别注意</p>
+				</div>
+			</div>
+		</div>
+		<div id="abilityAnalyze" v-show="displayAll.abilityAnalyze">
+			<div class="header">
+				<p>能力分析</p>
+				<div class="header-title-foot"></div>
+			</div>
+			<div class="body">
+				<div id="abilityAnalyze1"></div>
+				<div id="abilityAnalyze2">
+					<el-table :data="scoreName" style="width: 100%">
+    					<el-table-column align="center" prop="name" label="能力"></el-table-column>
+    						<el-table-column align="center" label="得分率">
+      							<el-table-column align="center" prop="scoreClass" label="班级"></el-table-column>
+      							<el-table-column align="center" prop="scoreSchool" label="全校"></el-table-column>
+      							<el-table-column align="center" prop="scoreArea" label="全区县"></el-table-column>
+    						</el-table-column>
+    					<el-table-column align="center" prop="topicList" label="对应题目"></el-table-column>
+  					</el-table>
+				</div>
+				<div class="abilityAnalyze-foot">
+					<p>在本次考试中，得分率低于学校平均水平的能力点为空间想象能力，抽象概括能力、推理论证能力、运算求解能力和综合应用能力，需要特别注意。
+						得分率高于学校平均水平的能力为数据处理能力，请继续保持。</p>
 				</div>
 			</div>
 		</div>
@@ -241,16 +298,95 @@
    		data(){
 			return{
 				displayAll:{
-					personalAchievement:false,
+					personalAchievement:true,
 					beyondRate:true,
 					growthTrend:true,
-					subjectsDiagnosis:false,
-					myGoal:false,
-					anotherpersonalAchievement:true,
-					testAnalysis:true,
-					optionScoreQuestion:true,
-					twoDimensionalAnalysis:true,
+					subjectsDiagnosis:true,
+					myGoal:true,
+					anotherpersonalAchievement:false,
+					testAnalysis:false,
+					optionScoreQuestion:false,
+					twoDimensionalAnalysis:false,
+					knowledge:false,
+					abilityAnalyze:false,
 				},
+				scoreName:[{
+					name:"空间想象能力",
+					scoreClass:45.3,
+					scoreSchool:53.4,
+					scoreArea:34243,
+					topicList:"123、231、342",
+				}],
+				falsetableData3:[],
+				truetableDatas:[{
+					truetableData3:[{
+						knowledgemodule:"三角函数",
+						knowledge:"1231",
+						classscore:"1231",
+						schoolscore:"1231231",
+						areascore:"342432",
+						difference:"2342342",
+						topic:"1",
+						qwe:3,
+					},{
+						knowledgemodule:"三角函数",
+						knowledge:"1231",
+						classscore:"1231",
+						schoolscore:"1231231",
+						areascore:"342432",
+						difference:"2342342",
+						topic:"1",
+						qwe:3,
+					},{
+						knowledgemodule:"三角函数",
+						knowledge:"1231",
+						classscore:"1231",
+						schoolscore:"1231231",
+						areascore:"342432",
+						difference:"2342342",
+						topic:"1",
+						qwe:3,
+					}],
+					totle:30,
+					score:18,
+					class:45,
+					school:45,
+					area:34,
+				},{
+					truetableData3:[{
+						knowledgemodule:"三角函数",
+						knowledge:"1231",
+						classscore:"1231",
+						schoolscore:"1231231",
+						areascore:"342432",
+						difference:"2342342",
+						topic:"1",
+						qwe:3,
+					},{
+						knowledgemodule:"三角函数",
+						knowledge:"1231",
+						classscore:"1231",
+						schoolscore:"1231231",
+						areascore:"342432",
+						difference:"2342342",
+						topic:"1",
+						qwe:3,
+					},{
+						knowledgemodule:"三角函数",
+						knowledge:"1231",
+						classscore:"1231",
+						schoolscore:"1231231",
+						areascore:"342432",
+						difference:"2342342",
+						topic:"1",
+						qwe:3,
+					}],
+					totle:30,
+					score:18,
+					class:45,
+					school:45,
+					area:34,	
+				}],
 				subjects:[],
 				items:[{
 					id:1,
@@ -860,6 +996,56 @@
 				        }
 				    ]
 				},
+				optionabilityAnalyze:{
+				    tooltip: {
+						trigger: 'axis'
+					},
+						legend: {
+							x: 'center',
+							data:['我的','班级','全校','全区县']
+						},
+						radar: [
+							{
+							    indicator: [
+								    {text: '空间想象能力', max: 100},
+								    {text: '抽象概括能力', max: 100},
+								    {text: '推理论证能力', max: 100},
+								    {text: '运算求解能力', max: 100},
+								    {text: '数据处理能力', max: 100},
+								    {text: '综合应用能力', max: 100},
+								],
+								radius: 200,
+								center: ['50%','52%'],
+							}
+								],
+						series: [
+							{
+								type: 'radar',
+								data: [
+								    {
+								        name: '我的',
+								        value: [23,83,54,65,23,45,65],
+								        itemStyle: {normal: {color: '#DE20CE',areaStyle: {color: 'rgba(222,32,206,0.3)'}}},
+								    },
+								    {
+								        name: '班级',
+								        value: [23,43,54,65,23,43,78],
+								        itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
+								    },
+								    {
+								        name:'全校',
+								        value:[34,54,56,76,87,53,43],
+								        itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
+								    },{
+								        name:'全区县',
+								        value:[34,34,56,76,87,42,57],
+								        itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
+								    }
+								]
+							}
+						]
+				},
+
 		    }
 		  },
 		created:function(){
@@ -894,6 +1080,7 @@
 		  	this.echarts.init(document.getElementById("scoreQuestion1")).setOption(this.optionScoreQuestion);
 		  	this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
 		  	this.echarts.init(document.getElementById("knowledge1")).setOption(this.optionknowledge);
+		  	this.echarts.init(document.getElementById("abilityAnalyze1")).setOption(this.optionabilityAnalyze);
 		 },
 		methods:{
 			rainbow:function(index,num){
@@ -901,6 +1088,31 @@
 					document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
 				}
 				document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
+				if(num==1){
+					this.displayAll.personalAchievement=true;
+					this.displayAll.beyondRate=true;
+					this.displayAll.growthTrend=true;
+					this.displayAll.subjectsDiagnosis=true;
+					this.displayAll.myGoal=true;
+					this.displayAll.anotherpersonalAchievement=false;
+					this.displayAll.testAnalysis=false;
+					this.displayAll.optionScoreQuestion=false;
+					this.displayAll.twoDimensionalAnalysis=false;
+					this.displayAll.knowledge=false;
+					this.displayAll.abilityAnalyze=false;
+				}else{
+					this.displayAll.personalAchievement=false;
+					this.displayAll.beyondRate=true;
+					this.displayAll.growthTrend=true;
+					this.displayAll.subjectsDiagnosis=false;
+					this.displayAll.myGoal=false;
+					this.displayAll.anotherpersonalAchievement=true;
+					this.displayAll.testAnalysis=true;
+					this.displayAll.optionScoreQuestion=true;
+					this.displayAll.twoDimensionalAnalysis=true;
+					this.displayAll.knowledge=true;
+					this.displayAll.abilityAnalyze=true;
+				}
 			},
 			chooseArea:function(e,num){
 				document.getElementById("growthTrend").getElementsByClassName("choose-area-left")[0].style.background="#fff";
@@ -1206,11 +1418,22 @@
 				    ]
 				}
 				this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
-			}
-			/*filterTag(row, column) {
-				console.log(row);
-		       return row.score.key;
-		    },*/
+			},
+			objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+		        if (columnIndex === 0) {
+		          if (rowIndex === 0) {
+		            return {
+		              rowspan: row.qwe,
+		              colspan: 1
+		            };
+		          } else {
+		            return {
+		              rowspan: 0,
+		              colspan: 0
+		            };
+		          }
+		        }
+		      },
 		}
 	}
 </script>
@@ -1548,5 +1771,68 @@
 	width: 1080px;
 	height: 400px;
 	margin: auto;
+}
+.knowledge-table{
+	width: 1080px;
+	margin: auto;
+}
+#knowledge-table .el-table thead.is-group th{
+	background: #70CDF3;
+    color: #fff;
+}
+#knowledge-table .el-table_1_column_26_column_30{
+	border-right: 1px solid #e6ebf5 !important;
+}
+#knowledge-table-header .el-table__body-wrapper{
+	display: none;
+}
+#knowledge-table .knowledge-table-true .el-table__header-wrapper{
+	display: none;
+}
+.knowledge-table-trueTotle{
+	width: 100%;
+	height: 50px;
+	background: #FF8585;	
+}
+.knowledge-table-trueTotle .knowledge-table-trueTotleBit{
+	line-height: 50px;
+	float: left;
+	width: 160px;
+	color: #fff;
+	text-align: center;
+}
+.knowledge-foot{
+	margin-top:20px;
+}
+.knowledge-foot p{
+	font-size: 14px;
+	color: #3D3D3D;
+	letter-spacing: 0;
+	line-height: 24px;
+}
+#abilityAnalyze{
+	margin-top: 20px;
+}
+#abilityAnalyze1{
+	width: 1080px;
+	height: 520px;
+	margin: auto;
+	margin-top: 20px;
+}
+#abilityAnalyze2 .el-table--border td, .el-table--border th{
+	border:0px !important;
+}
+#abilityAnalyze2 .el-table thead.is-group th{
+	background: #70CDF3;
+    color: #fff;
+}
+.abilityAnalyze-foot{
+	margin-top: 20px;
+}
+.abilityAnalyze-foot p{
+	font-size: 14px;
+	color: #3D3D3D;
+	letter-spacing: 0;
+	line-height: 24px;
 }
 </style>

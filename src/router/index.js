@@ -47,7 +47,7 @@ export default new Router({
         name:'studentLevel',
         component:StudentLevel,
       },{
-        path:'/report/calssLevel',
+        path:'/report/classLevel',
         name:'classLevel',
         component:ClassLevel,
       }]
