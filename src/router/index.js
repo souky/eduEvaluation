@@ -31,6 +31,10 @@ export default new Router({
       name:'report',
       component:Report,
       children:[{
+        path:'/',
+        name:'schoolLevel',
+        component:SchoolLevel,
+      },{
         path:'/report/schoolLevel',
         name:'schoolLevel',
         component:SchoolLevel,
