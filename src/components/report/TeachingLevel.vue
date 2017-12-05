@@ -55,9 +55,22 @@
 		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
-		    <p class="testTips">本次考试中，我校参与统计人数{{countP}}人，总分平均分{{totalCount}}分，高出全地区平均分{{hightCount}}分，地区排名第{{ranking}}。各学科中{{goodsuject}}平均分表现较好，高于地区平均分{{hightavarge}}分，列全区县第{{allNumber}}名；{{lowSuject}}科目表现较弱，低于地区平均分{{lowavarge}}分，位于全地区第{{allRanking}}名。</p>
+		    <p class="testTips"><el-button type="primary" @click="compareTest" plain>考试对比</el-button></p>
 		  </div>
-
+			<!-- 考试对比图 -->
+			<el-dialog
+			  title="考试对比图"
+			  :visible.sync="dialogVisible"
+			  :open="alertas">
+			  
+			  	<div id="compareTestChart"></div>
+		  	  
+			  <span slot="footer" class="dialog-footer">
+			    <el-button @click="dialogVisible = false">取 消</el-button>
+			    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			  </span>
+			</el-dialog>
+			<!-- 考试对比图 -->
 		  <div class="header">
 			<p>学生等级分布图</p>
 			<div class="header-title-foot"></div>
@@ -77,7 +90,7 @@
 		  		</div>
 		  </div>
 		   <div class="header">
-			<p>各班成绩报告单</p>
+			<p>各班级科目报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="reportClass">
@@ -88,7 +101,9 @@
 		      </el-table-column>
 		      <el-table-column prop="teachername" label="班主任">
 		      </el-table-column>
-		      <el-table-column prop="totalPoint" label="总分平均分">
+		      <el-table-column prop="classPoint" label="平均分(班级)">
+		      </el-table-column>
+		      <el-table-column prop="schoolPoint" label="平均分(校级)">
 		      </el-table-column>
 		      <el-table-column prop="highest" label="最高分">
 		      </el-table-column>
@@ -96,7 +111,7 @@
 		      </el-table-column>
 		      <el-table-column prop="standard" label="标准差">
 		      </el-table-column>
-		      <el-table-column prop="differentiation" label="分化程度">
+		      <el-table-column prop="differentiation" label="分化程度(前三名提醒)">
 		      </el-table-column>
 		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
 		      </el-table-column>
@@ -136,57 +151,82 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="topCompared">
-		  		<div id="topComparedChart">
-		  		
-		  		</div>
+		  		 <div id="topComparedChart">
+		  		</div> 
 		  		<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
 		  </div>
 		  <div class="header">
-			<p>科目成绩报告单</p>
+			<p>试卷分析</p>
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="achievement">
-		  	<div class="achievementSelectBox">
-					<el-select v-model="changeSchool" class="myselect" placeholder="请选择">
-					    <el-option
-					      v-for="item in schoolList"
-					      :key="item.id"
-					      :label="item.name"
-					      :value="item.id">
-					    </el-option>
-					</el-select>
-		  	</div>
+		  	<p style="text-align:center;font-size:14px">本次试卷整体难度为：0.7，整体区分度为0.8</p>
+			<p style="font-size:14px;margin-bottom:30px">注释：<br>
+难度是指试题或者试卷的难易程度，用符号p表示。低难度p》0.7，中等难度07》p》0.4，高难度平《0.4，通常中等难度的试卷质量较高。
+区分度是指题目区别被试水平能力的量度，用符号D表示。区分度的取值范围在-1.00到+1.00之间。D为正值，是积极区分；D为负值，是消级区分；D为0，无区分作用。通常D为正值，D值越大，区分效果越好。</p>
 		  	<div id="achievementTable">
-			  	<el-table :data="tableData3" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-			      <el-table-column width="50" prop="rank" label="排名">
-			      </el-table-column>
-			      <el-table-column width="50" prop="class" label="班级">
-			      </el-table-column>
-			      <el-table-column width="100" prop="teacher" label="教师">
-			      </el-table-column>
-			      <el-table-column prop="subjectAerage" label="班级科目平均分">
-			      </el-table-column>
-			      <el-table-column prop="countAerage" label="班级总分平均分">
-			      </el-table-column>
-			      <el-table-column prop="subjectStandard" label="班级科目标准分">
-			      </el-table-column>
-			      <el-table-column prop="countStandard" label="班级总分标准分">
-			      </el-table-column>
-			      <el-table-column prop="contribution" label="科目贡献率(班级课目标准分/班级总分标准分*100)">
-			      </el-table-column>
-			    </el-table>
+			  	<el-table :data="examination" style="width: 100%" class="borders" header-cell-class-name="formatRow" :row-class-name="rowsClassName">
+    					<el-table-column  prop="no" label="题号">
+    					</el-table-column>
+    					<el-table-column prop="type" label="题型">
+    					</el-table-column>
+    					<el-table-column  prop="count" label="分值">
+    					</el-table-column>
+    					<el-table-column prop="average" label="平均分">
+    					</el-table-column>
+    					<el-table-column label="得分率">
+      						<el-table-column prop="scoreSchool" label="校级"></el-table-column>
+      						<el-table-column  prop="scoreArea" label="地区级"></el-table-column>
+    					</el-table-column>
+    					<el-table-column prop="fullMarks" label="满分人数"></el-table-column>
+    					<el-table-column prop="wrongMarks" label="答错人数"></el-table-column>
+    					<el-table-column prop="difficulty" label="难度"></el-table-column>
+    					<el-table-column prop="discrimination" label="区分度"></el-table-column>
+  					</el-table>
 		  	</div>
-		  	<div class="header">
-				<p>贡献率折线图</p>
+		  	<div id="twoDimensionalAnalysis">
+			<div class="header">
+				<p>得分率 -- 难度二维分析</p>
 				<div class="header-title-foot"></div>
-		  	</div>
-		  	<div id="achievementChart"></div>
+			</div>
+			<div class="body">
+				<div class="body-icon">
+					<div class="body-icon-bit">
+						<div class="body-icon-color color-blue" @click="twoDimensionalAnalysisChoose('class')"></div>
+						<p>班级</p>
+					</div>
+					<div class="body-icon-bit">
+						<div class="body-icon-color color-lightGrey" @click="twoDimensionalAnalysisChoose('school')"></div>
+						<p>校级</p>
+					</div>
+					<div class="body-icon-bit">
+						<div class="body-icon-color color-darkGrey" @click="twoDimensionalAnalysisChoose('area')"></div>
+						<p>全区县</p>
+					</div>
+				</div>
+				<div id="twoDimensionalAnalysis1"></div>
+				<div class="twoDimensionalAnalysis-foot">
+					<div class="difficultyLevel easy">
+						<p>容易</p>
+					</div>
+					<div class="difficultyLevel midde">
+						<p>中等</p>
+					</div>
+					<div class="difficultyLevel difficult">
+						<p>难</p>
+					</div>
+				</div>
+				<div class="foot-word">
+					<p>在本次考试中，得分率低于学校平均水平的题目分别是第4题、第8题、第12题、第16题和第20题，其中中等难度的题目为第4题和第12题，这些题目需要注意；其中简单难度的题目为第8题和第20题，需要特别注意。</p>
+				</div>
+			</div>
+		</div>
 		  </div>
 	</div>	
 </template>
 
 <script>
-import IndexData from '../../assets/data/schoolLevel.js'
+import IndexData from '../../assets/data/teachingLevel.js'
 export default {
 	data(){
 		return {
@@ -218,13 +258,9 @@ export default {
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
-			tableData3:[],option4:{},
+			tableData3:[],option4:{},dialogVisible:false,option5:{},
 			subjects:[],
 			items:[{
-					id:1,
-					name:'总分',
-					color:'#F37070',
-				},{
 					id:2,
 					name:'语文',
 					color:'#F3AF70',
@@ -280,7 +316,9 @@ export default {
 					id:15,
 					name:'测试15',
 					color:'red',
-				}]
+				}],
+				optionTwoDimensionalAnalysis:{},
+				examination:[]
 		}
 	},
 	created:function(){
@@ -295,7 +333,6 @@ export default {
 		      childs[l]["id"] = id;
 		    }
 		    this.subjects=childs;
-
 	},
     methods: {
     	selectShow:function(){
@@ -310,7 +347,10 @@ export default {
       		else 
       			return 'tableCenter'
     	},
-
+    	compareTest:function(){
+			this.dialogVisible = true;
+			this.echarts.init(document.getElementById("compareTestChart")).setOption(this.option5);
+    	},
     	eachWork:function(e,a){
     		var eachWorks='';
     		if(e.length>0){
@@ -323,6 +363,9 @@ export default {
     		}
     		return eachWorks;
     	},
+    	alertas:function(){
+    		console.log(123);
+    	},
     	rainbow:function(index,num){
     		console.log("123");
 				for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
@@ -331,7 +374,275 @@ export default {
 				document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
 		},
     	compareSchool:function(){
-    	}
+    	},
+    	twoDimensionalAnalysisChoose:function(obj){
+				if(obj=='class'){
+					this.optionTwoDimensionalAnalysis.series= [
+				        {
+				            name:'sin',
+				            type:'scatter',
+				            symbolSize :[25,25],
+				            large: true,
+				            label:{normal:{show:true}},
+				            markArea: {
+				                silent: true,
+				                data: [[{
+				                    xAxis: '0.1',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(112,205,243,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.4',
+				                    yAxis: '100',
+				                }],[{
+				                    xAxis: '0.4',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(145,218,249,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.7',
+				                    yAxis: '100',
+				                }],[{
+				                    xAxis: '0.7',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(187,230,248,0.5)'},
+									}
+				                }, {
+				                    xAxis: '1.0',
+				                    yAxis: '100',
+				                }]]
+				            },
+				            itemStyle:{
+								normal:{color:'#FF8585'},
+							},
+				            data:[[0.2,30,"客观题",5,1,"-55.00%"],[0.5,30,"客观题",3,2,"-55.00%"],[0.7,30,"客观题",3,3,"-55.00%"]]
+				        },
+				        {
+				            name:'cos',
+				            type:'scatter',
+				            large: true,
+				            symbolSize :[25,25],
+				            label:{normal:{show:true}},
+				            markArea: {
+				                silent: true,
+				                data: [[{
+				                    xAxis: '0.1',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(255,210,68,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.4',
+				                    yAxis: '-100',
+				                }],[{
+				                    xAxis: '0.4',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(255,226,133,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.7',
+				                    yAxis: '-100',
+				                }],[{
+				                    xAxis: '0.7',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(253,234,175,0.5)'},
+									}
+				                }, {
+				                    xAxis: '1.0',
+				                    yAxis: '-100',
+				                }]]
+				            },
+				            itemStyle:{
+								normal:{color:'#A079D9'},
+							},
+							data:[[0.2,-30,"客观题",5,4,"-55.00%"],[0.5,-30,"客观题",3,5,"-55.00%"],[0.7,-30,"客观题",3,6,"-55.00%"]]
+				        }
+				    ]
+					
+				}
+				if(obj=='school'){
+					this.optionTwoDimensionalAnalysis.series= [
+				        {
+				            name:'sin',
+				            type:'scatter',
+				            symbolSize :[25,25],
+				            large: true,
+				            label:{normal:{show:true}},
+				            markArea: {
+				                silent: true,
+				                data: [[{
+				                    xAxis: '0.1',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(112,205,243,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.4',
+				                    yAxis: '100',
+				                }],[{
+				                    xAxis: '0.4',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(145,218,249,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.7',
+				                    yAxis: '100',
+				                }],[{
+				                    xAxis: '0.7',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(187,230,248,0.5)'},
+									}
+				                }, {
+				                    xAxis: '1.0',
+				                    yAxis: '100',
+				                }]]
+				            },
+				            itemStyle:{
+								normal:{color:'#FF8585'},
+							},
+				            data:[[0.2,40,"客观题",5,1,"-55.00%"],[0.5,40,"客观题",3,2,"-55.00%"],[0.7,40,"客观题",3,3,"-55.00%"]]
+				        },
+				        {
+				            name:'cos',
+				            type:'scatter',
+				            large: true,
+				            symbolSize :[25,25],
+				            label:{normal:{show:true}},
+				            markArea: {
+				                silent: true,
+				                data: [[{
+				                    xAxis: '0.1',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(255,210,68,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.4',
+				                    yAxis: '-100',
+				                }],[{
+				                    xAxis: '0.4',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(255,226,133,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.7',
+				                    yAxis: '-100',
+				                }],[{
+				                    xAxis: '0.7',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(253,234,175,0.5)'},
+									}
+				                }, {
+				                    xAxis: '1.0',
+				                    yAxis: '-100',
+				                }]]
+				            },
+				            itemStyle:{
+								normal:{color:'#A079D9'},
+							},
+							data:[[0.2,-40,"客观题",5,4,"-55.00%"],[0.5,-40,"客观题",3,5,"-55.00%"],[0.7,-40,"客观题",3,6,"-55.00%"]]
+				        }
+				    ]
+				}
+				if(obj=='area'){
+					this.optionTwoDimensionalAnalysis.series= [
+				        {
+				            name:'sin',
+				            type:'scatter',
+				            symbolSize :[25,25],
+				            large: true,
+				            label:{normal:{show:true}},
+				            markArea: {
+				                silent: true,
+				                data: [[{
+				                    xAxis: '0.1',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(112,205,243,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.4',
+				                    yAxis: '100',
+				                }],[{
+				                    xAxis: '0.4',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(145,218,249,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.7',
+				                    yAxis: '100',
+				                }],[{
+				                    xAxis: '0.7',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(187,230,248,0.5)'},
+									}
+				                }, {
+				                    xAxis: '1.0',
+				                    yAxis: '100',
+				                }]]
+				            },
+				            itemStyle:{
+								normal:{color:'#FF8585'},
+							},
+				            data:[[0.2,60,"客观题",5,1,"-55.00%"],[0.5,60,"客观题",3,2,"-55.00%"],[0.7,60,"客观题",3,3,"-55.00%"]]
+				        },
+				        {
+				            name:'cos',
+				            type:'scatter',
+				            large: true,
+				            symbolSize :[25,25],
+				            label:{normal:{show:true}},
+				            markArea: {
+				                silent: true,
+				                data: [[{
+				                    xAxis: '0.1',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(255,210,68,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.4',
+				                    yAxis: '-100',
+				                }],[{
+				                    xAxis: '0.4',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(255,226,133,0.5)'},
+									}
+				                }, {
+				                    xAxis: '0.7',
+				                    yAxis: '-100',
+				                }],[{
+				                    xAxis: '0.7',
+				                    yAxis: '0',
+				                    itemStyle:{
+									    normal:{color:'rgba(253,234,175,0.5)'},
+									}
+				                }, {
+				                    xAxis: '1.0',
+				                    yAxis: '-100',
+				                }]]
+				            },
+				            itemStyle:{
+								normal:{color:'#A079D9'},
+							},
+							data:[[0.2,-60,"客观题",5,4,"-55.00%"],[0.5,-60,"客观题",3,5,"-55.00%"],[0.7,-60,"客观题",3,6,"-55.00%"]]
+				        }
+				    ]
+				}
+				this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
+			}
     },
     mounted:function(){
     	//接js模拟数据
@@ -353,11 +664,23 @@ export default {
     	this.option3 = this.IndexData.option3;
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
+    	this.option5 = this.IndexData.option5;
+    	this.optionTwoDimensionalAnalysis = this.IndexData.optionTwoDimensionalAnalysis;
+    	 this.optionTwoDimensionalAnalysis.tooltip.formatter=function (obj) {
+				            var value = obj.value;
+				            return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+				                + '</div>' + "题型" + '：' + value[2] + '<br>'
+				                + "题号" + '：' + value[4] + '<br>'
+				                + "满分值" + '：' + value[3] + '<br>'
+				                + "得分率差距" + '：' + value[1]+"%" + '<br>'
+				        };
+    	this.examination = this.IndexData.examination;
     	//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
-    	this.echarts.init(document.getElementById("achievementChart")).setOption(this.option4);
+    	this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
+
     }
 }
 </script>
@@ -388,55 +711,58 @@ czxc
     height: 50px;
     margin: auto;
 }
-.myselect{
+#teachLevel .myselect{
 	border:1px solid #44a9ff;
 	width: 90px;
 	border-radius: 4px;
 }
-.testTips{
+#teachLevel .testTips{
 	color:#3d3d3d;
 	font-size: 14px;
 	margin-top: 25px
 }
-.schoolSelectBox{
+#teachLevel .schoolSelectBox{
 	width: 200px;
 	margin: auto;
 	margin-bottom: 35px;
 }
-.achievementSelectBox{
+#teachLevel .achievementSelectBox{
 	width: 90px;
 	margin: auto;
 	margin-bottom: 35px;
 }
-.borders{
+#teachLevel .borders{
 	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
 }
-.el-table .tableBackground{
+#teachLevel .el-table .tableBackground{
 	background-color: #f5fcff;text-align: center;
 }
-.el-table .tableCenter{
+#teachLevel .el-table .tableCenter{
 	text-align: center;
 }
-.alltest{
+#teachLevel .alltest{
 	cursor: pointer;
 }
-.formatRow{
-	padding: 0 10px;
+#teachLevel .formatRow{
 	font-weight: normal;
 	text-align:center !important;
 	color: white;
-	background-color: #44A9FF
+	border: 0px !important;
+    background-color: #70CDF3 !important;
+}
+#achievementTable .el-table--border td{
+	border:0px;
 }
 #teachLevel .el-input__inner{
 	border: 0px;
 	text-align: center;
 }
 #teachLevel .el-select .el-input .el-input__icon{
-	color: #44A9FF
+	color: #70CDF3
 }
 #teachLevel .el-carousel__arrow{
 	background-color: white;
-	color: #44A9FF
+	color: #70CDF3
 }
 #teachLevel .el-carousel__arrow:hover{
 	background-color: white
@@ -461,7 +787,7 @@ czxc
 	letter-spacing: 0;
 	margin-top: 35px
 }
-.header-title-foot{
+#teachLevel .header-title-foot{
 	width: 100px;
     height: 2px;
     background: #44A9FF;
@@ -489,7 +815,10 @@ czxc
 	width: 100%;
 	height: 530px
 }
-
+#compareTestChart{
+	width: 100%;
+	height: 530px
+}
 #teachLevel .header-banner-bit{
 	width: 89px;
 	height: 73px;
@@ -513,5 +842,82 @@ czxc
 }
 #teachLevel .header-banner-bit .on{
 	height: 105%;
+}
+
+#twoDimensionalAnalysis{
+	margin-top:20px;
+}
+#twoDimensionalAnalysis1{
+	width: 1080px;
+	height: 660px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#twoDimensionalAnalysis .body{
+	padding-top:20px;
+}
+#teachLevel #twoDimensionalAnalysis .body-icon{
+	width: 255px;
+	margin: auto;
+}
+#teachLevel #twoDimensionalAnalysis .body-icon-color{
+	width: 20px;
+	height: 20px;
+	float: left;
+}
+#teachLevel #twoDimensionalAnalysis .body-icon-bit{
+	margin-left:20px;
+	float: left;
+}
+#teachLevel #twoDimensionalAnalysis .body-icon-bit p{
+	margin-left: 5px;
+	float: left;
+}
+#teachLevel #twoDimensionalAnalysis .color-blue{
+	background: #70CDF3;
+}
+#teachLevel #twoDimensionalAnalysis .color-lightGrey{
+	background: #919191;
+}
+#teachLevel #twoDimensionalAnalysis .color-darkGrey{
+	background: #919191;
+}
+#teachLevel .twoDimensionalAnalysis-foot{
+	width: 870px;
+    height: 30px;
+    margin: auto;
+    margin-top: -45px;
+}
+#teachLevel .twoDimensionalAnalysis-foot .difficultyLevel{
+	width: 33.33%;
+	height: 100%;
+	float:left;
+	text-align: center;
+	color: #fff;
+}
+#teachLevel .twoDimensionalAnalysis-foot .easy{
+	background: #FF4444;
+}
+#teachLevel .twoDimensionalAnalysis-foot .midde{
+	background: #FF8585;
+}
+#teachLevel .twoDimensionalAnalysis-foot .difficult{
+	background: #FEB0B0;
+}
+#teachLevel .twoDimensionalAnalysis-foot .difficultyLevel p{
+	line-height: 35px;
+	font-size: 12px;
+	letter-spacing: 0;
+}
+#teachLevel #twoDimensionalAnalysis .foot-word{
+	width: 100%;
+	margin-top:20px;
+}
+#teachLevel #twoDimensionalAnalysis .foot-word p{
+	font-size: 14px;
+	color: #3D3D3D;
+	letter-spacing: 0;
+	line-height: 24px;
 }
 </style>

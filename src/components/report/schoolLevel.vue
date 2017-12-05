@@ -18,19 +18,19 @@
 		    <el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
 		      <el-table-column width="50" prop="subject" label="学科">
 		      </el-table-column>
-		      <el-table-column prop="countPeople" label="统计人数">
+		      <el-table-column width="80" prop="countPeople" label="统计人数">
 		      </el-table-column>
-		      <el-table-column prop="fullMark" label="满分">
+		      <el-table-column width="50" prop="fullMark" label="满分">
 		      </el-table-column>
-		      <el-table-column prop="average" label="平均分(学校)">
+		      <el-table-column prop="average" label="平均分 (学校)">
 		      </el-table-column>
 		      <el-table-column prop="averages" label="平均分 (地区)">
 		      </el-table-column>
-		      <el-table-column prop="deviation" label="离均差">
+		      <el-table-column width="80" prop="deviation" label="离均差">
 		      </el-table-column>
 		      <el-table-column prop="ranking" label=" 排名 (地区)">
 		      </el-table-column>
-		      <el-table-column prop="highest" label="最高分">
+		      <el-table-column width="80" prop="highest" label="最高分">
 		      </el-table-column>
 		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
 		      </el-table-column>
@@ -222,8 +222,7 @@ export default {
       		else 
       			return 'tableCenter'
     	},
-
-    	eachWork:function(e,a){
+		eachWork:function(e,a){
     		var eachWorks='';
     		if(e.length>0){
     		for(var i=0;i<e.length;i++){
@@ -290,55 +289,54 @@ czxc
     height: 50px;
     margin: auto;
 }
-.myselect{
+#schoolLevel .myselect{
 	border:1px solid #44a9ff;
 	width: 90px;
 	border-radius: 4px;
 }
-.testTips{
+#schoolLevel .testTips{
 	color:#3d3d3d;
 	font-size: 14px;
 	margin-top: 25px
 }
-.schoolSelectBox{
+#schoolLevel .schoolSelectBox{
 	width: 200px;
 	margin: auto;
 	margin-bottom: 35px;
 }
-.achievementSelectBox{
+#schoolLevel .achievementSelectBox{
 	width: 90px;
 	margin: auto;
 	margin-bottom: 35px;
 }
-.borders{
+#schoolLevel .borders{
 	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
 }
-.el-table .tableBackground{
+#schoolLevel .el-table .tableBackground{
 	background-color: #f5fcff;text-align: center;
 }
-.el-table .tableCenter{
+#schoolLevel .el-table .tableCenter{
 	text-align: center;
 }
-.alltest{
+#schoolLevel .alltest{
 	cursor: pointer;
 }
-.formatRow{
-	padding: 0 10px;
+#schoolLevel .formatRow{
 	font-weight: normal;
 	text-align:center !important;
 	color: white;
-	background-color: #44A9FF
+	background-color: #70CDF3
 }
 #schoolLevel .el-input__inner{
 	border: 0px;
 	text-align: center;
 }
 #schoolLevel .el-select .el-input .el-input__icon{
-	color: #44A9FF
+	color: #70CDF3
 }
 #schoolLevel .el-carousel__arrow{
 	background-color: white;
-	color: #44A9FF
+	color: #70CDF3
 }
 #schoolLevel .el-carousel__arrow:hover{
 	background-color: white
@@ -363,7 +361,7 @@ czxc
 	letter-spacing: 0;
 	margin-top: 35px
 }
-.header-title-foot{
+#schoolLevel .header-title-foot{
 	width: 100px;
     height: 2px;
     background: #44A9FF;
