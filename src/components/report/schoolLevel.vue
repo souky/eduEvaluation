@@ -206,7 +206,7 @@ export default {
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
-			tableData3:[],option4:{}
+			tableData3:[],option4:{},option5:{}
 		}
 	},
     methods: {
@@ -258,11 +258,13 @@ export default {
     	this.option3 = this.IndexData.option3;
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
+    	this.option5 = this.IndexData.option5;
     	//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     	this.echarts.init(document.getElementById("achievementChart")).setOption(this.option4);
+    	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option5);
     }
 }
 </script>

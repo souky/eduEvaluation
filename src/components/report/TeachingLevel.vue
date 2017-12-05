@@ -55,18 +55,20 @@
 		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
-		    <p class="testTips"><el-button type="primary" @click="compareTest" plain>考试对比</el-button></p>
+		    <p style="text-align:center;margin-top:20px"><el-button type="primary" @click="compareTest" plain>考试对比</el-button></p>
 		  </div>
 			<!-- 考试对比图 -->
 			<el-dialog
 			  title="考试对比图"
 			  :visible.sync="dialogVisible"
-			  :open="alertas">
-			  
-			  	<div id="compareTestChart"></div>
+			  @open="alertas" @close="dialogClose">
+			  	
+			  	<center v-show="diaLoading" style="margin-top:20%;"><i class="el-icon-loading"></i></center>
+			  	<div id="compareTestChart">
+			  		
+			  	</div>
 		  	  
 			  <span slot="footer" class="dialog-footer">
-			    <el-button @click="dialogVisible = false">取 消</el-button>
 			    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
 			  </span>
 			</el-dialog>
@@ -258,7 +260,7 @@ export default {
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
-			tableData3:[],option4:{},dialogVisible:false,option5:{},
+			tableData3:[],option4:{},dialogVisible:false,option5:{},option6:{},
 			subjects:[],
 			items:[{
 					id:2,
@@ -318,7 +320,8 @@ export default {
 					color:'red',
 				}],
 				optionTwoDimensionalAnalysis:{},
-				examination:[]
+				examination:[],
+				diaLoading:true,
 		}
 	},
 	created:function(){
@@ -349,7 +352,7 @@ export default {
     	},
     	compareTest:function(){
 			this.dialogVisible = true;
-			this.echarts.init(document.getElementById("compareTestChart")).setOption(this.option5);
+			//console.log(document.getElementById("compareTestChart"));
     	},
     	eachWork:function(e,a){
     		var eachWorks='';
@@ -364,7 +367,20 @@ export default {
     		return eachWorks;
     	},
     	alertas:function(){
-    		console.log(123);
+    		var selfs = this;
+    		if(this.diaLoading){
+    			setTimeout(function(){
+	    			selfs.diaLoading = false;
+
+		    		selfs.echarts.init(document.getElementById("compareTestChart")).setOption(selfs.option5);
+	    		},1000);
+    		}
+    		
+    	},
+    	dialogClose:function(){
+  
+
+    		//document.getElementById("compareTestChart").innerHTML = '';
     	},
     	rainbow:function(index,num){
     		console.log("123");
@@ -665,6 +681,7 @@ export default {
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
     	this.option5 = this.IndexData.option5;
+    	this.option6 = this.IndexData.option6;
     	this.optionTwoDimensionalAnalysis = this.IndexData.optionTwoDimensionalAnalysis;
     	 this.optionTwoDimensionalAnalysis.tooltip.formatter=function (obj) {
 				            var value = obj.value;
@@ -680,6 +697,8 @@ export default {
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     	this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
+    	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option6);
+    	
 
     }
 }
@@ -817,7 +836,7 @@ czxc
 }
 #compareTestChart{
 	width: 100%;
-	height: 530px
+	height: 330px
 }
 #teachLevel .header-banner-bit{
 	width: 89px;
