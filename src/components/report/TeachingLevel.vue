@@ -1,5 +1,5 @@
 <template>
-	<div id="schoolLevel" class="mainbody">
+	<div id="teachLevel" class="mainbody">
 		  <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 		    <el-carousel-item v-for="item in testList" :key="item.id">
 		      <p class="alltest" @click="selectShow">{{item.name}}</p>
@@ -356,7 +356,7 @@ czxc
 	position: relative;
 	border-top: 1px solid #f2f2f2
 }
-#schoolLevel .el-carousel {
+#teachLevel .el-carousel {
     overflow-x: hidden;
     position: relative;
     height: 50px;
@@ -366,7 +366,7 @@ czxc
     margin-top: 30px;
     line-height: 50px;
 }
-#schoolLevel .el-carousel__container {
+#teachLevel .el-carousel__container {
     position: relative;
     height: 50px;
     margin: auto;
@@ -410,34 +410,34 @@ czxc
 	color: white;
 	background-color: #44A9FF
 }
-#schoolLevel .el-input__inner{
+#teachLevel .el-input__inner{
 	border: 0px;
 	text-align: center;
 }
-#schoolLevel .el-select .el-input .el-input__icon{
+#teachLevel .el-select .el-input .el-input__icon{
 	color: #44A9FF
 }
-#schoolLevel .el-carousel__arrow{
+#teachLevel .el-carousel__arrow{
 	background-color: white;
 	color: #44A9FF
 }
-#schoolLevel .el-carousel__arrow:hover{
+#teachLevel .el-carousel__arrow:hover{
 	background-color: white
 }
-#schoolLevel .showselect{
+#teachLevel .showselect{
 	list-style: none;position: absolute;margin: 0;padding:0;
 	border: 1px solid #f2f2f2;
 	left: 430px;
 	z-index: 999;
     background-color: white;
 }
-#schoolLevel .showselect li{
+#teachLevel .showselect li{
 	margin: 0;padding:0;
 	border-bottom: 1px solid #f2f2f2;
 	padding:10px 20px;
 	cursor: pointer;
 }
-#schoolLevel .header p{
+#teachLevel .header p{
 	font-size: 20px;
 	color: #707070;
 	text-align: center;
@@ -471,5 +471,30 @@ czxc
 #achievementChart{
 	width: 100%;
 	height: 530px
+}
+
+#teachLevel .header-banner-bit{
+	width: 89px;
+	height: 73px;
+	float: left;
+	margin-top: 15px;
+}
+#teachLevel .table-header{
+	background: #70CDF3;
+	color: #fff;
+}
+#teachLevel .header-banner .el-carousel__item{
+	margin-left: 60px;
+}
+#teachLevel .header-banner-click{
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+#teachLevel .header-banner-click p{
+	line-height: 73px;
+}
+#studentlevel .header-banner-bit .on{
+	height: 105%;
 }
 </style>
