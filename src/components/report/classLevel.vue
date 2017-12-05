@@ -1,5 +1,15 @@
 <template>
 	<div id="classLevel">
+		<el-carousel id="testChange" :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
+			<el-carousel-item v-for="item in testList" :key="item.id">
+				<p class="alltest" @click="selectShow">{{item.name}}</p>
+			</el-carousel-item>
+		</el-carousel>
+		<el-collapse-transition>
+			<ul v-if='showselect' class="showselect">
+				<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
+			</ul>
+		</el-collapse-transition>
 		<div id="rainbow" class="header-banner">
 			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
 				<el-carousel-item v-for="item in subjects" :key="item.id">
@@ -11,7 +21,7 @@
 				</el-carousel-item>
 			</el-carousel>
 		</div>
-		<div class="schoolSelectBox">
+		<div class="achievementSelectBox">
 			<el-select v-model="changeSchool" class="myselect" placeholder="请选择">
 				<el-option v-for="item in schoolList" :key="item.id" :label="item.name" :value="item.id"></el-option>
 			</el-select>
@@ -311,6 +321,9 @@
 			得分率高于学校平均水平的能力为数据处理能力，请继续保持。</p>
 		</div>
 	</div>
+	<div class="leftAnchorPoint">
+		
+	</div>
 </div>
 </div>
 </template>
@@ -322,6 +335,7 @@ export default{
 			diaStudentsLoading:true,
 			contrastTestStudents:false,
 			contrastTest:false,
+			showselect:false,
 			testAnalysisTable:[{
 				qid:1,
 				topic:"客观题",
@@ -490,6 +504,16 @@ export default{
 			},{
 				name : '理综合',
 				dataIndex:'Richard',
+			}],
+			testList:[{
+				id:'001',
+				name:'2017年金阳高中期末考试'
+			},{
+				id:'002',
+				name:'2016年金阳高中期末考试'
+			},{
+				id:'003',
+				name:'2015年金阳高中期末考试'
 			}],
 			tableData3:[{
 				place:1,
@@ -1266,690 +1290,795 @@ export default{
 				    	]
 				    },
 				    optionclassLastStudents:{
-				    	 tooltip: {
-					        trigger: 'item',
-					        formatter: "{a} <br/>{b}: {c} ({d}%)"
-					    },
-					    legend: {
-					        data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
-					    },
-					    series: [
-					        {
-					            name:'数据',
-					            type:'pie',
-					            radius: [0, '60%'],
-					            label: {
-					                normal: {
-					                    position: 'inner'
-					                }
-					            },
-					            labelLine: {
-					                normal: {
-					                    show: false
-					                }
-					            },
-					            data:[
-					                {value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-					                {value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-					                {value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-					                {value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-					                {value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
-					            ]
-					        },
-					        {
-					            name:'对比班级',
-					            type:'pie',
-					            radius: ['70%', '85%'],
-					            
-					            data:[
-					                {value:335,
-					                label: {
-					                normal: {
-					                    formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}}  {per|{d}%}  ',
-					                    backgroundColor: '#eee',
-					                    borderColor: '#aaa',
-					                    borderWidth: 1,
-					                    borderRadius: 4,
-					                    rich: {
-					                        a: {
-					                            color: '#999',
-					                            lineHeight: 22,
-					                            align: 'center'
-					                        },
-					                        hr: {
-					                            borderColor: '#aaa',
-					                            width: '100%',
-					                            borderWidth: 0.5,
-					                            height: 0
-					                        },
-					                        per: {
-					                            color: '#eee',
-					                            backgroundColor: '#334455',
-					                            padding: [2, 4],
-					                            borderRadius: 2
-					                        }
-					                    }
-					                }
-					            }, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-					                {value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-					                {value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-					                {value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-					                {value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
-					            ]
-					        }
-					    ]
+				    	tooltip: {
+				    		trigger: 'item',
+				    		formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    	},
+				    	legend: {
+				    		data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
+				    	},
+				    	series: [
+				    	{
+				    		name:'数据',
+				    		type:'pie',
+				    		radius: [0, '60%'],
+				    		label: {
+				    			normal: {
+				    				position: 'inner'
+				    			}
+				    		},
+				    		labelLine: {
+				    			normal: {
+				    				show: false
+				    			}
+				    		},
+				    		data:[
+				    		{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
+				    		{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+				    		{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
+				    		{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+				    		{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+				    		]
+				    	},
+				    	{
+				    		name:'对比班级',
+				    		type:'pie',
+				    		radius: ['70%', '85%'],
+
+				    		data:[
+				    		{value:335,
+				    			label: {
+				    				normal: {
+				    					formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}}  {per|{d}%}  ',
+				    					backgroundColor: '#eee',
+				    					borderColor: '#aaa',
+				    					borderWidth: 1,
+				    					borderRadius: 4,
+				    					rich: {
+				    						a: {
+				    							color: '#999',
+				    							lineHeight: 22,
+				    							align: 'center'
+				    						},
+				    						hr: {
+				    							borderColor: '#aaa',
+				    							width: '100%',
+				    							borderWidth: 0.5,
+				    							height: 0
+				    						},
+				    						per: {
+				    							color: '#eee',
+				    							backgroundColor: '#334455',
+				    							padding: [2, 4],
+				    							borderRadius: 2
+				    						}
+				    					}
+				    				}
+				    			}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
+				    			{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+				    			{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
+				    			{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+				    			{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+				    			]
+				    		}
+				    		]
+				    	}
 				    }
-				}
-			},
-			created:function(){
-				var childNum=Math.ceil(this.items.length/11);
-				var childs=[];
-				for(var l=0;l<childNum;l++){
-					var id=l+1;
-					var e=11*(l+1);
-					var s=e-11;
-					childs[l] = []
-					childs[l]["childs"]=this.items.slice(s,e);
-					childs[l]["id"] = id;
-				}
-				this.subjects=childs;
-
-				this.optionTwoDimensionalAnalysis.tooltip.formatter=function (obj) {
-					var value = obj.value;
-					return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-					+ '</div>' + "题型" + '：' + value[2] + '<br>'
-					+ "题号" + '：' + value[4] + '<br>'
-					+ "满分值" + '：' + value[3] + '<br>'
-					+ "得分率差距" + '：' + value[1]+"%" + '<br>'
-				};
-			},
-			mounted:function(){
-				this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
-				this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
-				this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
-				this.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(this.optionClassdisciplinesLevelRight);
-				this.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(this.optionstudentGradeDistribution);
-				this.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(this.optionClassScoreQuestion);
-				this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
-				this.echarts.init(document.getElementById("classknowledge1")).setOption(this.optionclassknowledge);
-				this.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(this.optionclassabilityAnalyze);
-
-			},
-			methods:{
-				rainbow:function(index,num){
-					for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
-						document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
-					}
-					document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
-					if(num==1){
-						this.displayAll.classTotalScore=true;
-						this.displayAll.gradeDistribution=true;
-						this.displayAll.ranking=true;
-						this.displayAll.ClassdisciplinesLevel=true;
-						this.displayAll.classReport=true;
-						this.displayAll.studentGradeDistribution=false;
-						this.displayAll.classTestAnalysis=false;
-						this.displayAll.classOptionScoreQuestion=false;
-						this.displayAll.classtwoDimensionalAnalysis=false;
-						this.displayAll.classknowledge=false;
-						this.displayAll.classabilityAnalyze=false;
-					}else{
-						this.displayAll.classTotalScore=true;
-						this.displayAll.gradeDistribution=false;
-						this.displayAll.ranking=false;
-						this.displayAll.ClassdisciplinesLevel=false;
-						this.displayAll.classReport=false;
-						this.displayAll.studentGradeDistribution=true;
-						this.displayAll.classTestAnalysis=true;
-						this.displayAll.classOptionScoreQuestion=true;
-						this.displayAll.classtwoDimensionalAnalysis=true;
-						this.displayAll.classknowledge=true;
-						this.displayAll.classabilityAnalyze=true;
-					}
 				},
-				gradeIntervalfun:function(e){
-					var num=parseInt(e.currentTarget.getElementsByTagName("button")[0].getAttribute("data-key"));
-					if(e.currentTarget.className=="ranking-footRight"){
-						if(num==5){
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="none";
-							this.studentGradeheader.name=this.gradeInterval[num-1].name;
-							this.studentGradeheader.level=this.gradeInterval[num-1].level;
-						}else{
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="block";
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
-							this.studentGradeheader.name=this.gradeInterval[num-1].name;
-							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+				created:function(){
+					var childNum=Math.ceil(this.items.length/11);
+					var childs=[];
+					for(var l=0;l<childNum;l++){
+						var id=l+1;
+						var e=11*(l+1);
+						var s=e-11;
+						childs[l] = []
+						childs[l]["childs"]=this.items.slice(s,e);
+						childs[l]["id"] = id;
+					}
+					this.subjects=childs;
+
+					this.optionTwoDimensionalAnalysis.tooltip.formatter=function (obj) {
+						var value = obj.value;
+						return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+						+ '</div>' + "题型" + '：' + value[2] + '<br>'
+						+ "题号" + '：' + value[4] + '<br>'
+						+ "满分值" + '：' + value[3] + '<br>'
+						+ "得分率差距" + '：' + value[1]+"%" + '<br>'
+					};
+				},
+				mounted:function(){
+					this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
+					this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
+					this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
+					this.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(this.optionClassdisciplinesLevelRight);
+					this.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(this.optionstudentGradeDistribution);
+					this.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(this.optionClassScoreQuestion);
+					this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
+					this.echarts.init(document.getElementById("classknowledge1")).setOption(this.optionclassknowledge);
+					this.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(this.optionclassabilityAnalyze);
+
+				},
+				methods:{
+					changetest:function(e){
+						this.showselect = !this.showselect
+					},
+					selectShow:function(){
+						this.showselect = !this.showselect
+					},
+					rainbow:function(index,num){
+						for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
+							document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
 						}
-					}else{
+						document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
 						if(num==1){
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="none";
-							this.studentGradeheader.name=this.gradeInterval[num-1].name;
-							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.displayAll.classTotalScore=true;
+							this.displayAll.gradeDistribution=true;
+							this.displayAll.ranking=true;
+							this.displayAll.ClassdisciplinesLevel=true;
+							this.displayAll.classReport=true;
+							this.displayAll.studentGradeDistribution=false;
+							this.displayAll.classTestAnalysis=false;
+							this.displayAll.classOptionScoreQuestion=false;
+							this.displayAll.classtwoDimensionalAnalysis=false;
+							this.displayAll.classknowledge=false;
+							this.displayAll.classabilityAnalyze=false;
 						}else{
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="block";
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
-							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
-							this.studentGradeheader.name=this.gradeInterval[num-1].name;
-							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.displayAll.classTotalScore=true;
+							this.displayAll.gradeDistribution=false;
+							this.displayAll.ranking=false;
+							this.displayAll.ClassdisciplinesLevel=false;
+							this.displayAll.classReport=false;
+							this.displayAll.studentGradeDistribution=true;
+							this.displayAll.classTestAnalysis=true;
+							this.displayAll.classOptionScoreQuestion=true;
+							this.displayAll.classtwoDimensionalAnalysis=true;
+							this.displayAll.classknowledge=true;
+							this.displayAll.classabilityAnalyze=true;
 						}
-					}
-				},
-				classLastScoreshow(){
-					var selfs = this;
-					if(this.diaLoading){
-						setTimeout(function(){
-							selfs.diaLoading = false;
-
-							selfs.echarts.init(document.getElementById("classLastScore")).setOption(selfs.optionclassLastScore);
-						},1000);
-					}
-				},
-				gradeDistributionshow(){
-					this.optiongradeDistribution={
-				tooltip: {
-					trigger: 'axis',
-				},
-				legend: {
-					data:['班级','对比班级','全校','全区县']
-				},
-				xAxis: [
-				{
-					type: 'category',
-					data: ['高分率','优秀率','良好率','合格率','不及格率'],
-					axisPointer: {
-						type: 'shadow'
-					}
-				}
-				],
-				yAxis: [
-				{
-					type: 'value',
-					show: true,
-					min: 0,
-					max: 100,
-					interval: 20,
-					name:'得分率/%',
-				},
-				],
-				series: [
-				{
-					name:'班级',
-					type:'bar',
-					barWidth: '30%',	
-					label:{normal:{show:true,position:'top'},},
-					itemStyle:{
-						normal:{color:'#46C4F8'},
 					},
-					data:[3.0, 3.9, 5.0, 22.2, 21.6]
-				},
-				{
-					name:'对比班级',
-					type:'bar',
-					barWidth: '30%',	
-					label:{normal:{show:true,position:'top'},},
-					itemStyle:{
-						normal:{color:'#FF8585'},
-					},
-					data:[2.0, 4.9, 7.0, 23.2, 25.6]
-				},
-				{
-					name:'全校',
-					type:'line',
-					label:{normal:{show:true,position:'top'},},
-					itemStyle:{
-						normal:{color:'#FFD244'},
-					},
-					data:[2.6, 5.9, 9.0, 26.4, 28.7]
-				},
-				{
-					name:'全区县',
-					type:'line',
-					label:{normal:{show:true,position:'top'},},
-					itemStyle:{
-						normal:{color:'#919191'},
-					},
-					data:[2.0, 2.2, 3.3, 4.5, 6.3]
-				}
-				]
-			}
-			this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
-				},
-				classLastStudentsshow(){
-					var selfs = this;
-					if(this.diaStudentsLoading){
-						setTimeout(function(){
-							selfs.diaStudentsLoading = false;
-
-							selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
-						},1000);
-					}
-				},
-				rankingTopic(e){
-					if(e.currentTarget.className=="ranking-footLeft"){
-						this.rankingList=[{name:"张三",num:1,},{name:"李四",num:2,},{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,},{name:"张三",num:1,},{name:"李四",num:2,},{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,}];
-					}else{
-						this.rankingList=[{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,},{name:"张三",num:1,},{name:"李四",num:2,},{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,},{name:"张三",num:1,},{name:"李四",num:2,}];
-					}
-				},
-				objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-					if (columnIndex === 0) {
-						if (rowIndex === 0) {
-							return {
-								rowspan: row.qwe,
-								colspan: 1
-							};
-						} else {
-							return {
-								rowspan: 0,
-								colspan: 0
-							};
+					gradeIntervalfun:function(e){
+						var num=parseInt(e.currentTarget.getElementsByTagName("button")[0].getAttribute("data-key"));
+						if(e.currentTarget.className=="ranking-footRight"){
+							if(num==5){
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="none";
+								this.studentGradeheader.name=this.gradeInterval[num-1].name;
+								this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							}else{
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="block";
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
+								this.studentGradeheader.name=this.gradeInterval[num-1].name;
+								this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							}
+						}else{
+							if(num==1){
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="none";
+								this.studentGradeheader.name=this.gradeInterval[num-1].name;
+								this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							}else{
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="block";
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
+								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
+								this.studentGradeheader.name=this.gradeInterval[num-1].name;
+								this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							}
 						}
-					}
-				},
+					},
+					classLastScoreshow(){
+						var selfs = this;
+						if(this.diaLoading){
+							setTimeout(function(){
+								selfs.diaLoading = false;
+
+								selfs.echarts.init(document.getElementById("classLastScore")).setOption(selfs.optionclassLastScore);
+							},1000);
+						}
+					},
+					gradeDistributionshow(){
+						this.optiongradeDistribution={
+							tooltip: {
+								trigger: 'axis',
+							},
+							legend: {
+								data:['班级','对比班级','全校','全区县']
+							},
+							xAxis: [
+							{
+								type: 'category',
+								data: ['高分率','优秀率','良好率','合格率','不及格率'],
+								axisPointer: {
+									type: 'shadow'
+								}
+							}
+							],
+							yAxis: [
+							{
+								type: 'value',
+								show: true,
+								min: 0,
+								max: 100,
+								interval: 20,
+								name:'得分率/%',
+							},
+							],
+							series: [
+							{
+								name:'班级',
+								type:'bar',
+								barWidth: '30%',	
+								label:{normal:{show:true,position:'top'},},
+								itemStyle:{
+									normal:{color:'#46C4F8'},
+								},
+								data:[3.0, 3.9, 5.0, 22.2, 21.6]
+							},
+							{
+								name:'对比班级',
+								type:'bar',
+								barWidth: '30%',	
+								label:{normal:{show:true,position:'top'},},
+								itemStyle:{
+									normal:{color:'#FF8585'},
+								},
+								data:[2.0, 4.9, 7.0, 23.2, 25.6]
+							},
+							{
+								name:'全校',
+								type:'line',
+								label:{normal:{show:true,position:'top'},},
+								itemStyle:{
+									normal:{color:'#FFD244'},
+								},
+								data:[2.6, 5.9, 9.0, 26.4, 28.7]
+							},
+							{
+								name:'全区县',
+								type:'line',
+								label:{normal:{show:true,position:'top'},},
+								itemStyle:{
+									normal:{color:'#919191'},
+								},
+								data:[2.0, 2.2, 3.3, 4.5, 6.3]
+							}
+							]
+						}
+						this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
+					},
+					classLastStudentsshow(){
+						var selfs = this;
+						if(this.diaStudentsLoading){
+							setTimeout(function(){
+								selfs.diaStudentsLoading = false;
+
+								selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
+							},1000);
+						}
+					},
+					rankingTopic(e){
+						if(e.currentTarget.className=="ranking-footLeft"){
+							this.rankingList=[{name:"张三",num:1,},{name:"李四",num:2,},{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,},{name:"张三",num:1,},{name:"李四",num:2,},{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,}];
+						}else{
+							this.rankingList=[{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,},{name:"张三",num:1,},{name:"李四",num:2,},{name:"王五",num:3,},{name:"贾六",num:4,},{name:"魏七",num:5,},{name:"林八",num:6,},{name:"张三",num:1,},{name:"李四",num:2,}];
+						}
+					},
+					objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+						if (columnIndex === 0) {
+							if (rowIndex === 0) {
+								return {
+									rowspan: row.qwe,
+									colspan: 1
+								};
+							} else {
+								return {
+									rowspan: 0,
+									colspan: 0
+								};
+							}
+						}
+					},
+				}
 			}
-		}
-		</script>
-		<style>
-		#classLevel{
-			overflow: hidden;
-		}
-		#classLevel .header{
-			text-align: center;
-		}
-		#classLevel .header p{
-			font-size: 20px;
-			color: #707070;
-			letter-spacing: 0;
-		}
-		#classLevel .header-title-foot{
-			width: 100px;
-			height: 2px;
-			background: #44A9FF;
-			margin: auto;
-			margin-top:5px;
-		}
-		#classLevel .header-banner-bit{
-			width: 89px;
-			height: 73px;
-			float: left;
-			margin-top: 15px;
-		}
-		#classLevel .table-header{
-			background: #70CDF3;
-			color: #fff;
-		}
-		#classLevel .header-banner .el-carousel__item{
-			margin-left: 60px;
-		}
-		#classLevel .header-banner-click{
-			width: 100%;
-			height: 100%;
-			text-align: center;
-		}
-		#classLevel .header-banner-click p{
-			line-height: 73px;
-		}
-		#classLevel .header-banner-bit .on{
-			height: 105%;
-		}
-		#classLevel .schoolSelectBox{
-			width: 90px;
-			margin: auto;
-			margin-bottom: 35px;
-		}
-		#classLevel .myselect{
-			width: 90px;
-			border-radius: 4px;
-		}
-		#classLevel .table-header{
-			background: #70CDF3;
-			color: #fff;
-		}
-		#classLevel .body-foot{
-			margin-top:20px;
-		}
-		#classLevel .body-foot p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-			line-height: 24px;
-		}
-		#classLevel .body-foot-button{
-			width: 100px;
-			height: 40px;
-			margin: auto;
-			margin-top: 10px;
-		}
-		#classLevel .body-foot-button .el-button{
-			border: 1px solid #44A9FF;
-		}
-		#classLevel .body-foot-button span{
-			color: #44A9FF !important;
-		}
-		#classLevel .el-input__inner{
-			border: 1px solid #44A9FF;
-		}
-		#classLevel  #gradeDistribution1{
-			width: 1080px;
-			height: 460px;
-			margin: auto;
-			margin-top: 20px;
-		}
-		#classLevel .classSelectBox{
-			width: 200px;
-			margin: auto;
-			margin-bottom: 35px;
-			margin-top: 10px;
-		}
-		#classLevel .header .body-title{
-			position: absolute;
-			left: 50%;
-			margin-left: -100px;
-		} 
-		#classLevel .header .body-title p{
-			font-size: 16px;
-			color: #707070;
-			letter-spacing: 0;
-		} 
-		#classLevel #ranking .body{
-			overflow: hidden;
-		}
-		#classLevel #ranking1{
-			width: 750px;
-			height: 460px;
-			float: left;
-		}
-		#classLevel #ranking2{
-			width: 300px;
-			height: 395px;
-			float: left;
-			margin-top: 55px;
-		}
-		#classLevel .ranking-header{
-			width: 100%;
-			height: 40px;
-			background: #70CDF3;
-			text-align: center;
-			line-height: 40px;
-			border-radius: 3px 3px 0 0;
-		}
-		#classLevel .ranking-header p{
-			font-size: 16px;
-			color: #FFFFFF;
-			letter-spacing: 0;
-		}
-		#classLevel .ranking-body{
-			width: 100%;
-			height: 285px;
-			border: 1px solid #E6EBF5;
-			overflow: auto;
-		}
-		#classLevel .ranking-body p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-		}
-		#classLevel .ranking-body ul{
-			padding: 20px 80px;
-		}
-		#classLevel .ranking-foot{
-			width: 100%;
-			height: 40px;
-			background: #70CDF3;
-			line-height: 40px;
-			border-radius:0 0 3px 3px;
-		}
-		#classLevel .ranking-footLeft{
-			float: left;
-			color: #fff;
-			cursor:pointer;
-		}
-		#classLevel .ranking-footLeft i{
-			line-height: 40px;
-			float: left;
-		}
-		#classLevel .ranking-footLeft p{
-			float: left;
-		}
-		#classLevel .ranking-footRight{
-			float: right;	
-			color: #fff;
-			cursor:pointer;
-		}
-		#classLevel .ranking-footRight i{
-			line-height: 40px;
-			float: right;	
-		}
-		#classLevel .ranking-footRight p{
-			float: right;	
-		}
-		#classLevel .ranking-bodyName{
-			float: left;
-		}
-		#classLevel .ranking-bodyNum{
-			float: right;
-		}
-		#classLevel #ClassdisciplinesLevel1{
-			width: 600px;
-			height: 500px;
-			margin-top:20px;
-			float: left;
-		}
-		#classLevel #ClassdisciplinesLevel2{
-			width: 470px;
-			height: 500px;
-			float: left;
-			margin-top:20px;
-			margin-left: 20px;
-		}
-		#classLevel .subjectsDiagnosisText{
-			margin-top:20px;
-		}
-		#classLevel .subjectsDiagnosisText p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-			line-height: 24px;
-		}
-		#classLevel .body-Vtitle{
-			text-align: center;
-		}
-		#classLevel .body-Vtitle p{
-			font-size: 16px;
-			color: #707070;
-			letter-spacing: 0;
-			line-height: 26px;
-		}
-		#classLevel #studentGradeDistribution1{
-			width: 700px;
-			height: 460px;
-		}
-		#classLevel #studentGradeDistribution2{
-			width: 305px;
-			height: 460px;
-		}
-		#classLevel .studentGradeDistribution2-header{
-			width: 100%;
-			height: 49px;
-			background: #70CDF3;
-			border-radius: 3px 3px 0 0;
-			text-align: center;
-			padding-top: 5px;
-		}
-		#classLevel .studentGradeDistribution2-header p{
-			font-size: 16px;
-			color: #FFFFFF;
-			letter-spacing: 0;
-			line-height: 24px;
-		}
-		#classLevel .studentGradeDistribution2-body{
-			width: 99%;
-			height: 285px;
-			border: 1px solid #E6EBF5;
-		}
-		#classLevel .el-button span{
-			color: #fff;
-		}
-		#classLevel .studentGradeDistribution-ranking-body{
-			width: 100%;
-			height: 285px;
-			border: 1px solid #E6EBF5;
-			overflow: auto;
-		}
-		#classLevel .studentGradeDistribution-ranking-body p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-		}
-		#classLevel .studentGradeDistribution-ranking-body ul{
-			padding: 20px 80px;
-		}
-		#classLevel .classSelectBox .el-button{
-			background: #fff;
-		}
-		#classLevel .classSelectBox .el-button span{
-			color: #44A9FF !important;
-		}
-		#classLevel #classTestAnalysis .el-table--border td, .el-table--border th{
-			border:0px !important;
-		}
-		#classLevel #classTestAnalysis .el-table thead.is-group th{
-			background: #70CDF3;
-			color: #fff;
-		}
-		#classLevel #classOptionScoreQuestion1{
-			width: 1080px;
-			height: 460px;
-			margin: auto;
-			margin-top: 20px;
-			margin-bottom: 20px;
-		}
-		#classLevel #classtwoDimensionalAnalysis1{
-			width: 1080px;
-			height: 660px;
-			margin: auto;
-			margin-bottom: 20px;
-		}
-		#classLevel .twoDimensionalAnalysis-foot{
-			width: 870px;
-			height: 30px;
-			margin: auto;
-			margin-top: -45px;
-		}
-		#classLevel .twoDimensionalAnalysis-foot .difficultyLevel{
-			width: 33.33%;
-			height: 100%;
-			float:left;
-			text-align: center;
-			color: #fff;
-		}
-		#classLevel .twoDimensionalAnalysis-foot .easy{
-			background: #FF4444;
-		}
-		#classLevel .twoDimensionalAnalysis-foot .midde{
-			background: #FF8585;
-		}
-		#classLevel .twoDimensionalAnalysis-foot .difficult{
-			background: #FEB0B0;
-		}
-		#classLevel .twoDimensionalAnalysis-foot .difficultyLevel p{
-			line-height: 35px;
-			font-size: 12px;
-			letter-spacing: 0;
-		}
-		#classLevel #classtwoDimensionalAnalysis .foot-word{
-			width: 100%;
-			margin-top:20px;
-		}
-		#classLevel #classtwoDimensionalAnalysis .foot-word p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-			line-height: 24px;
-		}
-		#classLevel #classknowledge1{
-			width: 1080px;
-			height: 400px;
-			margin: auto;
-		}
-		#classLevel .el-select .el-input .el-input__icon{
-			color: #44A9FF
-		}
-		#classLevel .el-carousel__arrow{
-			background-color: white;
-			color: #44A9FF
-		}
-		#classLevel .el-carousel__arrow:hover{
-			background-color: white
-		}
-		#classLevel #classknowledge2 .el-table thead.is-group th{
-			background: #70CDF3;
-			color: #fff;
-		}
-		#classLevel #knowledge-table-header .el-table__body-wrapper{
-			display: none;
-		}
-		#classLevel #classknowledge2 .knowledge-table-true .el-table__header-wrapper{
-			display: none;
-		}
-		#classLevel .knowledge-table-trueTotle{
-			width: 100%;
-			height: 50px;
-			background: #FF8585;	
-		}
-		#classLevel .knowledge-table-trueTotle .knowledge-table-trueTotleBit{
-			line-height: 50px;
-			float: left;
-			width: 160px;
-			color: #fff;
-			text-align: center;
-		}
-		#classLevel .knowledge-foot{
-			margin-top:20px;
-		}
-		#classLevel .knowledge-foot p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-			line-height: 24px;
-		}
-		#classLevel #classabilityAnalyze1{
-			width: 1080px;
-			height: 520px;
-			margin: auto;
-			margin-top: 20px;
-		}
-		#classLevel #classabilityAnalyze2 .el-table--border td, .el-table--border th{
-			border:0px !important;
-		}
-		#classLevel #classabilityAnalyze2 .el-table thead.is-group th{
-			background: #70CDF3;
-			color: #fff;
-		}
-		#classLevel .abilityAnalyze-foot{
-			margin-top: 20px;
-		}
-		#classLevel .abilityAnalyze-foot p{
-			font-size: 14px;
-			color: #3D3D3D;
-			letter-spacing: 0;
-			line-height: 24px;
-		}
-		#classLastScore{
-			width: 800px;
-			height: 500px;
-		}
-		#classLastStudents{
-			width: 800px;
-			height: 500px;	
-		}
-		</style>
+			</script>
+<style>
+#classLevel{
+	overflow: hidden;
+}
+#classLevel .header{
+	text-align: center;
+}
+#classLevel .header p{
+	font-size: 20px;
+	color: #707070;
+	letter-spacing: 0;
+}
+			#classLevel .header-title-foot{
+				width: 100px;
+				height: 2px;
+				background: #44A9FF;
+				margin: auto;
+				margin-top:5px;
+			}
+			#classLevel .header-banner-bit{
+				width: 89px;
+				height: 73px;
+				float: left;
+				margin-top: 15px;
+			}
+			#classLevel .table-header{
+				background: #70CDF3;
+				color: #fff;
+			}
+			#classLevel .header-banner .el-carousel__item{
+				margin-left: 60px;
+			}
+			#classLevel .header-banner-click{
+				width: 100%;
+				height: 100%;
+				text-align: center;
+			}
+			#classLevel .header-banner-click p{
+				line-height: 73px;
+			}
+			#classLevel .header-banner-bit .on{
+				height: 105%;
+			}
+			#classLevel .schoolSelectBox{
+				width: 90px;
+				margin: auto;
+				margin-bottom: 35px;
+			}
+			#classLevel .myselect{
+				width: 90px;
+				border-radius: 4px;
+			}
+			#classLevel .table-header{
+				background: #70CDF3;
+				color: #fff;
+			}
+			#classLevel .body-foot{
+				margin-top:20px;
+			}
+			#classLevel .body-foot p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+				line-height: 24px;
+			}
+			#classLevel .body-foot-button{
+				width: 100px;
+				height: 40px;
+				margin: auto;
+				margin-top: 10px;
+			}
+			#classLevel .body-foot-button .el-button{
+				border: 1px solid #44A9FF;
+			}
+			#classLevel .body-foot-button span{
+				color: #44A9FF !important;
+			}
+			#classLevel .el-input__inner{
+				border: 1px solid #44A9FF;
+			}
+			#classLevel  #gradeDistribution1{
+				width: 1080px;
+				height: 460px;
+				margin: auto;
+				margin-top: 20px;
+			}
+			#classLevel .classSelectBox{
+				width: 200px;
+				margin: auto;
+				margin-bottom: 35px;
+				margin-top: 10px;
+			}
+			#classLevel .header .body-title{
+				position: absolute;
+				left: 50%;
+				margin-left: -100px;
+			} 
+			#classLevel .header .body-title p{
+				font-size: 16px;
+				color: #707070;
+				letter-spacing: 0;
+			} 
+			#classLevel #ranking .body{
+				overflow: hidden;
+			}
+			#classLevel #ranking1{
+				width: 750px;
+				height: 460px;
+				float: left;
+			}
+			#classLevel #ranking2{
+				width: 300px;
+				height: 395px;
+				float: left;
+				margin-top: 55px;
+			}
+			#classLevel .ranking-header{
+				width: 100%;
+				height: 40px;
+				background: #70CDF3;
+				text-align: center;
+				line-height: 40px;
+				border-radius: 3px 3px 0 0;
+			}
+			#classLevel .ranking-header p{
+				font-size: 16px;
+				color: #FFFFFF;
+				letter-spacing: 0;
+			}
+			#classLevel .ranking-body{
+				width: 100%;
+				height: 285px;
+				border: 1px solid #E6EBF5;
+				overflow: auto;
+			}
+			#classLevel .ranking-body p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+			}
+			#classLevel .ranking-body ul{
+				padding: 20px 80px;
+			}
+			#classLevel .ranking-foot{
+				width: 100%;
+				height: 40px;
+				background: #70CDF3;
+				line-height: 40px;
+				border-radius:0 0 3px 3px;
+			}
+			#classLevel .ranking-footLeft{
+				float: left;
+				color: #fff;
+				cursor:pointer;
+			}
+			#classLevel .ranking-footLeft i{
+				line-height: 40px;
+				float: left;
+			}
+			#classLevel .ranking-footLeft p{
+				float: left;
+			}
+			#classLevel .ranking-footRight{
+				float: right;	
+				color: #fff;
+				cursor:pointer;
+			}
+			#classLevel .ranking-footRight i{
+				line-height: 40px;
+				float: right;	
+			}
+			#classLevel .ranking-footRight p{
+				float: right;	
+			}
+			#classLevel .ranking-bodyName{
+				float: left;
+			}
+			#classLevel .ranking-bodyNum{
+				float: right;
+			}
+			#classLevel #ClassdisciplinesLevel1{
+				width: 600px;
+				height: 500px;
+				margin-top:20px;
+				float: left;
+			}
+			#classLevel #ClassdisciplinesLevel2{
+				width: 470px;
+				height: 500px;
+				float: left;
+				margin-top:20px;
+				margin-left: 20px;
+			}
+			#classLevel .subjectsDiagnosisText{
+				margin-top:20px;
+			}
+			#classLevel .subjectsDiagnosisText p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+				line-height: 24px;
+			}
+			#classLevel .body-Vtitle{
+				text-align: center;
+			}
+			#classLevel .body-Vtitle p{
+				font-size: 16px;
+				color: #707070;
+				letter-spacing: 0;
+				line-height: 26px;
+			}
+			#classLevel #studentGradeDistribution1{
+				width: 700px;
+				height: 460px;
+			}
+			#classLevel #studentGradeDistribution2{
+				width: 305px;
+				height: 460px;
+			}
+			#classLevel .studentGradeDistribution2-header{
+				width: 100%;
+				height: 49px;
+				background: #70CDF3;
+				border-radius: 3px 3px 0 0;
+				text-align: center;
+				padding-top: 5px;
+			}
+			#classLevel .studentGradeDistribution2-header p{
+				font-size: 16px;
+				color: #FFFFFF;
+				letter-spacing: 0;
+				line-height: 24px;
+			}
+			#classLevel .studentGradeDistribution2-body{
+				width: 99%;
+				height: 285px;
+				border: 1px solid #E6EBF5;
+			}
+			#classLevel .el-button span{
+				color: #fff;
+			}
+			#classLevel .studentGradeDistribution-ranking-body{
+				width: 100%;
+				height: 285px;
+				border: 1px solid #E6EBF5;
+				overflow: auto;
+			}
+			#classLevel .studentGradeDistribution-ranking-body p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+			}
+			#classLevel .studentGradeDistribution-ranking-body ul{
+				padding: 20px 80px;
+			}
+			#classLevel .classSelectBox .el-button{
+				background: #fff;
+			}
+			#classLevel .classSelectBox .el-button span{
+				color: #44A9FF !important;
+			}
+			#classLevel #classTestAnalysis .el-table--border td, .el-table--border th{
+				border:0px !important;
+			}
+			#classLevel #classTestAnalysis .el-table thead.is-group th{
+				background: #70CDF3;
+				color: #fff;
+			}
+			#classLevel #classOptionScoreQuestion1{
+				width: 1080px;
+				height: 460px;
+				margin: auto;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			#classLevel #classtwoDimensionalAnalysis1{
+				width: 1080px;
+				height: 660px;
+				margin: auto;
+				margin-bottom: 20px;
+			}
+			#classLevel .twoDimensionalAnalysis-foot{
+				width: 870px;
+				height: 30px;
+				margin: auto;
+				margin-top: -45px;
+			}
+			#classLevel .twoDimensionalAnalysis-foot .difficultyLevel{
+				width: 33.33%;
+				height: 100%;
+				float:left;
+				text-align: center;
+				color: #fff;
+			}
+			#classLevel .twoDimensionalAnalysis-foot .easy{
+				background: #FF4444;
+			}
+			#classLevel .twoDimensionalAnalysis-foot .midde{
+				background: #FF8585;
+			}
+			#classLevel .twoDimensionalAnalysis-foot .difficult{
+				background: #FEB0B0;
+			}
+			#classLevel .twoDimensionalAnalysis-foot .difficultyLevel p{
+				line-height: 35px;
+				font-size: 12px;
+				letter-spacing: 0;
+			}
+			#classLevel #classtwoDimensionalAnalysis .foot-word{
+				width: 100%;
+				margin-top:20px;
+			}
+			#classLevel #classtwoDimensionalAnalysis .foot-word p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+				line-height: 24px;
+			}
+			#classLevel #classknowledge1{
+				width: 1080px;
+				height: 400px;
+				margin: auto;
+			}
+			#classLevel .el-select .el-input .el-input__icon{
+				color: #44A9FF
+			}
+			#classLevel .el-carousel__arrow{
+				background-color: white;
+				color: #44A9FF
+			}
+			#classLevel .el-carousel__arrow:hover{
+				background-color: white
+			}
+			#classLevel #classknowledge2 .el-table thead.is-group th{
+				background: #70CDF3;
+				color: #fff;
+			}
+			#classLevel #knowledge-table-header .el-table__body-wrapper{
+				display: none;
+			}
+			#classLevel #classknowledge2 .knowledge-table-true .el-table__header-wrapper{
+				display: none;
+			}
+			#classLevel .knowledge-table-trueTotle{
+				width: 100%;
+				height: 50px;
+				background: #FF8585;	
+			}
+			#classLevel .knowledge-table-trueTotle .knowledge-table-trueTotleBit{
+				line-height: 50px;
+				float: left;
+				width: 160px;
+				color: #fff;
+				text-align: center;
+			}
+			#classLevel .knowledge-foot{
+				margin-top:20px;
+			}
+			#classLevel .knowledge-foot p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+				line-height: 24px;
+			}
+			#classLevel #classabilityAnalyze1{
+				width: 1080px;
+				height: 520px;
+				margin: auto;
+				margin-top: 20px;
+			}
+			#classLevel #classabilityAnalyze2 .el-table--border td, .el-table--border th{
+				border:0px !important;
+			}
+			#classLevel #classabilityAnalyze2 .el-table thead.is-group th{
+				background: #70CDF3;
+				color: #fff;
+			}
+			#classLevel .abilityAnalyze-foot{
+				margin-top: 20px;
+			}
+			#classLevel .abilityAnalyze-foot p{
+				font-size: 14px;
+				color: #3D3D3D;
+				letter-spacing: 0;
+				line-height: 24px;
+			}
+			#classLastScore{
+				width: 800px;
+				height: 500px;
+			}
+			#classLastStudents{
+				width: 800px;
+				height: 500px;	
+			}
+			#classLevel .el-select .el-input .el-input__icon{
+				color: #70CDF3
+			}
+			#classLevel .el-carousel  {
+				overflow-x: hidden;
+				position: relative;
+				text-align: center;
+				margin: auto;
+				width: 400px;
+				height: 50px;
+				margin-top: 30px;
+				line-height: 50px;
+			}
+			#classLevel #rainbow .el-carousel{
+				width: 1100px;
+				height: 100px;
+			}
+			#classLevel .el-carousel__container {
+				position: relative;
+				height: 50px;
+				margin: auto;
+			}
+			#classLevel .myselect{
+				border:1px solid #44a9ff;
+				width: 90px;
+				border-radius: 4px;
+			}
+			#classLevel .testTips{
+				color:#3d3d3d;
+				font-size: 14px;
+				margin-top: 25px
+			}
+			#classLevel .schoolSelectBox{
+				width: 200px;
+				margin: auto;
+				margin-bottom: 35px;
+			}
+			#classLevel .achievementSelectBox{
+				width: 90px;
+				margin: auto;
+				margin-bottom: 35px;
+			}
+			#classLevel .borders{
+				box-shadow: 1px 1px 14px rgba(0,0,0,.15);
+			}
+			#classLevel .el-table .tableBackground{
+				background-color: #f5fcff;text-align: center;
+			}
+			#classLevel .el-table .tableCenter{
+				text-align: center;
+			}
+			#classLevel .alltest{
+				cursor: pointer;
+			}
+			#classLevel .formatRow{
+				font-weight: normal;
+				text-align:center !important;
+				color: white;
+				border: 0px !important;
+				background-color: #70CDF3 !important;
+			}
+			#achievementTable .el-table--border td{
+				border:0px;
+			}
+			#classLevel .el-input__inner{
+				border: 0px;
+				text-align: center;
+			}
+			#classLevel .el-select .el-input .el-input__icon{
+				color: #70CDF3
+			}
+			#classLevel .el-carousel__arrow{
+				background-color: white;
+				color: #70CDF3
+			}
+			#classLevel .el-carousel__arrow:hover{
+				background-color: white
+			}
+			#classLevel .showselect{
+				list-style: none;position: absolute;margin: 0;padding:0;
+				border: 1px solid #f2f2f2;
+				left: 50%;
+				z-index: 999;
+				background-color: white;
+				margin-left: -110px;
+			}
+			#classLevel .showselect li{
+				margin: 0;padding:0;
+				border-bottom: 1px solid #f2f2f2;
+				padding:10px 20px;
+				cursor: pointer;
+			}
+			#classLevel .alltest{
+				cursor: pointer;
+			}
+			.leftAnchorPoint{
+				width: 40px;
+				height: 80px;
+			}
+			</style>

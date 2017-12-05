@@ -1,5 +1,15 @@
 <template>
 	<div id="studentlevel">
+		<el-carousel id="testChange" :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
+		    <el-carousel-item v-for="item in testList" :key="item.id">
+		      <p class="alltest" @click="selectShow">{{item.name}}</p>
+			</el-carousel-item>
+		  </el-carousel>
+		  <el-collapse-transition>
+			  <ul v-if='showselect' class="showselect">
+			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
+			  </ul>
+		  </el-collapse-transition>
 		<div id="rainbow" class="header-banner">
 			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
 			    <el-carousel-item v-for="item in subjects" :key="item.id">
@@ -297,6 +307,7 @@
 	export default {
    		data(){
 			return{
+				showselect:false,
 				displayAll:{
 					personalAchievement:true,
 					beyondRate:true,
@@ -387,6 +398,16 @@
 					school:45,
 					area:34,	
 				}],
+				testList:[{
+				id:'001',
+				name:'2017年金阳高中期末考试'
+			},{
+				id:'002',
+				name:'2016年金阳高中期末考试'
+			},{
+				id:'003',
+				name:'2015年金阳高中期末考试'
+			}],
 				subjects:[],
 				items:[{
 					id:1,
@@ -1083,6 +1104,12 @@
 		  	this.echarts.init(document.getElementById("abilityAnalyze1")).setOption(this.optionabilityAnalyze);
 		 },
 		methods:{
+			changetest:function(e){
+		    		this.showselect = !this.showselect
+		    	},
+				selectShow:function(){
+		    		this.showselect = !this.showselect
+		    	},
 			rainbow:function(index,num){
 				for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
 					document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
@@ -1844,5 +1871,100 @@
 }
 #studentlevel .el-carousel__arrow:hover{
 	background-color: white
+}
+		#classLevel .el-select .el-input .el-input__icon{
+	color: #70CDF3
+}
+#studentlevel .el-carousel  {
+    overflow-x: hidden;
+    position: relative;
+    text-align: center;
+    margin: auto;
+    width: 400px;
+    height: 50px;
+    margin-top: 30px;
+    line-height: 50px;
+}
+#studentlevel #rainbow .el-carousel{
+    width: 1100px;
+    height: 100px;
+}
+#studentlevel .el-carousel__container {
+    position: relative;
+    height: 50px;
+    margin: auto;
+}
+#studentlevel .myselect{
+	border:1px solid #44a9ff;
+	width: 90px;
+	border-radius: 4px;
+}
+#studentlevel .testTips{
+	color:#3d3d3d;
+	font-size: 14px;
+	margin-top: 25px
+}
+#studentlevel .schoolSelectBox{
+	width: 200px;
+	margin: auto;
+	margin-bottom: 35px;
+}
+#studentlevel .achievementSelectBox{
+	width: 90px;
+	margin: auto;
+	margin-bottom: 35px;
+}
+#studentlevel .borders{
+	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
+}
+#studentlevel .el-table .tableBackground{
+	background-color: #f5fcff;text-align: center;
+}
+#studentlevel .el-table .tableCenter{
+	text-align: center;
+}
+#studentlevel .alltest{
+	cursor: pointer;
+}
+#studentlevel .formatRow{
+	font-weight: normal;
+	text-align:center !important;
+	color: white;
+	border: 0px !important;
+    background-color: #70CDF3 !important;
+}
+#achievementTable .el-table--border td{
+	border:0px;
+}
+#studentlevel .el-input__inner{
+	border: 0px;
+	text-align: center;
+}
+#studentlevel .el-select .el-input .el-input__icon{
+	color: #70CDF3
+}
+#studentlevel .el-carousel__arrow{
+	background-color: white;
+	color: #70CDF3
+}
+#studentlevel .el-carousel__arrow:hover{
+	background-color: white
+}
+#studentlevel .showselect{
+	list-style: none;position: absolute;margin: 0;padding:0;
+	border: 1px solid #f2f2f2;
+	left: 50%;
+	z-index: 999;
+    background-color: white;
+    margin-left: -110px;
+}
+#studentlevel .showselect li{
+	margin: 0;padding:0;
+	border-bottom: 1px solid #f2f2f2;
+	padding:10px 20px;
+	cursor: pointer;
+}
+#studentlevel .alltest{
+	cursor: pointer;
 }
 </style>
