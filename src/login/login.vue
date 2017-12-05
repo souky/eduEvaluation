@@ -60,7 +60,7 @@ export default {
 		onSubmit:function(){
 			console.log(this.form.user);
 			console.log(this.form.password);
-			this.$router.push({path:'/report'});
+			this.$router.push({path:'/home'});
 		}
 	}
 }
