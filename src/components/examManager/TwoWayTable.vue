@@ -193,6 +193,5 @@ export default {
 	font-size: 22px;
     color: #67C23A;
     font-weight: 800;
-    font-family: sans-serif;
 }
 </style>

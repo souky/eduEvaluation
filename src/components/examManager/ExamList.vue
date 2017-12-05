@@ -106,23 +106,28 @@
 				    </el-tab-pane>
 				    <el-tab-pane label="选择考试学生" name="second">
 				    	<div class="add_exam_two">
-				    		<el-collapse v-for="(e,index) in student" accordion>
-							  <el-collapse-item :title="e.label" :name="index">
+				    		<el-collapse accordion>
+							  <el-collapse-item v-for="(e,index) in student" :title="e.label" :name="index">
 							  	<!--<el-checkbox-group v-model='chiosedStu' size="mini">
 								    <el-checkbox v-for="ee in e.children" checked :label="ee.name" :key="ee.id" border>{{ee.name}}</el-checkbox>
 								</el-checkbox-group>-->
 								<el-row>
-									<el-col :span="7"></el-col>
-								  	<el-col :span="1"></el-col>
+									<el-col :span="5"></el-col>
+									<el-col :span="1">序号</el-col>
+								  	<el-col :span="1">
+								  		全选
+								  	</el-col>
 								  	<el-col :span="3">姓名</el-col>
 								  	<el-col :span="3">学号</el-col>
 								  	<el-col :span="3">考号</el-col>
-								  	<el-col :span="7"></el-col>
+								  	<el-col :span="2">缺考</el-col>
+								  	<el-col :span="6"></el-col>
 								</el-row>
-								<el-row v-for="ee in e.children">
-									<el-col :span="7"></el-col>
+								<el-row v-for="(ee,indexs) in e.children">
+									<el-col :span="5"></el-col>
+									<el-col :span="1">{{indexs+1}}</el-col>
 								  	<el-col :span="1">
-								  		<el-checkbox checked></el-checkbox>
+								  		<el-checkbox checked> </el-checkbox>
 								  	</el-col>
 								  	<el-col :span="3">
 								  		{{ee.name}}
@@ -133,21 +138,134 @@
 								  	<el-col :span="3">
 								  		<el-input v-model="ee.examNo" placeholder="考号"></el-input>
 								  	</el-col>
-								  	<el-col :span="7"></el-col>
+								  	<el-col :span="2">
+								  		<el-switch v-model="ee.status" active-color="#FFD100" inactive-color="#9e9e9e"></el-switch>
+								  	</el-col>
+								  	<el-col :span="6"></el-col>
 								</el-row>
 							  </el-collapse-item>
 							</el-collapse>
 				    	</div>
 				    </el-tab-pane>
 				    <el-tab-pane label="匹配双向细目表" name="third">
-				    	
+				    	<div class="add_exam_two">
+				    		<!--<el-collapse  accordion>
+							  <el-collapse-item v-for="(e,index) in subject" :title="e.label" :name="index">
+							  	
+							  </el-collapse-item>
+							</el-collapse>-->
+							
+							<div class="two_way_subject fix" v-for="(e,index) in subject">
+								<div class="title l">{{e.label}}</div>
+								<div class="selete_item l">
+									<el-select v-model="e.twoWayId" placeholder="选择细目表">
+								      <el-option label="语文细目表" value="1"></el-option>
+								      <el-option label="数学细目表" value="2"></el-option>
+								    </el-select>
+								</div>
+								<div class="add_two_way l" @click="add_two_way">添加细目表</div>
+							</div>
+				    	</div>
 				    </el-tab-pane>
 				  </el-tabs>
 				</div>
 			</div>
 		</div>
 		</transition>
-	
+		
+		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="70%">
+		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
+			  <el-col class="queryItems" :span="6">
+			  	<div class="l">名称</div>
+			  	<div class="r">
+			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称"></el-input>
+			  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6">
+			  	<div class="l">科目</div>
+			  	<div class="r">
+			  		<el-input v-model="TwoWaySpecification.subjectCode" placeholder="科目" readOnly></el-input>
+			  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6">
+			  	<div class="l">年级</div>
+			  	<div class="r">
+			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
+				      <el-option label="一年级" value="1"></el-option>
+				      <el-option label="二年级" value="2"></el-option>
+				    </el-select>
+			  	</div>
+			  </el-col>
+			  <el-col :span="6">
+			  		<div class="btn_query r" @click="addDetile">
+				  		<i class="el-icon-plus">添加详细</i>
+				  	</div>
+			  </el-col>
+			</el-row>
+			
+			<el-row :gutter="10">
+				<el-col :span="2">题号</el-col>
+				<el-col :span="2">题型</el-col>
+				<el-col :span="2">满分</el-col>
+				<el-col :span="2">答案</el-col>
+				<el-col :span="12">能力值</el-col>
+				<el-col :span="3">操作</el-col>
+			</el-row>
+			
+			<el-row v-model="two_way_D" :gutter="10">
+				<div v-for="e in two_way_D">
+					<el-col :span="2">
+						<el-input v-model="e.itemNo" placeholder="题号" ></el-input>
+					</el-col>
+					<el-col :span="2">
+						<el-select v-model="e.itemType" placeholder="题型">
+					      <el-option label="主观题" value="0"></el-option>
+					      <el-option label="客观题" value="1"></el-option>
+					    </el-select>
+					</el-col>
+					<el-col :span="2">
+						<el-input v-model="e.itemScore" placeholder="满分" ></el-input>
+					</el-col>
+					<el-col :span="2">
+						<el-input v-model="e.itemAnswer" placeholder="答案" ></el-input>
+					</el-col>
+					<el-col :span="12">
+						<el-row :gutter="10">
+							<el-checkbox-group v-model="e.itemAbility">
+								<el-col :span="4">
+									<el-checkbox label="空间想象" ></el-checkbox>
+								</el-col>
+								<el-col :span="4">
+									<el-checkbox label="抽象概括" ></el-checkbox>
+								</el-col>
+								<el-col :span="4">
+									<el-checkbox label="推理论证" ></el-checkbox>
+								</el-col>
+								<el-col :span="4">
+									<el-checkbox label="运算求解" ></el-checkbox>
+								</el-col>
+								<el-col :span="4">
+									<el-checkbox label="数据处理" ></el-checkbox>
+								</el-col>
+								<el-col :span="4">
+									<el-checkbox label="综合应用" ></el-checkbox>
+								</el-col>
+							</el-checkbox-group>
+						</el-row>
+					</el-col>
+					<el-col :span="3">
+						 <el-button type="danger" size="small" round @click.prevent="removeDomain(e)">删除</el-button>
+					</el-col>
+				</div>
+				
+			</el-row>
+		  	
+		  	<span slot="footer" class="dialog-footer">
+			  <el-button type="primary" @click="dialogVisible = false">取 消</el-button>
+			  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			</span>
+		</el-dialog>
+		
 	</div>
 	
 </template>
@@ -187,6 +305,22 @@ export default {
 	  
 	  chiosedStu:[],
 	  student:ExamList.student,
+	  subject:ExamList.subject,
+	  
+	  dialogVisible:false,
+	  TwoWaySpecification:{
+	  	
+	  },
+	  two_way_D:[
+	  	{
+	  		itemNo:'',
+	  		itemType:'0',
+	  		itemScore:'',
+	  		itemAnswer:'',
+	  		itemAbility:['空间想象','运算求解']
+	  	},
+	  	
+	  ]
     }
   },
   mounted:function(){
@@ -241,7 +375,25 @@ export default {
 	},
 	handleClick(tab, event){
 		
-	}
+	},
+	add_two_way(){
+		this.dialogVisible = true;
+	},
+	addDetile(){
+		this.two_way_D.push({
+			itemNo:'',
+	  		itemType:'0',
+	  		itemScore:'',
+	  		itemAnswer:'',
+	  		itemAbility:[]
+		});
+	},
+	removeDomain(item) {
+	    var index = this.two_way_D.indexOf(item)
+	    if (index !== -1) {
+	      this.two_way_D.splice(index, 1)
+	    }
+	},
   }
 }
 </script>
@@ -276,5 +428,36 @@ export default {
     line-height: 40px;
     text-align: center;
     margin-bottom:2px;
+}
+#examList .el-checkbox:first-child{
+	margin-right:0px
+}
+
+#examList .two_way_subject{
+    width: 600px;
+    margin: 5px auto;
+	height:50px;
+	line-height: 50px;
+	color:#666;
+	border-bottom:1px #e2e2e2 solid;
+}
+#examList .two_way_subject .title {
+	width:100px;
+	text-align: center;
+}
+#examList .two_way_subject .selete_item{
+	width:300px;
+}
+#examList .two_way_subject .add_two_way{
+	width:100px;
+	height:40px;
+	line-height: 40px;
+	color:#fff;
+	background:#FFD100;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 4px;
+	margin-left: 50px;
+	margin-top: 5px;
 }
 </style>
