@@ -268,7 +268,6 @@ export default {
     }
 }
 </script>
-czxc
 <style>
 .mainbody{
 	width: 1100px;
