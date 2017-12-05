@@ -186,11 +186,13 @@
 .avatar-uploader-icon {font-size: 28px;color: #8c939d;width: 133px;height: 160px;line-height: 160px;text-align: center;}
 .avatar {width: 133px;height: 160px;display: block;}
 
-.el-date-table td.current:not(.disabled), .el-date-table td.end-date, .el-date-table td.start-date{background-color: #FFD100!important}
+.el-date-table td.current:not(.disabled), .el-date-table td.end-date, .el-date-table td.start-date{background-color: #fff!important}
+.el-date-table td.current:not(.disabled) span{background-color:#FFD100;}
 .el-date-table td.today:before{border-top:.5em solid #FFD100;}
 .el-picker-panel__link-btn{color:#FFD100;}
 .el-date-table td.today{color:#FFD100;}
-.el-time-panel__content::after, .el-time-panel__content::before{background-color:#FFD100;}
+.el-time-panel__content::after, .el-time-panel__content::before{background-color:#fff;}
+.el-time-spinner__item.active:not(.disabled){color:#FFD100;}
 .el-time-panel__btn.confirm{color:#FFD100;}
 .el-tabs__item.is-active{color:#FFD100;}
 .el-tabs__active-bar{background-color:#FFD100;}
@@ -198,7 +200,7 @@
 .el-menu{width:350px;}
 
 
-.el-col-6{min-height: 1px;}
+[class*=el-col-]{min-height: 1px;}
 
 .el-tree-node__content{height:40px;}
 .el-tree{background: #F9F9F9;}

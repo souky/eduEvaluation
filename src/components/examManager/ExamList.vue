@@ -68,17 +68,76 @@
 		<div v-show="showAdd" class=" main_body ">
 			<div class="show_add">
 				<div class="tools fix">
-					<div class="items_tools r" @click="backList">
+					<div class="items_tools l" @click="backList">
 						<i class="el-icon-back">返回列表</i>
+					</div>
+					<div class="items_tools r">
+						<i class="el-icon-check">保存</i>
 					</div>
 				</div>
 				<div>
 					<el-tabs tab-position="top" v-model="activeName" @tab-click="handleClick">
 				    <el-tab-pane label="添加考试计划" name="first">
-				    	
+				    	<div class="add_exam_one">
+				    		<el-form  :model="exam" label-width="100px">
+							  <el-form-item label="考试名称">
+							    <el-input v-model="exam.name"></el-input>
+							  </el-form-item>
+							  <el-form-item label="考试开始时间">
+							  	 <el-date-picker v-model="exam.examStartDate" type="datetime" placeholder="考试开始时间"></el-date-picker>
+							  </el-form-item>
+							  <el-form-item label="考试结束时间">
+							  	<el-date-picker v-model="exam.examEndDate" type="datetime" placeholder="考试结束时间"></el-date-picker>
+							  </el-form-item>
+							  <el-form-item label="年级">
+							  	<el-select v-model="exam.grade" placeholder="请选择活动区域">
+							      <el-option label="一年级" value="shanghai"></el-option>
+							      <el-option label="二年级" value="beijing"></el-option>
+							    </el-select>
+							  </el-form-item>
+							  <el-form-item label="学科">
+							  	<el-select v-model="exam.subject" placeholder="请选择活动区域">
+							      <el-option label="语文" value="shanghai"></el-option>
+							      <el-option label="数学" value="beijing"></el-option>
+							    </el-select>
+							  </el-form-item>
+							</el-form>
+				    	</div>
 				    </el-tab-pane>
 				    <el-tab-pane label="选择考试学生" name="second">
-				    	
+				    	<div class="add_exam_two">
+				    		<el-collapse v-for="(e,index) in student" accordion>
+							  <el-collapse-item :title="e.label" :name="index">
+							  	<!--<el-checkbox-group v-model='chiosedStu' size="mini">
+								    <el-checkbox v-for="ee in e.children" checked :label="ee.name" :key="ee.id" border>{{ee.name}}</el-checkbox>
+								</el-checkbox-group>-->
+								<el-row>
+									<el-col :span="7"></el-col>
+								  	<el-col :span="1"></el-col>
+								  	<el-col :span="3">姓名</el-col>
+								  	<el-col :span="3">学号</el-col>
+								  	<el-col :span="3">考号</el-col>
+								  	<el-col :span="7"></el-col>
+								</el-row>
+								<el-row v-for="ee in e.children">
+									<el-col :span="7"></el-col>
+								  	<el-col :span="1">
+								  		<el-checkbox checked></el-checkbox>
+								  	</el-col>
+								  	<el-col :span="3">
+								  		{{ee.name}}
+								  	</el-col>
+								  	<el-col :span="3">
+								  		{{ee.stuNo}}
+								  	</el-col>
+								  	<el-col :span="3">
+								  		<el-input v-model="ee.examNo" placeholder="考号"></el-input>
+								  	</el-col>
+								  	<el-col :span="7"></el-col>
+								</el-row>
+							  </el-collapse-item>
+							</el-collapse>
+				    	</div>
 				    </el-tab-pane>
 				    <el-tab-pane label="匹配双向细目表" name="third">
 				    	
@@ -115,6 +174,19 @@ export default {
       showAdd:false,
       
       activeName:'first',
+      
+      exam:{
+		examName:'测试考试计划',
+		examStartDate:'',
+		examEndDate:'',
+		grade:'一年级',
+		subject:'语文',
+		examStatus:'0',
+		id:'wdawdawd123123'
+	  },
+	  
+	  chiosedStu:[],
+	  student:ExamList.student,
     }
   },
   mounted:function(){
@@ -187,5 +259,22 @@ export default {
 	width: 90%;
 	margin:20px auto;
 }
-.el-tabs__item:hover{color:#FFD100;}
+#examList .el-tabs__item:hover{color:#FFD100;}
+#examList .add_exam_one{
+	width:40%;
+	margin:20px auto;
+}
+#examList .add_exam_two{
+	width:100%;
+	margin:20px auto;
+}
+#examList .el-collapse-item__header{padding-left:20px;}
+#examList .el-checkbox-group{padding:0px 20px;}
+#examList .el-checkbox.is-bordered.is-checked{border-color:#FFD100}
+#examList .el-col{
+	height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin-bottom:2px;
+}
 </style>

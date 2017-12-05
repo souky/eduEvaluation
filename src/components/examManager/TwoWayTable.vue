@@ -73,18 +73,19 @@
 					</div>
 				</div>
 				<el-table :data="detailsData" style="width: 100%">
-			      <el-table-column prop="itemNo" align="center" label="题号"></el-table-column>
+			      <el-table-column prop="itemNo" align="center" label="题号" width="50px"></el-table-column>
 			      <el-table-column prop="itemType" :formatter="typeFormatter" align="center" label="题型"></el-table-column>
-			      <el-table-column prop="itemScore" align="center"  label="小题满分"></el-table-column>
-			      <el-table-column prop="itemAnswer" align="center" label="标准答案"></el-table-column>
+			      <el-table-column prop="itemScore" align="center"  label="满分" width="50px"></el-table-column>
+			      <el-table-column prop="itemAnswer" align="center" label="答案" width="50px"></el-table-column>
 			      <el-table-column align="center" label="能力值">
-			      	<el-table-column prop="itemAbility[0]" class-name="checkIcon" :formatter="ablitFormatter" align="center" label="空间想象"></el-table-column>
-			      	<el-table-column prop="itemAbility[1]" class-name="checkIcon" :formatter="ablitFormatter" align="center" label="抽象概括"></el-table-column>
-			      	<el-table-column prop="itemAbility[2]" class-name="checkIcon" :formatter="ablitFormatter" align="center" label="推理论证"></el-table-column>
-			      	<el-table-column prop="itemAbility[3]" class-name="checkIcon" :formatter="ablitFormatter" align="center" label="运算求解"></el-table-column>
-			      	<el-table-column prop="itemAbility[4]" class-name="checkIcon" :formatter="ablitFormatter" align="center" label="数据处理"></el-table-column>
-			      	<el-table-column prop="itemAbility[5]" class-name="checkIcon" :formatter="ablitFormatter" align="center" label="综合英语"></el-table-column>
+			      	<el-table-column prop="itemAbility[0]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="空间想象"></el-table-column>
+			      	<el-table-column prop="itemAbility[1]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="抽象概括"></el-table-column>
+			      	<el-table-column prop="itemAbility[2]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="推理论证"></el-table-column>
+			      	<el-table-column prop="itemAbility[3]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="运算求解"></el-table-column>
+			      	<el-table-column prop="itemAbility[4]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="数据处理"></el-table-column>
+			      	<el-table-column prop="itemAbility[5]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="综合应用"></el-table-column>
 			      </el-table-column>
+			      <el-table-column prop="konwledgePoint" align="center" width='250' show-overflow-tooltip label="知识点"></el-table-column>
 			      <el-table-column align="center" label="操作" width='250'>
 			      	<template scope="scope">
 			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>

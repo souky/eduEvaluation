@@ -47,6 +47,7 @@ export default {
         	 itemScore:5,
         	 itemAnswer:'A',
         	 itemAbility:[1,1,1,0,0,1],
+        	 konwledgePoint:'基础能力与测试长度能力看看到底能有多长',
         	 id:'112323123'
          },
          {
@@ -55,6 +56,7 @@ export default {
         	 itemScore:5,
         	 itemAnswer:'A',
         	 itemAbility:[1,0,1,0,0,1],
+        	 konwledgePoint:'基础能力',
         	 id:'112323123'
          },
          {
@@ -63,6 +65,7 @@ export default {
         	 itemScore:5,
         	 itemAnswer:'A',
         	 itemAbility:[0,1,1,0,0,1],
+        	 konwledgePoint:'基础能力',
         	 id:'112323123'
          },
          {
@@ -71,6 +74,7 @@ export default {
         	 itemScore:5,
         	 itemAnswer:'A',
         	 itemAbility:[1,0,0,0,0,0],
+        	 konwledgePoint:'基础能力',
         	 id:'112323123'
          },
          {
@@ -79,6 +83,7 @@ export default {
         	 itemScore:5,
         	 itemAnswer:'A',
         	 itemAbility:[1,1,0,0,0,1],
+        	 konwledgePoint:'基础能力',
         	 id:'112323123'
          },
     ]
