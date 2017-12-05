@@ -24,6 +24,7 @@ export default {
 	},
 	created: function(){
 		this.$emit('refreshbizlines','other');
+		this.activeIndex=window.location.pathname;
 	},
     methods: {
       handleClick(tab, event) {
