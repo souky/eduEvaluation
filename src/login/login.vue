@@ -58,8 +58,9 @@ export default {
 	},
 	methods:{
 		onSubmit:function(){
-			alert(this.form.user);
-			alert(this.form.password);
+			console.log(this.form.user);
+			console.log(this.form.password);
+			this.$router.push({path:'/report'});
 		}
 	}
 }
