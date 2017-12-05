@@ -1,6 +1,6 @@
 <template>
 	<div id="teachLevel" class="mainbody">
-		  <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
+		  <el-carousel id="testChange" :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 		    <el-carousel-item v-for="item in testList" :key="item.id">
 		      <p class="alltest" @click="selectShow">{{item.name}}</p>
 			</el-carousel-item>
@@ -10,6 +10,18 @@
 			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
 			  </ul>
 		  </el-collapse-transition>
+		  <div id="rainbow" class="header-banner">
+			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
+			    <el-carousel-item v-for="item in subjects" :key="item.id">
+			     	<div class="header-banner-bit" v-for="(child,index) in item.childs">
+			     		<div class="header-banner-click" :style="'background:'+child.color" @click="rainbow(index,child.id)">
+			     			<p>{{child.name}}</p>
+			     		</div>
+			     	</div>
+			    </el-carousel-item>
+			</el-carousel>
+		</div>
+
 		  <div class="header">
 			<p>科目报告单</p>
 			<div class="header-title-foot"></div>
@@ -312,6 +324,7 @@ export default {
     		return eachWorks;
     	},
     	rainbow:function(index,num){
+    		console.log("123");
 				for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
 					document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
 				}
@@ -356,15 +369,19 @@ czxc
 	position: relative;
 	border-top: 1px solid #f2f2f2
 }
-#teachLevel .el-carousel {
+#teachLevel .el-carousel  {
     overflow-x: hidden;
     position: relative;
-    height: 50px;
     text-align: center;
-    width: 400px;
     margin: auto;
+    width: 400px;
+    height: 50px;
     margin-top: 30px;
     line-height: 50px;
+}
+#teachLevel #rainbow .el-carousel{
+    width: 1100px;
+    height: 100px;
 }
 #teachLevel .el-carousel__container {
     position: relative;
@@ -494,7 +511,7 @@ czxc
 #teachLevel .header-banner-click p{
 	line-height: 73px;
 }
-#studentlevel .header-banner-bit .on{
+#teachLevel .header-banner-bit .on{
 	height: 105%;
 }
 </style>

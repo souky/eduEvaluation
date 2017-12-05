@@ -10,18 +10,7 @@
 			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
 			  </ul>
 		  </el-collapse-transition>
-		  <div id="rainbow" class="header-banner">
-			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
-			    <el-carousel-item v-for="item in subjects" :key="item.id">
-			     	<div class="header-banner-bit" v-for="(child,index) in item.childs">
-			     		<div class="header-banner-click" :style="'background:'+child.color" @click="rainbow(index,child.id)">
-			     			<p>{{child.name}}</p>
-			     		</div>
-			     	</div>
-			    </el-carousel-item>
-			</el-carousel>
-		</div>
-		  <div class="header">
+		 <div class="header">
 			<p>学校整体成绩报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
