@@ -224,7 +224,7 @@
 		</div>
 		<div id="knowledge" v-show="displayAll.knowledge">
 			<div class="header">
-				<p>知识点</p>
+				<p>知识点分析</p>
 				<div class="header-title-foot"></div>
 			</div>
 			<div class="body">
@@ -1543,11 +1543,11 @@
 #growthTrend .body{
 	padding-top:20px;
 }
-.choose-area{
+#studentlevel .choose-area{
 	width: 350px;
 	margin: auto;
 }
-.choose-area-left{
+#studentlevel .choose-area-left{
 	width: 115px;
 	height:50px;
 	border:1px solid #46C4F8;
@@ -1557,10 +1557,10 @@
 	color: #fff;
 	background: #46C4F8;
 }
-.choose-area-left p{
+#studentlevel .choose-area-left p{
 	line-height:55px;
 }
-.choose-area-midle{
+#studentlevel .choose-area-midle{
 	width: 115px;
 	height:50px;
 	border-top:1px solid #46C4F8;
@@ -1569,10 +1569,10 @@
 	float: left;
 	color: #46C4F8;
 }
-.choose-area-midle p{
+#studentlevel .choose-area-midle p{
 	line-height: 55px;
 }
-.choose-area-right{
+#studentlevel .choose-area-right{
 	width: 115px;
 	height:50px;
 	border:1px solid #46C4F8;
@@ -1581,7 +1581,7 @@
 	border-radius: 0 100px 100px 0;
 	color: #46C4F8;
 }
-.choose-area-right p{
+#studentlevel .choose-area-right p{
 	line-height: 55px;
 }
 #growthTrend #growthTrend1{
@@ -1600,102 +1600,102 @@
 	margin-top:70px;
 	float: left;
 }
-#subjectsDiagnosis2{
+#studentlevel #subjectsDiagnosis2{
 	width: 470px;
 	height: 500px;
 	float: left;
 	margin-top:70px;
 	margin-left: 20px;
 }
-.subjectsDiagnosisText{
+#studentlevel .subjectsDiagnosisText{
 	margin-top:20px;
 }
-.subjectsDiagnosisText p{
+#studentlevel .subjectsDiagnosisText p{
 	font-size: 14px;
 	color: #3D3D3D;
 	letter-spacing: 0;
 	line-height: 24px;
 }
-#myGoal{
+#studentlevel #myGoal{
 	margin-top:20px;
 }
-#myGoal .body{
+#studentlevel #myGoal .body{
 	padding-top: 20px;
 }
-.body-title-item{
+#studentlevel .body-title-item{
 	width: 584px;
 	height: 93px;
 	margin: auto;
 	border:1px solid #FF8585;
 }
-.body-title-itemTitle{
+#studentlevel .body-title-itemTitle{
 	width: 250px;
 	margin:auto;
 	line-height: 60px;
 }
-.body-title-itemTitle p{
+#studentlevel .body-title-itemTitle p{
 	float: left;
 	margin-left: 30px;
 }
-.body-title-itemTxt{
+#studentlevel .body-title-itemTxt{
 	width: 280px;
 	margin:auto;
 	line-height: 20px;
 }
-.body-title-itemTxt p{
+#studentlevel .body-title-itemTxt p{
 	float: left;
 	margin-left: 60px;
 	color: #FF8585;
 }
-#myGoal1{
+#studentlevel #myGoal1{
 	width: 1080px;
 	height: 460px;
 	margin: 30px;
 }
-#testAnalysis{
+#studentlevel #testAnalysis{
 	margin-top:20px;
 }
-#testAnalysis .body{
+#studentlevel #testAnalysis .body{
 	padding-top: 20px;
 }
-#testAnalysis .body-Vtitle{
+#studentlevel #testAnalysis .body-Vtitle{
 	width: 345px;
 	margin: auto;
 }
-#testAnalysis .body-Vtitle p{
+#studentlevel #testAnalysis .body-Vtitle p{
 	float: left;
 	margin-left: 8px;
 }
-#testAnalysis .testAnalysis-table{
+#studentlevel #testAnalysis .testAnalysis-table{
 	margin-top:20px;
 }
-#testAnalysis .active{
+#studentlevel #testAnalysis .active{
 	color: red;
 }
-#scoreQuestion{
+#studentlevel #scoreQuestion{
 	margin-top:20px;
 }
-#scoreQuestion .body{
+#studentlevel #scoreQuestion .body{
 	padding-top: 20px;
 }
-#scoreQuestion1{
+#studentlevel #scoreQuestion1{
 	width: 1080px;
 	height: 460px;
 	margin: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
-#twoDimensionalAnalysis{
+#studentlevel #twoDimensionalAnalysis{
 	margin-top:20px;
 }
-#twoDimensionalAnalysis1{
+#studentlevel #twoDimensionalAnalysis1{
 	width: 1080px;
 	height: 660px;
 	margin: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
-#twoDimensionalAnalysis .body{
+#studentlevel #twoDimensionalAnalysis .body{
 	padding-top:20px;
 }
 #studentlevel #twoDimensionalAnalysis .body-icon{
@@ -1724,115 +1724,125 @@
 #studentlevel #twoDimensionalAnalysis .color-darkGrey{
 	background: #919191;
 }
-.twoDimensionalAnalysis-foot{
+#studentlevel .twoDimensionalAnalysis-foot{
 	width: 870px;
     height: 30px;
     margin: auto;
     margin-top: -45px;
 }
-.twoDimensionalAnalysis-foot .difficultyLevel{
+#studentlevel .twoDimensionalAnalysis-foot .difficultyLevel{
 	width: 33.33%;
 	height: 100%;
 	float:left;
 	text-align: center;
 	color: #fff;
 }
-.twoDimensionalAnalysis-foot .easy{
+#studentlevel .twoDimensionalAnalysis-foot .easy{
 	background: #FF4444;
 }
-.twoDimensionalAnalysis-foot .midde{
+#studentlevel .twoDimensionalAnalysis-foot .midde{
 	background: #FF8585;
 }
-.twoDimensionalAnalysis-foot .difficult{
+#studentlevel .twoDimensionalAnalysis-foot .difficult{
 	background: #FEB0B0;
 }
-.twoDimensionalAnalysis-foot .difficultyLevel p{
+#studentlevel .twoDimensionalAnalysis-foot .difficultyLevel p{
 	line-height: 35px;
 	font-size: 12px;
 	letter-spacing: 0;
 }
-#twoDimensionalAnalysis .foot-word{
+#studentlevel #twoDimensionalAnalysis .foot-word{
 	width: 100%;
 	margin-top:20px;
 }
-#twoDimensionalAnalysis .foot-word p{
+#studentlevel #twoDimensionalAnalysis .foot-word p{
 	font-size: 14px;
 	color: #3D3D3D;
 	letter-spacing: 0;
 	line-height: 24px;
 }
-#knowledge{
+#studentlevel #knowledge{
 	margin-top:20px;
 }
-#knowledge .body{
+#studentlevel #knowledge .body{
 	padding-top:20px;
 }
-#knowledge1{
+#studentlevel #knowledge1{
 	width: 1080px;
 	height: 400px;
 	margin: auto;
 }
-.knowledge-table{
+#studentlevel .knowledge-table{
 	width: 1080px;
 	margin: auto;
 }
-#knowledge-table .el-table thead.is-group th{
+#studentlevel #knowledge-table .el-table thead.is-group th{
 	background: #70CDF3;
     color: #fff;
 }
-#knowledge-table .el-table_1_column_26_column_30{
+#studentlevel #knowledge-table .el-table_1_column_26_column_30{
 	border-right: 1px solid #e6ebf5 !important;
 }
-#knowledge-table-header .el-table__body-wrapper{
+#studentlevel #knowledge-table-header .el-table__body-wrapper{
 	display: none;
 }
-#knowledge-table .knowledge-table-true .el-table__header-wrapper{
+#studentlevel #knowledge-table .knowledge-table-true .el-table__header-wrapper{
 	display: none;
 }
-.knowledge-table-trueTotle{
+#studentlevel .knowledge-table-trueTotle{
 	width: 100%;
 	height: 50px;
 	background: #FF8585;	
 }
-.knowledge-table-trueTotle .knowledge-table-trueTotleBit{
+#studentlevel .knowledge-table-trueTotle .knowledge-table-trueTotleBit{
 	line-height: 50px;
 	float: left;
 	width: 160px;
 	color: #fff;
 	text-align: center;
 }
-.knowledge-foot{
+#studentlevel .knowledge-foot{
 	margin-top:20px;
 }
-.knowledge-foot p{
+#studentlevel .knowledge-foot p{
 	font-size: 14px;
 	color: #3D3D3D;
 	letter-spacing: 0;
 	line-height: 24px;
 }
-#abilityAnalyze{
+#studentlevel #abilityAnalyze{
 	margin-top: 20px;
 }
-#abilityAnalyze1{
+#studentlevel #abilityAnalyze1{
 	width: 1080px;
 	height: 520px;
 	margin: auto;
 	margin-top: 20px;
 }
-#abilityAnalyze2 .el-table--border td, .el-table--border th{
+#studentlevel #abilityAnalyze2 .el-table--border td, .el-table--border th{
 	border:0px !important;
 }
-#abilityAnalyze2 .el-table thead.is-group th{
+#studentlevel #abilityAnalyze2 .el-table thead.is-group th{
 	background: #70CDF3;
     color: #fff;
 }
-.abilityAnalyze-foot{
+#studentlevel .abilityAnalyze-foot{
 	margin-top: 20px;
 }
-.abilityAnalyze-foot p{
+#studentlevel .abilityAnalyze-foot p{
 	font-size: 14px;
 	color: #3D3D3D;
 	letter-spacing: 0;
 	line-height: 24px;
+}
+#studentlevel .el-select .el-input .el-input__icon{
+	color: #44A9FF
+}
+#studentlevel .el-carousel__arrow{
+	background-color: white;
+	color: #44A9FF
+}
+#studentlevel .el-carousel__arrow:hover{
+	background-color: white
 }
 </style>
