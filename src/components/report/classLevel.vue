@@ -1591,6 +1591,7 @@ export default{
 <style>
 #classLevel{
 	overflow: hidden;
+	border-top: 1px solid #f2f2f2;
 }
 #classLevel .header{
 	text-align: center;

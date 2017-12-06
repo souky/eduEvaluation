@@ -1467,6 +1467,7 @@
 <style>
 #studentlevel{
 	overflow: hidden;
+	border-top: 1px solid #f2f2f2;
 }
 #studentlevel #personalAchievement{
 	width: 1100px;

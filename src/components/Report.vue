@@ -24,6 +24,10 @@ export default {
 	},
 	created: function(){
 		this.$emit('refreshbizlines','other');
+		this.activeIndex=window.location.pathname;
+		if(window.location.pathname=="/report"){
+			this.activeIndex="/report/schoolLevel";
+		}
 	},
     methods: {
       handleClick(tab, event) {
