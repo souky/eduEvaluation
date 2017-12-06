@@ -7,7 +7,7 @@
 			    <el-input v-model="schoolInfo.schoolName"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校学段">
-			    <el-checkbox-group v-model="schoolInfo.schoolPeriod">
+			    <el-checkbox-group v-model="schoolInfo.periodArray">
 			      <el-checkbox label="小学" name="schoolPeriod"></el-checkbox>
 			      <el-checkbox label="初中" name="schoolPeriod"></el-checkbox>
 			      <el-checkbox label="高中" name="schoolPeriod"></el-checkbox>
@@ -35,7 +35,7 @@
 			    <el-input v-model="schoolInfo.schoolContactTel"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校学科">
-			    <el-checkbox-group v-model="schoolInfo.subjectId">
+			    <el-checkbox-group v-model="schoolInfo.subjectArray">
 			      <el-checkbox label="语文" name="subjectId"></el-checkbox>
 			      <el-checkbox label="数学" name="subjectId"></el-checkbox>
 			      <el-checkbox label="英语" name="subjectId"></el-checkbox>
@@ -49,7 +49,7 @@
 			  </el-form-item>
 			</el-form>
 			
-			<div class="ok_btn">
+			<div class="ok_btn" @click="updateSchool">
 				确认修改
 			</div>
 		</div>
@@ -65,13 +65,26 @@ export default {
 
     return {
       msg: 'schoolInfo',
-      schoolInfo:SchoolInfo.data,
+      schoolInfo:{},
     }
   },
   mounted:function(){
+  	this.postHttp(this,{},"school/querySchools",function(obj,res){
+  		obj.schoolInfo = res.result;
+  	})
   },
   methods:{
-
+	updateSchool(){
+		delete this.schoolInfo["createDate"];
+		delete this.schoolInfo["updateDate"];
+		this.postHttp(this,this.schoolInfo,"school/updateSchool",function(obj,res){
+	  		if(res.code = '10000'){
+  				obj.notify_success();
+  			}else{
+  				obj.notify_jr(obj,'操作错误',res.message,'error');
+  			}
+	  	})
+	}
   }
 }
 </script>

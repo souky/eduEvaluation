@@ -175,6 +175,15 @@ export default {
 	  	}else{
 	  		return '';
 	  	}
+	},
+	ajaxData(){
+		var data = new Object();
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["specificationName"] = this.queryInfos.specificationName;
+		data["gradeName"] = this.queryInfos.gradeName;
+		data["subjectName"] = this.queryInfos.subjectName;
+		return data;
 	}
   }
 }

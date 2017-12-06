@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 
 import Home from '@/components/Home'
+import Login from '@/components/Login'
 
 import ExamList from '@/components/examManager/ExamList'
 import TwoWayTable from '@/components/examManager/TwoWayTable'
@@ -33,6 +34,11 @@ export default new Router({
     	path: '/home',
         name: 'home',
         component: Home
+    },
+    {
+    	path: '/login',
+        name: 'login',
+        component: Login
     },
     {
 	    path: '/examList',

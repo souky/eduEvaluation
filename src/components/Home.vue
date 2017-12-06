@@ -14,6 +14,9 @@ export default {
     }
   },
   mounted:function(){
+  	this.postHttp(this,{},'school/querySchools',function(){
+  		
+  	})
   },
   methods:{
 

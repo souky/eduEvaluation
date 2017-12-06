@@ -31,7 +31,7 @@ Vue.prototype.echarts = require('echarts');
 
 var querystring = require('querystring');
 
-var baseUrl = "http://192.168.1.213:8080/balanced-education/"
+var baseUrl = "http://192.168.1.213:8080/edu-system/"
 /* 
  * 封装ajax
  * obj : 全局this
@@ -42,12 +42,11 @@ var baseUrl = "http://192.168.1.213:8080/balanced-education/"
 Vue.prototype.postHttp = function(obj,data,address,fn){
 	obj.$axios.post(baseUrl+address,querystring.stringify(data),{withCredentials : true}).then(response => {
   		if(response.data.code == "60000" || response.data.code == "50000"){
-  			obj.dialogFormVisible = true;
+  			obj.$router.push({ path: '/login' });
   		}else{
   			fn(obj,response.data);
   		}
     },response => {
-    	obj.loading = false;
 		obj.$notify({
 	      title: '网络错误',
 	      message: '网络错误',
@@ -85,6 +84,19 @@ Vue.prototype.notify_login = function(){
       offset: 100,
       duration:1500,
       type:'warning'
+    });
+}
+
+/* 
+ * 封装操作成功提示
+ * */
+Vue.prototype.notify_success = function(){
+	this.$notify({
+      title: '成功',
+      message:'操作成功',
+      offset: 100,
+      duration:1500,
+      type:'success'
     });
 }
 

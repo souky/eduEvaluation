@@ -4,16 +4,12 @@
 			
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
-			  	<div class="l">姓名</div>
+			  	<div class="l">名称</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.name" placeholder="姓名"></el-input>
+			  		<el-input v-model="queryInfos.roleName" placeholder="名称"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
-			  	<div class="l">用户名</div>
-			  	<div class="r">
-			  		<el-input v-model="queryInfos.userName" placeholder="用户名"></el-input>
-			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">	
 			  </el-col>
@@ -28,8 +24,8 @@
 		
 		<div class="role_info_table">
 			<div class="tools fix">
-				<div class="items_tools l">
-					<i class="el-icon-circle-plus-outline">新增</i>
+				<div class="items_tools l" @click="addNew">
+					<i class="el-icon-circle-plus-outline" >新增</i>
 				</div>	
 			</div>
 			<el-table :data="tableData" style="width: 100%">
@@ -51,6 +47,20 @@
 		      >
 		    </el-pagination>
 		</div>
+		
+		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		  <div class="dialog_body">
+		  	<el-form label-position="right" label-width="80px" :model="role">
+			  <el-form-item label="名称">
+			    <el-input v-model="role.roleName"></el-input>
+			  </el-form-item>
+			</el-form>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button type="primary" @click="colseDia">取 消</el-button>
+		    <el-button type="primary" @click="saveEdit">确 定</el-button>
+		  </span>
+		</el-dialog>
 	</div>
 	
 </template>
@@ -64,37 +74,63 @@ export default {
       msg: 'userManager',
       tableData:RoleManager.data,
       queryInfos:{
-	  	teacherName:'',
-	  	teacherDuty:'',
-	  	schoolName:''
+	  	roleName:''
 	  },
 	  pageNum:1,
       pageSize:10,
       total:1,
-      options:[
-      	{
-      		id:'0',
-      		value:'教师'
-      	},
-      	{
-      		id:'1',
-      		value:'学生'
-      	},
-      	{
-      		id:'2',
-      		value:'管理员'
-      	}
-      ]
+      
+      dialogVisible:false,
+      
+      role:{}
     }
   },
   mounted:function(){
+  	this.queryInfo();
   },
   methods:{
 	queryInfo(){
-  		
+  		var datas = this.ajaxData();
+	  	this.postHttp(this,datas,'role/queryRoles',function(obj,res){
+	  		obj.pageNum = res.result.pageNum;
+	  		obj.pageSize = res.result.pageSize;
+	  		obj.total = res.result.total;
+	  		obj.tableData = res.result.list;
+	  	})
+  	},
+  	colseDia(){
+  		this.dialogVisible = false;
+  		this.role = {};
+  	},
+  	saveEdit(){
+  		var id = this.role.id;
+  		var address = 'role/saveRole';
+  		if(id){
+  			address = 'role/updateRole';
+  		}
+  		this.postHttp(this,this.role,address,function(obj,res){
+  			if(res.code = '10000'){
+  				obj.dialogVisible = false;
+  				obj.notify_success();
+  				obj.queryInfo();
+  			}else{
+  				obj.notify_jr(obj,'操作错误',res.message,'error');
+  			}
+  		})
+  	},
+  	addNew(){
+  		this.dialogVisible = true;
+  		this.role = {};
   	},
 	editInfo(id){
-		
+		this.postHttp(this,{id:id},'role/getRoleById',function(obj,res){
+  			if(res.code = '10000'){
+  				obj.role = res.result;
+  				obj.dialogVisible = true;
+  			}else{
+  				obj.notify_jr(obj,'操作错误',res.message,'error');
+  			}
+  		})
 	},
 	deleteInfo(id){
 		
@@ -102,11 +138,11 @@ export default {
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSzie = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	timeFormatter(row, column, cellValue){
 		var date = row[column.property];  
@@ -114,6 +150,13 @@ export default {
 	     return "";  
 	  	}  
 	  	return this.timeF(date).format("YYYY-MM-DD HH:mm:ss");  
+	},
+	ajaxData(){
+		var data = new Object();
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["roleName"] = this.queryInfos.roleName;
+		return data;
 	}
   }
 }

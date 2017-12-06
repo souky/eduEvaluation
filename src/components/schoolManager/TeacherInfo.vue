@@ -16,10 +16,6 @@
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
-			  	<div class="l">学校</div>
-			  	<div class="r">
-			  		<el-input v-model="queryInfos.schoolName" placeholder="学校"></el-input>
-			  	</div>
 			  </el-col>
 			  <el-col :span="6">
 			  	<div class="btn_query r" @click="queryInfo">
@@ -32,7 +28,7 @@
 		
 		<div class="teacher_info_table">
 			<div class="tools fix">
-				<div class="items_tools l">
+				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline">新增</i>
 				</div>	
 			</div>
@@ -60,6 +56,57 @@
 		      >
 		    </el-pagination>
 		</div>
+		
+		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		  <div class="dialog_body">
+		  	<el-form label-position="right" label-width="80px" :model="teacher">
+	  		  <el-form-item label="姓名"  >
+			  	<el-input v-model="teacher.teacherName" placeholder="姓名"></el-input>
+			  </el-form-item>
+			  <el-form-item label="性别" >
+			    <el-select v-model="teacher.teacherSex" placeholder="请选择">
+				    <el-option v-for="item in sexOption" :key="item.id" :label="item.value" :value="item.id">
+				    </el-option>
+				</el-select>
+			  </el-form-item>
+			  <el-form-item label="年龄"  >
+			  	<el-input v-model="teacher.teacherAge" placeholder="年龄"></el-input>
+			  </el-form-item>
+			  <el-form-item label="手机号"  >
+			  	<el-input v-model="teacher.teacherMobile" placeholder="年龄"></el-input>
+			  </el-form-item>
+			  <el-form-item label="职务"  >
+			  	<el-select v-model="teacher.teacherDuty" placeholder="请选择">
+			  		<el-option v-for="item in dutyOption" :key="item.id" :label="item.id" :value="item.id">
+				    </el-option>
+				</el-select>
+			  </el-form-item>
+			  <el-form-item label="职称"  >
+			  	<el-input v-model="teacher.teacherJobTitle" placeholder="职称"></el-input>
+			  </el-form-item>
+			  <el-form-item label="年级" >
+			    <el-select v-model="teacher.grade" @change='changeGrade' placeholder="请选择">
+				    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
+				    </el-option>
+				</el-select>
+			  </el-form-item>
+			  <el-form-item label="班级" >
+			  	<el-checkbox-group v-model="teacher.classArray">
+			  		<el-checkbox v-for="e in classOption" :label="e.classroomName" name="classId"></el-checkbox>
+			    </el-checkbox-group>
+			  </el-form-item>
+			  <el-form-item label="学科" >
+			  	<el-checkbox-group v-model="teacher.subjectArray">
+			      <el-checkbox v-for="e in subjectOption" :label="e" name="subjectId"></el-checkbox>
+			    </el-checkbox-group>
+			  </el-form-item>
+			</el-form>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button type="primary" @click="colseDia">取 消</el-button>
+		    <el-button type="primary" @click="saveEdit">确 定</el-button>
+		  </span>
+		</el-dialog>
 	</div>
 	
 </template>
@@ -71,25 +118,109 @@ export default {
 
     return {
 	  msg: 'TeacherInfo',
-	  tableData:TeacherInfo.data,
+	  tableData:[],
 	  queryInfos:{
 	  	teacherName:'',
 	  	teacherDuty:'',
-	  	schoolName:''
 	  },
+	  
 	  pageNum:1,
       pageSize:10,
       total:1,
+      
+      dialogVisible:false,
+      teacher:{
+      	subjectArray:['语文'],
+      	classArray:[]
+      },
+	  sexOption:[
+	  	{
+	  		id:'1',
+	  		value:'男'
+	  	},
+	  	{
+	  		id:'0',
+	  		value:'女'
+	  	}
+	  ],
+	  dutyOption:[
+	  	{
+	  		id:'老师'
+	  	},
+	  	{
+	  		id:'班主任'
+	  	}
+	  ],
+	  gradeOption:[],
+	  subjectOption:[],
+	  classOption:[],
     }
   },
   mounted:function(){
+  	this.postHttp(this,{},'getLoingGrade',function(obj,res){
+  		obj.gradeOption = res.result;
+  	});
+  	this.queryInfo();
+  	
+  	this.postHttp(this,{},'school/querySchools',function(obj,res){
+  		obj.subjectOption = res.result.subjectArray;
+  	});
+  	
   },
   methods:{
   	queryInfo(){
-  		
+  		var datas = this.ajaxData();
+  		this.postHttp(this,datas,'teacher/queryTeachers',function(obj,res){
+	  		obj.pageNum = res.result.pageNum;
+	  		obj.pageSize = res.result.pageSize;
+	  		obj.total = res.result.total;
+	  		obj.tableData = res.result.list;
+	  	});
+  	},
+  	colseDia(){
+  		this.dialogVisible = false;
+  		this.teacher = {};
+  	},
+  	saveEdit(){
+  		var id = this.teacher.id;
+  		delete this.teacher["createDate"];
+  		delete this.teacher["updateDate"];
+  		var address = 'teacher/saveTeacher';
+  		var dataS = this.teacher
+  		if(id){
+  			address = 'teacher/updateTeacher';
+  		}
+  		console.log(dataS);
+		this.postHttp(this,dataS,address,function(obj,res){
+			if(res.code = '10000'){
+				obj.dialogVisible = false;
+				obj.notify_success();
+				obj.queryInfo();
+			}else{
+				obj.notify_jr(obj,'操作错误',res.message,'error');
+			}
+		})
+  	},
+  	addNew(){
+  		this.dialogVisible = true;
+  		this.teacher = {
+  			subjectArray:[],
+      		classArray:[]
+  		};
   	},
 	editInfo(id){
-		
+		this.dialogVisible = true;
+		this.postHttp(this,{id:id},"teacher/getTeacherById",function(obj,res){
+  			if(res.code = '10000'){
+  				obj.teacher = res.result;
+  				var grade = res.result.grade;
+  				obj.postHttp(obj,{grade:grade},'classroom/queryClassroomsByGrade',function(obj,res){
+			  		obj.classOption = res.result;
+			  	});
+  			}else{
+  				obj.notify_jr(obj,'操作错误',res.message,'error');
+  			}
+  		})
 	},
 	deleteInfo(id){
 		
@@ -113,6 +244,20 @@ export default {
 	  	}else{
 	  		return '女';
 	  	}
+	},
+	ajaxData(){
+		var data = new Object();
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["teacherName"] = this.queryInfos.teacherName;
+		data["teacherDuty"] = this.queryInfos.teacherDuty;
+		data["teacherDuty"] = this.queryInfos.teacherDuty;
+		return data;
+	},
+	changeGrade(val){
+		this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
+	  		obj.classOption = res.result;
+	  	});
 	}
   }
 }
