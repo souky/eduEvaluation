@@ -1,5 +1,11 @@
 <template>
 	<div id="classLevel">
+		<ul id="navInside" v-show="displayAll.studentGradeDistribution">
+			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
+		</ul>
+		<ul id="navInside1" v-show="displayAll.gradeDistribution">
+			<li v-for="item in liList1" :class="activeList1 == item.id? 'active': ''" :key="item.id" @click="testtest1(item.id)">{{item.name}}</li>
+		</ul>
 		<el-carousel id="testChange" :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 			<el-carousel-item v-for="item in testList" :key="item.id">
 				<p class="alltest" @click="selectShow">{{item.name}}</p>
@@ -26,7 +32,7 @@
 				<el-option v-for="item in schoolList" :key="item.id" :label="item.name" :value="item.id"></el-option>
 			</el-select>
 		</div>
-		<div id="classTotalScore" v-show="displayAll.classTotalScore">
+		<div id="classTotalScore" class="louceng louceng1" v-show="displayAll.classTotalScore">
 			<div class="header">
 				<p>班级总成绩</p>
 				<div class="header-title-foot"></div>
@@ -74,7 +80,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="ranking" v-show="displayAll.ranking" class="mt20">
+	<div id="ranking" v-show="displayAll.ranking" class="mt20 louceng1">
 		<div class="header">
 			<p>校前？名分布图</p>
 			<div class="header-title-foot"></div>
@@ -117,7 +123,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="ClassdisciplinesLevel" v-show="displayAll.ClassdisciplinesLevel" class="mt20">
+	<div id="ClassdisciplinesLevel" v-show="displayAll.ClassdisciplinesLevel" class="mt20 louceng1">
 		<div class="header">
 			<p>班级学科均衡水平</p>
 			<div class="header-title-foot"></div>
@@ -201,7 +207,7 @@
 	<center v-show="diaStudentsLoading" style="margin-top:20%;"><i class="el-icon-loading"></i></center>
 	<div id="classLastStudents"></div>
 </el-dialog>
-<div id="classTestAnalysis" v-show="displayAll.classTestAnalysis" class="mt20">
+<div id="classTestAnalysis" v-show="displayAll.classTestAnalysis" class="mt20 louceng">
 	<div class="header">
 		<p>试题分析</p>
 		<div class="header-title-foot"></div>
@@ -256,7 +262,7 @@
 		</div>
 	</div>
 </div>
-<div id="classknowledge" v-show="displayAll.classknowledge" class="mt20">
+<div id="classknowledge" v-show="displayAll.classknowledge" class="mt20 louceng">
 	<div class="header">
 		<p>知识点分析</p>
 		<div class="header-title-foot"></div>
@@ -331,6 +337,28 @@
 export default{
 	data(){
 		return{
+			activeList:0,
+			activeList1:0,
+			liList:[{
+				name:'班级总成绩',
+				id:0
+			},{
+				name:'试题分析',
+				id:1
+			},{
+				name:'知识点分析',
+				id:2
+			}],
+			liList1:[{
+				name:'班级总成绩',
+				id:0
+			},{
+				name:'校前 ？名分布图',
+				id:1
+			},{
+				name:'班级学科均衡水平',
+				id:2
+			}],
 			diaLoading:true,
 			diaStudentsLoading:true,
 			contrastTestStudents:false,
@@ -1397,9 +1425,52 @@ export default{
 					this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
 					this.echarts.init(document.getElementById("classknowledge1")).setOption(this.optionclassknowledge);
 					this.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(this.optionclassabilityAnalyze);
+					var olouceng = document.getElementsByClassName("louceng");
+			    	var oNav = document.getElementById("navInside").getElementsByTagName("li");
+			    	var olouceng1 = document.getElementsByClassName("louceng1");
+			    	var oNav1 = document.getElementById("navInside1").getElementsByTagName("li");
+			    	window.addEventListener('scroll',()=>{
+			    		var oheight = document.documentElement.clientHeight || document.body.clientHeight;
+			    		var otop = document.documentElement.scrollTop || document.body.scrollTop;
+			    		if(otop>=250){
+			    			for(var i=0;i<olouceng.length;i++){
+			    				if(oheight+otop-olouceng[i].offsetTop>oheight/1.5){
+			    					for(var j=0;j<oNav.length;j++){
+										oNav[j].className = '';
+										
+									}
+									oNav[i].className = 'active';
+			    				}
+
+			    			}
+			    			for(var i=0;i<olouceng1.length;i++){
+			    				if(oheight+otop-olouceng1[i].offsetTop>oheight/1.5){
+			    					for(var j=0;j<oNav1.length;j++){
+										oNav1[j].className = '';
+										
+									}
+									oNav1[i].className = 'active'
+			    				}
+
+			    			}
+			    		}else{
+			    		}
+			    	});
 
 				},
 				methods:{
+					testtest:function(e){
+			    		var olouceng = document.getElementsByClassName("louceng");
+			    		var oNav = document.getElementById("navInside").getElementsByTagName("li");
+			    		this.activeList = e;
+						window.scrollTo(0 ,olouceng[e].offsetTop-100);
+		    		},
+		    		testtest1:function(e){
+			    		var olouceng = document.getElementsByClassName("louceng1");
+			    		var oNav = document.getElementById("navInside1").getElementsByTagName("li");
+			    		this.activeList1 = e;
+						window.scrollTo(0 ,olouceng[e].offsetTop-100);
+		    		},
 					changetest:function(e){
 						this.showselect = !this.showselect
 					},
@@ -1412,6 +1483,11 @@ export default{
 						}
 						document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
 						if(num==1){
+							var oNav = document.getElementById("navInside1").getElementsByTagName("li");
+							for(var a = 0;a<oNav.length;a++){
+								oNav[a].className = '';
+							}
+							oNav[0].className = 'active';
 							this.displayAll.classTotalScore=true;
 							this.displayAll.gradeDistribution=true;
 							this.displayAll.ranking=true;
@@ -1424,6 +1500,11 @@ export default{
 							this.displayAll.classknowledge=false;
 							this.displayAll.classabilityAnalyze=false;
 						}else{
+							var oNav = document.getElementById("navInside").getElementsByTagName("li");
+							for(var a = 0;a<oNav.length;a++){
+								oNav[a].className = '';
+							}
+							oNav[0].className = 'active';
 							this.displayAll.classTotalScore=true;
 							this.displayAll.gradeDistribution=false;
 							this.displayAll.ranking=false;

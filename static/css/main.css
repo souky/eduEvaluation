@@ -40,6 +40,33 @@
 	color: white!important;
 	cursor: default;
 }
+#navInside,#navInside1{
+	position: fixed;
+    width: 43px;
+    z-index: 999;
+    border:1px solid #44A9FF;
+    background-color: white;
+    margin-left: -60px;
+	border-radius: 4px
+}
+#navInside li,#navInside1 li{
+	padding:17px 7px;
+	color: #44A9FF;
+	text-align: center;
+	line-height: 16px;
+	border-bottom: 1px solid #44A9FF;
+	cursor: default;
+}
+#navInside li.active,#navInside1 li.active{
+	color: white;
+	background-color: #44A9FF;
+}
+#navInside li:last-child{
+	border-bottom:0;
+}
+#navInside1 li:last-child{
+	border-bottom:0;
+}
 ul li{  
 list-style-type:none;  
 }  

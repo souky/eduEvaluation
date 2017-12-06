@@ -1,5 +1,11 @@
 <template>
 	<div id="studentlevel">
+		<ul id="navInside" v-show="displayAll.anotherpersonalAchievement">
+			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
+		</ul>
+		<ul id="navInside1" v-show="displayAll.personalAchievement">
+			<li v-for="item in liList1" :class="activeList1 == item.id? 'active': ''" :key="item.id" @click="testtest1(item.id)">{{item.name}}</li>
+		</ul>
 		<el-carousel id="testChange" :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 		    <el-carousel-item v-for="item in testList" :key="item.id">
 		      <p class="alltest" @click="selectShow">{{item.name}}</p>
@@ -21,7 +27,7 @@
 			    </el-carousel-item>
 			</el-carousel>
 		</div>
-		<div id="personalAchievement" v-show="displayAll.personalAchievement">
+		<div id="personalAchievement" class="louceng1" v-show="displayAll.personalAchievement">
 			<div class="header">
 				<p>个人成绩报告单</p>
 				<div class="header-title-foot"></div>
@@ -38,7 +44,7 @@
 				</el-table>
 			</div>
 		</div>
-		<div id="anotherpersonalAchievement" v-show="displayAll.anotherpersonalAchievement">
+		<div id="anotherpersonalAchievement" class="louceng" v-show="displayAll.anotherpersonalAchievement">
 			<div class="header">
 				<p>个人成绩报告单</p>
 				<div class="header-title-foot"></div>
@@ -76,8 +82,8 @@
 				<div id="beyondRate1"></div>
 			</div>
 		</div>
-		<div id="growthTrend" v-show="displayAll.growthTrend">
-			<div class="header">
+		<div id="growthTrend" class="louceng" v-show="displayAll.growthTrend">
+			<div class="header ">
 				<p>成长趋势</p>
 				<div class="header-title-foot"></div>
 			</div>
@@ -96,7 +102,7 @@
 				<div id="growthTrend1" class="cl"></div>
 			</div>
 		</div>
-		<div id="subjectsDiagnosis" v-show="displayAll.subjectsDiagnosis">
+		<div id="subjectsDiagnosis" class="louceng1" v-show="displayAll.subjectsDiagnosis">
 			<div class="header">
 				<p>科目诊断</p>
 				<div class="header-title-foot"></div>
@@ -122,7 +128,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="myGoal" v-show="displayAll.myGoal">
+		<div id="myGoal" class="louceng1" v-show="displayAll.myGoal">
 			<div class="header">
 				<p>我的目标：下次考试可以增加？分</p>
 				<div class="header-title-foot"></div>
@@ -148,7 +154,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="testAnalysis" v-show="displayAll.testAnalysis">
+		<div id="testAnalysis" class="louceng" v-show="displayAll.testAnalysis">
 			<div class="header">
 				<p>试题分析</p>
 				<div class="header-title-foot"></div>
@@ -232,7 +238,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="knowledge" v-show="displayAll.knowledge">
+		<div id="knowledge" class="louceng" v-show="displayAll.knowledge">
 			<div class="header">
 				<p>知识点分析</p>
 				<div class="header-title-foot"></div>
@@ -305,8 +311,34 @@
 </template>
 <script>
 	export default {
+
    		data(){
 			return{
+			activeList:0,
+			activeList1:0,
+			liList:[{
+				name:'个人成绩报告单',
+				id:0
+			},{
+				name:'成长趋势',
+				id:1
+			},{
+				name:'试题分析',
+				id:2
+			},{
+				name:'知识点分析',
+				id:3
+			}],
+			liList1:[{
+				name:'个人成绩报告单',
+				id:0
+			},{
+				name:'科目诊断',
+				id:1
+			},{
+				name:'我的目标',
+				id:2
+			}],
 				showselect:false,
 				displayAll:{
 					personalAchievement:true,
@@ -1102,6 +1134,37 @@
 		  	this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
 		  	this.echarts.init(document.getElementById("knowledge1")).setOption(this.optionknowledge);
 		  	this.echarts.init(document.getElementById("abilityAnalyze1")).setOption(this.optionabilityAnalyze);
+		  	var olouceng = document.getElementsByClassName("louceng");
+	    	var oNav = document.getElementById("navInside").getElementsByTagName("li");
+	    	var olouceng1 = document.getElementsByClassName("louceng1");
+	    	var oNav1 = document.getElementById("navInside1").getElementsByTagName("li");
+	    	window.addEventListener('scroll',()=>{
+	    		var oheight = document.documentElement.clientHeight || document.body.clientHeight;
+	    		var otop = document.documentElement.scrollTop || document.body.scrollTop;
+	    		if(otop>=250){
+	    			for(var i=0;i<olouceng.length;i++){
+	    				if(oheight+otop-olouceng[i].offsetTop>oheight/1.5){
+	    					for(var j=0;j<oNav.length;j++){
+								oNav[j].className = '';
+								
+							}
+							oNav[i].className = 'active';
+	    				}
+
+	    			}
+	    			for(var i=0;i<olouceng1.length;i++){
+	    				if(oheight+otop-olouceng1[i].offsetTop>oheight/1.5){
+	    					for(var j=0;j<oNav1.length;j++){
+								oNav1[j].className = '';
+								
+							}
+							oNav1[i].className = 'active'
+	    				}
+
+	    			}
+	    		}else{
+	    		}
+	    	});
 		 },
 		methods:{
 			changetest:function(e){
@@ -1110,12 +1173,29 @@
 				selectShow:function(){
 		    		this.showselect = !this.showselect
 		    	},
+		    testtest:function(e){
+	    		var olouceng = document.getElementsByClassName("louceng");
+	    		var oNav = document.getElementById("navInside").getElementsByTagName("li");
+	    		this.activeList = e;
+				window.scrollTo(0 ,olouceng[e].offsetTop-100);
+    		},
+    		testtest1:function(e){
+	    		var olouceng = document.getElementsByClassName("louceng1");
+	    		var oNav = document.getElementById("navInside1").getElementsByTagName("li");
+	    		this.activeList1 = e;
+				window.scrollTo(0 ,olouceng[e].offsetTop-100);
+    		},
 			rainbow:function(index,num){
 				for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
 					document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
 				}
 				document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
 				if(num==1){
+					var oNav = document.getElementById("navInside1").getElementsByTagName("li");
+					for(var a = 0;a<oNav.length;a++){
+						oNav[a].className = '';
+					}
+					oNav[0].className = 'active';
 					this.displayAll.personalAchievement=true;
 					this.displayAll.beyondRate=true;
 					this.displayAll.growthTrend=true;
@@ -1127,7 +1207,13 @@
 					this.displayAll.twoDimensionalAnalysis=false;
 					this.displayAll.knowledge=false;
 					this.displayAll.abilityAnalyze=false;
+					this.activeList = 0;this.activeList1 = 0;
 				}else{
+					var oNav = document.getElementById("navInside").getElementsByTagName("li");
+					for(var a = 0;a<oNav.length;a++){
+						oNav[a].className = '';
+					}
+					oNav[0].className = 'active';
 					this.displayAll.personalAchievement=false;
 					this.displayAll.beyondRate=true;
 					this.displayAll.growthTrend=true;
@@ -1139,6 +1225,7 @@
 					this.displayAll.twoDimensionalAnalysis=true;
 					this.displayAll.knowledge=true;
 					this.displayAll.abilityAnalyze=true;
+					this.activeList = 0;this.activeList1 = 0;
 				}
 			},
 			chooseArea:function(e,num){

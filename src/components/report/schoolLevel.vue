@@ -1,10 +1,7 @@
 <template>
 	<div id="schoolLevel" class="mainbody">
-		<ul id="navInside">
-			<li class="active">学校整体成绩报告单</li>
-			<li>各班成绩报告单</li>
-			<li>各班级等级分布对比</li>
-			<li>科目成绩报告单</li>
+		<ul id="navInside" >
+			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
 		</ul>
 		  <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 		    <el-carousel-item v-for="item in testList" :key="item.id">
@@ -70,7 +67,7 @@
 					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
 		  		</div>
 		  </div>
-		   <div class="header louceng">
+		   <div class="header louceng" >
 			<p>各班成绩报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -184,6 +181,20 @@ import IndexData from '../../assets/data/schoolLevel.js'
 export default {
 	data(){
 		return {
+			activeList:0,
+			liList:[{
+				name:'学校整体成绩报告单',
+				id:0
+			},{
+				name:'各班成绩报告单',
+				id:1
+			},{
+				name:'各班级等级分布对比',
+				id:2
+			},{
+				name:'科目成绩报告单',
+				id:3
+			}],
 			autoplay:false,
 			alse:'二中',
 			IndexData,
@@ -240,27 +251,36 @@ export default {
     		}
     		return eachWorks;
     	},
-    	
     	compareSchool:function(){
+    	},
+    	testtest:function(e){
+    		var olouceng = document.getElementsByClassName("louceng");
+    		var oNav = document.getElementById("navInside").getElementsByTagName("li");
+    		this.activeList = e;
+			window.scrollTo(0 ,olouceng[e].offsetTop);
     	}
     },
     mounted:function(){
     	var olouceng = document.getElementsByClassName("louceng");
+    	var oNav = document.getElementById("navInside").getElementsByTagName("li");
     	window.addEventListener('scroll',()=>{
     		var oheight = document.documentElement.clientHeight || document.body.clientHeight;
     		var otop = document.documentElement.scrollTop || document.body.scrollTop;
-    		
-
     		if(otop>=250){
-    			
     			for(var i=0;i<olouceng.length;i++){
-    				if(oheight+otop-olouceng[i].offsetTop>oheight/1.2){
-						
+    				if(oheight+otop-olouceng[i].offsetTop>oheight/1.1){
+    					for(var j=0;j<oNav.length;j++){
+							oNav[j].className = '';
+							
+						}
+						oNav[i].className = 'active'
     				}
+
     			}
     		}else{
     		}
     	});
+    	
     	//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;
@@ -281,9 +301,7 @@ export default {
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
     	this.option5 = this.IndexData.option5;
-
-
-    	//等级分布图
+		//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
@@ -414,29 +432,6 @@ export default {
 	width: 100%;
 	height: 530px
 }
-#navInside{
-	position: fixed;
-    width: 43px;
-    z-index: 999;
-    border:1px solid #44A9FF;
-    background-color: white;
-    margin-left: -60px;
-	border-radius: 4px
-}
-#navInside li{
-	padding:17px 7px;
-	color: #44A9FF;
-	text-align: center;
-	line-height: 16px;
-	border-bottom: 1px solid #44A9FF;
-	cursor: default;
-}
-#navInside li.active{
-	color: white;
-	background-color: #44A9FF;
-}
-#navInside li:last-child{
-	border-bottom:0;
-}
+
 
 </style>

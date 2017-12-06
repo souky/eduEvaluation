@@ -1,5 +1,8 @@
 <template>
 	<div id="teachLevel" class="mainbody">
+		<ul id="navInside" >
+			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
+		</ul>
 		  <el-carousel id="testChange" :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 		    <el-carousel-item v-for="item in testList" :key="item.id">
 		      <p class="alltest" @click="selectShow">{{item.name}}</p>
@@ -22,7 +25,7 @@
 			</el-carousel>
 		</div>
 
-		  <div class="header">
+		  <div class="header louceng">
 			<p>科目报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -91,7 +94,7 @@
 					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
 		  		</div>
 		  </div>
-		   <div class="header">
+		   <div class="header louceng">
 			<p>各班级科目报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -137,7 +140,7 @@
 		  		<p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p>
 		  </div>
 
-		  <div class="header">
+		  <div class="header louceng">
 			<p>各班级等级分布对比</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -157,7 +160,7 @@
 		  		</div> 
 		  		<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
 		  </div>
-		  <div class="header">
+		  <div class="header louceng">
 			<p>试卷分析</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -232,6 +235,20 @@ import IndexData from '../../assets/data/teachingLevel.js'
 export default {
 	data(){
 		return {
+			activeList:0,
+			liList:[{
+				name:'科目报告单',
+				id:0
+			},{
+				name:'各班级科目报告单',
+				id:1
+			},{
+				name:'各班级等级分布对比',
+				id:2
+			},{
+				name:'试卷分析',
+				id:3
+			}],
 			autoplay:false,
 			alse:'二中',
 			IndexData,
@@ -658,7 +675,13 @@ export default {
 				    ]
 				}
 				this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
-			}
+		},
+		testtest:function(e){
+    		var olouceng = document.getElementsByClassName("louceng");
+    		var oNav = document.getElementById("navInside").getElementsByTagName("li");
+    		this.activeList = e;
+			window.scrollTo(0 ,olouceng[e].offsetTop);
+    	}
     },
     mounted:function(){
     	//接js模拟数据
@@ -698,7 +721,25 @@ export default {
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     	this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
     	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option6);
-    	
+    	var olouceng = document.getElementsByClassName("louceng");
+    	var oNav = document.getElementById("navInside").getElementsByTagName("li");
+    	window.addEventListener('scroll',()=>{
+    		var oheight = document.documentElement.clientHeight || document.body.clientHeight;
+    		var otop = document.documentElement.scrollTop || document.body.scrollTop;
+    		if(otop>=300){
+    			for(var i=0;i<olouceng.length;i++){
+    				if(oheight+otop-olouceng[i].offsetTop>oheight/1.1){
+    					for(var j=0;j<oNav.length;j++){
+							oNav[j].className = '';
+							
+						}
+						oNav[i].className = 'active'
+    				}
+
+    			}
+    		}else{
+    		}
+    	});
 
     }
 }
