@@ -33,7 +33,7 @@
 				<div class="header-title-foot"></div>
 			</div>
 			<div class="body">
-				<el-table :data="tableData" stripe style="width: 100%" header-row-class-name="table-header">
+				<el-table class="borders" :data="tableData" stripe style="width: 100%" header-row-class-name="table-header">
 				    <el-table-column align="center" prop="subjects" label="科目"></el-table-column>
 				    <el-table-column align="center" prop="score" label="分数"></el-table-column>
 				    <el-table-column align="center" prop="grades" label="分数等级"></el-table-column>
@@ -50,7 +50,7 @@
 				<div class="header-title-foot"></div>
 			</div>
 			<div class="body">
-				<el-table :data="anothertableData" stripe style="width: 100%" header-row-class-name="table-header">
+				<el-table class="borders" :data="anothertableData" stripe style="width: 100%" header-row-class-name="table-header">
 				    <el-table-column align="center" prop="rawScore" label="原始分数"></el-table-column>
 				    <el-table-column align="center" prop="score" label="平均分(校级)"></el-table-column>
 				    <el-table-column align="center" prop="highestClass" label="最高分(班级)"></el-table-column>
@@ -172,13 +172,14 @@
 				</div>
 				<div class="cl"></div>
 				<div class="testAnalysis-table">
-					<el-table :data="testAnalysisTable" stripe style="width: 100%" header-row-class-name="table-header">
+					<el-table class="borders" :data="testAnalysisTable" stripe style="width: 100%" header-row-class-name="table-header">
 					    <el-table-column align="center" prop="qid" label="题号"></el-table-column>
 					    <el-table-column align="center" prop="topic" label="题型"></el-table-column>
 					    <el-table-column align="center" prop="fractionalValue" label="分值"></el-table-column>
 					    <el-table-column align="center" prop="score.value" label="得分">
 					    	<template scope="scope">
-					            <span v-bind:class="{active: (scope.row.score.key == 1)}">{{ scope.row.score.value }}</span>
+					            <span v-if="scope.row.score.value == 0" v-bind:class="{activeS: (scope.row.score.value == 0)}">{{ scope.row.score.value }}</span>
+								<span v-else v-bind:class="{active: (scope.row.score.key == 1)}">{{ scope.row.score.value }}</span>
 					        </template>
 					    </el-table-column>
 					    <el-table-column align="center" prop="divideClass" label="班级均分"></el-table-column>
@@ -291,7 +292,7 @@
 			<div class="body">
 				<div id="abilityAnalyze1"></div>
 				<div id="abilityAnalyze2">
-					<el-table :data="scoreName" style="width: 100%">
+					<el-table class="borders" :data="scoreName" style="width: 100%">
     					<el-table-column align="center" prop="name" label="能力"></el-table-column>
     						<el-table-column align="center" label="得分率">
       							<el-table-column align="center" prop="scoreClass" label="班级"></el-table-column>
@@ -538,7 +539,22 @@
 					fractionalValue:12,
 					score:{
 						key:1,
-						value:10
+						value:6
+					},
+					divideClass:343,
+					divideSchool:45,
+					divideAera:98,
+					knowledge:78,
+					studyAbility:90,
+					difficulty:787,
+					differentiation:0.9,
+				},{
+					qid:2,
+					topic:123,
+					fractionalValue:12,
+					score:{
+						key:0,
+						value:0
 					},
 					divideClass:343,
 					divideSchool:45,
@@ -1237,6 +1253,16 @@
 				document.getElementById("growthTrend").getElementsByClassName("choose-area-right")[0].style.color="#46C4F8";
 				e.currentTarget.style.background="#46C4F8";
 				e.currentTarget.style.color="#fff";
+				if(num=="class"){
+					this.optionGrowthTrend.series[0].data=[34.9, 44.8, 40.84, 48.3];
+				}
+				if(num=="school"){
+					this.optionGrowthTrend.series[0].data=[2.9, 7.8, 40.84, 48.3];
+				}
+				if(num=="area"){
+					this.optionGrowthTrend.series[0].data=[34.9, 44.8, 48.84, 23.3]
+				}
+				this.echarts.init(document.getElementById("growthTrend1")).setOption(this.optionGrowthTrend);
 			},
 			chooseSubject:function(e,num){
 				alert(123)
@@ -1248,22 +1274,23 @@
 				document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-right")[0].style.color="#46C4F8";
 				e.currentTarget.style.background="#46C4F8";
 				e.currentTarget.style.color="#fff";
-				/*this.optionSubjectsDiagnosisRight.series={
-				            type: 'radar',
-				            data: [
-				                {
-				                    name: '个人',
-				                    value: [77,43,54,65,23],
-				                    itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
-				                },
-				                {
-				                    name:'平均水平',
-				                    value:[65,54,56,76,87],
-				                    itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
-				                }
-				            ]
-				        }
-				this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);*/
+				if(num=="class"){
+					this.optionSubjectsDiagnosis.series[0].data=[70, 75, 65, 67, 42];
+					this.optionSubjectsDiagnosisRight.series[0].data[0].value=[23,43,54,65,23];
+					this.optionSubjectsDiagnosisRight.series[0].data[1].value=[34,54,56,76,87];
+				}
+				if(num=="school"){
+					this.optionSubjectsDiagnosis.series[0].data=[40, 65, 65, 67, 42];
+					this.optionSubjectsDiagnosisRight.series[0].data[0].value=[13,33,54,65,23];
+					this.optionSubjectsDiagnosisRight.series[0].data[1].value=[34,54,66,66,87];
+				}
+				if(num=="area"){
+					this.optionSubjectsDiagnosis.series[0].data=[60, 25, 65, 97, 42];
+					this.optionSubjectsDiagnosisRight.series[0].data[0].value=[23,23,54,65,23];
+					this.optionSubjectsDiagnosisRight.series[0].data[1].value=[34,64,56,66,87];
+				}
+				this.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(this.optionSubjectsDiagnosis);
+		  		this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);
 			},
 			twoDimensionalAnalysisChoose:function(obj){
 				if(obj=='class'){
@@ -1553,8 +1580,10 @@
 </script>
 <style>
 #studentlevel{
-	overflow: hidden;
 	border-top: 1px solid #f2f2f2;
+}
+#studentlevel .borders{
+	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
 }
 #studentlevel #personalAchievement{
 	width: 1100px;
@@ -1785,7 +1814,10 @@
 	margin-top:20px;
 }
 #studentlevel #testAnalysis .active{
-	color: red;
+	color: #52D871;
+}
+#studentlevel #testAnalysis .activeS{
+	color: #FF8585;
 }
 #studentlevel #scoreQuestion{
 	margin-top:20px;

@@ -38,7 +38,7 @@
 				<div class="header-title-foot"></div>
 			</div>
 			<div class="body pt20">
-				<el-table :data="schoolSelectBoxData" stripe style="width: 100%" header-row-class-name="table-header">
+				<el-table class="borders" :data="schoolSelectBoxData" stripe style="width: 100%" header-row-class-name="table-header">
 					<el-table-column align="center" prop="name" label=""></el-table-column>
 					<el-table-column align="center" prop="class" label="班级"></el-table-column>
 					<el-table-column align="center" prop="school" label="学校"></el-table-column>
@@ -111,7 +111,7 @@
 				</div>
 			</div>
 			<div class="cl" id="ranking3">
-				<el-table :data="rankingData" stripe style="width: 100%" header-row-class-name="table-header">
+				<el-table class="borders" :data="rankingData" stripe style="width: 100%" header-row-class-name="table-header">
 					<el-table-column align="center" prop="topic10" label="前10名"></el-table-column>
 					<el-table-column align="center" prop="topic20" label="前20名"></el-table-column>
 					<el-table-column align="center" prop="topic50" label="前50名"></el-table-column>
@@ -213,7 +213,7 @@
 		<div class="header-title-foot"></div>
 	</div>
 	<div class="body pt20">
-		<el-table :data="testAnalysisTable" stripe style="width: 100%" header-row-class-name="table-header">
+		<el-table class="borders" :data="testAnalysisTable" stripe style="width: 100%" header-row-class-name="table-header">
 			<el-table-column align="center" prop="qid" label="题号"></el-table-column>
 			<el-table-column align="center" prop="topic" label="题型"></el-table-column>
 			<el-table-column align="center" prop="fractionalValue" label="分值"></el-table-column>
@@ -312,7 +312,7 @@
 	<div class="body pt20">
 		<div id="classabilityAnalyze1"></div>
 		<div id="classabilityAnalyze2">
-			<el-table :data="scoreName" style="width: 100%">
+			<el-table class="borders" :data="scoreName" style="width: 100%">
 				<el-table-column align="center" prop="name" label="能力"></el-table-column>
 				<el-table-column align="center" label="得分率">
 					<el-table-column align="center" prop="scoreClass" label="班级"></el-table-column>
@@ -1671,8 +1671,10 @@ export default{
 			</script>
 <style>
 #classLevel{
-	overflow: hidden;
 	border-top: 1px solid #f2f2f2;
+}
+#classLevel .borders{
+	box-shadow: 1px 1px 14px rgba(0,0,0,.15);
 }
 #classLevel .header{
 	text-align: center;
