@@ -1,5 +1,11 @@
 <template>
 	<div id="schoolLevel" class="mainbody">
+		<ul id="navInside">
+			<li class="active">学校整体成绩报告单</li>
+			<li>各班成绩报告单</li>
+			<li>各班级等级分布对比</li>
+			<li>科目成绩报告单</li>
+		</ul>
 		  <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
 		    <el-carousel-item v-for="item in testList" :key="item.id">
 		      <p class="alltest" @click="selectShow">{{item.name}}</p>
@@ -10,7 +16,7 @@
 			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
 			  </ul>
 		  </el-collapse-transition>
-		 <div class="header">
+		 <div class="header louceng">
 			<p>学校整体成绩报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -64,7 +70,7 @@
 					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
 		  		</div>
 		  </div>
-		   <div class="header">
+		   <div class="header louceng">
 			<p>各班成绩报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -108,7 +114,7 @@
 		  		<p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p>
 		  </div>
 
-		  <div class="header">
+		  <div class="header louceng">
 			<p>各班级等级分布对比</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -129,7 +135,7 @@
 		  		</div>
 		  		<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
 		  </div>
-		  <div class="header">
+		  <div class="header louceng">
 			<p>科目成绩报告单</p>
 			<div class="header-title-foot"></div>
 		  </div>
@@ -239,6 +245,22 @@ export default {
     	}
     },
     mounted:function(){
+    	var olouceng = document.getElementsByClassName("louceng");
+    	window.addEventListener('scroll',()=>{
+    		var oheight = document.documentElement.clientHeight || document.body.clientHeight;
+    		var otop = document.documentElement.scrollTop || document.body.scrollTop;
+    		
+
+    		if(otop>=250){
+    			
+    			for(var i=0;i<olouceng.length;i++){
+    				if(oheight+otop-olouceng[i].offsetTop>oheight/1.2){
+						
+    				}
+    			}
+    		}else{
+    		}
+    	});
     	//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;
@@ -259,6 +281,8 @@ export default {
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
     	this.option5 = this.IndexData.option5;
+
+
     	//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
@@ -390,4 +414,29 @@ export default {
 	width: 100%;
 	height: 530px
 }
+#navInside{
+	position: fixed;
+    width: 43px;
+    z-index: 999;
+    border:1px solid #44A9FF;
+    background-color: white;
+    margin-left: -60px;
+	border-radius: 4px
+}
+#navInside li{
+	padding:17px 7px;
+	color: #44A9FF;
+	text-align: center;
+	line-height: 16px;
+	border-bottom: 1px solid #44A9FF;
+	cursor: default;
+}
+#navInside li.active{
+	color: white;
+	background-color: #44A9FF;
+}
+#navInside li:last-child{
+	border-bottom:0;
+}
+
 </style>
