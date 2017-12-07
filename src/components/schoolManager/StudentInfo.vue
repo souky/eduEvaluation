@@ -55,11 +55,11 @@
 		
 		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
-		  	<el-form label-position="right" label-width="80px" :model="student">
-		  	  <el-form-item label="姓名"  >
+		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="student" class="demo-ruleForm"  :model="student">
+		  	  <el-form-item label="姓名" prop="studentName" >
 			  	<el-input v-model="student.studentName" placeholder="姓名"></el-input>
 			  </el-form-item>
-			  <el-form-item label="性别" >
+			  <el-form-item label="性别" prop="studentSex">
 			    <el-select v-model="student.studentSex" placeholder="请选择">
 				    <el-option v-for="item in sexOption" :key="item.id" :label="item.value" :value="item.id">
 				    </el-option>
@@ -74,13 +74,13 @@
 			  <el-form-item label="联系方式"  >
 			  	<el-input v-model="student.studentContactMobile" placeholder="联系方式"></el-input>
 			  </el-form-item>
-			  <el-form-item label="年级" v-show="showInfo">
+			  <el-form-item label="年级" prop="grade" v-show="showInfo">
 			    <el-select v-model="grade" @change='changeGrade' placeholder="请选择">
 				    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="班级" v-show="showInfo">
+			  <el-form-item label="班级" prop="classroomId" v-show="showInfo">
 			  	<el-select v-model="student.classroomId" placeholder="请选择">
 			  		<el-option v-for="e in classOption" :label="e.classroomName" :key="e.id" :value="e.id" name="classId"></el-option>
 				</el-select>
@@ -130,6 +130,21 @@ export default {
 	  classOption:[],
 	  grade:'',
 	  showInfo:true,
+	  
+	  rules: {
+          studentName: [
+            { required: true, message: '请输入学生名字', trigger: 'blur' }
+          ],
+          grade: [
+            { required: true, message: '请选择年级', trigger: 'change' }
+          ],
+          studentSex: [
+            { required: true, message: '请选择性别', trigger: 'change' }
+          ],
+          classroomId: [
+            { required: true, message: '请选择班级', trigger: 'change' }
+          ],
+      }
     }
   },
   mounted:function(){
@@ -161,17 +176,48 @@ export default {
   		var dataS = this.student;
   		if(id){
   			address = 'student/updateStudent';
+  			this.student.grade = '1';
+  			this.student.classroomId = '1';
+  			
+  			this.$refs['student'].validate((valid) => {
+	          if (valid) {
+	          	delete dataS['grade'];
+	          	delete dataS['classroomId'];
+	          	this.postHttp(this,dataS,address,function(obj,res){
+		  			if(res.code = '10000'){
+		  				obj.dialogVisible = false;
+		  				obj.notify_success();
+		  				obj.queryInfo();
+		  				obj.student = {};
+		  			}else{
+		  				obj.notify_jr(obj,'操作错误',res.message,'error');
+		  			}
+		  		})
+	          } else {
+	            return false;
+	          }
+	        });
+  		}else{
+  			this.$refs['student'].validate((valid) => {
+	          if (valid) {
+	          	this.postHttp(this,dataS,address,function(obj,res){
+		  			if(res.code = '10000'){
+		  				obj.dialogVisible = false;
+		  				obj.notify_success();
+		  				obj.queryInfo();
+		  				obj.student = {};
+		  			}else{
+		  				obj.notify_jr(obj,'操作错误',res.message,'error');
+		  			}
+		  		})
+	          } else {
+	            return false;
+	          }
+	        });
   		}
-  		this.postHttp(this,dataS,address,function(obj,res){
-  			if(res.code = '10000'){
-  				obj.dialogVisible = false;
-  				obj.notify_success();
-  				obj.queryInfo();
-  				obj.student = {};
-  			}else{
-  				obj.notify_jr(obj,'操作错误',res.message,'error');
-  			}
-  		})
+  		
+  		
+  		
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -195,11 +241,11 @@ export default {
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSzie = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	sexFormatter(row, column, cellValue){
 		var age = row[column.property];  

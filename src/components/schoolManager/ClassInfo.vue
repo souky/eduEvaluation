@@ -56,14 +56,14 @@
 		
 		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
-		  	<el-form label-position="right" label-width="80px" :model="classroom">
-			  <el-form-item label="年级" v-show="showInfo">
+		  	<el-form label-position="right" :rules="rules" ref="classroom" class="demo-ruleForm" label-width="80px" :model="classroom">
+			  <el-form-item label="年级" v-show="showInfo" prop="gradeCode">
 			    <el-select v-model="classroom.gradeCode" placeholder="请选择">
 				    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="班级"  v-show="showInfo">
+			  <el-form-item label="班级"  v-show="showInfo" prop="classroomName">
 			  	<el-input v-model="classroom.classroomName" placeholder="班级"></el-input>
 			  </el-form-item>
 			  <el-form-item label="班主任">
@@ -105,6 +105,15 @@ export default {
       classroom:{},
       gradeOption:[],
       teacherOption:[],
+      
+	   rules: {
+	      gradeCode: [
+	        { required: true, message: '请选择年级', trigger: 'change' }
+	      ],
+	      classroomName: [
+	        { required: true, message: '请输入班级', trigger: 'blur'},
+	      ],
+      }
     }
   },
   mounted:function(){
@@ -133,30 +142,48 @@ export default {
   		this.classroom = {};
   	},
   	saveEdit(){
-  		var id = this.classroom.id;
-  		var address = 'classroom/saveClassroom';
-  		delete this.classroom["createDate"];
-  		delete this.classroom["updateDate"];
-  		var dataS = this.classroom;
-  		if(id){
-  			address = 'classroom/updateClassroom';
-  		}else{
-  			var classNo = this.classroom.classroomName;
-	  		var grade = this.classroom.gradeCode;
-	  		delete dataS["gradeCode"];
-	  		dataS.classroomName = grade + "(" + classNo + ")班";
-	  	}
   		
+	  		var id = this.classroom.id;
+	  		var address = 'classroom/saveClassroom';
+	  		delete this.classroom["createDate"];
+	  		delete this.classroom["updateDate"];
+	  		var dataS = this.classroom;
+	  		if(id){
+	  			address = 'classroom/updateClassroom';
+	  			this.postHttp(this,dataS,address,function(obj,res){
+		  			if(res.code = '10000'){
+		  				obj.dialogVisible = false;
+		  				obj.notify_success();
+		  				obj.queryInfo();
+		  			}else{
+		  				obj.notify_jr(obj,'操作错误',res.message,'error');
+		  			}
+		  		})
+	  		}else{
+	  			this.$refs['classroom'].validate((valid) => {
+          			if (valid) {
+			  			var classNo = this.classroom.classroomName;
+				  		var grade = this.classroom.gradeCode;
+				  		delete dataS["gradeCode"];
+				  		dataS.classroomName = grade + "(" + classNo + ")班";
+				  		
+				  		this.postHttp(this,dataS,address,function(obj,res){
+				  			if(res.code = '10000'){
+				  				obj.dialogVisible = false;
+				  				obj.notify_success();
+				  				obj.queryInfo();
+				  			}else{
+				  				obj.notify_jr(obj,'操作错误',res.message,'error');
+				  			}
+				  		})
+				  	} else {
+			            return false;
+			        }
+				});
+		  	}
+	  	
+          	
   		
-  		this.postHttp(this,dataS,address,function(obj,res){
-  			if(res.code = '10000'){
-  				obj.dialogVisible = false;
-  				obj.notify_success();
-  				obj.queryInfo();
-  			}else{
-  				obj.notify_jr(obj,'操作错误',res.message,'error');
-  			}
-  		})
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -180,11 +207,11 @@ export default {
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSzie = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	ajaxData(){
 		var data = new Object();

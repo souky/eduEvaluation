@@ -61,25 +61,25 @@
 		
 		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
-		  	<el-form label-position="right" label-width="80px" :model="user">
-			  <el-form-item label="名称">
+		  	<el-form label-position="right" :rules="rules" ref="user" class="demo-ruleForm" label-width="80px" :model="user">
+			  <el-form-item label="名称" prop="name">
 			    <el-input v-model="user.name"></el-input>
 			  </el-form-item>
-			  <el-form-item label="用户名">
+			  <el-form-item label="用户名" prop="userName">
 			    <el-input v-model="user.userName"></el-input>
 			  </el-form-item>
-			  <el-form-item label="密码" v-show="showPsw">
+			  <el-form-item label="密码" v-show="showPsw"  prop="userPsw">
 			    <el-input type="password" v-model="user.userPsw"></el-input>
 			  </el-form-item>
-			  <el-form-item label="重复密码" v-show="showPsw">
+			  <el-form-item label="重复密码" v-show="showPsw"  prop="userPswS">
 			    <el-input type="password" v-model="user.userPswS"></el-input>
 			  </el-form-item>
-			  <el-form-item label="用户类型">
+			  <el-form-item label="用户类型"  prop="userType">
 			  	<el-select v-model="user.userType" placeholder="请选择">
 				    <el-option v-for="item in userTypeO" :key="item.id" :label="item.value" :value="item.id"></el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="用户角色">
+			  <el-form-item label="用户角色"  prop="roleId">
 			    <el-select v-model="user.roleId" name="selectRoleName" placeholder="请选择">
 				    <el-option  v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
 				</el-select>
@@ -98,7 +98,22 @@
 <script>
 export default {
   data () {
-
+	var validatePass = (rule, value, callback) => {
+        if (this.user.userPsw == '') {
+          callback(new Error('请输入密码'));
+        } else {
+          callback();
+        }
+    };
+    var validatePassS = (rule, value, callback) => {
+	    if (this.user.userPswS == '') {
+	      callback(new Error('请再次输入密码'));
+	    } else if (this.user.userPsw != this.user.userPswS) {
+	      callback(new Error('两次输入密码不一致!'));
+	    } else {
+	      callback();
+	    }
+    };
     return {
       msg: 'userManager',
       tableData:[],
@@ -124,7 +139,28 @@ export default {
       		id:2,
       		value:'普通用户'
       	}
-      ]
+      ],
+      
+       rules: {
+          name: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          userName: [
+            { required: true, message: '请输入用户名', trigger: 'blur' }
+          ],
+          userPsw: [
+            { required: true,validator: validatePass, trigger: 'blur' }
+          ],
+          userPswS: [
+            { required: true,validator: validatePassS, trigger: 'blur' }
+          ],
+          userType: [
+            { required: true, message: '请选择用户类型', trigger: 'change' }
+          ],
+          roleId: [
+            { required: true, message: '请选择用户角色', trigger: 'change' }
+          ],
+      }
     }
   },
   mounted:function(){
@@ -150,27 +186,59 @@ export default {
   	saveEdit(){
   		var id = this.user.id;
   		var address = 'user/saveUser';
+  		this.user["roleName"] = document.getElementsByName("selectRoleName")[0].value;
+  		this.user["phone"] = this.user.userName;
   		if(id){
   			address = 'user/updateUser';
   			delete this.user.createDate;
   			delete this.user.updateDate;
+  			this.user.userPsw = '1';
+  			this.user.userPswS = '1';
+  			this.$refs['user'].validate((valid) => {
+	          if (valid) {
+	          	delete this.user.userPsw;
+	          	this.postHttp(this,this.user,address,function(obj,res){
+					if(res.code = '10000'){
+						obj.dialogVisible = false;
+						obj.notify_success();
+						obj.queryInfo();
+					}else{
+						obj.notify_jr(obj,'操作错误',res.message,'error');
+					}
+				})
+	          } else {
+	            return false;
+	          }
+	        });
+  		}else{
+  			
+  			this.$refs['user'].validate((valid) => {
+	          if (valid) {
+	          	
+	          	this.postHttp(this,this.user,address,function(obj,res){
+					if(res.code = '10000'){
+						obj.dialogVisible = false;
+						obj.notify_success();
+						obj.queryInfo();
+					}else{
+						obj.notify_jr(obj,'操作错误',res.message,'error');
+					}
+				})
+	          } else {
+	            return false;
+	          }
+	        });
   		}
-  		this.user["roleName"] = document.getElementsByName("selectRoleName")[0].value;
-  		this.user["phone"] = this.user.userName;
-		this.postHttp(this,this.user,address,function(obj,res){
-			if(res.code = '10000'){
-				obj.dialogVisible = false;
-				obj.notify_success();
-				obj.queryInfo();
-			}else{
-				obj.notify_jr(obj,'操作错误',res.message,'error');
-			}
-		})
+  		
+  		
+  		
+		
   	},
   	addNew(){
   		this.dialogVisible = true;
   		this.showPsw = true;
   		this.user = {};
+  		this.$refs['user'].resetFields();
   	},
 	editInfo(id){
 		this.postHttp(this,{id:id},'user/getUserById',function(obj,res){
@@ -189,11 +257,11 @@ export default {
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSzie = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	sexFormatter(row, column, cellValue){
 		var age = row[column.property];  

@@ -5,7 +5,7 @@
 export default {
     data:[
 		{
-			examName:'王一',
+			examName:'测试考试列表一',
 			examStartDate:1412356367160,
 			examEndDate:1512356367160,
 			classroom:'2017',
@@ -14,7 +14,7 @@ export default {
 			id:'wdawdawd123123'
 		},
 		{
-			examName:'王二',
+			examName:'测试考试列表二',
 			examStartDate:1412356367160,
 			examEndDate:1512356367160,
 			classroom:'2017',
@@ -23,7 +23,7 @@ export default {
 			id:'wdawdawd123123'
 		},
 		{
-			examName:'王三',
+			examName:'测试考试列表三',
 			examStartDate:1412356367160,
 			examEndDate:1512356367160,
 			classroom:'2017',
@@ -32,7 +32,7 @@ export default {
 			id:'wdawdawd123123'
 		},
 		{
-			examName:'王四',
+			examName:'测试考试列表四',
 			examStartDate:1412356367160,
 			examEndDate:1512356367160,
 			classroom:'2017',
@@ -41,7 +41,7 @@ export default {
 			id:'wdawdawd123123'
 		},
 		{
-			examName:'王五',
+			examName:'测试考试列表五',
 			examStartDate:1412356367160,
 			examEndDate:1512356367160,
 			classroom:'2017',

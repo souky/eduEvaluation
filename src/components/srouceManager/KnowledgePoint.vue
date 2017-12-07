@@ -3,20 +3,27 @@
 		<div class="knowledge_body">
 			<div class="title">选择科目</div>
 			<div class="select_subject fix">
-				<div v-for="e in subjectArray" class="items l" @click="changeSubject($event)">
-					{{e}}
-				</div>
+				<div v-for="e in subjectArray" class="items l" @click="changeSubject($event)">{{e}}</div>
 			</div>
 			<div class="title">知识点</div>
 			<div class="konwledge_detiles fix">
-				<div class="detiles_left l">
-					<el-tree :data="data" :props="defaultProps" accordion @node-click="handleNodeClick"></el-tree>
-				</div>
-				<div class="detiles_right r">
-					
-				</div>
+				<el-tree id="textBookT" :data="data" :render-content="renderContent" node-key="id" :props="defaultProps"  @node-click="handleNodeClick"></el-tree>
 			</div>
 		</div>
+		
+		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		  <div class="dialog_body">
+		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="konw" class="demo-ruleForm" :model="konw">
+			  <el-form-item label="名称" prop="knowledgeContent">
+			    <el-input v-model="konw.knowledgeContent"></el-input>
+			  </el-form-item>
+			</el-form>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button type="primary" @click="colseDia">取 消</el-button>
+		    <el-button type="primary" @click="saveEdit">确 定</el-button>
+		  </span>
+		</el-dialog>
 	</div>
 	
 </template>
@@ -29,48 +36,28 @@ export default {
       msg: 'knowledgePoint',
       subjectArray:['语文','数学','英语','物理','化学','历史','政治','地理'],
       defaultProps: {
-	        children: 'children',
-	        label: 'label'
+	        children: 'kpVOChildList',
+	        label: 'knowledgeContent',
+	        id:'id'
 	  },
-	  data: [{
-         label: '一级 1',
-         children: [{
-           label: '二级 1-1',
-           children: [{
-             label: '三级 1-1-1'
-           }]
-         }]
-       }, {
-         label: '一级 2',
-         children: [{
-           label: '二级 2-1',
-           children: [{
-             label: '三级 2-1-1'
-           }]
-         }, {
-           label: '二级 2-2',
-           children: [{
-             label: '三级 2-2-1'
-           }]
-         }]
-       }, {
-         label: '一级 3',
-         children: [{
-           label: '二级 3-1',
-           children: [{
-             label: '三级 3-1-1'
-           }]
-         }, {
-           label: '二级 3-2',
-           children: [{
-             label: '三级 3-2-1'
-           }]
-         }]
-       }],
+	  data: [],
+	  
+	  dialogVisible:false,
+	  konw:{
+	  	parentId:'',
+	  	knowledgeContent:''
+	  },
+	  rules: {
+          knowledgeContent: [
+            { required: true, message: '请输入知识点名称', trigger: 'blur' }
+          ],
+     },
+     queryName:'语文',
     }
   },
   mounted:function(){
   	document.getElementsByClassName("items")[0].click();
+  	this.loadKonwP();
   },
   methods:{
 	changeSubject(event){
@@ -79,10 +66,78 @@ export default {
 			list[i].className = 'items l';
 		}
 		event.currentTarget.className = 'items l active';
+		this.queryName = event.currentTarget.innerHTML;
+		this.loadKonwP();
 	},
+	loadKonwP(){
+		this.postHttp(this,{subjectName:this.queryName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+	  		obj.data = res.result;
+	  	});
+	},
+	colseDia(){
+  		this.dialogVisible = false;
+  		this.konw = {};
+  	},
+  	saveEdit(){
+  		var address = 'knowledgepoint/saveKnowledgePoint';
+		this.$refs['konw'].validate((valid) => {
+          if (valid) {
+          	this.postHttp(this,this.konw,address,function(obj,res){
+	  			if(res.code = '10000'){
+	  				obj.dialogVisible = false;
+	  				obj.notify_success();
+	  				obj.loadKonwP();
+	  			}else{
+	  				obj.notify_jr(obj,'操作错误',res.message,'error');
+	  			}
+	  		})
+          } else {
+            return false;
+          }
+        });
+  		
+  	},
 	handleNodeClick(data){
 		console.log(data)
-	}
+	},
+	renderContent(createElement, { node, data, store }) {
+	    var self = this;  
+	    return createElement('div',{attrs:{  
+	            style:"width:100%;"  
+	        }}, [  
+	        createElement('span', node.label),  
+	        createElement('span', {attrs:{  
+	            style:"float: right; margin-right: 20px",class:"tree_btn"  
+	        }},[  
+	            createElement('i',{attrs:{  
+	                class:'el-icon-plus'
+	            },on:{  
+	                click:function() {  
+	                	self.konw.parentId = data.id;
+	                	self.konw.subjectId = self.queryName;
+	                	self.dialogVisible = true;
+	                	self.konw.knowledgeContent = "";
+	                }  
+	            }},""),  
+	            createElement('i',{attrs:{  
+	                 class:'el-icon-minus'  
+	            },on:{  
+	                click:function() {  
+	                	//self.text_id = data.id;
+	                	self.$confirm('此操作将删除该大纲下所有子项,是否继续?', '提示', {
+							          confirmButtonText: '确定',
+							          cancelButtonText: '取消',
+							          type: 'warning'
+							        }).then(() => {
+							        	//self.delete_text_s();
+							        }).catch(() => {
+							        	
+							        });
+	                }  
+	            }},""),  
+	        ]),  
+	    ]);  
+	  },
   }
 }
 </script>
@@ -128,4 +183,10 @@ export default {
 #knowledgePoint .konwledge_detiles .detiles_right{
 	width: calc(100% - 420);	
 }
+
+#knowledgePoint #textBookT{width:95%;}
+#knowledgePoint #textBookT i{font-size:14px;padding:3px;margin-right:20px;border-radius:2px;}
+#knowledgePoint .el-icon-plus{color:#EF5350;border:1px #EF5350 solid;}
+#knowledgePoint .el-icon-minus{color:#FFCA28;border:1px #FFCA28 solid;}
+#knowledgePoint .el-tree-node__expand-icon{border-left-color:#202a33;}
 </style>

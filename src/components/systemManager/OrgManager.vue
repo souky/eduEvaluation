@@ -7,8 +7,52 @@
 			</div>
 			<div class="right_part r">
 				<div class="title">机构详细</div>
+				<div class="tools fix">
+					<div class="items_tools r" @click="addNew">
+						<i class="el-icon-circle-plus-outline" >新增</i>
+					</div>	
+				</div>
+				<el-table :data="tableData" style="width: 100%">
+			      <el-table-column prop="orgName" align="center" label="名称"></el-table-column>
+			      <el-table-column align="center" label="操作" width='200'>
+			      	<template scope="scope">
+			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
+			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
+			      	</template>
+			      </el-table-column>
+			    </el-table>
 			</div>
 		</div>
+		
+		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		  <div class="dialog_body">
+		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="org" class="demo-ruleForm" :model="org">
+			  <el-form-item label="名称" prop="orgName">
+			    <el-input v-model="org.orgName"></el-input>
+			  </el-form-item>
+			  <el-form-item label="省" v-show="showInfo" >
+			  	<el-select v-model="p_name" @change="changeP" placeholder="请选择">
+			    	<el-option v-for="item in pOption" :key="item.id" :label="item.regionName" :value="item.id"></el-option>
+			  	</el-select>
+			  </el-form-item>
+			  <el-form-item label="市" v-show="showInfo">
+			   <el-select v-model="c_name" @change="changeC" placeholder="请选择">
+			    	<el-option v-for="item in cOption" :key="item.id" :label="item.regionName" :value="item.id"></el-option>
+			  	</el-select>
+			  </el-form-item>
+			  <el-form-item label="区" prop="regionCode"  v-show="showInfo">
+			  	<el-select v-model="org.regionCode" placeholder="请选择">
+			    	<el-option v-for="item in aOption" :key="item.id" :label="item.regionName" :value="item.id"></el-option>
+			  	</el-select>
+			  </el-form-item>
+			</el-form>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button type="primary" @click="colseDia">取 消</el-button>
+		    <el-button type="primary" @click="saveEdit">确 定</el-button>
+		  </span>
+		</el-dialog>
+		
 	</div>
 	
 </template>
@@ -20,18 +64,135 @@ export default {
 
     return {
         msg: 'orgManager',
-        data:OrgManager.data,
+        data:[],
         defaultProps: {
 	        children: 'children',
 	        label: 'label'
-	    }
+	    },
+        tableData:[],
+        
+        dialogVisible:false,
+      	org:{},
+      	showInfo:true,
+      	pOption:[],
+      	cOption:[],
+      	aOption:[],
+      	p_name:'',
+      	c_name:'',
+      	
+      	rules: {
+          orgName: [
+            { required: true, message: '请输入组织名称', trigger: 'blur' }
+          ],
+          regionCode: [
+            { required: true, message: '请选择市', trigger: 'change' }
+          ],
+      }
     }
   },
   mounted:function(){
+  	
+  	this.postHttp(this,{},'organization/queryOrganizations',function(obj,res){
+  		obj.data = res.result;
+  	});
+  	
+  	this.postHttp(this,{regionPId:'000000'},'region/queryRegionsByParentId',function(obj,res){
+  		obj.pOption = res.result;
+  	});
   },
   methods:{
+  	queryInfo(id){
+  		this.postHttp(this,{regionCode:id},'organization/queryOrg',function(obj,res){
+	  		obj.tableData = res.result;
+	  	})
+  	},
 	handleNodeClick(data){
+		if(data.isSchool){
+			this.queryInfo(data.regionCode);
+		}
+	},
+	colseDia(){
+  		this.dialogVisible = false;
+  		this.org = {};
+  	},
+  	saveEdit(){
+  		var id = this.org.id;
+  		delete this.org["createDate"];
+  		delete this.org["updateDate"];
+  		var address = 'organization/saveOrganization';
+  		if(id){
+  			address = 'organization/updateOrganization';
+  			this.org.regionCode = "1";
+  			this.$refs['org'].validate((valid) => {
+	          if (valid) {
+	          	delete this.org.regionCode;
+	          	this.postHttp(this,this.org,address,function(obj,res){
+		  			if(res.code = '10000'){
+		  				obj.dialogVisible = false;
+		  				obj.notify_success();
+		  				obj.tableData = null;
+		  				obj.postHttp(obj,{},'organization/queryOrganizations',function(obj,res){
+					  		obj.data = res.result;
+					  	});
+		  			}else{
+		  				obj.notify_jr(obj,'操作错误',res.message,'error');
+		  			}
+		  		})
+	          } else {
+	            return false;
+	          }
+	        });
+  		}else{
+  			this.$refs['org'].validate((valid) => {
+	          if (valid) {
+	          	this.postHttp(this,this.org,address,function(obj,res){
+		  			if(res.code = '10000'){
+		  				obj.dialogVisible = false;
+		  				obj.notify_success();
+		  				obj.tableData = null;
+		  				obj.postHttp(obj,{},'organization/queryOrganizations',function(obj,res){
+					  		obj.data = res.result;
+					  	});
+		  			}else{
+		  				obj.notify_jr(obj,'操作错误',res.message,'error');
+		  			}
+		  		})
+	          } else {
+	            return false;
+	          }
+	        });
+  		}
+  		
+  		
+  		
+  	},
+	addNew(){
+		this.dialogVisible = true;
+  		this.org = {};
+	},
+	editInfo(id){
+		this.showInfo = false;
+		this.dialogVisible = true;
+		this.postHttp(this,{id:id},"organization/getOrganizationById",function(obj,res){
+			if(res.code = '10000'){
+				obj.org = res.result;
+			}else{
+				obj.notify_jr(obj,'操作错误',res.message,'error');
+			}
+		})
+	},
+	deleteInfo(id){
 		
+	},
+	changeP(val){
+		this.postHttp(this,{regionPId:val},'region/queryRegionsByParentId',function(obj,res){
+	  		obj.cOption = res.result;
+	  	});
+	},
+	changeC(val){
+		this.postHttp(this,{regionPId:val},'region/queryRegionsByParentId',function(obj,res){
+	  		obj.aOption = res.result;
+	  	});
 	}
   }
 }
@@ -57,5 +218,6 @@ export default {
 	width: 100%;
 	text-align: center;
 	cursor: default;
+	margin-bottom:10px
 }
 </style>

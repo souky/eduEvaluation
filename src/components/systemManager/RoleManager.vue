@@ -50,8 +50,8 @@
 		
 		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
-		  	<el-form label-position="right" label-width="80px" :model="role">
-			  <el-form-item label="名称">
+		  	<el-form label-position="right" :rules="rules" ref="role" class="demo-ruleForm" label-width="80px" :model="role">
+			  <el-form-item label="名称" prop="roleName">
 			    <el-input v-model="role.roleName"></el-input>
 			  </el-form-item>
 			</el-form>
@@ -82,7 +82,12 @@ export default {
       
       dialogVisible:false,
       
-      role:{}
+      role:{},
+      rules: {
+          roleName: [
+            { required: true, message: '请输入角色名称', trigger: 'blur' }
+          ],
+      }
     }
   },
   mounted:function(){
@@ -108,15 +113,21 @@ export default {
   		if(id){
   			address = 'role/updateRole';
   		}
-  		this.postHttp(this,this.role,address,function(obj,res){
-  			if(res.code = '10000'){
-  				obj.dialogVisible = false;
-  				obj.notify_success();
-  				obj.queryInfo();
-  			}else{
-  				obj.notify_jr(obj,'操作错误',res.message,'error');
-  			}
-  		})
+  		this.$refs['role'].validate((valid) => {
+          if (valid) {
+          	this.postHttp(this,this.role,address,function(obj,res){
+	  			if(res.code = '10000'){
+	  				obj.dialogVisible = false;
+	  				obj.notify_success();
+	  				obj.queryInfo();
+	  			}else{
+	  				obj.notify_jr(obj,'操作错误',res.message,'error');
+	  			}
+	  		})
+          } else {
+            return false;
+          }
+        });
   	},
   	addNew(){
   		this.dialogVisible = true;

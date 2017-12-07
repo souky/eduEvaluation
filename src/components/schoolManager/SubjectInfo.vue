@@ -1,6 +1,6 @@
 <template>
 	<div id="subjectInfo" class="main_body">
-		<div class="subject_info_search">
+		<!--<div class="subject_info_search">
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">科目编码</div>
@@ -22,7 +22,7 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-		</div>
+		</div>-->
 		
 		<div class="subject_info_table">
 			<el-table :data="tableData" style="width: 100%">
@@ -33,12 +33,12 @@
 		      		<div class="colrs" :style="{background:scope.row.subjectColor}">{{scope.row.subjectColor}}</div>
 		      	</template>
 		      </el-table-column>
-		      <el-table-column align="center" label="操作">
+		      <!--<el-table-column align="center" label="操作">
 		      	<template scope="scope">
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
-		      </el-table-column>
+		      </el-table-column>-->
 		    </el-table>
 		    
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"

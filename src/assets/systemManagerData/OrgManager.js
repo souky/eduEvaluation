@@ -32,6 +32,7 @@ export default {
      ],
      data: [{
          label: '一级 1',
+         id:'123123213',
          children: [{
            label: '二级 1-1',
            children: [{

@@ -2,15 +2,15 @@
 	<div id="schoolInfo" class="main_body">
 		
 		<div class="info_body">
-			<el-form label-position="left" label-width="100px" :model="schoolInfo">
-			  <el-form-item label="学校名称">
+			<el-form label-position="left" label-width="100px" :rules="rules" ref="schoolInfo" class="demo-ruleForm" :model="schoolInfo">
+			  <el-form-item label="学校名称" prop="schoolName">
 			    <el-input v-model="schoolInfo.schoolName"></el-input>
 			  </el-form-item>
-			  <el-form-item label="学校学段">
-			    <el-checkbox-group v-model="schoolInfo.periodArray">
-			      <el-checkbox label="小学" name="schoolPeriod"></el-checkbox>
-			      <el-checkbox label="初中" name="schoolPeriod"></el-checkbox>
-			      <el-checkbox label="高中" name="schoolPeriod"></el-checkbox>
+			  <el-form-item label="学校学段" prop="periodArray">
+			    <el-checkbox-group v-model="schoolInfo.periodArray" >
+			      <el-checkbox label="小学" name="periodArray"></el-checkbox>
+			      <el-checkbox label="初中" name="periodArray"></el-checkbox>
+			      <el-checkbox label="高中" name="periodArray"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			  <el-form-item label="学校地址">
@@ -34,17 +34,17 @@
 			  <el-form-item label="联系人电话">
 			    <el-input v-model="schoolInfo.schoolContactTel"></el-input>
 			  </el-form-item>
-			  <el-form-item label="学校学科">
+			  <el-form-item label="学校学科" prop="subjectArray">
 			    <el-checkbox-group v-model="schoolInfo.subjectArray">
-			      <el-checkbox label="语文" name="subjectId"></el-checkbox>
-			      <el-checkbox label="数学" name="subjectId"></el-checkbox>
-			      <el-checkbox label="英语" name="subjectId"></el-checkbox>
-			      <el-checkbox label="物理" name="subjectId"></el-checkbox>
-			      <el-checkbox label="化学" name="subjectId"></el-checkbox>
-			      <el-checkbox label="生物" name="subjectId"></el-checkbox>
-			      <el-checkbox label="历史" name="subjectId"></el-checkbox>
-			      <el-checkbox label="政治" name="subjectId"></el-checkbox>
-			      <el-checkbox label="地理" name="subjectId"></el-checkbox>
+			      <el-checkbox label="语文" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="数学" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="英语" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="物理" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="化学" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="生物" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="历史" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="政治" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="地理" name="subjectArray"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			</el-form>
@@ -66,6 +66,17 @@ export default {
     return {
       msg: 'schoolInfo',
       schoolInfo:{},
+      rules: {
+          schoolName: [
+            { required: true, message: '请输入考试名称', trigger: 'blur' }
+          ],
+          periodArray: [
+            { type: 'array', required: true, message: '请至少选择一个学段', trigger: 'change' }
+          ],
+          subjectArray: [
+            { type: 'array', required: true, message: '请至少选择一个学科', trigger: 'change' }
+          ],
+      }
     }
   },
   mounted:function(){
@@ -75,15 +86,22 @@ export default {
   },
   methods:{
 	updateSchool(){
-		delete this.schoolInfo["createDate"];
-		delete this.schoolInfo["updateDate"];
-		this.postHttp(this,this.schoolInfo,"school/updateSchool",function(obj,res){
-	  		if(res.code = '10000'){
-  				obj.notify_success();
-  			}else{
-  				obj.notify_jr(obj,'操作错误',res.message,'error');
-  			}
-	  	})
+		this.$refs['schoolInfo'].validate((valid) => {
+          if (valid) {
+          	delete this.schoolInfo["createDate"];
+			delete this.schoolInfo["updateDate"];
+			this.postHttp(this,this.schoolInfo,"school/updateSchool",function(obj,res){
+		  		if(res.code = '10000'){
+	  				obj.notify_success();
+	  			}else{
+	  				obj.notify_jr(obj,'操作错误',res.message,'error');
+	  			}
+		  	})
+          } else {
+            return false;
+          }
+        });
+		
 	}
   }
 }

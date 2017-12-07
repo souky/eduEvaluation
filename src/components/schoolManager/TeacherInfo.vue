@@ -59,11 +59,11 @@
 		
 		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
-		  	<el-form label-position="right" label-width="80px" :model="teacher">
-	  		  <el-form-item label="姓名"  >
+		  	<el-form label-position="right" :rules="rules" ref="teacher" class="demo-ruleForm" label-width="80px" :model="teacher">
+	  		  <el-form-item label="姓名" prop="teacherName" >
 			  	<el-input v-model="teacher.teacherName" placeholder="姓名"></el-input>
 			  </el-form-item>
-			  <el-form-item label="性别" >
+			  <el-form-item label="性别" prop="teacherSex">
 			    <el-select v-model="teacher.teacherSex" placeholder="请选择">
 				    <el-option v-for="item in sexOption" :key="item.id" :label="item.value" :value="item.id">
 				    </el-option>
@@ -73,9 +73,9 @@
 			  	<el-input v-model="teacher.teacherAge" placeholder="年龄"></el-input>
 			  </el-form-item>
 			  <el-form-item label="手机号"  >
-			  	<el-input v-model="teacher.teacherMobile" placeholder="年龄"></el-input>
+			  	<el-input v-model="teacher.teacherMobile" placeholder="手机号"></el-input>
 			  </el-form-item>
-			  <el-form-item label="职务"  >
+			  <el-form-item label="职务" prop="teacherDuty" >
 			  	<el-select v-model="teacher.teacherDuty" placeholder="请选择">
 			  		<el-option v-for="item in dutyOption" :key="item.id" :label="item.id" :value="item.id">
 				    </el-option>
@@ -84,20 +84,20 @@
 			  <el-form-item label="职称"  >
 			  	<el-input v-model="teacher.teacherJobTitle" placeholder="职称"></el-input>
 			  </el-form-item>
-			  <el-form-item label="年级" >
+			  <el-form-item label="年级" prop="grade" >
 			    <el-select v-model="teacher.grade" @change='changeGrade' placeholder="请选择">
 				    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="班级" >
+			  <el-form-item label="班级" prop="classArray" >
 			  	<el-checkbox-group v-model="teacher.classArray">
-			  		<el-checkbox v-for="e in classOption" :label="e.classroomName" name="classId"></el-checkbox>
+			  		<el-checkbox v-for="e in classOption" :label="e.classroomName" name="classArray"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
-			  <el-form-item label="学科" >
+			  <el-form-item label="学科" prop="subjectArray" >
 			  	<el-checkbox-group v-model="teacher.subjectArray">
-			      <el-checkbox v-for="e in subjectOption" :label="e" name="subjectId"></el-checkbox>
+			      <el-checkbox v-for="e in subjectOption" :label="e" name="subjectArray"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			</el-form>
@@ -154,6 +154,27 @@ export default {
 	  gradeOption:[],
 	  subjectOption:[],
 	  classOption:[],
+	  
+	  rules: {
+          teacherName: [
+            { required: true, message: '请输入老师名字', trigger: 'blur' }
+          ],
+          teacherDuty: [
+            { required: true, message: '请选择老师职位', trigger: 'change' }
+          ],
+          grade: [
+            { required: true, message: '请选择年级', trigger: 'change' }
+          ],
+          teacherSex: [
+            { required: true, message: '请选择性别', trigger: 'change' }
+          ],
+          classArray: [
+            { type: 'array', required: true, message: '请至少选择一个班级', trigger: 'change' }
+          ],
+          subjectArray: [
+            { type: 'array', required: true, message: '请至少选择一个学科', trigger: 'change' }
+          ],
+      }
     }
   },
   mounted:function(){
@@ -190,16 +211,23 @@ export default {
   		if(id){
   			address = 'teacher/updateTeacher';
   		}
-  		console.log(dataS);
-		this.postHttp(this,dataS,address,function(obj,res){
-			if(res.code = '10000'){
-				obj.dialogVisible = false;
-				obj.notify_success();
-				obj.queryInfo();
-			}else{
-				obj.notify_jr(obj,'操作错误',res.message,'error');
-			}
-		})
+  		
+  		this.$refs['teacher'].validate((valid) => {
+          if (valid) {
+          	this.postHttp(this,dataS,address,function(obj,res){
+				if(res.code = '10000'){
+					obj.dialogVisible = false;
+					obj.notify_success();
+					obj.queryInfo();
+				}else{
+					obj.notify_jr(obj,'操作错误',res.message,'error');
+				}
+			})
+          } else {
+            return false;
+          }
+        });
+		
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -228,11 +256,11 @@ export default {
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSzie = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	sexFormatter(row, column, cellValue){
 		var age = row[column.property];  
