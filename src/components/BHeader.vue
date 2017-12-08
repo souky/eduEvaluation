@@ -9,7 +9,7 @@
 			<div class="userImg l">
 				<img src="../../static/img/header/touxiang.png" />
 			</div>
-			<div class="exit_btn l">
+			<div class="exit_btn l" @click="logout">
 				<img src="../../static/img/header/logout.png" style="width: 34px;"/>
 			</div>
 		</div>
@@ -33,7 +33,11 @@ export default {
   	
   },
   methods:{
-
+	logout(){
+		this.postHttp(this,{},'logout',function(obj,res){
+			obj.$router.push({ path: '/login' });
+		})
+	}
   }
 }
 </script>
