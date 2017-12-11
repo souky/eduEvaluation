@@ -210,15 +210,15 @@
 			<div class="body">
 				<div class="body-icon">
 					<div class="body-icon-bit">
-						<div class="body-icon-color color-blue" @click="twoDimensionalAnalysisChoose('class')"></div>
+						<div class="body-icon-color color-red" @click="twoDimensionalAnalysisChoose($event,'class')"></div>
 						<p>班级</p>
 					</div>
 					<div class="body-icon-bit">
-						<div class="body-icon-color color-lightGrey" @click="twoDimensionalAnalysisChoose('school')"></div>
+						<div class="body-icon-color color-push" @click="twoDimensionalAnalysisChoose($event,'school')"></div>
 						<p>校级</p>
 					</div>
 					<div class="body-icon-bit">
-						<div class="body-icon-color color-darkGrey" @click="twoDimensionalAnalysisChoose('area')"></div>
+						<div class="body-icon-color color-push" @click="twoDimensionalAnalysisChoose($event,'area')"></div>
 						<p>全区县</p>
 					</div>
 				</div>
@@ -1292,271 +1292,25 @@
 				this.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(this.optionSubjectsDiagnosis);
 		  		this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);
 			},
-			twoDimensionalAnalysisChoose:function(obj){
+			twoDimensionalAnalysisChoose:function(e,obj){
+				for(var i=0;i<e.currentTarget.parentNode.parentNode.getElementsByClassName("body-icon-bit").length;i++){
+					e.currentTarget.parentNode.parentNode.getElementsByClassName("body-icon-bit")[i].getElementsByClassName("body-icon-color")[0].className="body-icon-color color-push";
+				}
 				if(obj=='class'){
-					this.optionTwoDimensionalAnalysis.series= [
-				        {
-				            name:'sin',
-				            type:'scatter',
-				            symbolSize :[25,25],
-				            large: true,
-				            label:{normal:{show:true}},
-				            markArea: {
-				                silent: true,
-				                data: [[{
-				                    xAxis: '0.1',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(112,205,243,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.4',
-				                    yAxis: '100',
-				                }],[{
-				                    xAxis: '0.4',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(145,218,249,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.7',
-				                    yAxis: '100',
-				                }],[{
-				                    xAxis: '0.7',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(187,230,248,0.5)'},
-									}
-				                }, {
-				                    xAxis: '1.0',
-				                    yAxis: '100',
-				                }]]
-				            },
-				            itemStyle:{
-								normal:{color:'#FF8585'},
-							},
-				            data:[[0.2,30,"客观题",5,1,"-55.00%"],[0.5,30,"客观题",3,2,"-55.00%"],[0.7,30,"客观题",3,3,"-55.00%"]]
-				        },
-				        {
-				            name:'cos',
-				            type:'scatter',
-				            large: true,
-				            symbolSize :[25,25],
-				            label:{normal:{show:true}},
-				            markArea: {
-				                silent: true,
-				                data: [[{
-				                    xAxis: '0.1',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(255,210,68,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.4',
-				                    yAxis: '-100',
-				                }],[{
-				                    xAxis: '0.4',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(255,226,133,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.7',
-				                    yAxis: '-100',
-				                }],[{
-				                    xAxis: '0.7',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(253,234,175,0.5)'},
-									}
-				                }, {
-				                    xAxis: '1.0',
-				                    yAxis: '-100',
-				                }]]
-				            },
-				            itemStyle:{
-								normal:{color:'#A079D9'},
-							},
-							data:[[0.2,-30,"客观题",5,4,"-55.00%"],[0.5,-30,"客观题",3,5,"-55.00%"],[0.7,-30,"客观题",3,6,"-55.00%"]]
-				        }
-				    ]
-					
+					e.currentTarget.className="body-icon-color color-red";
+					this.optionTwoDimensionalAnalysis.series[0].data=[[0.2,30,"客观题",5,1,"-55.00%"],[0.5,30,"客观题",3,2,"-55.00%"],[0.7,30,"客观题",3,3,"-55.00%"]];
+					this.optionTwoDimensionalAnalysis.series[1].data=[[0.2,-30,"客观题",5,4,"-55.00%"],[0.5,-30,"客观题",3,5,"-55.00%"],[0.7,-30,"客观题",3,6,"-55.00%"]];
 				}
 				if(obj=='school'){
-					this.optionTwoDimensionalAnalysis.series= [
-				        {
-				            name:'sin',
-				            type:'scatter',
-				            symbolSize :[25,25],
-				            large: true,
-				            label:{normal:{show:true}},
-				            markArea: {
-				                silent: true,
-				                data: [[{
-				                    xAxis: '0.1',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(112,205,243,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.4',
-				                    yAxis: '100',
-				                }],[{
-				                    xAxis: '0.4',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(145,218,249,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.7',
-				                    yAxis: '100',
-				                }],[{
-				                    xAxis: '0.7',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(187,230,248,0.5)'},
-									}
-				                }, {
-				                    xAxis: '1.0',
-				                    yAxis: '100',
-				                }]]
-				            },
-				            itemStyle:{
-								normal:{color:'#FF8585'},
-							},
-				            data:[[0.2,40,"客观题",5,1,"-55.00%"],[0.5,40,"客观题",3,2,"-55.00%"],[0.7,40,"客观题",3,3,"-55.00%"]]
-				        },
-				        {
-				            name:'cos',
-				            type:'scatter',
-				            large: true,
-				            symbolSize :[25,25],
-				            label:{normal:{show:true}},
-				            markArea: {
-				                silent: true,
-				                data: [[{
-				                    xAxis: '0.1',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(255,210,68,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.4',
-				                    yAxis: '-100',
-				                }],[{
-				                    xAxis: '0.4',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(255,226,133,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.7',
-				                    yAxis: '-100',
-				                }],[{
-				                    xAxis: '0.7',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(253,234,175,0.5)'},
-									}
-				                }, {
-				                    xAxis: '1.0',
-				                    yAxis: '-100',
-				                }]]
-				            },
-				            itemStyle:{
-								normal:{color:'#A079D9'},
-							},
-							data:[[0.2,-40,"客观题",5,4,"-55.00%"],[0.5,-40,"客观题",3,5,"-55.00%"],[0.7,-40,"客观题",3,6,"-55.00%"]]
-				        }
-				    ]
+					e.currentTarget.className="body-icon-color color-green";
+					this.optionTwoDimensionalAnalysis.series[0].data=[[0.2,40,"客观题",5,1,"-55.00%"],[0.5,40,"客观题",3,2,"-55.00%"],[0.7,40,"客观题",3,3,"-55.00%"]];
+				    this.optionTwoDimensionalAnalysis.series[1].data=[[0.2,-40,"客观题",5,4,"-55.00%"],[0.5,-40,"客观题",3,5,"-55.00%"],[0.7,-40,"客观题",3,6,"-55.00%"]];
+			
 				}
 				if(obj=='area'){
-					this.optionTwoDimensionalAnalysis.series= [
-				        {
-				            name:'sin',
-				            type:'scatter',
-				            symbolSize :[25,25],
-				            large: true,
-				            label:{normal:{show:true}},
-				            markArea: {
-				                silent: true,
-				                data: [[{
-				                    xAxis: '0.1',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(112,205,243,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.4',
-				                    yAxis: '100',
-				                }],[{
-				                    xAxis: '0.4',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(145,218,249,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.7',
-				                    yAxis: '100',
-				                }],[{
-				                    xAxis: '0.7',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(187,230,248,0.5)'},
-									}
-				                }, {
-				                    xAxis: '1.0',
-				                    yAxis: '100',
-				                }]]
-				            },
-				            itemStyle:{
-								normal:{color:'#FF8585'},
-							},
-				            data:[[0.2,60,"客观题",5,1,"-55.00%"],[0.5,60,"客观题",3,2,"-55.00%"],[0.7,60,"客观题",3,3,"-55.00%"]]
-				        },
-				        {
-				            name:'cos',
-				            type:'scatter',
-				            large: true,
-				            symbolSize :[25,25],
-				            label:{normal:{show:true}},
-				            markArea: {
-				                silent: true,
-				                data: [[{
-				                    xAxis: '0.1',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(255,210,68,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.4',
-				                    yAxis: '-100',
-				                }],[{
-				                    xAxis: '0.4',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(255,226,133,0.5)'},
-									}
-				                }, {
-				                    xAxis: '0.7',
-				                    yAxis: '-100',
-				                }],[{
-				                    xAxis: '0.7',
-				                    yAxis: '0',
-				                    itemStyle:{
-									    normal:{color:'rgba(253,234,175,0.5)'},
-									}
-				                }, {
-				                    xAxis: '1.0',
-				                    yAxis: '-100',
-				                }]]
-				            },
-				            itemStyle:{
-								normal:{color:'#A079D9'},
-							},
-							data:[[0.2,-60,"客观题",5,4,"-55.00%"],[0.5,-60,"客观题",3,5,"-55.00%"],[0.7,-60,"客观题",3,6,"-55.00%"]]
-				        }
-				    ]
+					e.currentTarget.className="body-icon-color color-blue";
+					this.optionTwoDimensionalAnalysis.series[0].data=[[0.2,60,"客观题",5,1,"-55.00%"],[0.5,60,"客观题",3,2,"-55.00%"],[0.7,60,"客观题",3,3,"-55.00%"]];
+				    this.optionTwoDimensionalAnalysis.series[1].data=[[0.2,-60,"客观题",5,4,"-55.00%"],[0.5,-60,"客观题",3,5,"-55.00%"],[0.7,-60,"客观题",3,6,"-55.00%"]];
 				}
 				this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
 			},
@@ -1865,10 +1619,13 @@
 #studentlevel #twoDimensionalAnalysis .color-blue{
 	background: #70CDF3;
 }
-#studentlevel #twoDimensionalAnalysis .color-lightGrey{
-	background: #919191;
+#studentlevel #twoDimensionalAnalysis .color-green{
+	background: #49E1BC;
 }
-#studentlevel #twoDimensionalAnalysis .color-darkGrey{
+#studentlevel #twoDimensionalAnalysis .color-red{
+	background: #FF8585;
+}
+#studentlevel #twoDimensionalAnalysis .color-push{
 	background: #919191;
 }
 #studentlevel .twoDimensionalAnalysis-foot{

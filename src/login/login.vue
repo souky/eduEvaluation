@@ -8,12 +8,12 @@
 				<el-form ref="form" :rules="rules" :model="form">
 				  <el-form-item prop="user">
 				    <el-input placeholder="用户名" v-model="form.user">
-				    	<template slot="prepend"><i class="el-icon-delete"></i></template>
+				    	<template slot="prepend"><img src="../../static/img/login/user.png" alt=""></template>
 				    </el-input>
 				  </el-form-item>
 				  <el-form-item prop="password">
 				    <el-input type="password" placeholder="请输入密码" v-model="form.password">
-				    	<template slot="prepend"><i class="el-icon-delete"></i></template>
+				    	<template slot="prepend"><img src="../../static/img/login/password.png" alt=""></template>
 				    </el-input>
 				  </el-form-item>
 				  <el-form-item>
