@@ -223,7 +223,25 @@ export default {
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
-			tableData3:[],option4:{},option5:{}
+			tableData3:[],option4:{},option5:{},
+			compare1:{
+            name:'班级',
+            type:'bar',
+            itemStyle:{
+                normal:{
+                    color:'#70CDF3'
+                }
+            },
+            label:{
+                normal:{
+                    show:true,
+                    position:'top',
+                    color:'#70CDF3'
+                }
+            },
+            barWidth : 60,
+            data:[97.8, 77.24, 87.1, 27.78, 37.6]
+        }
 		}
 	},
     methods: {
@@ -301,6 +319,8 @@ export default {
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
     	this.option5 = this.IndexData.option5;
+    	this.option1.series.push(this.compare1);
+
 		//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);

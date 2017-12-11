@@ -16,10 +16,10 @@ export default {
     allRanking:['18'],//列于全区多少名
     tableData1:[
     	{
-	  		subject:'总分',
-	  		countPeople:'500',
-	  		fullMark:'750',
-	  		average:'430',
+	  	subject:'总分',
+	  	countPeople:'500',
+	  	fullMark:'750',
+	  	average:'430',
         averages:'380',
         deviation:'50',
         ranking:'6',
@@ -91,7 +91,8 @@ export default {
         failure:'10%'
   		}
     ],
-    option1:{tooltip: {
+    option1:{
+    tooltip: {
         trigger: 'axis',
         axisPointer: {
             type: 'cross',
@@ -234,7 +235,7 @@ export default {
         }
     ],
     option2:{
-         tooltip : {
+        tooltip : {
             trigger: 'axis',
             axisPointer: {
                 type: 'shadow',
