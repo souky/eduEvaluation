@@ -1078,14 +1078,6 @@ export default{
 						borderColor: '#777',
 						borderWidth: 1,
 						formatter:"",
-				        /*formatter: function (obj) {
-				            var value = obj.value;
-				            return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-				                + '</div>' + "题型" + '：' + value[2] + '<br>'
-				                + "题号" + '：' + value[4] + '<br>'
-				                + "满分值" + '：' + value[3] + '<br>'
-				                + "得分率差距" + '：' + value[5] + '<br>'
-				            }*/
 				        },
 				        xAxis : [
 				        {
@@ -1439,7 +1431,9 @@ export default{
 										oNav[j].className = '';
 										
 									}
-									oNav[i].className = 'active';
+									if(oNav[i]){
+										oNav[i].className = 'active';
+									}
 			    				}
 
 			    			}
