@@ -92,71 +92,72 @@ export default {
   		}
     ],
     option1:{
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            crossStyle: {
-                color: '#999'
-            }
-        }
-    },
-    legend: {
-        data:['班级','全校','全区县']
-    },
-    xAxis: [
-        {
-            type: 'category',
-            data: ['高分率','优秀率','良好率','合格率','不及格率'],
+        tooltip: {
+            trigger: 'axis',
             axisPointer: {
-                type: 'shadow'
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
             }
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value',
-            name: '平均分/分',
-            max:'150'
-        }
-    ],
-    series: [
-        {
-            name:'班级',
-            type:'bar',
-            itemStyle:{
-                normal:{
-                    color:'#70CDF3'
-                }
-            },
-            label:{
-                normal:{
-                    show:true,
-                    position:'top',
-                    color:'#70CDF3'
-                }
-            },
-            barWidth : 60,
-            data:[97.8, 77.24, 87.1, 27.78, 37.6]
         },
-        {
-            name:'全校',
-            type:'line',
-            itemStyle:{
-                normal:{
-                    color:'#FFD244'
+        legend: {
+            data:['班级','全校','全区县']
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['高分率','优秀率','良好率','合格率','不及格率'],
+                axisPointer: {
+                    type: 'shadow'
                 }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '平均分/分',
+                max:'150'
+            }
+        ],
+        series: [
+            {
+                name:'班级',
+                type:'bar',
+                itemStyle:{
+                    normal:{
+                        color:'#70CDF3'
+                    }
+                },
+                label:{
+                    normal:{
+                        show:true,
+                        position:'top',
+                        color:'#70CDF3'
+                    }
+                },
+                barWidth : 60,
+                data:[97.8, 77.24, 87.1, 27.78, 37.6]
             },
-            label:{
-                normal:{
-                    show:true,
-                    position:'top',
-                    color:'#FFD244'
-                }
-            },
-            data:[97.8, 77.24, 87.1, 27.78, 37.6]
-        }
-    ]},
+            {
+                name:'全校',
+                type:'line',
+                itemStyle:{
+                    normal:{
+                        color:'#FFD244'
+                    }
+                },
+                label:{
+                    normal:{
+                        show:true,
+                        position:'top',
+                        color:'#FFD244'
+                    }
+                },
+                data:[97.8, 77.24, 87.1, 27.78, 37.6]
+            }
+        ]
+    },
     tableData2:[
         {
         ranking:'6',
@@ -292,7 +293,7 @@ export default {
     classL:['7','8','9','12','14'],
     classLs:'7',
     option3:{
-         tooltip : {
+        tooltip : {
             trigger: 'axis',
             axisPointer: {
                 type: 'shadow',
@@ -433,7 +434,7 @@ export default {
         }
     ],
     option4:{
-         tooltip : {
+        tooltip : {
             trigger: 'axis',
             axisPointer: {
                 type: 'shadow',
@@ -514,96 +515,96 @@ export default {
     },
     option5:{
         tooltip : {
-        trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    legend: {
-        data: ['高分率≥90%', '优秀率≥85%','及格率≥60%','不及格率≤60%']
-    },
-    dataZoom: [
-            {
-                show: true,
-                start: 1,
-                end: 60
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
-        ],
-    xAxis:  {
-        boundaryGap:['10%','10%'],
-        type: 'category',
-        data: ['全区县','全区县NO1班级','全校','19','18','17','16','15','14','13','12','11','10','9','8','7']
-    },
-    yAxis: {
-       type: 'value',
-       max:1
-    },
-    series: [
-        {
-            name: '高分率≥90%',
-            type: 'bar',
-            stack: '占比',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'inside'
-                }
-            },
-            barWidth:'60',
-            itemStyle:{
-                normal:{color:'#8F72E5'}
-            },
-            data: [0.21, 0.44, 0.39, 0.23, 0.29, 0.24, 0.32,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27]
         },
-        {
-            name: '优秀率≥85%',
-            type: 'bar',
-            stack: '占比',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'inside'
-                }
-            },
-            barWidth:'60',
-            itemStyle:{
-                normal:{color:'#FFD244'}
-            },
-            data: [0.32, 0.15, 0.21, 0.26, 0.21, 0.32, 0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33]
+        legend: {
+            data: ['高分率≥90%', '优秀率≥85%','及格率≥60%','不及格率≤60%']
         },
-        {
-            name: '及格率≥60%',
-            type: 'bar',
-            stack: '占比',
-            label: {
-                normal: {
+        dataZoom: [
+            {
                     show: true,
-                    position: 'inside'
+                    start: 1,
+                    end: 60
                 }
+            ],
+            xAxis:  {
+                boundaryGap:['10%','10%'],
+                type: 'category',
+                data: ['全区县','全区县NO1班级','全校','19','18','17','16','15','14','13','12','11','10','9','8','7']
             },
-            barWidth:'60',
-            itemStyle:{
-                normal:{color:'#FF8585'}
+            yAxis: {
+               type: 'value',
+               max:1
             },
-            data: [0.31, 0.21, 0.3, 0.21, 0.28, 0.18, 0.16,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3]
-        },
-        {
-            name: '不及格率≤60%',
-            type: 'bar',
-            stack: '占比',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'inside'
-                }
+            series: [
+            {
+                name: '高分率≥90%',
+                type: 'bar',
+                stack: '占比',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside'
+                    }
+                },
+                barWidth:'60',
+                itemStyle:{
+                    normal:{color:'#8F72E5'}
+                },
+                data: [0.21, 0.44, 0.39, 0.23, 0.29, 0.24, 0.32,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27]
             },
-            barWidth:'60',
-            itemStyle:{
-                normal:{color:'#70CDF3'}
+            {
+                name: '优秀率≥85%',
+                type: 'bar',
+                stack: '占比',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside'
+                    }
+                },
+                barWidth:'60',
+                itemStyle:{
+                    normal:{color:'#FFD244'}
+                },
+                data: [0.32, 0.15, 0.21, 0.26, 0.21, 0.32, 0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33]
             },
-            data: [0.16, 0.2, 0.1, 0.3, 0.22, 0.26, 0.19,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
-        }
-    ]
+            {
+                name: '及格率≥60%',
+                type: 'bar',
+                stack: '占比',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside'
+                    }
+                },
+                barWidth:'60',
+                itemStyle:{
+                    normal:{color:'#FF8585'}
+                },
+                data: [0.31, 0.21, 0.3, 0.21, 0.28, 0.18, 0.16,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3]
+            },
+            {
+                name: '不及格率≤60%',
+                type: 'bar',
+                stack: '占比',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside'
+                    }
+                },
+                barWidth:'60',
+                itemStyle:{
+                    normal:{color:'#70CDF3'}
+                },
+                data: [0.16, 0.2, 0.1, 0.3, 0.22, 0.26, 0.19,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
+            }
+        ]
     }
         
 }
