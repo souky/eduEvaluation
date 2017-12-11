@@ -1,0 +1,12 @@
+[
+  {
+    "title": "JS Components",
+    "list": [
+      {
+        "path": "/cell",
+        "name": "cell",
+        "icon": "cell"
+      }
+    ]
+  }
+]

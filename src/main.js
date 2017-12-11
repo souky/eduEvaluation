@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import routes from './router/index'
 
 import VueRouter from 'vue-router'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import ElementUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 import '../static/css/main.css'
 import '../static/css/apps.css'
 import axios from 'axios'
@@ -18,7 +18,9 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
-
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.FastClick) window.FastClick.attach(document.body);
+}, false);
 /* axios配置 */
 axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -112,10 +114,32 @@ Vue.prototype.formatMsec = function(msec){
 	}
 	return s;
 }
+const router = new VueRouter({
+  base: __dirname,
+  routes
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App}
+  components: {App}
 })
+let indexScrollTop = 0;
+router.beforeEach((route, redirect, next) => {
+  if (route.path !== '/') {
+    indexScrollTop = document.body.scrollTop;
+  }
+  document.title = route.meta.title || document.title;
+  next();
+});
+
+router.afterEach(route => {
+  if (route.path !== '/') {
+    document.body.scrollTop = 0;
+  } else {
+    Vue.nextTick(() => {
+      document.body.scrollTop = indexScrollTop;
+    });
+  }
+});

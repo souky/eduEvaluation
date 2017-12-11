@@ -1,44 +1,45 @@
 <template>
-  <div id="app">
-  	<b-header ></b-header>
-  	<transition name="slide-fade">
-    	<router-view></router-view>
-    </transition>
+  <div>
+    <router-link class="page-back" v-if="visible" :to="'/'">
+      <i class="mintui mintui-back"></i>
+    </router-link>
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-	import BHeader from '@/components/BHeader'
-	import Vue from 'vue'
-	export default {
-	  name: 'app',
-   	components: {BHeader},
-    mounted:function(){
-      var height = document.documentElement.clientHeight;
-      document.getElementById("app").style.minHeight = height+"px";
-  	},
-  	methods:{
-  	}
-	}
-</script>
-
 <style>
-#app {
-  font-family: '\u5FAE\u8F6F\u96C5\u9ED1', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  background-color: #F9F9F9
-}
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(0px);
-  opacity: 0;
-}
+  @reset-global mobile;
+
+  html, body {
+    background-color: #fafafa;
+    -webkit-overflow-scrolling: touch;
+    user-select: none;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .page-back {
+    display: inline-block;
+    position: absolute 12px * * 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    i {
+      font-size: 24px;
+      line-height: 40px;
+    }
+  }
 </style>
+
+<script type="text/babel">
+
+  export default {
+    computed: {
+      visible() {
+        return ['/', '/header', '/search'].indexOf(this.$route.path) < 0;
+      }
+    }
+  };
+</script>
