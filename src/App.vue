@@ -36,7 +36,7 @@
   export default {
     computed: {
       visible() {
-        return ['/', '/list'].indexOf(this.$route.path) < 0;
+        return ['/', '/home'].indexOf(this.$route.path) < 0;
       }
     },
     methods:{
