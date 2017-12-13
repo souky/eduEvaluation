@@ -3,7 +3,8 @@
 		<div class="knowledge_body">
 			<div class="title">选择科目</div>
 			<div class="select_subject fix">
-				<div v-for="e in subjectArray" class="items l" @click="changeSubject($event)">{{e}}</div>
+				<div v-for="(e,index) in subjectArray" v-if="index == 0" class="items l active" @click="changeSubject($event)">{{e}}</div>
+				<div v-for="(e,index) in subjectArray" v-if="index != 0" class="items l" @click="changeSubject($event)">{{e}}</div>
 			</div>
 			<div class="title">知识点</div>
 			<div class="konwledge_detiles fix">
@@ -34,7 +35,7 @@ export default {
 
     return {
       msg: 'knowledgePoint',
-      subjectArray:['语文','数学','英语','物理','化学','历史','政治','地理'],
+      subjectArray:[],
       defaultProps: {
 	        children: 'kpVOChildList',
 	        label: 'knowledgeContent',
@@ -56,8 +57,12 @@ export default {
     }
   },
   mounted:function(){
-  	document.getElementsByClassName("items")[0].click();
-  	this.loadKonwP();
+  	this.postHttp(this,{},"school/querySchools",function(obj,res){
+  		obj.subjectArray = res.result.subjectArray;
+  		obj.queryName = obj.subjectArray[0];
+  		obj.loadKonwP();
+  	})
+  	
   },
   methods:{
 	changeSubject(event){

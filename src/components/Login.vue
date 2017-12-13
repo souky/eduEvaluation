@@ -57,8 +57,6 @@ export default {
 	},
 	methods:{
 		onSubmit:function(){
-			console.log(this.form.userName);
-			console.log(this.form.psw);
 			this.postHttp(this,this.form,'login',function(obj,res){
 				if(res.code == '10000'){
 					document.getElementById("header").style.display = 'block';

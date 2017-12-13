@@ -11,17 +11,13 @@
 				  		<el-input v-model="queryInfos.examName" placeholder="考试名称"></el-input>
 				  	</div>
 				  </el-col>
-				  <el-col class="queryItems" :span="6">
-				  	<div class="l">班级</div>
-				  	<div class="r">
-				  		<el-input v-model="queryInfos.classroom" placeholder="班级"></el-input>
-				  	</div>
-				  </el-col>
 				  <el-col class="queryItems" :span="6">	
 				  	<div class="l">科目</div>
 				  	<div class="r">
 				  		<el-input v-model="queryInfos.subject" placeholder="科目"></el-input>
 				  	</div>
+				  </el-col>
+				  <el-col class="queryItems" :span="6">
 				  </el-col>
 				  <el-col :span="6">
 				  	<div class="btn_query r" @click="queryInfo">
@@ -42,7 +38,6 @@
 			      <el-table-column prop="examName" align="center" label="考试名称"></el-table-column>
 			      <el-table-column prop="examStartDate" :formatter="timeFormatter" align="center" label="开始时间"></el-table-column>
 			      <el-table-column prop="examEndDate" :formatter="timeFormatter" align="center"  label="结束时间"></el-table-column>
-			      <el-table-column prop="classroom" align="center"  label="班级"></el-table-column>
 			      <el-table-column prop="subject" align="center"  label="科目"></el-table-column>
 			      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
 			      <el-table-column align="center" label="操作" width='200'>
@@ -72,7 +67,7 @@
 						<i class="el-icon-back">返回列表</i>
 					</div>
 					<div class="items_tools r">
-						<i class="el-icon-check">保存</i>
+						<i class="el-icon-check" @click="saveEdit">保存</i>
 					</div>
 				</div>
 				<div>
@@ -81,7 +76,7 @@
 				    	<div class="add_exam_one">
 				    		<el-form  :model="exam" label-width="100px">
 							  <el-form-item label="考试名称">
-							    <el-input v-model="exam.name"></el-input>
+							    <el-input v-model="exam.examName"></el-input>
 							  </el-form-item>
 							  <el-form-item label="考试开始时间">
 							  	 <el-date-picker v-model="exam.examStartDate" type="datetime" placeholder="考试开始时间"></el-date-picker>
@@ -90,19 +85,18 @@
 							  	<el-date-picker v-model="exam.examEndDate" type="datetime" placeholder="考试结束时间"></el-date-picker>
 							  </el-form-item>
 							  <el-form-item label="年级">
-							  	<el-select v-model="exam.grade" placeholder="请选择活动区域">
-							      <el-option label="一年级" value="shanghai"></el-option>
-							      <el-option label="二年级" value="beijing"></el-option>
+							  	<el-select v-model="grade" placeholder="请选择活动区域">
+							      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
 							    </el-select>
 							  </el-form-item>
 							  <el-form-item label="学科">
 							  	<el-select v-model="exam.subject" placeholder="请选择活动区域">
-							      <el-option label="语文" value="shanghai"></el-option>
-							      <el-option label="数学" value="beijing"></el-option>
+							      <el-option v-for="e in subjectArray" :label="e" :value="e"></el-option>
 							    </el-select>
 							  </el-form-item>
 							</el-form>
 				    	</div>
+				    	
 				    </el-tab-pane>
 				    <el-tab-pane label="选择考试学生" name="second">
 				    	<div class="add_exam_two">
@@ -277,12 +271,13 @@ export default {
 
     return {
 	  msg: 'examList',
-	  tableData:ExamList.data,
+	  tableData:[],
 	  queryInfos:{
 	  	examName:'',
-	  	classroom:'',
 	  	subject:''
 	  },
+	  subjectArray:[],
+	  grade:'',
 	  
 	  pageNum:1,
       pageSize:10,
@@ -292,20 +287,14 @@ export default {
       showAdd:false,
       
       activeName:'first',
-      
+      gradeOption:[],
       exam:{
-		examName:'测试考试计划',
-		examStartDate:'',
-		examEndDate:'',
-		grade:'一年级',
-		subject:'语文',
-		examStatus:'0',
-		id:'wdawdawd123123'
+		subject:''
 	  },
 	  
 	  chiosedStu:[],
 	  student:ExamList.student,
-	  subject:ExamList.subject,
+	  subject:'',
 	  
 	  dialogVisible:false,
 	  TwoWaySpecification:{
@@ -324,10 +313,32 @@ export default {
     }
   },
   mounted:function(){
+  	this.queryInfo();
+  	
+  	this.postHttp(this,{},"school/querySchools",function(obj,res){
+  		obj.subjectArray = res.result.subjectArray;
+  	});
+  	this.postHttp(this,{},'getLoingGrade',function(obj,res){
+  		obj.gradeOption = res.result;
+  	});
   },
   methods:{
   	queryInfo(){
+  		var datas = this.ajaxData();
+  		this.postHttp(this,datas,'exam/queryExams',function(obj,res){
+	  		obj.pageNum = res.result.pageNum;
+	  		obj.pageSize = res.result.pageSize;
+	  		obj.total = res.result.total;
+	  		obj.tableData = res.result.list;
+	  	})
+  	},
+  	saveEdit(){
+  		this.exam.examStartDate = this.timeF(this.exam.examStartDate).format("YYYY-MM-DD HH:mm:ss");
+  		this.exam.examEndDate = this.timeF(this.exam.examEndDate).format("YYYY-MM-DD HH:mm:ss");
   		
+  		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
+	  		console.log(res);
+	  	});
   	},
 	editInfo(id){
 		
@@ -353,15 +364,12 @@ export default {
 	},
 	statusFormatter(row, column, cellValue){
 		var status = row[column.property];  
-	  	if (status == undefined || status == '') {  
-	     return "";  
-	  	}
 	  	switch(status){
-	  		case '0':
+	  		case 0:
 	  		return '未开始';
-	  		case '1':
+	  		case 1:
 	  		return '正在进行';
-	  		case '2':
+	  		case 2:
 	  		return '已结束';
 	  	}
 	},
@@ -393,6 +401,14 @@ export default {
 	    if (index !== -1) {
 	      this.two_way_D.splice(index, 1)
 	    }
+	},
+	ajaxData(){
+		var data = new Object();
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["examName"] = this.queryInfos.examName;
+		data["subject"] = this.queryInfos.subject;
+		return data;
 	},
   }
 }

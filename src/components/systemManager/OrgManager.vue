@@ -92,7 +92,7 @@ export default {
   },
   mounted:function(){
   	
-  	this.postHttp(this,{},'organization/queryOrganizations',function(obj,res){
+  	this.postHttp(this,{},'organization/loadOrganizations',function(obj,res){
   		obj.data = res.result;
   	});
   	
@@ -107,8 +107,8 @@ export default {
 	  	})
   	},
 	handleNodeClick(data){
-		if(data.isSchool){
-			this.queryInfo(data.regionCode);
+		if(data.children == null || data.children == undefined){
+			this.queryInfo(data.id);
 		}
 	},
 	colseDia(){
@@ -168,6 +168,7 @@ export default {
   	},
 	addNew(){
 		this.dialogVisible = true;
+		this.showInfo = true;
   		this.org = {};
 	},
 	editInfo(id){
