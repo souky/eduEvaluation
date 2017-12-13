@@ -1,8 +1,6 @@
 <template>
   <div>
-    <router-link class="page-back" v-if="visible" :to="'/'">
-      <i class="mintui mintui-back"></i>
-    </router-link>
+    <span @click="header" v-if="visible">返回</span>
     <router-view></router-view>
   </div>
 </template>
@@ -38,7 +36,12 @@
   export default {
     computed: {
       visible() {
-        return ['/', '/header', '/search'].indexOf(this.$route.path) < 0;
+        return ['/', '/list'].indexOf(this.$route.path) < 0;
+      }
+    },
+    methods:{
+      demo:function(){
+        this.$header.go(-1)
       }
     }
   };
