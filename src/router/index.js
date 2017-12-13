@@ -28,6 +28,9 @@ const route = registerRoute(NavConfig);
 
 route.route.push({
   path: '/',
+  component: require('../login/login.vue')
+},{
+  path: '/home',
   component: require('../list.vue')
 });
 
