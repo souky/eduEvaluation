@@ -31,6 +31,7 @@ export default {
 		demo:function(){
 			alert(123);
 			this.$router.push({path:'/home'});
+			this.$store.commit('newTitle','poi');
 		}
 	}
 }

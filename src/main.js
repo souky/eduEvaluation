@@ -8,6 +8,8 @@ import 'mint-ui/lib/style.css'
 import '../static/css/main.css'
 import '../static/css/apps.css'
 import axios from 'axios'
+import Vuex from 'vuex'
+import store from './vuex/store'
 
 
 /* vue配置 */
@@ -17,6 +19,7 @@ Vue.config.productionTip = false
 /* 附加插件 */
 Vue.use(VueRouter)
 Vue.use(ElementUI)
+Vue.use(Vuex)
 
 document.addEventListener('DOMContentLoaded', function() {
   if (window.FastClick) window.FastClick.attach(document.body);
@@ -122,6 +125,7 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: {App}
 })
