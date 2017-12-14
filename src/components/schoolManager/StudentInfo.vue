@@ -75,7 +75,7 @@
 			  <el-form-item label="联系方式"  >
 			  	<el-input v-model="student.studentContactMobile" placeholder="联系方式"></el-input>
 			  </el-form-item>
-			  <el-form-item label="年级" prop="grade" v-show="showInfo">
+			  <el-form-item label="年级" v-show="showInfo">
 			    <el-select v-model="grade" @change='changeGrade' placeholder="请选择">
 				    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 				    </el-option>

@@ -70,99 +70,88 @@
 						<i class="el-icon-check" @click="saveEdit">保存</i>
 					</div>
 				</div>
-				<div>
-					<el-tabs tab-position="top" v-model="activeName" @tab-click="handleClick">
-				    <el-tab-pane label="添加考试计划" name="first">
-				    	<div class="add_exam_one">
-				    		<el-form  :model="exam" label-width="100px">
-							  <el-form-item label="考试名称">
-							    <el-input v-model="exam.examName"></el-input>
-							  </el-form-item>
-							  <el-form-item label="考试开始时间">
-							  	 <el-date-picker v-model="exam.examStartDate" type="datetime" placeholder="考试开始时间"></el-date-picker>
-							  </el-form-item>
-							  <el-form-item label="考试结束时间">
-							  	<el-date-picker v-model="exam.examEndDate" type="datetime" placeholder="考试结束时间"></el-date-picker>
-							  </el-form-item>
-							  <el-form-item label="年级">
-							  	<el-select v-model="grade" placeholder="请选择活动区域">
-							      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+				<div class="fix">
+					<div class="add_exam_one l">
+						<div class="item_titel">考试信息</div>
+			    		<el-form  :model="exam" label-width="100px">
+						  <el-form-item label="考试名称">
+						    <el-input v-model="exam.examName"></el-input>
+						  </el-form-item>
+						  <el-form-item label="考试开始时间">
+						  	 <el-date-picker v-model="exam.examStartDate" type="datetime" placeholder="考试开始时间"></el-date-picker>
+						  </el-form-item>
+						  <el-form-item label="考试结束时间">
+						  	<el-date-picker v-model="exam.examEndDate" type="datetime" placeholder="考试结束时间"></el-date-picker>
+						  </el-form-item>
+						  <el-form-item label="年级">
+						  	<el-select v-model="grade" placeholder="请选择活动区域">
+						      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+						    </el-select>
+						  </el-form-item>
+						  <el-form-item label="学科">
+						  	<el-checkbox-group v-model="exam.subject" @change='subjectChange'>
+						      <el-checkbox v-for="e in subjectArray" :label="e" name="subjectArray"></el-checkbox>
+						    </el-checkbox-group>
+						  </el-form-item>
+						</el-form>
+			    	</div>
+			    	
+			    	<div class="add_exam_three l">
+			    		<div class="item_titel">双向细目表</div>
+						<div class="two_way_subject fix" v-for="(e,index) in subject">
+							<div class="title l">{{e.name}}</div>
+							<div class="selete_item l">
+								<el-select v-model="e.id" placeholder="选择细目表">
+							      <el-option v-for="e in twList" :label="e.specificationName" :value="e.id" :key="e.id"></el-option>
 							    </el-select>
-							  </el-form-item>
-							  <el-form-item label="学科">
-							  	<el-select v-model="exam.subject" placeholder="请选择活动区域">
-							      <el-option v-for="e in subjectArray" :label="e" :value="e"></el-option>
-							    </el-select>
-							  </el-form-item>
-							</el-form>
-				    	</div>
-				    	
-				    </el-tab-pane>
-				    <el-tab-pane label="选择考试学生" name="second">
-				    	<div class="add_exam_two">
-				    		<el-collapse accordion>
-							  <el-collapse-item v-for="(e,index) in student" :title="e.label" :name="index">
-							  	<!--<el-checkbox-group v-model='chiosedStu' size="mini">
-								    <el-checkbox v-for="ee in e.children" checked :label="ee.name" :key="ee.id" border>{{ee.name}}</el-checkbox>
-								</el-checkbox-group>-->
-								<el-row>
-									<el-col :span="5"></el-col>
-									<el-col :span="1">序号</el-col>
-								  	<el-col :span="1">
-								  		全选
-								  	</el-col>
-								  	<el-col :span="3">姓名</el-col>
-								  	<el-col :span="3">学号</el-col>
-								  	<el-col :span="3">考号</el-col>
-								  	<el-col :span="2">缺考</el-col>
-								  	<el-col :span="6"></el-col>
-								</el-row>
-								<el-row v-for="(ee,indexs) in e.children">
-									<el-col :span="5"></el-col>
-									<el-col :span="1">{{indexs+1}}</el-col>
-								  	<el-col :span="1">
-								  		<el-checkbox checked> </el-checkbox>
-								  	</el-col>
-								  	<el-col :span="3">
-								  		{{ee.name}}
-								  	</el-col>
-								  	<el-col :span="3">
-								  		{{ee.stuNo}}
-								  	</el-col>
-								  	<el-col :span="3">
-								  		<el-input v-model="ee.examNo" placeholder="考号"></el-input>
-								  	</el-col>
-								  	<el-col :span="2">
-								  		<el-switch v-model="ee.status" active-color="#FFD100" inactive-color="#9e9e9e"></el-switch>
-								  	</el-col>
-								  	<el-col :span="6"></el-col>
-								</el-row>
-							  </el-collapse-item>
-							</el-collapse>
-				    	</div>
-				    </el-tab-pane>
-				    <el-tab-pane label="匹配双向细目表" name="third">
-				    	<div class="add_exam_two">
-				    		<!--<el-collapse  accordion>
-							  <el-collapse-item v-for="(e,index) in subject" :title="e.label" :name="index">
-							  	
-							  </el-collapse-item>
-							</el-collapse>-->
-							
-							<div class="two_way_subject fix" v-for="(e,index) in subject">
-								<div class="title l">{{e.label}}</div>
-								<div class="selete_item l">
-									<el-select v-model="e.twoWayId" placeholder="选择细目表">
-								      <el-option label="语文细目表" value="1"></el-option>
-								      <el-option label="数学细目表" value="2"></el-option>
-								    </el-select>
-								</div>
-								<div class="add_two_way l" @click="add_two_way">添加细目表</div>
 							</div>
-				    	</div>
-				    </el-tab-pane>
-				  </el-tabs>
+							<div class="add_two_way l" @click="add_two_way">添加细目表</div>
+						</div>
+			    	</div>
+					
 				</div>
+		    	
+		    	
+		    	<div class="add_exam_two">
+		    		<div class="item_titel">学生信息</div>
+		    		<el-collapse accordion>
+					  <el-collapse-item v-for="(e,index) in student" :title="e.classroomName" :name="index">
+						<el-row>
+							<el-col :span="5"></el-col>
+							<el-col :span="1">序号</el-col>
+						  	<el-col :span="1" >
+						  		<div style="cursor: pointer;" @click="studentCheck($event)" data-checked="1">反选</div>
+						  	</el-col>
+						  	<el-col :span="3">姓名</el-col>
+						  	<el-col :span="3">学号</el-col>
+						  	<el-col :span="3">考号</el-col>
+						  	<el-col :span="2">缺考</el-col>
+						  	<el-col :span="6"></el-col>
+						</el-row>
+						<el-row v-for="(ee,indexs) in e.list">
+							<el-col :span="5"></el-col>
+							<el-col :span="1">{{indexs+1}}</el-col>
+						  	<el-col :span="1">
+						  		<el-checkbox v-model="ee.checked" name="studentCheck"> </el-checkbox>
+						  	</el-col>
+						  	<el-col :span="3">
+						  		{{ee.studentName}}
+						  	</el-col>
+						  	<el-col :span="3">
+						  		{{ee.studentNo}}
+						  	</el-col>
+						  	<el-col :span="3">
+						  		<el-input v-model="ee.examStuNo" placeholder="考号"></el-input>
+						  	</el-col>
+						  	<el-col :span="2">
+						  		<el-switch v-model="ee.status"  inactive-value="0" active-value="1" active-color="#FFD100" inactive-color="#9e9e9e"></el-switch>
+						  	</el-col>
+						  	<el-col :span="6"></el-col>
+						</el-row>
+					  </el-collapse-item>
+					</el-collapse>
+		    	</div>
+
 			</div>
 		</div>
 		</transition>
@@ -176,17 +165,18 @@
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
-			  	<div class="l">科目</div>
-			  	<div class="r">
-			  		<el-input v-model="TwoWaySpecification.subjectCode" placeholder="科目" readOnly></el-input>
-			  	</div>
-			  </el-col>
-			  <el-col class="queryItems" :span="6">
 			  	<div class="l">年级</div>
 			  	<div class="r">
 			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
-				      <el-option label="一年级" value="1"></el-option>
-				      <el-option label="二年级" value="2"></el-option>
+				      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+				    </el-select>
+			  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6">
+			  	<div class="l">科目</div>
+			  	<div class="r">
+			  		<el-select v-model="TwoWaySpecification.subjectCode" placeholder="科目">
+				      <el-option v-for="e in subjectArray" :label="e" :value="e"></el-option>
 				    </el-select>
 			  	</div>
 			  </el-col>
@@ -289,12 +279,13 @@ export default {
       activeName:'first',
       gradeOption:[],
       exam:{
-		subject:''
+      	subject:[],
 	  },
 	  
 	  chiosedStu:[],
-	  student:ExamList.student,
-	  subject:'',
+	  student:[],
+	  subject:[],
+	  twList:[],
 	  
 	  dialogVisible:false,
 	  TwoWaySpecification:{
@@ -321,6 +312,25 @@ export default {
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
   	});
+  	this.postHttp(this,{pageNum:1,pageSize:100},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+  		var s = res.result.list;
+  		for(var i = 0;i<s.length;i++){
+  			s[i]['spId'] = s[i]['id'];
+  		}
+  		obj.twList = res.result.list;
+  	});
+  	this.postHttp(this,{},'student/queryStudentsWithoutPage',function(obj,res){
+  		var s = res.result;
+  		for(var i = 0;i<s.length;i++){
+  			var ss = s[i].list;
+  			for(var j = 0;j<ss.length;j++){
+  				ss[j]['checked'] = true;
+  				ss[j]['examStuNo'] = ss[j]['studentNo'];
+  				ss[j]['studentId'] = ss[j]['id'];
+  			}
+  		}
+  		obj.student = s;
+  	});
   },
   methods:{
   	queryInfo(){
@@ -336,14 +346,55 @@ export default {
   		this.exam.examStartDate = this.timeF(this.exam.examStartDate).format("YYYY-MM-DD HH:mm:ss");
   		this.exam.examEndDate = this.timeF(this.exam.examEndDate).format("YYYY-MM-DD HH:mm:ss");
   		
-  		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
-	  		console.log(res);
+  		//获取学生
+  		var s = this.student;
+  		var examStudent = new Array();
+  		for(var i = 0;i<s.length;i++){
+  			var ss = s[i].list;
+  			for(var j = 0;j<ss.length;j++){
+  				if(ss[j]['checked']){
+  					examStudent.push(ss[j]);
+  				}
+  			}
+  		}
+  		var examStudent = JSON.stringify(examStudent)
+		this.exam["examStudent"] = examStudent;
+		this.exam["examSpecification"] = JSON.stringify(this.twList);
+		
+		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
+	  		if(res.code = "10000"){
+	  			obj.notify_success();
+				obj.queryInfo();
+				obj.backList();
+	  		}else{
+	  			obj.notify_jr(obj,'操作错误',res.message,'error');
+	  		}
 	  	});
   	},
 	editInfo(id){
 		
 	},
 	deleteInfo(id){
+		
+	},
+	studentCheck(e){
+		var o = e.currentTarget;
+		var checked = o.getAttribute("data-checked");
+		if(checked == '1'){
+			o.innerHTML = '正选';
+			o.setAttribute("data-checked",'0');
+			var s = o.parentNode.parentNode.parentNode.ownerDocument.getElementsByName("studentCheck");
+			for(var x = 0;x < s.length;x++){
+				s[x].click();
+			}
+		}else{
+			o.innerHTML = '反选';
+			o.setAttribute("data-checked",'1');
+			var s = o.parentNode.parentNode.parentNode.ownerDocument.getElementsByName("studentCheck");
+			for(var x = 0;x < s.length;x++){
+				s[x].click();
+			}
+		}
 		
 	},
 	handleSizeChange(val) {
@@ -380,9 +431,18 @@ export default {
 	backList(){
 		this.showTable = true;
 		this.showAdd = false;
+		this.exam = {};
 	},
-	handleClick(tab, event){
-		
+	subjectChange(val){
+		var checkboxArray = this.exam.subject;
+		var e;
+		this.subject = [];
+		for(e in checkboxArray){
+			var s = new Object();
+			s['name'] = checkboxArray[e];
+			s['id'] = '';
+			this.subject.push(s);
+		}
 	},
 	add_two_way(){
 		this.dialogVisible = true;
@@ -428,13 +488,28 @@ export default {
 	margin:20px auto;
 }
 #examList .el-tabs__item:hover{color:#FFD100;}
+#examList .item_titel{
+	height:30px;
+	line-height: 30px;
+	width:200px;
+	border-bottom: 1px solid silver;
+	margin-bottom: 20px;
+}
 #examList .add_exam_one{
-	width:40%;
+	width:30%;
 	margin:20px auto;
 }
 #examList .add_exam_two{
 	width:100%;
 	margin:20px auto;
+}
+#examList .add_exam_two .el-checkbox:first-child{
+	margin-right:0px;
+}
+#examList .add_exam_three{
+	width:50%;
+	margin:20px auto;
+	margin-left: 20%;
 }
 #examList .el-collapse-item__header{padding-left:20px;}
 #examList .el-checkbox-group{padding:0px 20px;}
@@ -444,9 +519,6 @@ export default {
     line-height: 40px;
     text-align: center;
     margin-bottom:2px;
-}
-#examList .el-checkbox:first-child{
-	margin-right:0px
 }
 
 #examList .two_way_subject{
@@ -476,4 +548,5 @@ export default {
 	margin-left: 50px;
 	margin-top: 5px;
 }
+#examList .el-date-editor.el-input, .el-date-editor.el-input__inner{width:100%}
 </style>
