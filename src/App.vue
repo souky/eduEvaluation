@@ -7,9 +7,9 @@
 
 <style>
   @reset-global mobile;
-
   html, body {
-    background-color: #fafafa;
+    background-color: #f5f5f5;
+    height: 100%;
     -webkit-overflow-scrolling: touch;
     user-select: none;
   }
