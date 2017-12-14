@@ -1,6 +1,9 @@
 <template>
   <div>
-    <span @click="header" v-if="visible">返回</span>
+    <div class="header-nav" v-if="visible">
+      <span @click="header"><img src="../static/img/header/fh@1x.png" alt=""></span>
+      <p>{{$store.state.title}}</p>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -13,21 +16,25 @@
     -webkit-overflow-scrolling: touch;
     user-select: none;
   }
-
   a {
     color: inherit;
   }
-
-  .page-back {
-    display: inline-block;
-    position: absolute 12px * * 10px;
-    width: 40px;
-    height: 40px;
+  .header-nav{
+    width: 100%;
+    background-color: red;
     text-align: center;
-    i {
-      font-size: 24px;
-      line-height: 40px;
-    }
+    position: absolute;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .header-nav p{
+    font-size: 1.125rem;
+    color: #FFFFFF;
+    letter-spacing: 0;
+  }
+  .header-nav span{
+    position: absolute;
+    left: 2%;
   }
 </style>
 
@@ -36,11 +43,11 @@
   export default {
     computed: {
       visible() {
-        return ['/', '/home'].indexOf(this.$route.path) < 0;
+        return ['/','/home'].indexOf(this.$route.path) < 0;
       }
     },
     methods:{
-      demo:function(){
+      header:function(){
         this.$header.go(-1)
       }
     }
