@@ -32,6 +32,12 @@ route.route.push({
 },{
   path: '/home',
   component: require('../list.vue')
+},{
+  path: '/grade',
+  component: require('../components/grade/grade.vue')
+},{
+  path: '/knowledge',
+  component: require('../components/knowledge/knowledge.vue')
 });
 
 export const navs = route.navs;
