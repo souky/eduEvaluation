@@ -2,14 +2,11 @@
   <section class="page-demo">
     <div class="page-tabbar">  
     <div class="page-wrap"> 
-  
-    <!-- tabcontainer -->  
       <mt-tab-container class="page-tabbar-container" v-model="selected">  
         <mt-tab-container-item id="首页">  
-           
            <div class="indexImg">
              <div class="mainImg">
-               <mt-search cancel-text="取消" placeholder="搜索"></mt-search>
+               <mt-search cancel-text='' placeholder="搜索"></mt-search>
                <div class="showGread">
                    <p v-for="item in personalData"><span>{{item.name}} :</span> <span>{{item.gread}}</span></p>
                </div>
@@ -18,6 +15,20 @@
               </div>
              </div>
            </div>
+           <div class="l silderBox"><hr class="silider"><span class="l">金阳测评</span><hr class="silider"></div>
+           <div class="gotoBox">
+             <div class="gotoBoxs">
+                  <img src="../static/img/APPImg/bg@2x.png" />
+                  <p>查看报告</p>
+             </div>
+           </div>
+           <div class="gotoBox">
+             <div class="gotoBoxs">
+                  <img src="../static/img/APPImg/zs@2x.png" />
+                  <p>知识点</p>
+             </div>
+           </div>
+           <p class="bottomWord">提升教学质量从这里开始</p>
         </mt-tab-container-item>  
         <mt-tab-container-item id="成绩">  
           <mt-cell v-for="n in 5" :title="'订单 ' + n" />  
@@ -39,19 +50,19 @@
   
     <mt-tabbar v-model="selected" fixed>  
       <mt-tab-item id="首页">  
-        <img slot="icon" src="">  
+        <img slot="icon" :src="selected=='首页'? '../static/img/APPImg/sy@1x.png':'../static/img/APPImg/sy-o@1x.png'">  
         首页  
       </mt-tab-item>  
       <mt-tab-item id="成绩">  
-        <img slot="icon" src="">  
+        <img slot="icon" :src="selected=='成绩'? '../static/img/APPImg/cj@1x.png':'../static/img/APPImg/cj-o@1x.png'">  
         成绩  
       </mt-tab-item>  
       <mt-tab-item id="资源">  
-        <img slot="icon" src="">  
+        <img slot="icon" :src="selected=='资源'? '../static/img/APPImg/zy@1x.png':'../static/img/APPImg/zy-o@1x.png'">  
         资源  
       </mt-tab-item>  
       <mt-tab-item id="我的">  
-        <img slot="icon" src="">  
+        <img slot="icon" :src="selected=='我的'? '../static/img/APPImg/my@1x.png':'../static/img/APPImg/my-o@1x.png'">  
         我的  
       </mt-tab-item>  
     </mt-tabbar>  
@@ -125,39 +136,90 @@
     width: 100%;
     
   }
+  .mint-tabbar{background-size: 100% 0;}
+  .mint-tab-container-item{
+    background-color: white;position: relative;
+  }
+  .mint-tab-item{color:#c5c5c5;}
+  .mint-tab-item-label{
+    font-size: 4vw;
+  }
   .mainImg{
       width: 100%;height: 0;padding-bottom: 82%;
       background-image: url(../static/img/APPImg/bg-s@1x.png);
-      background-size: 100%
+      background-size: 100%;
+      position: relative;
     }
   .mint-search{
-      height: 40px;
+      height: 6vh;
     }
     .mint-searchbar{
-      background-color: inherit;
+      background-color: inherit;height: 100%
     }
     .mint-searchbar-inner{
-      height: 28px;
+      height: inherit;background-color: rgba(0,0,0,.4);
     }
     .mint-searchbar-cancel{
       color: white
     }
     .showGread{
       color: #553B08;
-      font-size: 14px;
       text-align: center;
       margin-top: 29%
     }
+    .mint-searchbar-core{
+      background-color: rgba(0,0,0,0);
+    }
     .mbtn{
-      width: 35vw;
-      height: 5vh;
+      width: 38vw;
+      height: 4vh;
       border: 1px solid #000;
-      border-radius: 4px;
+      border-radius: 8px;
       background-color: #FF7070;
       color: white;
-      font-size:14px;
+      font-size: 3vw;
       text-align: center;
-      line-height: 5vh;
-      
+      line-height: 4vh;
+      position: absolute;
+      bottom: 2vh;
+      right: 15vw
+    }
+    .silderBox{
+      width: 94%;
+      margin: 5% 3%;
+      color: #19AFFF;
+    }
+    .silderBox span{
+      width: 28.5%;
+      text-align: center;
+    }
+    .silider{
+      float: left;
+      width: 35%;
+      border-top:1px solid #19AFFF;
+    }
+    .gotoBox{
+      width: 50%;
+      float: left;
+    }
+    .gotoBoxs{
+      width: 90%;height: 0;padding-bottom: 90%;
+      margin:5% 2.5% 5% 5%;
+      background-color: #FCFCFC;
+      border-radius: 4px
+    }
+    .gotoBox:nth-child(even) .gotoBoxs{
+        margin:5% 5% 5% 2.5%;
+    }
+    .gotoBoxs img{
+      width: 50%;
+      margin:10% 25%;
+    }
+    .gotoBoxs p{
+      text-align: center;color: #666666
+    }
+    .bottomWord{
+      text-align: center;
+      color: #BCBCBC
     }
 </style>
