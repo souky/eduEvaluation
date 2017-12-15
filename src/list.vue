@@ -41,19 +41,93 @@
         <mt-tab-container-item id="成绩">  
            <mt-header title="成绩报告">
            </mt-header>
-            
+            <mt-cell v-for="item in reportList" :key="item.id" :title=item.name>
+              <mt-button class="viewReport">查看报告</mt-button>
+            </mt-cell>
         </mt-tab-container-item>  
         <mt-tab-container-item id="资源">  
-          <mt-cell v-for="n in 7" :title="'发现 ' + n" />  
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/yw@1x.png" />
+                  <p>语文</p>
+             </div>
+           </div>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/sx@1x.png" />
+                  <p>数学</p>
+             </div>
+           </div>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/yy@1x.png" />
+                  <p>英语</p>
+             </div>
+           </div>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/wl@1x.png" />
+                  <p>物理</p>
+             </div>
+           </div>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/hy@1x.png" />
+                  <p>化学</p>
+             </div>
+           </div>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/sw@1x.png" />
+                  <p>生物</p>
+             </div>
+           </div>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/ls@1x.png" />
+                  <p>历史</p>
+             </div>
+           </div>
+           <router-link to="/">
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/dl@1x.png" />
+                  <p>地理</p>
+             </div>
+           </div>
+          </router-link>
+           <div class="point">
+             <div class="points">
+                  <img src="../static/img/APPImg/zh@1x.png" />
+                  <p>政治</p>
+             </div>
+           </div>
         </mt-tab-container-item>  
-        <mt-tab-container-item id="我的">  
-          <div class="page-part">  
-           <!-- cell -->  
-            <mt-cell v-for="n in 12" :title="'我的 ' + n" />  
-          </div>  
-          <router-link to="/">  
-           <mt-button type="danger" size="large">退出</mt-button>  
-          </router-link>  
+        <mt-tab-container-item id="我的">
+          <div class="myCenter">
+            <div class="leftPart">
+              <img src="../static/img/APPImg/tx@1x.png" />
+              <p>
+                <span class="name">王二吖</span><br>
+                <span class="studentClass">高三一班</span><br>
+                <span class="schoolClass">金阳一中</span>
+              </p>
+              <i class="mint-cell-allow-right"></i>
+            </div>
+            <div class="rightPart">
+              
+            </div>
+          </div>
+          <mt-cell title="客服电话" class="nomargin">
+            <a href="tel:400-820-8856" class="kfcall"><span>400-820-8856</span></a>
+            <img slot="icon" src="../static/img/APPImg/kf@1x.png" width="24" height="24">
+          </mt-cell>     
+          <mt-cell title="帮助中心" to="/" is-link>
+            <img slot="icon" src="../static/img/APPImg/bz@1x.png" width="24" height="24">
+          </mt-cell>
+           <mt-cell title="设置" to="/" is-link>
+            <img slot="icon" src="../static/img/APPImg/sz@1x.png" width="24" height="24">
+          </mt-cell>
         </mt-tab-container-item>  
       </mt-tab-container>  
     </div>  
@@ -152,6 +226,19 @@
         },{
           id:'5',
           name:"2013年金阳高中期末考试"
+        }],
+        reportList:[{
+          id:'1',
+          name:'金阳一中高三年级2017年期末考试'
+        },{
+          id:'2',
+          name:'金阳一中高三年级2016年期末考试'
+        },{
+          id:'3',
+          name:'金阳一中高三年级2015年期末考试'
+        },{
+          id:'4',
+          name:'金阳一中高三年级2014年期末考试'
         }]
       };
     },
@@ -160,7 +247,7 @@
       this.navs = navs;
     },
     mounted(){
-      this.lunbo();this.lubo1();
+      this.lunbo();
     },
     methods:{
       lunbo(){
@@ -314,5 +401,63 @@
       text-align: center;
       line-height: 5vh
     }
-
+    #pageDemo .viewReport{
+      font-size: 2vw;
+      padding:1vw 3vw;
+      background-color: white;
+      border:1px solid #19AFFF;
+      border-radius: 3vw;
+      color: #19AFFF;
+      height: inherit;
+    }
+    #pageDemo .mint-cell{
+      background-color: #f5f5f5;
+    }
+    #pageDemo .mint-cell-wrapper{
+      background-color: white;
+      margin-bottom: 2vh
+    }
+    #pageDemo .nomargin .mint-cell-wrapper{
+      margin-bottom: 0;
+      margin-top: 2vh;
+      border-bottom: 1px solid #f5f5f5
+    }
+    #pageDemo .point{
+      width: 33.3%;
+      float: left;
+    }
+  #pageDemo .points{
+      width: 90%;height: 0;padding-bottom: 90%;
+      margin:5% 2.5% 5% 5%;
+      border-radius: 4px;
+      text-align: center;
+    }
+    #pageDemo .points img{
+      padding-top:5vw;
+    }
+    #pageDemo .mint-cell-allow-right::after{
+      top:inherit;width: 1.5vh;height: 1.5vh
+    }
+    #pageDemo .myCenter .mint-cell-allow-right::after{
+      top: 50%;
+      border-color: white
+    }
+    #pageDemo .kfcall{
+      color: #19AFFF;
+      text-decoration:none;
+    }
+    #pageDemo .myCenter{
+      padding:5vh 5vw;position: relative;
+      background-color: #19AFFF;
+    }
+    #pageDemo .myCenter img{
+      margin-right: 2vw
+    }
+    #pageDemo .myCenter p{
+      display:inline-block;color:white;vertical-align: top;
+    }
+    #pageDemo .myCenter p span{
+        display: inline-block;
+        margin-bottom: 0.5vh;
+    }
 </style>
