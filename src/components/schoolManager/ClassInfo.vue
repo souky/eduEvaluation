@@ -151,7 +151,7 @@ export default {
 	  		if(id){
 	  			address = 'classroom/updateClassroom';
 	  			this.postHttp(this,dataS,address,function(obj,res){
-		  			if(res.code = '10000'){
+		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.queryInfo();
@@ -168,7 +168,7 @@ export default {
 				  		dataS.classroomName = grade + "(" + classNo + ")班";
 				  		
 				  		this.postHttp(this,dataS,address,function(obj,res){
-				  			if(res.code = '10000'){
+				  			if(res.code == '10000'){
 				  				obj.dialogVisible = false;
 				  				obj.notify_success();
 				  				obj.queryInfo();
@@ -194,7 +194,7 @@ export default {
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.postHttp(this,{id:id},"classroom/getClassroomById",function(obj,res){
-  			if(res.code = '10000'){
+  			if(res.code == '10000'){
   				obj.classroom = res.result;
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
@@ -202,7 +202,22 @@ export default {
   		})
 	},
 	deleteInfo(id){
-		
+		this.$confirm('此操作将删除该班级和班级下学生,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'classroom/deleteClassroom',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+		  			obj.queryInfo();
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;

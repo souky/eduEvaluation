@@ -91,7 +91,7 @@ export default {
           	delete this.schoolInfo["createDate"];
 			delete this.schoolInfo["updateDate"];
 			this.postHttp(this,this.schoolInfo,"school/updateSchool",function(obj,res){
-		  		if(res.code = '10000'){
+		  		if(res.code == '10000'){
 	  				obj.notify_success();
 	  			}else{
 	  				obj.notify_jr(obj,'操作错误',res.message,'error');

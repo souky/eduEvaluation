@@ -116,7 +116,7 @@ export default {
   		this.$refs['role'].validate((valid) => {
           if (valid) {
           	this.postHttp(this,this.role,address,function(obj,res){
-	  			if(res.code = '10000'){
+	  			if(res.code == '10000'){
 	  				obj.dialogVisible = false;
 	  				obj.notify_success();
 	  				obj.queryInfo();
@@ -135,7 +135,7 @@ export default {
   	},
 	editInfo(id){
 		this.postHttp(this,{id:id},'role/getRoleById',function(obj,res){
-  			if(res.code = '10000'){
+  			if(res.code == '10000'){
   				obj.role = res.result;
   				obj.dialogVisible = true;
   			}else{
@@ -144,7 +144,22 @@ export default {
   		})
 	},
 	deleteInfo(id){
-		
+		this.$confirm('此操作将删除该角色信息,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'role/deleteRole',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+		  			obj.queryInfo();
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;

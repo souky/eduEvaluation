@@ -92,7 +92,7 @@
 			      <el-table-column prop="knowledgeName" align="center" width='250' show-overflow-tooltip label="知识点"></el-table-column>
 			      <el-table-column align="center" label="操作" width='250'>
 			      	<template scope="scope">
-			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
+			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfoDetail(scope.row.id)">删除</el-button>
 			      	</template>
 			      </el-table-column>
 			    </el-table>
@@ -368,7 +368,7 @@ export default {
   			return;
   		}
       	this.postHttp(this,this.TwoWaySpecification,address,function(obj,res){
-			if(res.code = '10000'){
+			if(res.code == '10000'){
 				obj.dialogVisible = false;
 				obj.notify_success();
 				obj.queryInfo();
@@ -381,7 +381,41 @@ export default {
 		
 	},
 	deleteInfo(id){
-		
+		this.$confirm('此操作将删除该双向细目表和已经关联的考试计划,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'twowayspecification/deleteTwoWaySpecification',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+					obj.queryInfo();
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
+	},
+	deleteInfoDetail(id){
+		this.$confirm('此操作将删除该细则,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'twowayspecificationdetail/deleteTwoWaySpecificationDetail',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+					var row = {id:obj.parentId,subjectCode:obj.dialogSubject};
+					obj.showInfo(row);
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
 	},
 	addDetials(){
 		this.dialogEdit = true;
@@ -393,7 +427,7 @@ export default {
 		this.two_way_D_single["parentId"] = this.parentId;
 		var data = this.formatDateSingle();
 		this.postHttp(this,data,"twowayspecificationdetail/saveTwoWaySpecificationDetail",function(obj,res){
-			if(res.code = '10000'){
+			if(res.code == '10000'){
 				obj.dialogEdit = false;
 				obj.notify_success();
 				var row = {id:obj.parentId,subjectCode:obj.dialogSubject};

@@ -14,8 +14,9 @@
 				</div>
 				<el-table :data="tableData" style="width: 100%">
 			      <el-table-column prop="orgName" align="center" label="名称"></el-table-column>
-			      <el-table-column align="center" label="操作" width='200'>
+			      <el-table-column align="center" label="操作" width='400'>
 			      	<template scope="scope">
+			      		<el-button type="primary" icon="el-icon-plus" @click="addManager(scope.row.id)">添加管理员</el-button>
 			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 			      	</template>
@@ -53,6 +54,29 @@
 		  </span>
 		</el-dialog>
 		
+		<el-dialog title="新增" :visible.sync="showManager" width="30%">
+		  <div class="dialog_body">
+		  	<el-form label-position="right" label-width="80px" :rules="rulesU" ref="user" class="demo-ruleForm" :model="user">
+			  <el-form-item label="名称" prop="name">
+			    <el-input v-model="user.name"></el-input>
+			  </el-form-item>
+			  <el-form-item label="用户名" prop="userName">
+			    <el-input v-model="user.userName"></el-input>
+			  </el-form-item>
+			  <el-form-item label="密码"  prop="userPsw">
+			    <el-input type="password" v-model="user.userPsw"></el-input>
+			  </el-form-item>
+			  <el-form-item label="重复密码" prop="userPswS">
+			    <el-input type="password" v-model="user.userPswS"></el-input>
+			  </el-form-item>
+			</el-form>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button type="primary" @click="colseDiaU">取 消</el-button>
+		    <el-button type="primary" @click="saveEditU">确 定</el-button>
+		  </span>
+		</el-dialog>
+		
 	</div>
 	
 </template>
@@ -61,7 +85,22 @@
 import OrgManager from '../../assets/systemManagerData/OrgManager'
 export default {
   data () {
-
+	var validatePass = (rule, value, callback) => {
+        if (this.user.userPsw == '' || this.user.userPsw == undefined) {
+          callback(new Error('请输入密码'));
+        } else {
+          callback();
+        }
+    };
+    var validatePassS = (rule, value, callback) => {
+	    if (this.user.userPswS == '' || this.user.userPswS == undefined) {
+	      callback(new Error('请再次输入密码'));
+	    } else if (this.user.userPsw != this.user.userPswS) {
+	      callback(new Error('两次输入密码不一致!'));
+	    } else {
+	      callback();
+	    }
+    };
     return {
         msg: 'orgManager',
         data:[],
@@ -80,6 +119,11 @@ export default {
       	p_name:'',
       	c_name:'',
       	
+      	managerOrgId:'',
+      	showManager:false,
+      	user:{
+      	},
+      	
       	rules: {
           orgName: [
             { required: true, message: '请输入组织名称', trigger: 'blur' }
@@ -87,7 +131,21 @@ export default {
           regionCode: [
             { required: true, message: '请选择市', trigger: 'change' }
           ],
-      }
+       },
+      	rulesU:{
+      		name: [
+            { required: true, message: '请输入名字', trigger: 'blur' }
+          ],
+          userName: [
+            { required: true, message: '请输入用户名', trigger: 'blur' }
+          ],
+          userPsw: [
+            { required: true,validator: validatePass, trigger: 'blur' }
+          ],
+          userPswS: [
+            { required: true,validator: validatePassS, trigger: 'blur' }
+          ],
+      	}
     }
   },
   mounted:function(){
@@ -127,11 +185,11 @@ export default {
 	          if (valid) {
 	          	delete this.org.regionCode;
 	          	this.postHttp(this,this.org,address,function(obj,res){
-		  			if(res.code = '10000'){
+		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.tableData = null;
-		  				obj.postHttp(obj,{},'organization/queryOrganizations',function(obj,res){
+		  				obj.postHttp(obj,{},'organization/loadOrganizations',function(obj,res){
 					  		obj.data = res.result;
 					  	});
 		  			}else{
@@ -146,11 +204,11 @@ export default {
   			this.$refs['org'].validate((valid) => {
 	          if (valid) {
 	          	this.postHttp(this,this.org,address,function(obj,res){
-		  			if(res.code = '10000'){
+		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.tableData = null;
-		  				obj.postHttp(obj,{},'organization/queryOrganizations',function(obj,res){
+		  				obj.postHttp(obj,{},'organization/loadOrganizations',function(obj,res){
 					  		obj.data = res.result;
 					  	});
 		  			}else{
@@ -162,9 +220,6 @@ export default {
 	          }
 	        });
   		}
-  		
-  		
-  		
   	},
 	addNew(){
 		this.dialogVisible = true;
@@ -175,7 +230,7 @@ export default {
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.postHttp(this,{id:id},"organization/getOrganizationById",function(obj,res){
-			if(res.code = '10000'){
+			if(res.code == '10000'){
 				obj.org = res.result;
 			}else{
 				obj.notify_jr(obj,'操作错误',res.message,'error');
@@ -183,7 +238,50 @@ export default {
 		})
 	},
 	deleteInfo(id){
-		
+		this.$confirm('此操作将删除该用户信息,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'organization/deleteOrganization',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+		  			obj.tableData = null;
+	  				obj.postHttp(obj,{},'organization/loadOrganizations',function(obj,res){
+				  		obj.data = res.result;
+				  	});
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
+	},
+	addManager(orgId){
+		this.managerOrgId = orgId;
+		this.showManager = true;
+	},
+	saveEditU(){
+		this.$refs['user'].validate((valid) => {
+          if (valid) {
+          	this.user['orgId'] = this.managerOrgId;
+			this.postHttp(this,this.user,'user/saveManagerUser',function(obj,res){
+				if(res.code == '10000'){
+					obj.showManager = false;
+					obj.notify_success();
+				}else{
+					obj.notify_jr(obj,'操作错误',res.message,'error');
+				}
+			})
+		  } else {
+            return false;
+          }
+		});
+	},
+	colseDiaU(){
+		this.showManager = false;
+		this.user = {};
 	},
 	changeP(val){
 		this.postHttp(this,{regionPId:val},'region/queryRegionsByParentId',function(obj,res){

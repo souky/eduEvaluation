@@ -7,9 +7,13 @@
 				<div v-for="(e,index) in subjectArray" v-if="index != 0" class="items l" @click="changeSubject($event)">{{e}}</div>
 			</div>
 			<div class="title">知识点</div>
+			<div class="fix addBtnFa">
+				<div class="addBtn" @click="addKnowPoint">新增知识点</div>
+			</div>
 			<div class="konwledge_detiles fix">
 				<el-tree id="textBookT" :data="data" :render-content="renderContent" node-key="id" :props="defaultProps"  @node-click="handleNodeClick"></el-tree>
 			</div>
+			
 		</div>
 		
 		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
@@ -54,6 +58,7 @@ export default {
           ],
      },
      queryName:'语文',
+     text_id:''
     }
   },
   mounted:function(){
@@ -83,12 +88,18 @@ export default {
   		this.dialogVisible = false;
   		this.konw = {};
   	},
+  	addKnowPoint(){
+  		this.dialogVisible = true;
+  		this.konw = {};
+  		this.konw["parentId"] = "";
+  		this.konw["subjectId"] = this.queryName;
+  	},
   	saveEdit(){
   		var address = 'knowledgepoint/saveKnowledgePoint';
 		this.$refs['konw'].validate((valid) => {
           if (valid) {
           	this.postHttp(this,this.konw,address,function(obj,res){
-	  			if(res.code = '10000'){
+	  			if(res.code == '10000'){
 	  				obj.dialogVisible = false;
 	  				obj.notify_success();
 	  				obj.loadKonwP();
@@ -104,6 +115,17 @@ export default {
   	},
 	handleNodeClick(data){
 		console.log(data)
+	},
+	delete_text_s(){
+		var id = this.text_id;
+		this.postHttp(this,{id:id},'knowledgepoint/deleteKnowledgePoint',function(obj,res){
+	  		if(res.code == "10000"){
+	  			obj.notify_success();
+	  			obj.loadKonwP();
+	  		}else{
+	  			obj.notify_jr(obj,'操作错误',res.message,'error');
+	  		}
+	  	});
 	},
 	renderContent(createElement, { node, data, store }) {
 	    var self = this;  
@@ -128,13 +150,13 @@ export default {
 	                 class:'el-icon-minus'  
 	            },on:{  
 	                click:function() {  
-	                	//self.text_id = data.id;
-	                	self.$confirm('此操作将删除该大纲下所有子项,是否继续?', '提示', {
+	                	self.text_id = data.id;
+	                	self.$confirm('此操作将删除该知识点下所有子项,是否继续?', '提示', {
 							          confirmButtonText: '确定',
 							          cancelButtonText: '取消',
 							          type: 'warning'
 							        }).then(() => {
-							        	//self.delete_text_s();
+							        	self.delete_text_s();
 							        }).catch(() => {
 							        	
 							        });
@@ -187,6 +209,20 @@ export default {
 }
 #knowledgePoint .konwledge_detiles .detiles_right{
 	width: calc(100% - 420);	
+}
+#knowledgePoint .addBtnFa{
+	width:95%;
+}
+#knowledgePoint .addBtn{
+	width:150px;
+	float:right;
+	text-align: center;
+	height:30px;
+	line-height: 30px;
+	color:#fff;
+	background: #FFD100;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 #knowledgePoint #textBookT{width:95%;}

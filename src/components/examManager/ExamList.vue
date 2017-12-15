@@ -42,7 +42,7 @@
 			      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
 			      <el-table-column align="center" label="操作" width='200'>
 			      	<template scope="scope">
-			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
+			      		<!--<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>-->
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 			      	</template>
 			      </el-table-column>
@@ -78,10 +78,10 @@
 						    <el-input v-model="exam.examName"></el-input>
 						  </el-form-item>
 						  <el-form-item label="考试开始时间">
-						  	 <el-date-picker v-model="exam.examStartDate" type="datetime" placeholder="考试开始时间"></el-date-picker>
+						  	 <el-date-picker v-model="exam.examStartDateS" type="datetime" placeholder="考试开始时间"></el-date-picker>
 						  </el-form-item>
 						  <el-form-item label="考试结束时间">
-						  	<el-date-picker v-model="exam.examEndDate" type="datetime" placeholder="考试结束时间"></el-date-picker>
+						  	<el-date-picker v-model="exam.examEndDateS" type="datetime" placeholder="考试结束时间"></el-date-picker>
 						  </el-form-item>
 						  <el-form-item label="年级">
 						  	<el-select v-model="grade" placeholder="请选择活动区域">
@@ -101,7 +101,7 @@
 						<div class="two_way_subject fix" v-for="(e,index) in subject">
 							<div class="title l">{{e.name}}</div>
 							<div class="selete_item l">
-								<el-select v-model="e.id" placeholder="选择细目表">
+								<el-select v-model="e.spId" placeholder="选择细目表">
 							      <el-option v-for="e in twList" :label="e.specificationName" :value="e.id" :key="e.id"></el-option>
 							    </el-select>
 							</div>
@@ -158,13 +158,13 @@
 		
 		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="70%">
 		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
-			  <el-col class="queryItems" :span="6">
+			  <el-col class="queryItems" :span="6" >
 			  	<div class="l">名称</div>
 			  	<div class="r">
 			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称"></el-input>
 			  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6">
+			   <el-col class="queryItems" :span="6">
 			  	<div class="l">年级</div>
 			  	<div class="r">
 			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
@@ -175,11 +175,13 @@
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">科目</div>
 			  	<div class="r">
-			  		<el-select v-model="TwoWaySpecification.subjectCode" placeholder="科目">
-				      <el-option v-for="e in subjectArray" :label="e" :value="e"></el-option>
-				    </el-select>
+			  		<el-select @change="subjectChanges" v-model="TwoWaySpecification.subjectCode" placeholder="请选择科目">
+					    <el-option v-for="e in subjectArray" :key="e" :label="e" :value="e">
+					    </el-option>
+					</el-select>
 			  	</div>
 			  </el-col>
+			 
 			  <el-col :span="6">
 			  		<div class="btn_query r" @click="addDetile">
 				  		<i class="el-icon-plus">添加详细</i>
@@ -188,30 +190,31 @@
 			</el-row>
 			
 			<el-row :gutter="10">
-				<el-col :span="2">题号</el-col>
+				<el-col :span="1">题号</el-col>
 				<el-col :span="2">题型</el-col>
-				<el-col :span="2">满分</el-col>
+				<el-col :span="1">满分</el-col>
 				<el-col :span="2">答案</el-col>
 				<el-col :span="12">能力值</el-col>
-				<el-col :span="3">操作</el-col>
+				<el-col :span="4">知识点</el-col>
+				<el-col :span="2">操作</el-col>
 			</el-row>
 			
 			<el-row v-model="two_way_D" :gutter="10">
 				<div v-for="e in two_way_D">
-					<el-col :span="2">
-						<el-input v-model="e.itemNo" placeholder="题号" ></el-input>
+					<el-col :span="1">
+						<el-input v-model="e.itemNo" ></el-input>
 					</el-col>
 					<el-col :span="2">
-						<el-select v-model="e.itemType" placeholder="题型">
+						<el-select v-model="e.itemType" >
 					      <el-option label="主观题" value="0"></el-option>
 					      <el-option label="客观题" value="1"></el-option>
 					    </el-select>
 					</el-col>
-					<el-col :span="2">
-						<el-input v-model="e.itemScore" placeholder="满分" ></el-input>
+					<el-col :span="1">
+						<el-input v-model="e.itemScore" ></el-input>
 					</el-col>
 					<el-col :span="2">
-						<el-input v-model="e.itemAnswer" placeholder="答案" ></el-input>
+						<el-input v-model="e.itemAnswer" ></el-input>
 					</el-col>
 					<el-col :span="12">
 						<el-row :gutter="10">
@@ -237,7 +240,10 @@
 							</el-checkbox-group>
 						</el-row>
 					</el-col>
-					<el-col :span="3">
+					<el-col :span="4">
+					    <el-cascader v-model="e.knowledgeId" :options="knowOption" :props="defaultProps" :show-all-levels="false"></el-cascader>
+					</el-col>
+					<el-col :span="2">
 						 <el-button type="danger" size="small" round @click.prevent="removeDomain(e)">删除</el-button>
 					</el-col>
 				</div>
@@ -246,7 +252,7 @@
 		  	
 		  	<span slot="footer" class="dialog-footer">
 			  <el-button type="primary" @click="dialogVisible = false">取 消</el-button>
-			  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			  <el-button type="primary" @click="saveEdits">确 定</el-button>
 			</span>
 		</el-dialog>
 		
@@ -297,10 +303,15 @@ export default {
 	  		itemType:'0',
 	  		itemScore:'',
 	  		itemAnswer:'',
-	  		itemAbility:['空间想象','运算求解']
+	  		itemAbility:['']
 	  	},
-	  	
-	  ]
+	  ],
+	  knowOption:[],
+	  defaultProps: {
+	      children: 'kpVOChildList',
+	      label: 'knowledgeContent',
+	      value:'id'
+	  },
     }
   },
   mounted:function(){
@@ -342,9 +353,51 @@ export default {
 	  		obj.tableData = res.result.list;
 	  	})
   	},
+  	subjectChanges(){
+		var subjectName = this.TwoWaySpecification.subjectCode;
+		this.postHttp(this,{subjectName:subjectName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+	  		obj.knowOption = res.result;
+	  	});
+	},
+	saveEdits(){
+  		var id = this.TwoWaySpecification.id;
+  		var address = 'twowayspecification/saveTwoWaySpecification';
+  		if(id){
+  			address = 'twowayspecification/updateTwoWaySpecification';
+  		}
+  		var dataDetails = this.formatDate();
+		this.TwoWaySpecification['twDetails'] = JSON.stringify(dataDetails);
+  		if(!this.TwoWaySpecification.specificationName){
+  			this.notify_jr(this,'操作错误','请输入细目表名称','warning');
+  			return;
+  		}
+  		if(!this.TwoWaySpecification.gradeCode){
+  			this.notify_jr(this,'操作错误','请选择年级','warning');
+  			return;
+  		}
+  		if(!this.TwoWaySpecification.subjectCode){
+  			this.notify_jr(this,'操作错误','请选择科目','warning');
+  			return;
+  		}
+      	this.postHttp(this,this.TwoWaySpecification,address,function(obj,res){
+			if(res.code == '10000'){
+				obj.dialogVisible = false;
+				obj.notify_success();
+				this.postHttp(this,{pageNum:1,pageSize:100},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+			  		var s = res.result.list;
+			  		for(var i = 0;i<s.length;i++){
+			  			s[i]['spId'] = s[i]['id'];
+			  		}
+			  		obj.twList = res.result.list;
+			  	});
+			}else{
+				obj.notify_jr(obj,'操作错误',res.message,'error');
+			}
+        });
+  	},
   	saveEdit(){
-  		this.exam.examStartDate = this.timeF(this.exam.examStartDate).format("YYYY-MM-DD HH:mm:ss");
-  		this.exam.examEndDate = this.timeF(this.exam.examEndDate).format("YYYY-MM-DD HH:mm:ss");
+		this.exam.examStartDate = this.timeF(this.exam.examStartDateS).format("YYYY-MM-DD HH:mm:ss");
+		this.exam.examEndDate = this.timeF(this.exam.examEndDateS).format("YYYY-MM-DD HH:mm:ss");
   		
   		//获取学生
   		var s = this.student;
@@ -359,10 +412,10 @@ export default {
   		}
   		var examStudent = JSON.stringify(examStudent)
 		this.exam["examStudent"] = examStudent;
-		this.exam["examSpecification"] = JSON.stringify(this.twList);
+		this.exam["examSpecification"] = JSON.stringify(this.subject);
 		
 		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
-	  		if(res.code = "10000"){
+	  		if(res.code == "10000"){
 	  			obj.notify_success();
 				obj.queryInfo();
 				obj.backList();
@@ -375,6 +428,23 @@ export default {
 		
 	},
 	deleteInfo(id){
+		
+		this.$confirm('此操作将删除该考试计划关联的双向细目表和考试学生,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'exam/deleteExam',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+					obj.queryInfo();
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
 		
 	},
 	studentCheck(e){
@@ -399,7 +469,7 @@ export default {
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
-		this.pageSzie = val;
+		this.pageSize = val;
 		this.queryInfo();
 	},
 	handleCurrentChange(val) {
@@ -427,11 +497,32 @@ export default {
 	show_add(){
 		this.showTable = false;
 		this.showAdd = true;
+		this.exam =  {subject:[],};
+		this.TwoWaySpecification = {};
+		this.two_way_D = [
+		  	{
+		  		itemNo:'',
+		  		itemType:'0',
+		  		itemScore:'',
+		  		itemAnswer:'',
+		  		itemAbility:[]
+		  	},
+		]
 	},
 	backList(){
 		this.showTable = true;
 		this.showAdd = false;
-		this.exam = {};
+		this.exam = {subject:[],};
+		this.TwoWaySpecification = {};
+		this.two_way_D = [
+		  	{
+		  		itemNo:'',
+		  		itemType:'0',
+		  		itemScore:'',
+		  		itemAnswer:'',
+		  		itemAbility:[]
+		  	},
+		]
 	},
 	subjectChange(val){
 		var checkboxArray = this.exam.subject;
@@ -440,12 +531,22 @@ export default {
 		for(e in checkboxArray){
 			var s = new Object();
 			s['name'] = checkboxArray[e];
-			s['id'] = '';
+			s['spId'] = '';
 			this.subject.push(s);
 		}
 	},
 	add_two_way(){
 		this.dialogVisible = true;
+		this.TwoWaySpecification = {};
+		this.two_way_D = [
+		  	{
+		  		itemNo:'',
+		  		itemType:'0',
+		  		itemScore:'',
+		  		itemAnswer:'',
+		  		itemAbility:[]
+		  	},
+		]
 	},
 	addDetile(){
 		this.two_way_D.push({
@@ -470,6 +571,49 @@ export default {
 		data["subject"] = this.queryInfos.subject;
 		return data;
 	},
+	formatDate(){
+		var data = JSON.parse(JSON.stringify(this.two_way_D));
+		var dataArray = new Array();
+		for(var i = 0;i < data.length;i++){
+			var itemAbility = data[i].itemAbility.toString();
+			var itemAbilityString = "";
+			if(itemAbility.indexOf('空间想象') >= 0){
+				itemAbilityString +='1';
+			}else{
+				itemAbilityString +='0';
+			}
+			if(itemAbility.indexOf('抽象概括') >= 0){
+				itemAbilityString +='1';
+			}else{
+				itemAbilityString +='0';
+			}
+			if(itemAbility.indexOf('推理论证') >= 0){
+				itemAbilityString +='1';
+			}else{
+				itemAbilityString +='0';
+			}
+			if(itemAbility.indexOf('运算求解') >= 0){
+				itemAbilityString +='1';
+			}else{
+				itemAbilityString +='0';
+			}
+			if(itemAbility.indexOf('数据处理') >= 0){
+				itemAbilityString +='1';
+			}else{
+				itemAbilityString +='0';
+			}
+			if(itemAbility.indexOf('综合应用') >= 0){
+				itemAbilityString +='1';
+			}else{
+				itemAbilityString +='0';
+			}
+			data[i].itemAbility = itemAbilityString;
+			var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
+			data[i].knowledgeId = knowledgeId;
+			dataArray[i] = data[i];
+		}
+		return dataArray;
+	}
   }
 }
 </script>

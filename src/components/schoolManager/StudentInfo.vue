@@ -185,7 +185,7 @@ export default {
 	          	delete dataS['grade'];
 	          	delete dataS['classroomId'];
 	          	this.postHttp(this,dataS,address,function(obj,res){
-		  			if(res.code = '10000'){
+		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.queryInfo();
@@ -202,7 +202,7 @@ export default {
   			this.$refs['student'].validate((valid) => {
 	          if (valid) {
 	          	this.postHttp(this,dataS,address,function(obj,res){
-		  			if(res.code = '10000'){
+		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.queryInfo();
@@ -229,7 +229,7 @@ export default {
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
-  			if(res.code = '10000'){
+  			if(res.code == '10000'){
   				obj.student = res.result;
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
@@ -237,7 +237,22 @@ export default {
   		})
 	},
 	deleteInfo(id){
-		
+		this.$confirm('此操作将删除该学生信息,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'student/deleteStudent',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+		  			obj.queryInfo();
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;

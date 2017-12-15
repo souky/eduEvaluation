@@ -198,7 +198,7 @@ export default {
 	          if (valid) {
 	          	delete this.user.userPsw;
 	          	this.postHttp(this,this.user,address,function(obj,res){
-					if(res.code = '10000'){
+					if(res.code == '10000'){
 						obj.dialogVisible = false;
 						obj.notify_success();
 						obj.queryInfo();
@@ -216,7 +216,7 @@ export default {
 	          if (valid) {
 	          	
 	          	this.postHttp(this,this.user,address,function(obj,res){
-					if(res.code = '10000'){
+					if(res.code == '10000'){
 						obj.dialogVisible = false;
 						obj.notify_success();
 						obj.queryInfo();
@@ -229,10 +229,6 @@ export default {
 	          }
 	        });
   		}
-  		
-  		
-  		
-		
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -242,7 +238,7 @@ export default {
   	},
 	editInfo(id){
 		this.postHttp(this,{id:id},'user/getUserById',function(obj,res){
-  			if(res.code = '10000'){
+  			if(res.code == '10000'){
   				obj.user = res.result;
   				obj.showPsw = false;
   				obj.dialogVisible = true;
@@ -252,7 +248,22 @@ export default {
   		})
 	},
 	deleteInfo(id){
-		
+		this.$confirm('此操作将删除该用户信息,是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        	this.postHttp(this,{id:id},'user/deleteUser',function(obj,res){
+		  		if(res.code == "10000"){
+		  			obj.notify_success();
+		  			obj.queryInfo();
+		  		}else{
+		  			obj.notify_jr(obj,'操作错误',res.message,'error');
+		  		}
+		  	});
+        }).catch(() => {
+        	
+        });
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
