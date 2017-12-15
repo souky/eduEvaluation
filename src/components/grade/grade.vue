@@ -20,6 +20,7 @@
 				</div>
 				<div class="cl"></div>
 			</div>
+			<div class="black-cell" ref="loginHight" @touchend="colse($event)"></div>
 		</div>
 		<div class="grade-body">
 			<div class="totle">
@@ -120,7 +121,13 @@
 						<div class="cl"></div>
 					</div>
 					<div id="subjectsDiagnosis1"></div>
+					<div class="totle-conment-title">
+						<p>个人与平均水平对比</p>
+					</div>
 					<div id="subjectsDiagnosis2"></div>
+					<div class="Subjectsdiagnose-foot">
+						<p>在本次考试中，语文的标准分较高，并且高于总分标准分，是本班级的优势科目，请继续保持；数学、英语和综合的标准分较低，并且低于总分标准分，是本班级的弱势科目，需要多关注。在本次考试中，本班级的语文、数学、英语、综合以及总分的得分率都高于学校平均得分率，请继续保持</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -346,6 +353,46 @@ export default {
 				        },
 				    ]
 				},
+				optionSubjectsDiagnosisRight:{
+				    tooltip: {
+				        trigger: 'axis'
+				    },
+				    legend: {
+				        x: 'center',
+				        data:['个人','平均水平']
+				    },
+				    radar: [
+
+				        {
+				            indicator: [
+				                {text: '总分', max: 100},
+				                {text: '语文', max: 100},
+				                {text: '数学', max: 100},
+				                {text: '英语', max: 100},
+				                {text: '综合', max: 100}
+				            ],
+				            radius: 120,
+				            center: ['50%','55%'],
+				        }
+				    ],
+				    series: [
+				        {
+				            type: 'radar',
+				            data: [
+				                {
+				                    name: '个人',
+				                    value: [23,43,54,65,23],
+				                    itemStyle: {normal: {color: '#53CDD6 ',areaStyle: {color: 'rgba(83,205,214,0.3)'}}},
+				                },
+				                {
+				                    name:'平均水平',
+				                    value:[34,54,56,76,87],
+				                    itemStyle: {normal: {color: '#D06BE0',areaStyle: {color: 'rgba(208,107,224,0.3)'}}},
+				                }
+				            ]
+				        }
+				    ]
+				},
 		}
 	},
 	created:function(){
@@ -356,11 +403,19 @@ export default {
 	},
 	mounted:function(){
 		this.$refs.fristBit[0].className+=" navOn";
+		let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+		this.$refs.loginHight.style.height=h+"px";
 		this.echarts.init(document.getElementById("beyondRate1")).setOption(this.optionBeyondRate);
 		this.echarts.init(document.getElementById("growthTrend1")).setOption(this.optionGrowthTrend);
 		this.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(this.optionSubjectsDiagnosis);
+		this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);
 	},
 	methods:{
+		colse(e){
+			document.getElementById("grade").getElementsByClassName("grade-navMore")[0].getElementsByClassName("grade-navMore-bitImg1")[0].className="grade-navMore-bitImg";
+			this.display.subject=!this.display.subject;
+			this.display.allSubject=!this.display.allSubject;
+		},
 		subjectButton:function(e){
 			for(var i=0;i<e.currentTarget.parentNode.getElementsByClassName("grade-nav-bit").length;i++){
 				e.currentTarget.parentNode.getElementsByClassName("grade-nav-bit")[i].className="grade-nav-bit";
@@ -465,10 +520,17 @@ export default {
 	height: auto;
 	position: fixed;
 	background-color: rgb(245, 245, 245);
+	z-index: 99;
 }
 .Gnav-moreConment{
 	width: 85%;
 	margin: auto
+}
+.black-cell{
+	width: 100%;
+	position: fixed;
+	z-index: 98;
+	background-color: rgba(0,0,0,0.4);
 }
 .Gnav-moreConment-bit{
 	width: 20%;
@@ -685,6 +747,18 @@ table.gridtable td {
 	height: 350px;
 }
 #subjectsDiagnosis2{
-
+	width: 100%;
+	height: 350px;
+}
+.Subjectsdiagnose-foot{
+	width: 90%;
+	margin: auto;
+}
+.Subjectsdiagnose-foot p{
+	font-size: 0.75rem;
+	color: #3D3D3D;
+	letter-spacing: 0;
+	line-height: 20px;
+	text-align:justify;
 }
 </style>
