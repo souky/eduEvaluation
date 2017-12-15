@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <div class="header-nav" v-if="visible">
       <span @click="header"><img src="../static/img/header/fh@1x.png" alt=""></span>
       <p>{{$store.state.title}}</p>
@@ -16,12 +16,16 @@
     -webkit-overflow-scrolling: touch;
     user-select: none;
   }
+  ul {list-style:none;margin:0px;}
   a {
     color: inherit;
   }
+  .main{
+    overflow: hidden;
+  }
   .header-nav{
     width: 100%;
-    background-color: red;
+    background-color: #19AFFF;
     text-align: center;
     position: absolute;
     padding-top: 10px;
@@ -39,7 +43,6 @@
 </style>
 
 <script type="text/babel">
-
   export default {
     computed: {
       visible() {
@@ -48,7 +51,7 @@
     },
     methods:{
       header:function(){
-        this.$header.go(-1)
+        this.$router.go(-1)
       }
     }
   };

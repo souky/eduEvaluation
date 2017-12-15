@@ -10,7 +10,7 @@
 		
 	</div>
 	<div class="login-go">
-		<mt-button type="danger" @click="demo()">登录</mt-button>
+		<mt-button type="danger" @click="loginButton()">登录</mt-button>
 	</div>
 </div>
 </template>
@@ -24,14 +24,12 @@ export default {
 	mounted:function(){
 		let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 		this.$refs.loginHight.style.height=h+"px";
-		this.$refs.loginHight.getElementsByClassName("main-conment")[0].getElementsByClassName("login-user")[0].getElementsByClassName("mint-cell-text")[0].innerHTML="<img src='../../static/img/login/1.png' alt=''>";
-		this.$refs.loginHight.getElementsByClassName("main-conment")[0].getElementsByClassName("login-password")[0].getElementsByClassName("mint-cell-text")[0].innerHTML="<img src='../../static/img/login/2.png' alt=''>";
+		this.$refs.loginHight.getElementsByClassName("main-conment")[0].getElementsByClassName("login-user")[0].getElementsByClassName("mint-cell-text")[0].innerHTML="<img src='static/img/login/1.png' alt=''>";
+		this.$refs.loginHight.getElementsByClassName("main-conment")[0].getElementsByClassName("login-password")[0].getElementsByClassName("mint-cell-text")[0].innerHTML="<img src='static/img/login/2.png' alt=''>";
 	},
 	methods:{
-		demo:function(){
-			alert(123);
+		loginButton:function(){
 			this.$router.push({path:'/home'});
-			this.$store.commit('newTitle','poi');
 		}
 	}
 }
@@ -43,28 +41,27 @@ export default {
 	background-color: #19AFFF;
 	overflow: hidden;
 }
-.loginBackground{
+#login .loginBackground{
 	width: 100%;
 	position: absolute;
 	top:-107px;
 	height:107px;
 	overflow-y: hidden;
-
 }
-.main-title{
+#login .main-title{
 	text-align: center;
 	margin-top: 20%;
 	font-size: 18px;
 	color: #FFFFFF;
 	letter-spacing: 0;
 }
-.mint-cell-wrapper{
+#login .mint-cell-wrapper{
 	background-image:-webkit-linear-gradient(top, #fff, #fff 50%, transparent 50%);
 }
-.mint-cell:last-child{
+#login .mint-cell:last-child{
 	background-image: linear-gradient(0deg, #fff, #fff 50%, transparent 50%);
 }
-.main-conment{
+#login .main-conment{
 	width: 89.3%;
 	margin: auto;
 	padding: 2% 0;
@@ -74,36 +71,36 @@ export default {
 	
 	position: relative;
 }
-.login-user{
+#login .login-user{
 	width: 80.3%;
 	height: 8%;
 	margin: auto;
 }
-.mint-field .mint-cell-title{
+#login .mint-field .mint-cell-title{
 	width: 40px;
 }
-.login-user .mint-cell-wrapper{
+#login .login-user .mint-cell-wrapper{
 	border-bottom: 1px solid #D7F1FF;
 }
-.mint-cell-value{
+#login .mint-cell-value{
 	margin-left: 10px;
 }
-.login-password{
+#login .login-password{
 	width: 80.3%;
 	height: 8%;
 	margin: auto;
 }
-.login-go{
+#login .login-go{
 	width: 89.3%;
 	height: 7%;
 	margin: auto;
 	margin-top: 7%;
 }
-.login-go button{
+#login .login-go button{
 	width: 100%;
 	background-color: #FFC200;
 }
-.mint-button{
+#login .mint-button{
 	height: 100%;
 }
 </style>
