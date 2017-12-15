@@ -1,5 +1,5 @@
 <template>
-  <section class="page-demo">
+  <section class="page-demo" id="pageDemo">
     <div class="page-tabbar">  
     <div class="page-wrap"> 
       <mt-tab-container class="page-tabbar-container" v-model="selected">  
@@ -7,7 +7,15 @@
            <div class="indexImg">
              <div class="mainImg">
                <mt-search cancel-text='' placeholder="搜索"></mt-search>
-               <div class="showGread">
+                <div class="swiper-container" id="swiperTest">
+                  <div class="swiper-wrapper">
+                      <div class="swiper-slide" v-for="item in testList" :key="item.id">{{item.name}}</div>
+                  </div>
+                  <!-- 如果需要导航按钮 -->
+                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-button-next"></div>
+              </div>
+              <div class="showGread">
                    <p v-for="item in personalData"><span>{{item.name}} :</span> <span>{{item.gread}}</span></p>
                </div>
               <div class="mbtn">
@@ -31,7 +39,9 @@
            <p class="bottomWord">提升教学质量从这里开始</p>
         </mt-tab-container-item>  
         <mt-tab-container-item id="成绩">  
-          <mt-cell v-for="n in 5" :title="'订单 ' + n" />  
+           <mt-header title="成绩报告">
+           </mt-header>
+            
         </mt-tab-container-item>  
         <mt-tab-container-item id="资源">  
           <mt-cell v-for="n in 7" :title="'发现 ' + n" />  
@@ -66,7 +76,7 @@
         我的  
       </mt-tab-item>  
     </mt-tabbar>  
-  </div>  
+    </div>  
 
     <!-- <div v-for="group in navs">
       <div class="page-title" v-text="group.title"></div>
@@ -82,7 +92,29 @@
     </div> -->
   </section>
 </template>
+<style type="text/css">
+  #topNav {
+  width: 100%;
+  overflow: hidden;
+  font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
+  border-bottom:1px solid #f8f8f8;
+}
+#topNav .swiper-slide {
+  padding: 0 5px;
+  letter-spacing:2px;
+  width:3rem;
+  text-align:center;
+}
+#topNav .swiper-slide span{
 
+  transition:all .3s ease;
+  display:block;
+}
+#topNav .active span{
+  transform:scale(1.1);
+  color:#FF2D2D;
+}
+</style>
 <script type="text/babel">
   import { navs } from './router/index';
 
@@ -91,6 +123,7 @@
       return {
         navs: [],
         selected: '首页',
+        selected1:'1',
         personalData:[{
           name:'总成绩',
           gread:'584'   
@@ -103,19 +136,49 @@
         },{
           name:'理综合',
           gread:'256'   
+        }],
+        testList:[{
+          id:'1',
+          name:'2017年金阳高中期末考试'
+        },{
+          id:'2',
+          name:"2016年金阳高中期末考试"
+        },{
+          id:'3',
+          name:"2015年金阳高中期末考试"
+        },{
+          id:'4',
+          name:"2014年金阳高中期末考试"
+        },{
+          id:'5',
+          name:"2013年金阳高中期末考试"
         }]
       };
     },
 
     created() {
       this.navs = navs;
+    },
+    mounted(){
+      this.lunbo();this.lubo1();
+    },
+    methods:{
+      lunbo(){
+        new Swiper('#swiperTest', {
+          nextButton: '.swiper-button-next',
+          prevButton: '.swiper-button-prev',
+          spaceBetween: 10,
+          grabCursor: true,
+          initialSlide: 1,
+          autoplayDisableOnInteraction: false
+        })
+      }
     }
   };
 </script>
 <style>
-  .page-demo {
-    padding-bottom: 50px;
-    
+  #pageDemo {
+    padding-bottom: 10vh;
     .indexicon {
       font-size: 22px;
       color: #26a2ff;
@@ -132,45 +195,56 @@
       }
     }
   }
-  .indexImg{
+  #pageDemo .indexImg{
     width: 100%;
     
   }
-  .mint-tabbar{background-size: 100% 0;}
-  .mint-tab-container-item{
+  #pageDemo .mint-tabbar{background-size: 100% 0;}
+  #pageDemo .mint-tab-container-item{
     background-color: white;position: relative;
   }
-  .mint-tab-item{color:#c5c5c5;}
-  .mint-tab-item-label{
+  #pageDemo .mint-tab-item{color:#c5c5c5;}
+  #pageDemo .mint-tab-item-label{
     font-size: 4vw;
   }
-  .mainImg{
+  #pageDemo .mainImg{
       width: 100%;height: 0;padding-bottom: 82%;
       background-image: url(../static/img/APPImg/bg-s@1x.png);
       background-size: 100%;
       position: relative;
     }
-  .mint-search{
-      height: 6vh;
+  #pageDemo .mint-search{
+      height: 6vh;display: flex;
     }
-    .mint-searchbar{
-      background-color: inherit;height: 100%
+  #pageDemo .mint-searchbar{
+      background-color: inherit;height: 100%;width: 100%
     }
-    .mint-searchbar-inner{
+  #pageDemo .mint-searchbar-inner{
       height: inherit;background-color: rgba(0,0,0,.4);
+
     }
-    .mint-searchbar-cancel{
+  #pageDemo .mint-searchbar-cancel{
       color: white
     }
-    .showGread{
+  #pageDemo .showGread{
       color: #553B08;
       text-align: center;
-      margin-top: 29%
+      margin-top: 22%
     }
-    .mint-searchbar-core{
-      background-color: rgba(0,0,0,0);
+  #pageDemo .mint-searchbar-core{
+      background-color: rgba(0,0,0,0);color: white;
+      font-size: 4vw
     }
-    .mbtn{
+  #pageDemo.mint-searchbar-inner .mintui-search{
+      font-size: 4vw
+    }
+  #pageDemo .mint-searchbar-cancel{
+      display: none;
+    }
+  #pageDemo .mint-tabbar > .mint-tab-item.is-selected{
+    color: #26a2ff 
+  }
+  #pageDemo .mbtn{
       width: 38vw;
       height: 4vh;
       border: 1px solid #000;
@@ -184,42 +258,61 @@
       bottom: 2vh;
       right: 15vw
     }
-    .silderBox{
+  #pageDemo .silderBox{
       width: 94%;
       margin: 5% 3%;
       color: #19AFFF;
     }
-    .silderBox span{
+  #pageDemo .silderBox span{
       width: 28.5%;
       text-align: center;
     }
-    .silider{
+  #pageDemo .silider{
       float: left;
       width: 35%;
       border-top:1px solid #19AFFF;
     }
-    .gotoBox{
+  #pageDemo .gotoBox{
       width: 50%;
       float: left;
     }
-    .gotoBoxs{
+  #pageDemo .gotoBoxs{
       width: 90%;height: 0;padding-bottom: 90%;
       margin:5% 2.5% 5% 5%;
       background-color: #FCFCFC;
       border-radius: 4px
     }
-    .gotoBox:nth-child(even) .gotoBoxs{
+  #pageDemo .gotoBox:nth-child(even) .gotoBoxs{
         margin:5% 5% 5% 2.5%;
     }
-    .gotoBoxs img{
+  #pageDemo .gotoBoxs img{
       width: 50%;
       margin:10% 25%;
     }
-    .gotoBoxs p{
+  #pageDemo .gotoBoxs p{
       text-align: center;color: #666666
     }
-    .bottomWord{
+  #pageDemo .bottomWord{
       text-align: center;
-      color: #BCBCBC
+      color: #BCBCBC;
+      width: 100%;
+      float: left;
+      padding-top: 10px;
+      background-color: #f5f5f5;
     }
+    #pageDemo .swiper-button-prev{
+      left: 5vw;
+      background-image: url(../static/img/APPImg/left@1x.png);
+      background-size: 100%;
+    }
+    #pageDemo .swiper-button-next{
+      right: 5vw;
+      background-image: url(../static/img/APPImg/right@1x.png);
+      background-size: 100%;
+    }
+    #pageDemo .swiper-container{
+      text-align: center;
+      line-height: 5vh
+    }
+
 </style>
