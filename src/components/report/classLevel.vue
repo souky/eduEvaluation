@@ -20,7 +20,7 @@
 			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
 				<el-carousel-item v-for="item in subjects" :key="item.id">
 					<div class="header-banner-bit" v-for="(child,index) in item.childs">
-						<div class="header-banner-click" :style="'background:'+child.color" @click="rainbow(index,child.id)">
+						<div class="header-banner-click" ref="fristBit" :style="'background:'+child.color" @click="rainbow(index,child.id)">
 							<p>{{child.name}}</p>
 						</div>
 					</div>
@@ -1408,6 +1408,7 @@ export default{
 					};
 				},
 				mounted:function(){
+					this.$refs.fristBit[0].className+=" on";
 					this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
 					this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
 					this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
