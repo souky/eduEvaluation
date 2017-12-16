@@ -16,7 +16,7 @@
 			
 		</div>
 		
-		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="konw" class="demo-ruleForm" :model="konw">
 			  <el-form-item label="名称" prop="knowledgeContent">
@@ -58,7 +58,9 @@ export default {
           ],
      },
      queryName:'语文',
-     text_id:''
+     text_id:'',
+     
+     diaTitle:'新增'
     }
   },
   mounted:function(){
@@ -90,6 +92,7 @@ export default {
   	},
   	addKnowPoint(){
   		this.dialogVisible = true;
+  		this.diaTitle = "新增";
   		this.konw = {};
   		this.konw["parentId"] = "";
   		this.konw["subjectId"] = this.queryName;

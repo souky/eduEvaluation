@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		
-		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="org" class="demo-ruleForm" :model="org">
 			  <el-form-item label="名称" prop="orgName">
@@ -110,6 +110,7 @@ export default {
 	    },
         tableData:[],
         
+        diaTitle:'新增',
         dialogVisible:false,
       	org:{},
       	showInfo:true,
@@ -224,11 +225,16 @@ export default {
 	addNew(){
 		this.dialogVisible = true;
 		this.showInfo = true;
+  		this.$refs['org'].resetFields();
+  		this.diaTitle = "新增";
   		this.org = {};
 	},
 	editInfo(id){
 		this.showInfo = false;
 		this.dialogVisible = true;
+		this.diaTitle = "编辑";
+  		this.$refs['org'].resetFields();
+		
 		this.postHttp(this,{id:id},"organization/getOrganizationById",function(obj,res){
 			if(res.code == '10000'){
 				obj.org = res.result;
@@ -261,6 +267,7 @@ export default {
 	addManager(orgId){
 		this.managerOrgId = orgId;
 		this.showManager = true;
+		this.$refs['user'].resetFields();
 	},
 	saveEditU(){
 		this.$refs['user'].validate((valid) => {

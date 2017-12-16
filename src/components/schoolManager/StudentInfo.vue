@@ -54,7 +54,7 @@
 		    </el-pagination>
 		</div>
 		
-		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="student" class="demo-ruleForm"  :model="student">
 		  	  <el-form-item label="姓名" prop="studentName" >
@@ -116,6 +116,7 @@ export default {
       total:1,
       
       dialogVisible:false,
+      diaTitle:'新增',
       gradeOption:[],
       student:{},
       sexOption:[
@@ -224,10 +225,14 @@ export default {
   		this.dialogVisible = true;
   		this.showInfo = true;
   		this.classroom = {};
+  		this.diaTitle = "新增";
+  		this.$refs['student'].resetFields();
   	},
 	editInfo(id){
+		this.$refs['student'].resetFields();
 		this.showInfo = false;
 		this.dialogVisible = true;
+		this.diaTitle = "编辑";
 		this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
   			if(res.code == '10000'){
   				obj.student = res.result;

@@ -1,5 +1,5 @@
 <template>
-	<div id="login" ref="loginHight">
+	<div id="login" ref="loginHight" @keyup.enter.native="onSubmit">
 		<div class="login-main">
 			<div class="login-main-header">
 				<p>登录</p>
@@ -7,20 +7,20 @@
 			<div class="login-main-body">
 				<el-form ref="form" :rules="rules" :model="form">
 				  <el-form-item prop="userName">
-				    <el-input placeholder="用户名" v-model="form.userName">
-				    	<template slot="prepend"><i class="el-icon-delete"></i></template>
+				    <el-input placeholder="用户名" v-model="form.userName" @keyup.enter.native="onSubmit">
+				    	<template slot="prepend"><img src="../../static/img/login/user.png" alt=""></template>
 				    </el-input>
 				  </el-form-item>
 				  <el-form-item prop="psw">
-				    <el-input type="password" placeholder="请输入密码" v-model="form.psw">
-				    	<template slot="prepend"><i class="el-icon-delete"></i></template>
+				    <el-input type="password" placeholder="请输入密码" v-model="form.psw" @keyup.enter.native="onSubmit">
+				    	<template slot="prepend"><img src="../../static/img/login/password.png" alt=""></template>
 				    </el-input>
 				  </el-form-item>
 				  <el-form-item>
-				    <el-button type="primary" @click="onSubmit">登录</el-button>
+				    <el-button type="primary" @click="onSubmit" >登录</el-button>
 				  </el-form-item>
 				  <el-form-item class="login-main-foot">
-				  		<p>忘记密码？</p>
+				  		<p @click="forgetPsw">忘记密码？</p>
 				  </el-form-item>
 				</el-form>
 			</div>
@@ -67,6 +67,9 @@ export default {
 				}
 			})
 			
+		},
+		forgetPsw(){
+			this.notify_jr(this,'提示','忘记密码请联系管理员','warning');
 		}
 	}
 }

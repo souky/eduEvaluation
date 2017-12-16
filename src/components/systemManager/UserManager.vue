@@ -59,7 +59,7 @@
 		    </el-pagination>
 		</div>
 		
-		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="user" class="demo-ruleForm" label-width="80px" :model="user">
 			  <el-form-item label="名称" prop="name">
@@ -128,6 +128,7 @@ export default {
       roleOptions:[],
       
       dialogVisible:false,
+      diaTitle:'新增',
       user:{},
       showPsw:true,
       userTypeO:[
@@ -234,9 +235,13 @@ export default {
   		this.dialogVisible = true;
   		this.showPsw = true;
   		this.user = {};
+  		this.diaTitle = "新增";
   		this.$refs['user'].resetFields();
   	},
 	editInfo(id){
+		this.$refs['user'].resetFields();
+		this.diaTitle = "编辑";
+		
 		this.postHttp(this,{id:id},'user/getUserById',function(obj,res){
   			if(res.code == '10000'){
   				obj.user = res.result;

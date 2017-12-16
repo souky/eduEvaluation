@@ -48,7 +48,7 @@
 		    </el-pagination>
 		</div>
 		
-		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="role" class="demo-ruleForm" label-width="80px" :model="role">
 			  <el-form-item label="名称" prop="roleName">
@@ -81,6 +81,7 @@ export default {
       total:1,
       
       dialogVisible:false,
+      diaTitle:'新增',
       
       role:{},
       rules: {
@@ -132,8 +133,12 @@ export default {
   	addNew(){
   		this.dialogVisible = true;
   		this.role = {};
+  		this.diaTitle = "新增";
+  		this.$refs['role'].resetFields();
   	},
 	editInfo(id){
+		this.$refs['role'].resetFields();
+		this.diaTitle = "编辑";
 		this.postHttp(this,{id:id},'role/getRoleById',function(obj,res){
   			if(res.code == '10000'){
   				obj.role = res.result;

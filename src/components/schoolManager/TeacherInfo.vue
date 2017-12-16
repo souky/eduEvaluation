@@ -57,7 +57,7 @@
 		    </el-pagination>
 		</div>
 		
-		<el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="teacher" class="demo-ruleForm" label-width="80px" :model="teacher">
 	  		  <el-form-item label="姓名" prop="teacherName" >
@@ -129,6 +129,7 @@ export default {
       total:1,
       
       dialogVisible:false,
+      diaTitle:'新增',
       teacher:{
       	subjectArray:['语文'],
       	classArray:[]
@@ -231,13 +232,18 @@ export default {
   	},
   	addNew(){
   		this.dialogVisible = true;
+  		this.diaTitle = "新增";
   		this.teacher = {
   			subjectArray:[],
       		classArray:[]
   		};
+  		this.$refs['teacher'].resetFields();
+  		
   	},
 	editInfo(id){
 		this.dialogVisible = true;
+  		this.$refs['teacher'].resetFields();
+		this.diaTitle = "编辑";
 		this.postHttp(this,{id:id},"teacher/getTeacherById",function(obj,res){
   			if(res.code == '10000'){
   				obj.teacher = res.result;
