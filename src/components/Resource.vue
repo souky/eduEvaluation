@@ -11,12 +11,12 @@
 						  		<el-input v-model="queryInfos.examName" placeholder="考试名称"></el-input>
 						  	</div>
 						  </el-col>
-						  <el-col class="queryItems" :span="7">
+						  <!--<el-col class="queryItems" :span="7">
 						  	<div class="l">班级</div>
 						  	<div class="r">
 						  		<el-input v-model="queryInfos.classroom" placeholder="班级"></el-input>
 						  	</div>
-						  </el-col>
+						  </el-col>-->
 						  <el-col class="queryItems" :span="7">	
 						  	<div class="l">科目</div>
 						  	<div class="r">
@@ -37,7 +37,7 @@
 					      <el-table-column prop="examName" align="center" label="考试名称"></el-table-column>
 					      <el-table-column prop="examStartDate" :formatter="timeFormatter" align="center" label="开始时间"></el-table-column>
 					      <el-table-column prop="examEndDate" :formatter="timeFormatter" align="center"  label="结束时间"></el-table-column>
-					      <el-table-column prop="classroom" align="center"  label="班级"></el-table-column>
+					      <!--<el-table-column prop="classroom" align="center"  label="班级"></el-table-column>-->
 					      <el-table-column prop="subject" align="center"  label="科目"></el-table-column>
 					      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
 					    </el-table>
@@ -76,7 +76,7 @@
 							  	</div>
 							  </el-col>
 							  <el-col :span="3">
-							  	<div class="btn_query r" @click="queryInfo">
+							  	<div class="btn_query r" @click="queryInfo1">
 							  		<i class="el-icon-search">查询</i>
 							  	</div>
 							  </el-col>
@@ -86,8 +86,8 @@
 						<div class="twoWay_info_table">
 							<el-table :data="tableData1" style="width: 100%">
 						      <el-table-column prop="specificationName" align="center" label="双向细目表名称"></el-table-column>
-						      <el-table-column prop="gradeName"  align="center" label="年级"></el-table-column>
-						      <el-table-column prop="subjectName" align="center"  label="科目"></el-table-column>
+						      <el-table-column prop="gradeCode"  align="center" label="年级"></el-table-column>
+						      <el-table-column prop="subjectCode" align="center"  label="科目"></el-table-column>
 						      <el-table-column prop="createDate" align="center" :formatter="timeFormatter"  label="创建时间"></el-table-column>
 						      <el-table-column align="center" label="操作" width='250'>
 						      	<template scope="scope">
@@ -145,18 +145,18 @@ export default {
 	data () {
 
 	    return {
-	    	tableData:ExamList.data,
-		  tableData1:TwoWay.data,
-		  detailsData1:TwoWay.detailsData,
+	      tableData:[],
+		  tableData1:[],
+		  detailsData1:[],
 		  queryInfos1:{
 		  	specificationName:'',
 		  	gradeName:'',
 		  	subjectName:''
 		  },
 		  queryInfos:{
-		  	specificationName:'',
+		  	examName:'',
 		  	gradeName:'',
-		  	subjectName:''
+		  	subject:''
 		  },
 		  pageNum:1,
 	      pageSize:10,
@@ -173,14 +173,56 @@ export default {
 		this.$emit('refreshbizlines','other');
 	},
 	mounted:function(){
+		this.queryInfo();
+		this.queryInfo1();
   },
   methods:{
   	queryInfo(){
-  		
+  		var datas = this.ajaxData();
+  		this.postHttp(this,datas,'exam/queryExams',function(obj,res){
+	  		obj.pageNum = res.result.pageNum;
+	  		obj.pageSize = res.result.pageSize;
+	  		obj.total = res.result.total;
+	  		obj.tableData = res.result.list;
+	  	})
   	},
-	showInfo(id){
+  	queryInfo1(){
+  		var datas = this.ajaxData1();
+	  	this.postHttp(this,datas,'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+	  		obj.pageNum1 = res.result.pageNum;
+	  		obj.pageSize1 = res.result.pageSize;
+	  		obj.total1 = res.result.total;
+	  		obj.tableData1 = res.result.list;
+	  	})
+  	},
+  	statusFormatter(row, column, cellValue){
+		var status = row[column.property];  
+	  	switch(status){
+	  		case 0:
+	  		return '未开始';
+	  		case 1:
+	  		return '正在进行';
+	  		case 2:
+	  		return '已结束';
+	  	}
+	},
+	showInfo(row){
 		this.showTable = false;
 		this.showDetails = true;
+		this.parentId = row.id;
+		this.dialogSubject = row.subjectCode;
+		this.postHttp(this,{parentId:row.id},'twowayspecificationdetail/queryTwoWaySpecificationDetails',function(obj,res){
+			var deDate = res.result;
+			for(var i = 0;i < deDate.length; i++){
+				var itemAbility = deDate[i].itemAbility;
+				var arrays = new Array();
+				for(var j = 0;j < itemAbility.length;j++){
+					arrays.push(itemAbility[j]);
+				}
+				deDate[i].itemAbility = arrays;
+			}
+	  		obj.detailsData1 = deDate;
+	  	})
 	},
 	backList(){
 		this.showTable = true;
@@ -189,20 +231,20 @@ export default {
 	handleSizeChange1(val) {
 	  	this.pageNum1 = 1;
 		this.pageSzie1 = val;
-		//ajax_data(this);
+		this.queryInfo1();
 	},
 	handleCurrentChange1(val) {
 	  	this.pageNum1 = val;
-		//ajax_data(this);
+		this.queryInfo1();
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSzie = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	timeFormatter(row, column, cellValue){
 		var date = row[column.property];  
@@ -222,20 +264,6 @@ export default {
 	     return "";  
 	  	}
 	},
-	statusFormatter(row, column, cellValue){
-		var status = row[column.property];  
-	  	if (status == undefined || status == '') {  
-	     return "";  
-	  	}
-	  	switch(status){
-	  		case '0':
-	  		return '未开始';
-	  		case '1':
-	  		return '正在进行';
-	  		case '2':
-	  		return '已结束';
-	  	}
-	},
 	ablitFormatter(row, column, cellValue){
 		var values = cellValue;
 		if(values == '1'){
@@ -246,13 +274,21 @@ export default {
 	},
 	ajaxData(){
 		var data = new Object();
-		data["pageSize"] = this.pageSize1;
-		data["pageNum"] = this.pageNum1;
-		data["specificationName"] = this.queryInfos1.specificationName;
-		data["gradeName"] = this.queryInfos1.gradeName;
-		data["subjectName"] = this.queryInfos1.subjectName;
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["examName"] = this.queryInfos.examName;
+		data["subject"] = this.queryInfos.subject;
 		return data;
-	}
+	},
+	ajaxData1(){
+		var data = new Object();
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["specificationName"] = this.queryInfos1.specificationName;
+		data["gradeCode"] = this.queryInfos1.gradeCode;
+		data["subjectCode"] = this.queryInfos1.subjectCode;
+		return data;
+	},
   }
 }
 </script>

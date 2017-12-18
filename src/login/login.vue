@@ -58,9 +58,15 @@ export default {
 	},
 	methods:{
 		onSubmit:function(){
-			console.log(this.form.user);
-			console.log(this.form.password);
-			this.$router.push({path:'/home'});
+			this.postHttp(this,{userName:this.form.user,psw:this.form.password},'login',function(obj,res){
+				if(res.code == '10000'){
+					obj.$router.push({path:'/home'});
+				}else{
+					obj.notify_jr(obj,'错误提示',res.message,'error');
+				}
+
+		  	});
+			//this.$router.push({path:'/home'});
 		}
 	}
 }
