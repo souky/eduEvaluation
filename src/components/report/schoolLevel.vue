@@ -223,25 +223,7 @@ export default {
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
-			tableData3:[],option4:{},option5:{},
-			compare1:{
-            name:'班级',
-            type:'bar',
-            itemStyle:{
-                normal:{
-                    color:'#70CDF3'
-                }
-            },
-            label:{
-                normal:{
-                    show:true,
-                    position:'top',
-                    color:'#70CDF3'
-                }
-            },
-            barWidth : 60,
-            data:[97.8, 77.24, 87.1, 27.78, 37.6]
-        }
+			tableData3:[],option4:{},option5:{}
 		}
 	},
     methods: {
@@ -270,6 +252,83 @@ export default {
     		return eachWorks;
     	},
     	compareSchool:function(){
+    		if(this.changeSchool == ''){
+
+    		}else{
+    			this.option1.series = [
+		            {
+		                name:'班级',
+		                type:'bar',
+		                itemStyle:{
+		                    normal:{
+		                        color:'#70CDF3'
+		                    }
+		                },
+		                label:{
+		                    normal:{
+		                        show:true,
+		                        position:'top',
+		                        color:'#70CDF3'
+		                    }
+		                },
+		                barWidth : 60,
+		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
+		            },
+		            {
+		                name:'全校',
+		                type:'line',
+		                itemStyle:{
+		                    normal:{
+		                        color:'#FFD244'
+		                    }
+		                },
+		                label:{
+		                    normal:{
+		                        show:true,
+		                        position:'top',
+		                        color:'#FFD244'
+		                    }
+		                },
+		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
+		            },
+		            {
+		                name:'对比学校',
+		                type:'bar',
+		                itemStyle:{
+		                    normal:{
+		                        color:'#FF8585'
+		                    }
+		                },
+		                label:{
+		                    normal:{
+		                        show:true,
+		                        position:'top',
+		                        color:'#FF8585'
+		                    }
+		                },
+		                barWidth : 60,
+		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
+		            },
+		            {
+		                name:'全区县',
+		                type:'line',
+		                itemStyle:{
+		                    normal:{
+		                        color:'#919191'
+		                    }
+		                },
+		                label:{
+		                    normal:{
+		                        show:true,
+		                        position:'top',
+		                        color:'#919191'
+		                    }
+		                },
+		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
+		            }
+		        ];
+				this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
+    		}
     	},
     	testtest:function(e){
     		var olouceng = document.getElementsByClassName("louceng");
@@ -319,7 +378,7 @@ export default {
     	this.tableData3 = this.IndexData.tableData3;
     	this.option4 = this.IndexData.option4;
     	this.option5 = this.IndexData.option5;
-    	this.option1.series.push(this.compare1);
+    	
 
 		//等级分布图
     	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);

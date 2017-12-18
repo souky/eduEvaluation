@@ -102,7 +102,7 @@ export default {
             }
         },
         legend: {
-            data:['班级','全校','全区县']
+           show:true
         },
         xAxis: [
             {
@@ -322,83 +322,74 @@ export default {
         ],
         series : [
             {
-                name: '班级平均分',
+                name: '前10名',
                 type: 'bar',
-
-                data: [{value:7,itemStyle:{normal:{color:"#FF8585"}}},
-                       {value:7,itemStyle:{normal:{color:"#FF8585"}}},
-                       {value:7,itemStyle:{normal:{color:"#FF8585"}}},
-                       {value:7,itemStyle:{normal:{color:"#FF8585"}}},
-                       {value:7,itemStyle:{normal:{color:"#FF8585"}}},
-                       {value:7,itemStyle:{normal:{color:"#FF8585"}}},
-                       {value:7,itemStyle:{normal:{color:"#FF8585"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#FF8585'
+                    }
+                },
+                data: [7,7,7,7,7,7,7]
             },
             {
-                name: '班级平均分',
+                name: '前20名',
                 type: 'bar',
-                data: [{value:17,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:17,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:17,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:17,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:17,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:17,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:17,itemStyle:{normal:{color:"#F0D785"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#F0D785'
+                    }
+                },
+                data: [17,17,17,17,17,17,17]
             },
             {
-                name: '班级平均分',
+                name: '前50名',
                 type: 'bar',
-                data: [{value:27,itemStyle:{normal:{color:"#85E2FF"}}},
-                       {value:27,itemStyle:{normal:{color:"#85E2FF"}}},
-                       {value:27,itemStyle:{normal:{color:"#85E2FF"}}},
-                       {value:27,itemStyle:{normal:{color:"#85E2FF"}}},
-                       {value:27,itemStyle:{normal:{color:"#85E2FF"}}},
-                       {value:27,itemStyle:{normal:{color:"#85E2FF"}}},
-                       {value:27,itemStyle:{normal:{color:"#85E2FF"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#85E2FF'
+                    }
+                },
+                data: [27,27,27,27,27,27,27]
             },
             {
-                name: '班级平均分',
+                name: '前100名',
                 type: 'bar',
-                data: [{value:47,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:47,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:47,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:47,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:47,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:47,itemStyle:{normal:{color:"#F0D785"}}},
-                       {value:47,itemStyle:{normal:{color:"#F0D785"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#F0D785'
+                    }
+                },
+                data: [47,47,47,47,47,47,47]
             },
             {
-                name: '班级平均分',
+                name: '前200名',
                 type: 'bar',
-
-                data: [{value:33,itemStyle:{normal:{color:"#6DE1B6"}}},
-                       {value:35,itemStyle:{normal:{color:"#6DE1B6"}}},
-                       {value:36,itemStyle:{normal:{color:"#6DE1B6"}}},
-                       {value:33,itemStyle:{normal:{color:"#6DE1B6"}}},
-                       {value:37,itemStyle:{normal:{color:"#6DE1B6"}}},
-                       {value:33,itemStyle:{normal:{color:"#6DE1B6"}}},
-                       {value:33,itemStyle:{normal:{color:"#6DE1B6"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#6DE1B6'
+                    }
+                },
+                data: [33,33,33,33,33,33,33]
             },
             {
-                name: '班级平均分',
+                name: '前500名',
                 type: 'bar',
-                data: [{value:24,itemStyle:{normal:{color:"#85AFFF"}}},
-                       {value:24,itemStyle:{normal:{color:"#85AFFF"}}},
-                       {value:24,itemStyle:{normal:{color:"#85AFFF"}}},
-                       {value:24,itemStyle:{normal:{color:"#85AFFF"}}},
-                       {value:24,itemStyle:{normal:{color:"#85AFFF"}}},
-                       {value:24,itemStyle:{normal:{color:"#85AFFF"}}},
-                       {value:24,itemStyle:{normal:{color:"#85AFFF"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#85AFFF'
+                    }
+                },
+                data: [24,24,24,24,24,24,24]
             },
             {
-                name: '班级平均分',
+                name: '前1000名',
                 type: 'bar',
-                data: [{value:24,itemStyle:{normal:{color:"#EABA73"}}},
-                       {value:24,itemStyle:{normal:{color:"#EABA73"}}},
-                       {value:24,itemStyle:{normal:{color:"#EABA73"}}},
-                       {value:24,itemStyle:{normal:{color:"#EABA73"}}},
-                       {value:24,itemStyle:{normal:{color:"#EABA73"}}},
-                       {value:24,itemStyle:{normal:{color:"#EABA73"}}},
-                       {value:24,itemStyle:{normal:{color:"#EABA73"}}}]
+                itemStyle:{
+                    normal:{
+                        color:'#EABA73'
+                    }
+                },
+                data: [24,24,24,24,24,24,24]
             }
 
         ]
