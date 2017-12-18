@@ -72,7 +72,7 @@ export default {
 
     return {
       msg: 'userManager',
-      tableData:RoleManager.data,
+      tableData:[],
       queryInfos:{
 	  	roleName:''
 	  },

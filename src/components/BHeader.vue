@@ -5,10 +5,17 @@
 				<img src="../../static/img/header/logo.png" />
 			</div>
 		</div>
-		<div class="rightPart r fix">
-			<div class="userImg l">
-				<img src="../../static/img/header/touxiang.png" />
-			</div>
+		<div class="rightPart r fix" v-model="user">
+			<el-tooltip placement="bottom">
+			  <div slot="content">
+			  	<div>帐户名:{{user.userName}}</div>
+			  	<div>姓名:{{user.name}}</div>
+			  	<div>身份:{{user.roleName}}</div>
+			  </div>
+			  <div class="userImg l">
+				<img  src="../../static/img/header/touxiangMan.png" />
+			  </div>
+			</el-tooltip>
 			<div class="exit_btn l" @click="logout">
 				<img src="../../static/img/header/logout.png" style="width: 34px;"/>
 			</div>
@@ -26,17 +33,31 @@ export default {
 
     return {
       msg: '顶部导航栏',
+      user:{}
     }
+  },
+  watch: {
+    '$route': 'fetchDataUsr'
   },
   mounted:function(){
   	//判断cookie登陆信息初始化
-  	
+  	this.postHttp(this,{},'user/getLoginUser',function(o,res){
+  		o.user = res.result;
+  	})
   },
   methods:{
 	logout(){
 		this.postHttp(this,{},'logout',function(obj,res){
 			obj.$router.push({ path: '/login' });
 		})
+	},
+	fetchDataUsr(){
+		var path = this.$route.path.replace('/', '');
+	    if(path == "home"){
+	    	this.postHttp(this,{},'user/getLoginUser',function(o,res){
+		  		o.user = res.result;
+		  	})
+	    }
 	}
   }
 }

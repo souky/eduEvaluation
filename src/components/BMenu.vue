@@ -1,10 +1,10 @@
 <template>
 	<div id="menu">
 		<el-menu :default-active="defaultActive()" background-color="#282828" text-color="#ffffff" active-text-color="#FFD100"  router unique-opened @open="handleOpen" class="el-menu-vertical-demo">
-			<el-menu-item v-for="(e,index) in menuData" :key="e.path" v-if="e.path != null"  :index="e.path">
+			<el-menu-item v-for="(e,index) in menuData" :key="e.path" v-if="e.path != null && e.path != ''"  :index="e.path">
 				<i :class="e.icon"></i>{{e.menuName}}
 			</el-menu-item>
-			<el-submenu v-for="(e,index) in menuData" :key="e.path" v-if="e.path == null" :index="''+index">
+			<el-submenu v-for="(e,index) in menuData" :key="e.path" v-if="e.path == '' || e.path == null" :index="''+index">
 				<template slot="title">
 	        		<i :class="e.icon"></i>{{e.menuName}}
 	        	</template>
@@ -17,24 +17,36 @@
 </template>
 
 <script>
-import MenuData from '../assets/menuData/Data.js'
 export default {
   data () {
 
     return {
       msg: '顶部导航栏',
-      menuData:MenuData.data,
+      menuData:[],
     }
   },
   mounted:function(){
-  	
+  	this.postHttp(this,{},"getMenu",function(o,res){
+  		o.menuData = res.result;
+  	})
+  },
+  watch: {
+    '$route': 'fetchData'
   },
   methods:{
   	defaultActive(){
 	    return this.$route.path.replace('/', '');
 	},
 	handleOpen(index,indexPath){
-		console.log(index);
+	},
+	fetchData(){
+		var path = this.$route.path.replace('/', '');
+	    if(path == "home"){
+	    	this.menuData = [];
+	    	this.postHttp(this,{},"getMenu",function(o,res){
+		  		o.menuData = res.result;
+		  	})
+	    }
 	}
   }
 }

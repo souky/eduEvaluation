@@ -41,7 +41,7 @@ var baseUrl = "http://192.168.1.213:8080/edu-system/"
  * */
 Vue.prototype.postHttp = function(obj,data,address,fn){
 	obj.$axios.post(baseUrl+address,querystring.stringify(data),{withCredentials : true}).then(response => {
-  		if(response.data.code == "60000" || response.data.code == "50000"){
+  		if(response.data.code == "60000" || response.data.code == "50000" || response.data.code=="11111"){
   			obj.$router.push({ path: '/login' });
   		}else{
   			fn(obj,response.data);
