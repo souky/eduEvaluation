@@ -30,7 +30,7 @@ Vue.prototype.echarts = require('echarts');
 
 var querystring = require('querystring');
 
-var baseUrl = "http://192.168.1.213:8080/edu-system/"
+var baseUrl = "http://192.168.1.183:8080/edu-system/"
 /* 
  * 封装ajax
  * obj : 全局this

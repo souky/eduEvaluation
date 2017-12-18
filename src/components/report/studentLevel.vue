@@ -827,7 +827,7 @@
 				        trigger: 'axis',
 				    },
 				    legend: {
-				        data:['班级','全校','全区县']
+				        data:['个人','班级','全校','全区县']
 				    },
 				    xAxis: [
 				        {
@@ -862,7 +862,7 @@
 				        ],
 				    series: [
 				        {
-				            name:'班级',
+				            name:'个人',
 				            type:'bar',
 				            label:{normal:{show:true,position:'top'},},
 				            itemStyle:{
@@ -871,11 +871,20 @@
 				            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 43.6, 56.2, 32.6, 20.0, 6.4, 3.3,2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 35.6]
 				        },
 				        {
-				            name:'全校',
+				            name:'班级',
 				            type:'line',
 				            label:{normal:{show:true,position:'top'},},
 				            itemStyle:{
 								normal:{color:'#FFD244'},
+							},
+				            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 32.6, 56.2, 48.7, 18.8, 6.0, 2.3,2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 35.6]
+				        },
+				        {
+				            name:'全校',
+				            type:'line',
+				            label:{normal:{show:true,position:'top'},},
+				            itemStyle:{
+								normal:{color:'#919191'},
 							},
 				            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 32.6, 56.2, 48.7, 18.8, 6.0, 2.3,2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 35.6]
 				        },
