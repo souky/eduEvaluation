@@ -3,14 +3,14 @@
 		<ul id="navInside" >
 			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
 		</ul>
-		  <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
-		    <el-carousel-item v-for="item in testList" :key="item.id">
-		      <p class="alltest" @click="selectShow">{{item.name}}</p>
+		  <el-carousel :interval="5000" indicator-position="none" ref="carousel" @change="testChange($event)" arrow="always" :autoplay="false">
+		    <el-carousel-item v-for="item in testList" :key="item.id" :name=item.examName>
+		      <p class="alltest" @click="selectShow">{{item.examName}}</p>
 			</el-carousel-item>
 		  </el-carousel>
 		  <el-collapse-transition>
 			  <ul v-if='showselect' class="showselect">
-			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
+			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id,item.examName)">{{item.examName}}</li>
 			  </ul>
 		  </el-collapse-transition>
 		 <div class="header louceng">
@@ -198,16 +198,7 @@ export default {
 			autoplay:false,
 			alse:'二中',
 			IndexData,
-			testList:[{
-				id:'001',
-				name:'2017年金阳高中期末考试'
-			},{
-				id:'002',
-				name:'2016年金阳高中期末考试'
-			},{
-				id:'003',
-				name:'2015年金阳高中期末考试'
-			}],
+			testList:[],
 			showselect:false,
 			schoolTest:'',
 			changeSchool:'',
@@ -227,11 +218,31 @@ export default {
 		}
 	},
     methods: {
+    	initAll:function(){
+    		//初始化考试列表
+    		var needData = {tab:'SCHOOL_REPORT'};
+	    	this.postHttp(this,'',"exam/queryExamsOnline",function(obj,data){
+	           for(var value of data.result){
+	           		obj.testList.push(value);
+	           }
+	        });
+	    	this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
+	    	   obj.option1.series.data = [50,60,30,72,40];
+	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
+	        });
+	    	this.postHttp(this,needData,"score/geReportCards",function(obj,data){
+	           
+	        });
+    	},
+    	testChange(e){
+    		console.log(e)
+    	},    
     	selectShow:function(){
     		this.showselect = !this.showselect
     	},
-    	changetest:function(e){
-    		this.showselect = !this.showselect
+    	changetest:function(e,ename){
+    		this.showselect = !this.showselect;
+    		this.$refs.carousel.setActiveItem(ename);
     	},
     	rowsClassName:function({row, rowIndex}){
 	       if(rowIndex%2===1)
@@ -348,7 +359,6 @@ export default {
     				if(oheight+otop-olouceng[i].offsetTop>oheight/1.1){
     					for(var j=0;j<oNav.length;j++){
 							oNav[j].className = '';
-							
 						}
 						oNav[i].className = 'active'
     				}
@@ -358,6 +368,8 @@ export default {
     		}
     	});
     	
+
+
     	//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;
@@ -381,11 +393,12 @@ export default {
     	
 
 		//等级分布图
-    	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
+    	
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
     	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     	this.echarts.init(document.getElementById("achievementChart")).setOption(this.option4);
     	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option5);
+    	this.initAll();
     }
 }
 </script>
@@ -466,9 +479,11 @@ export default {
 #schoolLevel .showselect{
 	list-style: none;position: absolute;margin: 0;padding:0;
 	border: 1px solid #f2f2f2;
-	left: 430px;
+	left: 400px;
 	z-index: 999;
     background-color: white;
+    width: 300px;
+    text-align: center;
 }
 #schoolLevel .showselect li{
 	margin: 0;padding:0;

@@ -102,7 +102,8 @@ export default {
             }
         },
         legend: {
-           show:true
+           show:true,
+           data:['全校']
         },
         xAxis: [
             {
@@ -116,13 +117,13 @@ export default {
         yAxis: [
             {
                 type: 'value',
-                name: '平均分/分',
-                max:'150'
+                name: '百分比',
+                max:'100'
             }
         ],
         series: [
             {
-                name:'班级',
+                name:'全校',
                 type:'bar',
                 itemStyle:{
                     normal:{
@@ -137,23 +138,6 @@ export default {
                     }
                 },
                 barWidth : 60,
-                data:[97.8, 77.24, 87.1, 27.78, 37.6]
-            },
-            {
-                name:'全校',
-                type:'line',
-                itemStyle:{
-                    normal:{
-                        color:'#FFD244'
-                    }
-                },
-                label:{
-                    normal:{
-                        show:true,
-                        position:'top',
-                        color:'#FFD244'
-                    }
-                },
                 data:[97.8, 77.24, 87.1, 27.78, 37.6]
             }
         ]
