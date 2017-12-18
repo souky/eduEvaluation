@@ -40,6 +40,11 @@
 					      <!--<el-table-column prop="classroom" align="center"  label="班级"></el-table-column>-->
 					      <el-table-column prop="subject" align="center"  label="科目"></el-table-column>
 					      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
+					      <el-table-column align="center" label="操作" width='250'>
+					      	<template scope="scope">
+					      		<el-button type="primary" v-show="scope.row.examStatus==2" icon="el-icon-search" @click="report(scope.row.id)">查看报告</el-button>
+					      	</template>
+					      </el-table-column>
 					    </el-table>
 					    
 					    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
@@ -177,6 +182,9 @@ export default {
 		this.queryInfo1();
   },
   methods:{
+  	report(){
+  		this.$router.push({path:'/report/schoolLevel'})
+  	},
   	queryInfo(){
   		var datas = this.ajaxData();
   		this.postHttp(this,datas,'exam/queryExams',function(obj,res){
