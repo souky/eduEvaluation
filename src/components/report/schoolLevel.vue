@@ -21,29 +21,29 @@
 		    <el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
 		      <el-table-column width="50" prop="subject" label="学科">
 		      </el-table-column>
-		      <el-table-column width="80" prop="countPeople" label="统计人数">
+		      <el-table-column width="80" :formatter="setMan" label="统计人数">
 		      </el-table-column>
-		      <el-table-column width="50" prop="fullMark" label="满分">
+		      <el-table-column width="50" prop="fullMarks" label="满分">
 		      </el-table-column>
-		      <el-table-column prop="average" label="平均分 (学校)">
+		      <el-table-column prop="schoolAvgScore" :formatter='setParse' label="平均分 (学校)">
 		      </el-table-column>
-		      <el-table-column prop="averages" label="平均分 (地区)">
+		      <el-table-column :formatter="setRow" label="平均分 (地区)">
 		      </el-table-column>
-		      <el-table-column width="80" prop="deviation" label="离均差">
+		      <el-table-column width="80" :formatter="setRow" label="离均差">
 		      </el-table-column>
-		      <el-table-column prop="ranking" label=" 排名 (地区)">
+		      <el-table-column :formatter="setRow" label=" 排名 (地区)">
 		      </el-table-column>
-		      <el-table-column width="80" prop="highest" label="最高分">
+		      <el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
 		      </el-table-column>
-		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
+		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="excellent" label=" 优秀率 (80%-89%)">
+		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-89%)">
 		      </el-table-column>
-		      <el-table-column prop="inCommission" label=" 良好率 (70%-79%)">
+		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-79%)">
 		      </el-table-column>
-		      <el-table-column prop="yield" label=" 合格率 (60%-69%)">
+		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-69%)">
 		      </el-table-column>
-		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
+		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
 		    <p class="testTips">本次考试中，我校参与统计人数{{countP}}人，总分平均分{{totalCount}}分，高出全地区平均分{{hightCount}}分，地区排名第{{ranking}}。各学科中{{goodsuject}}平均分表现较好，高于地区平均分{{hightavarge}}分，列全区县第{{allNumber}}名；{{lowSuject}}科目表现较弱，低于地区平均分{{lowavarge}}分，位于全地区第{{allRanking}}名。</p>
@@ -55,7 +55,7 @@
 		  </div>
 		  <div id="ranked">
 		  		<div id="rankedchart"></div>
-		  		<div class="schoolSelectBox">
+		  		<!-- 产品版暂时不要<div class="schoolSelectBox">
 					  <el-select v-model="changeSchool" class="myselect" placeholder="请选择">
 					    <el-option
 					      v-for="item in schoolList"
@@ -65,7 +65,7 @@
 					    </el-option>
 					  </el-select>
 					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
-		  		</div>
+		  		</div> -->
 		  </div>
 		   <div class="header louceng" >
 			<p>各班成绩报告单</p>
@@ -195,6 +195,7 @@ export default {
 				name:'科目成绩报告单',
 				id:3
 			}],
+			setmans:0,
 			autoplay:false,
 			alse:'二中',
 			IndexData,
@@ -227,12 +228,55 @@ export default {
 	           }
 	        });
 	    	this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
-	    	   obj.option1.series.data = [50,60,30,72,40];
+	    	   var data1 = [obj.initPrate(data.result.highRate)*100,
+	    	   				obj.initPrate(data.result.excellentRate)*100,
+	    	   				obj.initPrate(data.result.commissionRate)*100,
+	    	   				obj.initPrate(data.result.passRate)*100,
+	    	   				obj.initPrate(data.result.failureRate)*100];
+	    	   obj.option1.series[0].data = data1;
 	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
 	        });
 	    	this.postHttp(this,needData,"score/geReportCards",function(obj,data){
-	           
+	           obj.tableData1 = data.result.scoreVOList;
+	           obj.setmans = data.result.studentNum;
 	        });
+    	},
+    	//格式化-
+    	setRow(){
+    		return '-'
+    	},
+    	//格式化统计人数
+    	setMan(){
+    		return this.setmans
+    	},
+    	setParse(row, column){
+    		var e = row[column.property];
+	        if(e.toFixed(4)<1){
+	        	return e.toFixed(4)*1000/1000;
+	        }else{
+	        	return e;
+	        }
+	         
+    	},
+    	setParse1(row, column){
+
+    	},
+    	initPrate(e){
+    		var f = parseFloat(e);    
+	        if (isNaN(f)) {    
+	            return false;    
+	        }    
+	        var f = Math.round(e*100)/100;    
+	        var s = f.toString();    
+	        var rs = s.indexOf('.');    
+	        if (rs < 0) {    
+	            rs = s.length;    
+	            s += '.';    
+	        }    
+	        while (s.length <= rs + 2) {    
+	            s += '0';    
+	        }    
+	        return s; 
     	},
     	testChange(e){
     		console.log(e)

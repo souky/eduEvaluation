@@ -117,8 +117,7 @@ export default {
         yAxis: [
             {
                 type: 'value',
-                name: '百分比',
-                max:'100'
+                name: '百分比%'
             }
         ],
         series: [
