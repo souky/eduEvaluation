@@ -290,6 +290,13 @@ export default {
             data:['前10名','前20名','前50名','前100名','前200名','前500名','前1000名']
         },
         calculable : true,
+        dataZoom: [
+            {
+                    show: true,
+                    start: 1,
+                    end: 60
+                }
+        ],
         xAxis: [
             {
                 type : 'category',

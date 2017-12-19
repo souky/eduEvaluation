@@ -75,15 +75,15 @@
 		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
 		      <el-table-column width="50" prop="ranking" label="排名">
 		      </el-table-column>
-		      <el-table-column width="50" prop="class" label="班级">
+		      <el-table-column  prop="classroomName" label="班级">
 		      </el-table-column>
-		      <el-table-column prop="teachername" label="班主任">
+		      <el-table-column prop="classTeacherName" label="班主任">
 		      </el-table-column>
 		      <el-table-column prop="totalPoint" label="总分平均分">
 		      </el-table-column>
-		      <el-table-column prop="highest" label="最高分">
+		      <el-table-column width="60" prop="highest" label="最高分">
 		      </el-table-column>
-		      <el-table-column prop="lowest" label="最低分">
+		      <el-table-column width="60" prop="lowest" label="最低分">
 		      </el-table-column>
 		      <el-table-column prop="standard" label="标准差">
 		      </el-table-column>
@@ -140,10 +140,10 @@
 		  	<div class="achievementSelectBox">
 					<el-select v-model="changeSchool" class="myselect" placeholder="请选择">
 					    <el-option
-					      v-for="item in schoolList"
-					      :key="item.id"
-					      :label="item.name"
-					      :value="item.id">
+					      v-for="item in classList"
+					      :key="item"
+					      :label="item"
+					      :value="item">
 					    </el-option>
 					</el-select>
 		  	</div>
@@ -195,6 +195,7 @@ export default {
 				name:'科目成绩报告单',
 				id:3
 			}],
+			classList:[],
 			setmans:0,
 			autoplay:false,
 			alse:'二中',
@@ -225,41 +226,46 @@ export default {
 	    	this.postHttp(this,'',"exam/queryExamsOnline",function(obj,data){
 	           for(var value of data.result){
 	           		obj.testList.push(value);
+	           		obj.classList = [];
+	           		obj.classList = value.subject.split(",");
 	           }
 	        });
-	    	this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
-	    	   var data1 = [obj.initPrate(data.result.highRate)*100,
-	    	   				obj.initPrate(data.result.excellentRate)*100,
-	    	   				obj.initPrate(data.result.commissionRate)*100,
-	    	   				obj.initPrate(data.result.passRate)*100,
-	    	   				obj.initPrate(data.result.failureRate)*100];
-	    	   obj.option1.series[0].data = data1;
-	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
-	        });
-	    	this.postHttp(this,needData,"score/geReportCards",function(obj,data){
-	           obj.tableData1 = data.result.scoreVOList;
-	           obj.setmans = data.result.studentNum;
+	    	this.postHttp(this,'',"score/getEachClassTopScores",function(obj,data){
+	    		var datax = []; var data10 = []; var data20 = [];
+	    		var data50 = []; var data100 = []; var data200 = [];
+	    		var data500 = []; var data1000 = [];
+	    		for(var value of data.result){
+	           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
+	           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+	           		data100.push(value.classTopOneHundredStuNum);
+	           		data200.push(value.classTopTwoHundredStuNum);
+	           		data500.push(value.classTopFiveHundredStuNum);
+	           		data1000.push(value.classTopFortyStuNum);
+	           }
+			   obj.option3.xAxis[0].data = datax;
+	           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
+	           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
+	           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
+	           obj.option3.series[6].data = data1000;
+	           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
 	        });
     	},
-    	//格式化-
+    	//格式化
     	setRow(){
     		return '-'
-    	},
+    	}, 
     	//格式化统计人数
     	setMan(){
     		return this.setmans
     	},
     	setParse(row, column){
     		var e = row[column.property];
-	        if(e.toFixed(4)<1){
-	        	return e.toFixed(4)*1000/1000;
+	        if(e<1){
+	        	return e*100000/1000 + '%';
 	        }else{
 	        	return e;
 	        }
 	         
-    	},
-    	setParse1(row, column){
-
     	},
     	initPrate(e){
     		var f = parseFloat(e);    
@@ -279,7 +285,26 @@ export default {
 	        return s; 
     	},
     	testChange(e){
-    		console.log(e)
+    		var needData = {tab:'SCHOOL_REPORT',examId:this.testList[e].id};
+    		console.log(needData);
+    		this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
+	    	   	if(data.result == undefined){
+	    	   		var data1 = [0,0,0,0,0]
+	    	   	}else{
+					var data1 = [obj.initPrate(data.result.highRate)*100,
+	    	   					obj.initPrate(data.result.excellentRate)*100,
+	    	   					obj.initPrate(data.result.commissionRate)*100,
+	    	   					obj.initPrate(data.result.passRate)*100,
+	    	   					obj.initPrate(data.result.failureRate)*100];
+	    	   	}
+	    	   obj.option1.series[0].data = data1;
+	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
+	        });
+	    	this.postHttp(this,needData,"score/geReportCards",function(obj,data){
+	           obj.tableData1 = data.result.scoreVOList;
+	           obj.tableData2 = data.result.classProcessedScore;
+	           obj.setmans = data.result.studentNum;
+	        });
     	},    
     	selectShow:function(){
     		this.showselect = !this.showselect
@@ -422,7 +447,6 @@ export default {
     	this.lowSuject = this.eachWork(this.IndexData.lowSuject,'、');this.lowavarge = this.eachWork(this.IndexData.lowavarge,'分、');
     	this.allRanking = this.eachWork(this.IndexData.allRanking,'、');
     	this.option1 = this.IndexData.option1;
-    	this.tableData2 = this.IndexData.tableData2;
     	this.option2 = this.IndexData.option2;
     	this.classNumble = this.IndexData.classNumble;
     	this.classS = this.eachWork(this.IndexData.classS,'班、');
@@ -439,7 +463,6 @@ export default {
 		//等级分布图
     	
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
-    	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     	this.echarts.init(document.getElementById("achievementChart")).setOption(this.option4);
     	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option5);
     	this.initAll();
@@ -570,6 +593,8 @@ export default {
 	width: 100%;
 	height: 530px
 }
-
+#schoolLevel .el-table .cell{
+	padding:5px;
+}
 
 </style>
