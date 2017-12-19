@@ -42,8 +42,9 @@
 		      <el-table-column prop="name" align="center" label="姓名"></el-table-column>
 		      <el-table-column prop="userName" align="center"  label="用户名"></el-table-column>
 		      <el-table-column prop="roleName" align="center"  label="角色"></el-table-column>
-		      <el-table-column align="center" label="操作" width='200'>
+		      <el-table-column align="center" label="操作" width='300'>
 		      	<template scope="scope">
+		      		<el-button type="primary" icon="el-icon-edit" @click="initPsw(scope.row.id)">重置密码</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
@@ -67,12 +68,6 @@
 			  </el-form-item>
 			  <el-form-item label="用户名" prop="userName">
 			    <el-input v-model="user.userName"></el-input>
-			  </el-form-item>
-			  <el-form-item label="密码" v-show="showPsw"  prop="userPsw">
-			    <el-input type="password" v-model="user.userPsw"></el-input>
-			  </el-form-item>
-			  <el-form-item label="重复密码" v-show="showPsw"  prop="userPswS">
-			    <el-input type="password" v-model="user.userPswS"></el-input>
 			  </el-form-item>
 			  <el-form-item label="用户类型"  prop="userType">
 			  	<el-select v-model="user.userType" placeholder="请选择">
@@ -98,22 +93,6 @@
 <script>
 export default {
   data () {
-	var validatePass = (rule, value, callback) => {
-        if (this.user.userPsw == '') {
-          callback(new Error('请输入密码'));
-        } else {
-          callback();
-        }
-    };
-    var validatePassS = (rule, value, callback) => {
-	    if (this.user.userPswS == '') {
-	      callback(new Error('请再次输入密码'));
-	    } else if (this.user.userPsw != this.user.userPswS) {
-	      callback(new Error('两次输入密码不一致!'));
-	    } else {
-	      callback();
-	    }
-    };
     return {
       msg: 'userManager',
       tableData:[],
@@ -149,12 +128,6 @@ export default {
           userName: [
             { required: true, message: '请输入用户名', trigger: 'blur' }
           ],
-          userPsw: [
-            { required: true,validator: validatePass, trigger: 'blur' }
-          ],
-          userPswS: [
-            { required: true,validator: validatePassS, trigger: 'blur' }
-          ],
           userType: [
             { required: true, message: '请选择用户类型', trigger: 'change' }
           ],
@@ -166,7 +139,7 @@ export default {
   },
   mounted:function(){
   	this.queryInfo();
-  	this.postHttp(this,{pageNum:1,pageSize:100},'role/queryRoles',function(obj,res){
+  	this.postHttp(this,{pageNum:1,pageSize:0},'role/queryRoles',function(obj,res){
   		obj.roleOptions = res.result.list;
   	})
   },
@@ -193,16 +166,13 @@ export default {
   			address = 'user/updateUser';
   			delete this.user.createDate;
   			delete this.user.updateDate;
-  			this.user.userPsw = '1';
-  			this.user.userPswS = '1';
   			this.$refs['user'].validate((valid) => {
 	          if (valid) {
-	          	delete this.user.userPsw;
 	          	this.postHttp(this,this.user,address,function(obj,res){
 					if(res.code == '10000'){
 						obj.dialogVisible = false;
 						obj.notify_success();
-						obj.queryInfo();
+						obj.$alert('重置密码成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
 					}else{
 						obj.notify_jr(obj,'操作错误',res.message,'error');
 					}
@@ -212,7 +182,6 @@ export default {
 	          }
 	        });
   		}else{
-  			
   			this.$refs['user'].validate((valid) => {
 	          if (valid) {
 	          	
@@ -230,6 +199,8 @@ export default {
 	          }
 	        });
   		}
+  		
+  		
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -239,14 +210,13 @@ export default {
   		this.$refs['user'].resetFields();
   	},
 	editInfo(id){
-		this.$refs['user'].resetFields();
 		this.diaTitle = "编辑";
-		
 		this.postHttp(this,{id:id},'user/getUserById',function(obj,res){
   			if(res.code == '10000'){
   				obj.user = res.result;
   				obj.showPsw = false;
   				obj.dialogVisible = true;
+  				obj.$refs['user'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}
@@ -269,6 +239,15 @@ export default {
         }).catch(() => {
         	
         });
+	},
+	initPsw(id){
+		this.postHttp(this,{id:id},'user/initPsw',function(obj,res){
+	  		if(res.code == "10000"){
+	  			obj.$alert('重置密码成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+	  		}else{
+	  			obj.notify_jr(obj,'操作错误',res.message,'error');
+	  		}
+	  	});
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;

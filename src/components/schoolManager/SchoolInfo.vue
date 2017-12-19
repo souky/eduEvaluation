@@ -82,6 +82,12 @@ export default {
   mounted:function(){
   	this.postHttp(this,{},"school/querySchools",function(obj,res){
   		obj.schoolInfo = res.result;
+  		if(res.result.periodArray == "" || res.result.periodArray == undefined){
+  			obj.schoolInfo['periodArray'] = [];
+  		}
+  		if(res.result.subjectArray == "" || res.result.subjectArray == undefined){
+  			obj.schoolInfo['subjectArray'] = [];
+  		}
   	})
   },
   methods:{

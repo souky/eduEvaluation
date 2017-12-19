@@ -61,6 +61,7 @@ export default {
 				if(res.code == '10000'){
 					document.getElementById("header").style.display = 'block';
 					document.getElementById("menu").style.display = 'block';
+					sessionStorage.setItem('JY_EDU_EVALUATION', res.result);
 					obj.$router.push({path:'/home'});
 				}else{
 					obj.notify_jr(obj,'错误提示',res.message,'error');

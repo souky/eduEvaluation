@@ -30,9 +30,10 @@
 			</div>
 			<el-table :data="tableData" style="width: 100%">
 		      <el-table-column prop="roleName" align="center" label="名称"></el-table-column>
-		      <el-table-column prop="createDate" :formatter="timeFormatter" align="center"  label="创建时间"></el-table-column>
-		      <el-table-column align="center" label="操作" width='200'>
+		      <el-table-column prop="remark" align="center"  label="备注"></el-table-column>
+		      <el-table-column align="center" label="操作" width='300'>
 		      	<template scope="scope">
+		      		<el-button type="primary" icon="el-icon-menu" @click="authorizationInfo(scope.row.id)">授权</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
@@ -61,6 +62,10 @@
 		    <el-button type="primary" @click="saveEdit">确 定</el-button>
 		  </span>
 		</el-dialog>
+		
+		<el-dialog title="授权" :visible.sync="dialogVisibleAuth" width="50%" :before-close = 'authClose'>
+			<el-tree id="textBookT" :data="authorization" ref="tree" :default-checked-keys="authKey"  node-key="id" :props="defaultProps" show-checkbox></el-tree>
+		</el-dialog>
 	</div>
 	
 </template>
@@ -83,6 +88,15 @@ export default {
       dialogVisible:false,
       diaTitle:'新增',
       
+      authorization:[],
+      dialogVisibleAuth:false,
+      defaultProps: {
+	        children: 'children',
+	        label: 'menuName',
+	        id:'id'
+	  },
+	  authKey:[],
+      
       role:{},
       rules: {
           roleName: [
@@ -93,6 +107,10 @@ export default {
   },
   mounted:function(){
   	this.queryInfo();
+  	
+  	this.postHttp(this,{},'getAllMenu',function(obj,res){
+  		obj.authorization = res.result;
+  	})
   },
   methods:{
 	queryInfo(){
@@ -165,6 +183,16 @@ export default {
         }).catch(() => {
         	
         });
+	},
+	authorizationInfo(id){
+		this.dialogVisibleAuth = true;
+//		this.postHttp(this,{id:id},'permission/queryPermission',function(obj,res){
+//	  		
+//		});
+	},
+	authClose(){
+		var s = this.$refs.tree.getCheckedKeys()
+		console.log(s)
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;

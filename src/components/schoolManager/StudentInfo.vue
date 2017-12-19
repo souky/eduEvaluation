@@ -229,10 +229,10 @@ export default {
   		this.$refs['student'].resetFields();
   	},
 	editInfo(id){
-		this.$refs['student'].resetFields();
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
+		this.$refs['student'].resetFields();
 		this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
   			if(res.code == '10000'){
   				obj.student = res.result;

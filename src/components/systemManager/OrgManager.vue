@@ -63,11 +63,8 @@
 			  <el-form-item label="用户名" prop="userName">
 			    <el-input v-model="user.userName"></el-input>
 			  </el-form-item>
-			  <el-form-item label="密码"  prop="userPsw">
-			    <el-input type="password" v-model="user.userPsw"></el-input>
-			  </el-form-item>
-			  <el-form-item label="重复密码" prop="userPswS">
-			    <el-input type="password" v-model="user.userPswS"></el-input>
+			  <el-form-item label="备注"  >
+			    <el-input v-model="user.remark"></el-input>
 			  </el-form-item>
 			</el-form>
 		  </div>
@@ -85,22 +82,6 @@
 import OrgManager from '../../assets/systemManagerData/OrgManager'
 export default {
   data () {
-	var validatePass = (rule, value, callback) => {
-        if (this.user.userPsw == '' || this.user.userPsw == undefined) {
-          callback(new Error('请输入密码'));
-        } else {
-          callback();
-        }
-    };
-    var validatePassS = (rule, value, callback) => {
-	    if (this.user.userPswS == '' || this.user.userPswS == undefined) {
-	      callback(new Error('请再次输入密码'));
-	    } else if (this.user.userPsw != this.user.userPswS) {
-	      callback(new Error('两次输入密码不一致!'));
-	    } else {
-	      callback();
-	    }
-    };
     return {
         msg: 'orgManager',
         data:[],
@@ -140,12 +121,7 @@ export default {
           userName: [
             { required: true, message: '请输入用户名', trigger: 'blur' }
           ],
-          userPsw: [
-            { required: true,validator: validatePass, trigger: 'blur' }
-          ],
-          userPswS: [
-            { required: true,validator: validatePassS, trigger: 'blur' }
-          ],
+          
       	}
     }
   },
@@ -276,7 +252,7 @@ export default {
 			this.postHttp(this,this.user,'user/saveManagerUser',function(obj,res){
 				if(res.code == '10000'){
 					obj.showManager = false;
-					obj.notify_success();
+					obj.$alert('新建用户成功,初始密码为:Aa111111', '提示', {confirmButtonText: '确定'});
 				}else{
 					obj.notify_jr(obj,'操作错误',res.message,'error');
 				}
