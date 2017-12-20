@@ -4,7 +4,7 @@
 			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
 		</ul>
 		  <el-carousel :interval="5000" indicator-position="none" ref="carousel" @change="testChange($event)" arrow="always" :autoplay="false">
-		    <el-carousel-item v-for="item in testList" :key="item.id" :name=item.examName>
+		    <el-carousel-item v-for="item in testList" :key="item.id" :name="item.examName">
 		      <p class="alltest" @click="selectShow">{{item.examName}}</p>
 			</el-carousel-item>
 		  </el-carousel>
@@ -230,7 +230,7 @@ export default {
 	           		obj.classList = value.subject.split(",");
 	           }
 	        });
-	    	this.postHttp(this,'',"score/getEachClassTopScores",function(obj,data){
+	    	this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
 	    		var datax = []; var data10 = []; var data20 = [];
 	    		var data50 = []; var data100 = []; var data200 = [];
 	    		var data500 = []; var data1000 = [];
