@@ -92,10 +92,11 @@ export default {
       dialogVisibleAuth:false,
       defaultProps: {
 	        children: 'children',
-	        label: 'menuName',
+	        label: 'permissionName',
 	        id:'id'
 	  },
 	  authKey:[],
+	  roleIdAuth:"",
       
       role:{},
       rules: {
@@ -186,13 +187,43 @@ export default {
 	},
 	authorizationInfo(id){
 		this.dialogVisibleAuth = true;
-//		this.postHttp(this,{id:id},'permission/queryPermission',function(obj,res){
-//	  		
-//		});
+		this.roleIdAuth = id;
+		this.postHttp(this,{roleId:id},'permission/queryPermission',function(obj,res){
+			var s = res.result
+	  		obj.authorization = s;
+	  		var arrays = new Array();
+	  		for(var i = 0;i < s.length;i++){
+	  			var o = s[i];
+	  			if(o.isHasPermission == 1){
+	  				arrays.push(o.id);
+	  			}
+	  			if(o.children != "" && o.children != undefined){
+	  				var oo = o.children;
+	  				for(var j = 0;j < oo.length;j++){
+	  					if(oo[j].isHasPermission == 1){
+			  				arrays.push(oo[j].id);
+			  			}
+	  				}
+	  			}
+	  		}
+	  		obj.authKey = arrays;
+		});
 	},
 	authClose(){
-		var s = this.$refs.tree.getCheckedKeys()
-		console.log(s)
+		var s = this.$refs.tree.getCheckedKeys();
+		var id = this.roleIdAuth;
+		var Objects = new Object();
+		Objects['roleId'] = id;
+		Objects['permissionIds'] = s;
+		this.postHttp(this,Objects,'permission/grantPermissions',function(obj,res){
+			if(res.code == "10000"){
+				obj.dialogVisibleAuth = false;
+				obj.notify_success();
+			}else{
+				obj.notify_jr(obj,'操作错误',res.message,'error');
+			}
+		})
+		
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
