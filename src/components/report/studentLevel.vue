@@ -6,22 +6,22 @@
 		<ul id="navInside1" v-show="displayAll.personalAchievement">
 			<li v-for="item in liList1" :class="activeList1 == item.id? 'active': ''" :key="item.id" @click="testtest1(item.id)">{{item.name}}</li>
 		</ul>
-		<el-carousel id="testChange" :interval="5000" indicator-position="none" @change="testChange($event)" arrow="always" :autoplay="false">
-			<el-carousel-item v-for="item in testList" :key="item.id">
-				<p class="alltest" @click="selectShow">{{item.name}}</p>
+		<el-carousel :interval="5000" indicator-position="none" ref="carousel" @change="testChange($event)" arrow="always" :autoplay="false">
+			<el-carousel-item v-for="item in testList" :key="item.id" :name=item.examName>
+				<p class="alltest" @click="selectShow">{{item.examName}}</p>
 			</el-carousel-item>
 		</el-carousel>
 		<el-collapse-transition>
 			<ul v-if='showselect' class="showselect">
-				<li v-for="item in testList" :key="item.id" @click="changetest(item.id)">{{item.name}}</li>
+				<li v-for="item in testList" :key="item.id" @click="changetest(item.id,item.examName)">{{item.examName}}</li>
 			</ul>
 		</el-collapse-transition>
 		<div id="rainbow" class="header-banner">
 			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
 				<el-carousel-item v-for="item in subjects" :key="item.id">
-					<div class="header-banner-bit" v-for="(child,index) in item.childs">
-						<div class="header-banner-click" ref="fristBit" :style="'background:'+child.color" @click="rainbow(index,child.id)">
-							<p>{{child.name}}</p>
+					<div class="header-banner-bit hand" v-for="(child,index) in item.childs">
+						<div class="header-banner-click" ref="fristBit" :style="'background:'+child.subjectColor" @click="rainbow(index,child.id,child.subjectName)">
+							<p>{{child.subjectName}}</p>
 						</div>
 					</div>
 				</el-carousel-item>
@@ -176,17 +176,17 @@
 						<el-table-column align="center" prop="qid" label="题号"></el-table-column>
 						<el-table-column align="center" prop="topic" label="题型"></el-table-column>
 						<el-table-column align="center" prop="fractionalValue" label="分值"></el-table-column>
-						<el-table-column align="center" prop="score.value" label="得分">
+						<el-table-column align="center" prop="studentScore" label="得分">
 							<template scope="scope">
-								<span v-if="scope.row.score.value == 0" v-bind:class="{activeS: (scope.row.score.value == 0)}">{{ scope.row.score.value }}</span>
-								<span v-else v-bind:class="{active: (scope.row.score.key == 1)}">{{ scope.row.score.value }}</span>
+								<span v-if="scope.row.studentScore == 0" v-bind:class="{activeS: (scope.row.studentScore == 0)}">{{ scope.row.studentScore }}</span>
+								<span v-else v-bind:class="{active: (scope.row.rightOrNot == 1)}">{{ scope.row.studentScore }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column align="center" prop="divideClass" label="班级均分"></el-table-column>
 						<el-table-column align="center" prop="divideSchool" label="校级均分"></el-table-column>
 						<el-table-column align="center" prop="divideAera" label="区县级均分"></el-table-column>
-						<el-table-column align="center" prop="knowledge" label="考察知识点"></el-table-column>
-						<el-table-column align="center" prop="studyAbility" label="考察能力"></el-table-column>
+						<el-table-column align="center" prop="knowPoint" label="考察知识点"></el-table-column>
+						<el-table-column align="center" prop="ablity" label="考察能力"></el-table-column>
 						<el-table-column align="center" prop="difficulty" label="难度"></el-table-column>
 						<el-table-column align="center" prop="differentiation" label="区分度"></el-table-column>
 					</el-table>
@@ -315,6 +315,12 @@ export default {
 
 	data(){
 		return{
+			basicData:{
+				subject:'',
+				student:'8ebf3e1697ca4537a07c9be1eaedf7ed',
+				id:'',
+				topNum:50,
+			},
 			activeList:0,
 			activeList1:0,
 			liList:[{
@@ -431,16 +437,7 @@ export default {
 				school:45,
 				area:34,	
 			}],
-			testList:[{
-				id:'001',
-				name:'2017年金阳高中期末考试'
-			},{
-				id:'002',
-				name:'2016年金阳高中期末考试'
-			},{
-				id:'003',
-				name:'2015年金阳高中期末考试'
-			}],
+			testList:[],
 			subjects:[],
 			items:[{
 				id:1,
@@ -486,22 +483,6 @@ export default {
 				id:11,
 				name:'音乐',
 				color:'#D070F3',
-			},{
-				id:12,
-				name:'测试12',
-				color:'red',
-			},{
-				id:13,
-				name:'测试13',
-				color:'red',
-			},{
-				id:14,
-				name:'测试14',
-				color:'red',
-			},{
-				id:15,
-				name:'测试15',
-				color:'red',
 			}],
 			tableData:[{
 				subjects:'语文',
@@ -1127,6 +1108,7 @@ export default {
 				}
 			},
 			created:function(){
+				this.data();
 				var childNum=Math.ceil(this.items.length/11);
 				var childs=[];
 				for(var l=0;l<childNum;l++){
@@ -1193,15 +1175,41 @@ export default {
 				});
 			},
 			methods:{
-				changetest:function(e){
+				data:function(){
+					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
+						obj.testList=res.result.exams;
+					});
+				},
+				testChange(e){
+					var name=this.testList[e].id;
+					this.basicData.id=name;
+					var totle={createDate:1512647749000,createUser:"1",id:"0",isDelete:0,orgId:"",remark:"",schoolId:"",subjectCode:1,subjectColor:"#F37070",subjectName:"总分",updateDate:1513586055000};
+					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
+						obj.testList=res.result.exams;
+						obj.items=res.result[name].subject;
+						obj.schoolList=res.result[name].classroom;
+						obj.items.unshift(totle);
+						var childNum=Math.ceil(obj.items.length/11);
+						var childs=[];
+						for(var l=0;l<childNum;l++){
+							var id=l+1;
+							var e=11*(l+1);
+							var s=e-11;
+							childs[l] = []
+							childs[l]["childs"]=obj.items.slice(s,e);
+							childs[l]["id"] = id;
+						}
+						obj.subjects=childs;
+					});
+					
+				}, 
+				changetest:function(e,ename){
 					this.showselect = !this.showselect
+					this.$refs.carousel.setActiveItem(ename);
 				},
 				selectShow:function(){
 					this.showselect = !this.showselect
 				},
-				testChange(e){
-					console.log(e)
-				},  
 				testtest:function(e){
 					var olouceng = document.getElementsByClassName("louceng");
 					var oNav = document.getElementById("navInside").getElementsByTagName("li");
@@ -1214,12 +1222,12 @@ export default {
 					this.activeList1 = e;
 					window.scrollTo(0 ,olouceng[e].offsetTop-100);
 				},
-				rainbow:function(index,num){
+				rainbow:function(index,num,name){
 					for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
 						document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
 					}
 					document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
-					if(num==1){
+					if(num==0){
 						var oNav = document.getElementById("navInside1").getElementsByTagName("li");
 						for(var a = 0;a<oNav.length;a++){
 							oNav[a].className = '';
@@ -1255,7 +1263,15 @@ export default {
 						this.displayAll.knowledge=true;
 						this.displayAll.abilityAnalyze=true;
 						this.activeList = 0;this.activeList1 = 0;
+
+						this.basicData.subject=name;
+						this.testAnalysis();
 					}
+				},
+				testAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/testAnalysis',function(obj,res){
+							obj.testAnalysisTable=res.result;
+						});
 				},
 				chooseArea:function(e,num){
 					document.getElementById("growthTrend").getElementsByClassName("choose-area-left")[0].style.background="#fff";
@@ -1841,12 +1857,17 @@ export default {
 			background-color: white
 		}
 		#studentlevel .showselect{
-			list-style: none;position: absolute;margin: 0;padding:0;
+			list-style: none;
+			position: absolute;
+			margin: 0;
+			padding: 0;
 			border: 1px solid #f2f2f2;
 			left: 50%;
+			margin-left: -150px;
 			z-index: 999;
 			background-color: white;
-			margin-left: -110px;
+			width: 300px;
+			text-align: center;
 		}
 		#studentlevel .showselect li{
 			margin: 0;padding:0;
