@@ -85,18 +85,18 @@
 			<p>校前？名分布图</p>
 			<div class="header-title-foot"></div>
 			<div class="body-title mt20">
-				<p>班级：共37人    全校：649人</p>
+				<p>班级：共{{rankingListS.classStuNum}}人    全校：{{rankingListS.schoolStuNum}}人</p>
 			</div>
 		</div>
 		<div class="body pt20">
 			<div id="ranking1"></div>
 			<div id="ranking2">
 				<div class="ranking-header">
-					<p>前100名学生名单</p>
+					<p>前{{basicData.topNum}}名学生名单</p>
 				</div>
 				<div class="ranking-body">
 					<ul>
-						<li class="cl" v-for="item in rankingList"><p class="ranking-bodyName">{{item.name}}</p><p class="ranking-bodyNum">第{{item.num}}名</p></li>
+						<li class="cl" v-for="item in rankingList"><p class="ranking-bodyName">{{item.studentName}}</p><p class="ranking-bodyNum">第{{item.ranking}}名</p></li>
 					</ul>
 				</div>
 				<div class="ranking-foot">
@@ -145,10 +145,10 @@
 		<div class="body pt20">
 			<el-table :data="tableData3" style="width: 100%" header-row-class-name="table-header">
 				<template v-for="item in headerData">
-					<el-table-column align="center" v-if="item.key=='true'" :key="item.name" :label="item.name" :prop="item.dataIndex">
+					<el-table-column align="center" v-if="item.isImproved=='0'" :key="item.name" :label="item.name" :prop="item.dataIndex">
 						<template scope="scope">
-							<span v-if="scope.row.score.key == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.score.value }}</span>
-							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.score.value }}</span>
+							<span v-if="scope.row.isImproved == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.isImproved}}</span>
+							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.isImproved}}</span>
 						</template>
 					</el-table-column>
 					<el-table-column align="center" v-else :key="item.name" :label="item.name" :prop="item.dataIndex"></el-table-column>
@@ -341,7 +341,7 @@ export default{
 				subject:'',
 				class:'',
 				id:'',
-				topNum:'',
+				topNum:50,
 			},
 			activeList:0,
 			activeList1:0,
@@ -488,55 +488,24 @@ export default{
 			}],
 			headerData:[{
 				name : '名次',
-				dataIndex:'place',
+				dataIndex:'subject1Score',
 			},{
 				name : '考号/学号',
-				dataIndex:'studentId',
+				dataIndex:'studentNo',
 			},{
 				name : '姓名',
-				dataIndex:'name',
+				dataIndex:'studentName',
 			},{
 				name : '总分',
 				dataIndex:'totalScore',
 			},{
 				name : '名次(校级)',
-				dataIndex:'schoolPlace',
+				dataIndex:'ranking',
 			},{
 				name : '名次进退步(校级)',
-				dataIndex:'score',
-				key:'true',
-			},{
-				name : '语文',
-				dataIndex:'Chinese',
-			},{
-				name : '数学',
-				dataIndex:'math',
-			},{
-				name : '英语',
-				dataIndex:'english',
-			},{
-				name : '物理',
-				dataIndex:'physics',
-			},{
-				name : '化学',
-				dataIndex:'chemistry',
-			},{
-				name : '生物',
-				dataIndex:'creature',
-			},{
-				name : '理综合',
-				dataIndex:'Richard',
+				dataIndex:'changedRanking',
 			}],
-			testList:[/*{
-				id:'001',
-				name:'2017年金阳高中期末考试'
-			},{
-				id:'002',
-				name:'2016年金阳高中期末考试'
-			},{
-				id:'003',
-				name:'2015年金阳高中期末考试'
-			}*/],
+			testList:[],
 			tableData3:[{
 				place:1,
 				studentId:123,
@@ -652,61 +621,11 @@ export default{
 				school:456,
 				area:342,
 			}],
-			rankingList:[{
-				name:"张三",
-				num:1,
-			},{
-				name:"李四",
-				num:2,
-			},{
-				name:"王五",
-				num:3,
-			},{
-				name:"贾六",
-				num:4,
-			},{
-				name:"魏七",
-				num:5,
-			},{
-				name:"林八",
-				num:6,
-			},{
-				name:"张三",
-				num:1,
-			},{
-				name:"李四",
-				num:2,
-			},{
-				name:"王五",
-				num:3,
-			},{
-				name:"贾六",
-				num:4,
-			},{
-				name:"魏七",
-				num:5,
-			},{
-				name:"林八",
-				num:6,
-			},{
-				name:"张三",
-				num:1,
-			},{
-				name:"李四",
-				num:2,
-			},{
-				name:"王五",
-				num:3,
-			},{
-				name:"贾六",
-				num:4,
-			},{
-				name:"魏七",
-				num:5,
-			},{
-				name:"林八",
-				num:6,
-			}],
+			rankingList:[],
+			rankingListS:{
+				classStuNum:0,
+				schoolStuNum:0,
+			},
 			studentGradeDistributionList:[{
 				name:"张三",
 				num:1,
@@ -765,11 +684,11 @@ export default{
 			rankingData:[{
 				topic10:0,
 				topic20:0,
-				topic50:2,
-				topic100:12,
-				topic200:23,
-				topic500:45,
-				topic1000:67,
+				topic50:0,
+				topic100:0,
+				topic200:0,
+				topic500:0,
+				topic1000:0,
 			}],
 			classReportTable:[{
 
@@ -855,7 +774,7 @@ export default{
 			    ],
 			    series : [
 			    {
-			    	name:'直接访问',
+			    	name:'人数',
 			    	type:'bar',
 			    	barWidth: '60%',
 			    	data:[0, 0, 0, 14, 57, 321, 445]
@@ -1438,15 +1357,15 @@ export default{
 					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
 						obj.testList=res.result.exams;
 					});
-					this.postHttp(this,{examId:'',tab:'CLASS_REPORT', subject:'总分'},'score/getLevelDistribution',function(obj,res){
-						var num=0;
-						for(var i=0;i<res.result.length;i++){
-							if(res.result[i].subject=="数学"){
-								num=i
-							}
-						};
+					// this.postHttp(this,{examId:'',tab:'CLASS_REPORT', subject:'总分'},'score/getLevelDistribution',function(obj,res){
+					// 	var num=0;
+					// 	for(var i=0;i<res.result.length;i++){
+					// 		if(res.result[i].subject=="数学"){
+					// 			num=i
+					// 		}
+					// 	};
 
-					});
+					// });
 				},
 				testChange(e){
 					var name=this.testList[e].id;
@@ -1469,6 +1388,16 @@ export default{
 							childs[l]["id"] = id;
 						}
 						obj.subjects=childs;
+						console.log(name)
+						for(var q=5;q<parseInt(res.result[name].subject.length)+4;q++){
+							var arr={
+								"name":res.result[name].subject[q-4].subjectName,
+								"dataIndex":"code"+res.result[name].subject[q-4].id,
+							}
+							obj.headerData.push(arr);
+						}
+						obj.getTopOrgScoresInClass();
+						obj.getClassRankingReport();
 					});
 					
 				}, 
@@ -1515,6 +1444,8 @@ export default{
 						this.displayAll.classabilityAnalyze=false;
 
 						this.basicData.subject=name;
+						this.getTopOrgScoresInClass();
+						this.getClassRankingReport();
 					}else{
 						var oNav = document.getElementById("navInside").getElementsByTagName("li");
 						for(var a = 0;a<oNav.length;a++){
@@ -1553,8 +1484,9 @@ export default{
 					}
 				},
 				changeClassName(value){
-					if(this.basicData.subject=="总分"){
+					if(this.basicData.subject=="总分"||this.basicData.subject==""){
 						this.getTopOrgScoresInClass();
+						this.getClassRankingReport();
 					}else{
 						this.basicData.class=value;
 						this.testAnalysis();
@@ -1563,11 +1495,53 @@ export default{
 				testAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/testAnalysis',function(obj,res){
 							obj.testAnalysisTable=res.result;
+							obj.optionClassScoreQuestion.xAxis[0].data=[];
+							obj.optionClassScoreQuestion.series[0].data=[];
+							obj.optionClassScoreQuestion.series[1].data=[];
+							obj.optionClassScoreQuestion.series[2].data=[];
+							for(var i=0;i<res.result.length;i++){
+								obj.optionClassScoreQuestion.xAxis[0].data.push(res.result[i].qid);
+								obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result[i].divideClass));
+								obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result[i].divideSchool));
+								obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result[i].divideAera));
+							}
+							obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
 						});
 				},
 				getTopOrgScoresInClass:function(){
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class,topNum:this.basicData.topNum},'score/getTopOrgScoresInClass',function(obj,res){
-
+						if(res.result=="没有最近一次考试的相关数据"){
+							obj.notify_jr(obj,'信息错误',res.result,'error');
+						}else{
+							obj.rankingList=res.result.resultScoreList;
+							obj.rankingListS.classStuNum=res.result.classStuNum;
+							obj.rankingListS.schoolStuNum=res.result.schoolStuNum;
+							obj.rankingData[0].topic10=res.result.classTopScore.classTopTenStuNum;
+							obj.rankingData[0].topic20=res.result.classTopScore.classTopTwentyStuNum;
+							obj.rankingData[0].topic50=res.result.classTopScore.classTopFiftyStuNum;
+							obj.rankingData[0].topic100=res.result.classTopScore.classTopOneHundredStuNum;
+							obj.rankingData[0].topic200=res.result.classTopScore.classTopTwoHundredStuNum;
+							obj.rankingData[0].topic500=res.result.classTopScore.classTopFiveHundredStuNum;
+							obj.rankingData[0].topic1000=res.result.classTopScore.classTopOneThousandStuNum;
+							obj.optionranking.series[0].data=[];
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTenStuNum);
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwentyStuNum);
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiftyStuNum);
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneHundredStuNum);
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwoHundredStuNum);
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiveHundredStuNum);
+							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneThousandStuNum);
+							obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
+							}
+						});
+				},
+				getClassRankingReport:function(){
+					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
+							for(var i=0;i<res.result.classScoreList.length;i++){
+								res.result.classScoreList[i].subject1Score=i+1;
+							}
+							console.log(res.result.classScoreList)
+							obj.tableData3=res.result.classScoreList;
 						});
 				},
 				gradeIntervalfun:function(e){
