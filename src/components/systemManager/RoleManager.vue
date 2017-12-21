@@ -32,10 +32,17 @@
 		      <el-table-column prop="roleName" align="center" label="名称"></el-table-column>
 		      <el-table-column prop="remark" align="center"  label="备注"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
-		      	<template scope="scope">
-		      		<el-button type="primary" icon="el-icon-menu" @click="authorizationInfo(scope.row.id)">授权</el-button>
-		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
-		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
+		      	<template scope="scope" >
+		      		<div v-if="scope.row.orgId != ''">
+		      			<el-button type="primary" icon="el-icon-menu"  @click="authorizationInfo(scope.row.id)">授权</el-button>
+			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
+			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
+		      		</div>
+		      		<div v-else>
+		      			<el-button type="primary forbid" title="预置角色不允许修改" icon="el-icon-menu">授权</el-button>
+			      		<el-button type="primary forbid" title="预置角色不允许修改" icon="el-icon-edit">编辑</el-button>
+			      		<el-button type="primary forbid" title="预置角色不允许修改" icon="el-icon-delete">删除</el-button>
+		      		</div>
 		      	</template>
 		      </el-table-column>
 		    </el-table>
@@ -63,8 +70,12 @@
 		  </span>
 		</el-dialog>
 		
-		<el-dialog title="授权" :visible.sync="dialogVisibleAuth" width="50%" :before-close = 'authClose'>
+		<el-dialog title="授权" :visible.sync="dialogVisibleAuth" width="50%">
 			<el-tree id="textBookT" :data="authorization" ref="tree" :default-checked-keys="authKey"  node-key="id" :props="defaultProps" show-checkbox></el-tree>
+			<span slot="footer" class="dialog-footer">
+			    <el-button type="primary" @click="closeAuth">取 消</el-button>
+			    <el-button type="primary" @click="saveAuth">确 定</el-button>
+			</span>
 		</el-dialog>
 	</div>
 	
@@ -108,10 +119,6 @@ export default {
   },
   mounted:function(){
   	this.queryInfo();
-  	
-  	this.postHttp(this,{},'getAllMenu',function(obj,res){
-  		obj.authorization = res.result;
-  	})
   },
   methods:{
 	queryInfo(){
@@ -209,7 +216,7 @@ export default {
 	  		obj.authKey = arrays;
 		});
 	},
-	authClose(){
+	saveAuth(){
 		var s = this.$refs.tree.getCheckedKeys();
 		var id = this.roleIdAuth;
 		var Objects = new Object();
@@ -224,6 +231,11 @@ export default {
 			}
 		})
 		
+	},
+	closeAuth(){
+		this.dialogVisibleAuth = false;
+		this.authKey = [];
+		this.authorization = [];
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
@@ -260,5 +272,9 @@ export default {
 #roleManager .role_info_table{
 	width: 90%;
 	margin:20px auto;
+}
+.forbid{
+	background:#C0C0C0!important;
+	border-color: #C0C0C0!important;
 }
 </style>
