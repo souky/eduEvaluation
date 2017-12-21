@@ -33,7 +33,7 @@
 		      <el-table-column prop="remark" align="center"  label="备注"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
 		      	<template scope="scope" >
-		      		<div v-if="scope.row.orgId != ''">
+		      		<div v-if="scope.row.orgId != '' || user.userType == '0' ">
 		      			<el-button type="primary" icon="el-icon-menu"  @click="authorizationInfo(scope.row.id)">授权</el-button>
 			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
@@ -108,6 +108,7 @@ export default {
 	  },
 	  authKey:[],
 	  roleIdAuth:"",
+	  user:{},
       
       role:{},
       rules: {
@@ -119,6 +120,9 @@ export default {
   },
   mounted:function(){
   	this.queryInfo();
+  	this.postHttp(this,{},'user/getLoginUser',function(o,res){
+  		o.user = res.result;
+  	})
   },
   methods:{
 	queryInfo(){

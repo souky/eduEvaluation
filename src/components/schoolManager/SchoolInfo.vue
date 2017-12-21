@@ -8,9 +8,9 @@
 			  </el-form-item>
 			  <el-form-item label="学校学段" prop="periodArray">
 			    <el-checkbox-group v-model="schoolInfo.periodArray" >
-			      <el-checkbox label="小学" name="periodArray"></el-checkbox>
-			      <el-checkbox label="初中" name="periodArray"></el-checkbox>
-			      <el-checkbox label="高中" name="periodArray"></el-checkbox>
+			      <el-checkbox label="小学" name="periodArrays"></el-checkbox>
+			      <el-checkbox label="初中" name="periodArrays"></el-checkbox>
+			      <el-checkbox label="高中" name="periodArrays"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			  <el-form-item label="学校地址">
@@ -36,15 +36,15 @@
 			  </el-form-item>
 			  <el-form-item label="学校学科" prop="subjectArray">
 			    <el-checkbox-group v-model="schoolInfo.subjectArray">
-			      <el-checkbox label="语文" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="数学" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="英语" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="物理" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="化学" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="生物" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="历史" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="政治" name="subjectArray"></el-checkbox>
-			      <el-checkbox label="地理" name="subjectArray"></el-checkbox>
+			      <el-checkbox label="语文" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="数学" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="英语" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="物理" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="化学" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="生物" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="历史" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="政治" name="subjectArrays"></el-checkbox>
+			      <el-checkbox label="地理" name="subjectArrays"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			</el-form>
@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import SchoolInfo from '../../assets/schoolManagerData/SchoolInfo'
 export default {
   data () {
 
@@ -81,13 +80,14 @@ export default {
   },
   mounted:function(){
   	this.postHttp(this,{},"school/querySchools",function(obj,res){
-  		obj.schoolInfo = res.result;
   		if(res.result.periodArray == "" || res.result.periodArray == undefined){
-  			obj.schoolInfo['periodArray'] = [];
+  			res.result['periodArray'] = new Array();
   		}
   		if(res.result.subjectArray == "" || res.result.subjectArray == undefined){
-  			obj.schoolInfo['subjectArray'] = [];
+  			res.result['subjectArray'] = new Array();
   		}
+  		obj.schoolInfo = res.result;
+  		console.log(obj.schoolInfo)
   	})
   },
   methods:{
