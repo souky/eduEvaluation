@@ -17,7 +17,7 @@
 			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
 			    <el-carousel-item v-for="item in subjects" :key="item.id">
 			     	<div class="header-banner-bit" v-for="(child,index) in item.childs">
-			     		<div class="header-banner-click" ref="fristBit" :style="'background:'+child.subjectColor" @click="rainbow(index,child.id,child.subjectName)">
+			     		<div :class="index == indes? 'header-banner-click on': 'header-banner-click'"  :style="'background:'+child.subjectColor" @click="rainbow(index,child.id,child.subjectName)">
 			     			<p>{{child.subjectName}}</p>
 			     		</div>
 			     	</div>
@@ -33,29 +33,29 @@
 		    <el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
 		      <el-table-column width="50" prop="subject" label="学科">
 		      </el-table-column>
-		      <el-table-column prop="countPeople" label="统计人数">
+		      <el-table-column width="80" :formatter="setMan" label="统计人数">
 		      </el-table-column>
-		      <el-table-column prop="fullMark" label="满分">
+		      <el-table-column width="50" prop="fullMarks" label="满分">
 		      </el-table-column>
-		      <el-table-column prop="average" label="平均分(学校)">
+		      <el-table-column prop="schoolAvgScore" :formatter='setParse' label="平均分 (学校)">
 		      </el-table-column>
-		      <el-table-column prop="averages" label="平均分 (地区)">
+		      <el-table-column :formatter="setRow" label="平均分 (地区)">
 		      </el-table-column>
-		      <el-table-column prop="deviation" label="离均差">
+		      <el-table-column width="80" :formatter="setRow" label="离均差">
 		      </el-table-column>
-		      <el-table-column prop="ranking" label=" 排名 (地区)">
+		      <el-table-column :formatter="setRow" label=" 排名 (地区)">
 		      </el-table-column>
-		      <el-table-column prop="highest" label="最高分">
+		      <el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
 		      </el-table-column>
-		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
+		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="excellent" label=" 优秀率 (80%-89%)">
+		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-89%)">
 		      </el-table-column>
-		      <el-table-column prop="inCommission" label=" 良好率 (70%-79%)">
+		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-79%)">
 		      </el-table-column>
-		      <el-table-column prop="yield" label=" 合格率 (60%-69%)">
+		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-69%)">
 		      </el-table-column>
-		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
+		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
 		    <p style="text-align:center;margin-top:20px"><el-button type="primary" @click="compareTest" plain>考试对比</el-button></p>
@@ -68,7 +68,6 @@
 			  	
 			  	<center v-show="diaLoading" style="margin-top:20%;"><i class="el-icon-loading"></i></center>
 			  	<div id="compareTestChart">
-			  		
 			  	</div>
 		  	  
 			  <span slot="footer" class="dialog-footer">
@@ -82,7 +81,7 @@
 		  </div>
 		  <div id="ranked">
 		  		<div id="rankedchart"></div>
-		  		<div class="schoolSelectBox">
+		  		<!-- 产品板暂不考虑<div class="schoolSelectBox">
 					  <el-select v-model="changeSchool" class="myselect" placeholder="请选择">
 					    <el-option
 					      v-for="item in schoolList"
@@ -92,7 +91,7 @@
 					    </el-option>
 					  </el-select>
 					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
-		  		</div>
+		  		</div> -->
 		  </div>
 		   <div class="header louceng">
 			<p>各班级科目报告单</p>
@@ -234,6 +233,8 @@ import IndexData from '../../assets/data/teachingLevel.js'
 export default {
 	data(){
 		return {
+			testid:'',
+			indes:0,
 			activeList:0,
 			liList:[{
 				name:'科目报告单',
@@ -248,6 +249,7 @@ export default {
 				name:'试卷分析',
 				id:3
 			}],
+			subname:'',
 			autoplay:false,
 			alse:'二中',
 			IndexData,
@@ -281,11 +283,15 @@ export default {
     methods: {
     	//初始化信息
     	initAll:function(){
+    		var needData = {tab:'TEACHING_REPORT'};
     		this.postHttp(this,'',"exam/queryExamsOnline",function(obj,data){
 	           for(var value of data.result){
 	           		obj.testList.push(value);
 	           }
 	        });
+
+
+
     		
     	},
     	//格式化
@@ -306,29 +312,22 @@ export default {
 	         
     	},
     	initPrate(e){
-    		var f = parseFloat(e);    
-	        if (isNaN(f)) {    
-	            return false;    
-	        }    
-	        var f = Math.round(e*100)/100;    
-	        var s = f.toString();    
-	        var rs = s.indexOf('.');    
-	        if (rs < 0) {    
-	            rs = s.length;    
-	            s += '.';    
-	        }    
-	        while (s.length <= rs + 2) {    
-	            s += '0';    
-	        }    
-	        return s; 
+    		if(e<1){
+	        	return e*100000/1000;
+	        }else{
+	        	return e;
+	        }
     	},
     	testChange(e){
-    		var needData = {tab:'SCHOOL_REPORT',examId:this.testList[e].id};
+    		var needData = {tab:'TEACHING_REPORT',examId:this.testList[e].id};
+    		this.testid = this.testList[e].id;
     		var ids = this.testList[e].id;
 	    	this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
 	    		obj.items = [];
-	    		
+	    		obj.subjects = [];
+	    		obj.indes = 0;
 	    		obj.items = data.result[ids].subject;
+	    		obj.subname = data.result[ids].subject[0].subjectName;
 	    		var childNum=Math.ceil(obj.items.length/11);
 				    var childs=[];
 				    for(var l=0;l<childNum;l++){
@@ -340,10 +339,71 @@ export default {
 				      childs[l]["id"] = id;
 				    }
 				    obj.subjects=childs;
-				    
+					obj.postHttp(obj,needData,"score/geReportCards",function(objs,data){
+							objs.tableData1 = [];
+							if(data.result == "该考试尚未制定双向细目表" ){
+								objs.tableData1 = [];
+							}else{
+				    			for(var values of data.result.scoreVOList){
+				    				console.log("123");
+									if(values.subject==obj.subname){
+									   objs.tableData1.push(values);
+									   console.log(objs.tableData1);
+							           objs.setmans = data.result.studentNum;
+				    				}
+				    			}}
+			        });
+					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getLevelDistribution",function(objs,data){
+			    	   	if(data.result == undefined){
+			    	   		var data1 = [0,0,0,0,0]
+			    	   	}else{
+			    	   		for(var a of data.result){
+			    	   			if(a.subject==obj.subname){
+			    	   				var data1 = [objs.initPrate(a.highRate),
+			    	   					objs.initPrate(a.excellentRate),
+			    	   					objs.initPrate(a.commissionRate),
+			    	   					objs.initPrate(a.passRate),
+			    	   					objs.initPrate(a.failureRate)];
+			    	   			}
+			    	   		}
+							
+			    	   	}
+			    	   objs.option1.series[0].data = data1;
+			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
+			        });
+
+	        });
+	        this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
+	    		var datax = []; var data10 = []; var data20 = [];
+	    		var data50 = []; var data100 = []; var data200 = [];
+	    		var data500 = []; var data1000 = [];
+	    		if(data.result=="没有最近一次考试的相关数据"){
+
+	    		}else{
+					for(var value of data.result){
+		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
+		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+		           		data100.push(value.classTopOneHundredStuNum);
+		           		data200.push(value.classTopTwoHundredStuNum);
+		           		data500.push(value.classTopFiveHundredStuNum);
+		           		data1000.push(value.classTopFortyStuNum);
+	           		}
+	    		}
+	    		
+			   obj.option3.xAxis[0].data = datax;
+	           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
+	           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
+	           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
+	           obj.option3.series[6].data = data1000;
+	           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
 	        });
 	        
     	}, 
+    	subReport:function(ename){
+    		var needData = {tab:'TEACHING_REPORT'};
+    		var names = ename;
+
+    	},
     	selectShow:function(){
     		this.showselect = !this.showselect
     	},
@@ -390,10 +450,39 @@ export default {
     		//document.getElementById("compareTestChart").innerHTML = '';
     	},
     	rainbow:function(index,num,name){
-				for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
-					document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
+			this.indes = index;
+			var needDataR = {tab:'TEACHING_REPORT',examId:this.testid};
+			this.postHttp(this,needDataR,"score/geReportCards",function(objs,data){
+					objs.tableData1 = [];
+					if(data.result == "该考试尚未制定双向细目表" ){
+						objs.tableData1 = [];
+					}else{
+					    for(var values of data.result.scoreVOList){
+								if(values.subject==name){
+								objs.tableData1.push(values);
+								objs.setmans = data.result.studentNum;
+					    	}
+					}
 				}
-				document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
+			});
+			this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getLevelDistribution",function(objs,data){
+			    	   	if(data.result == undefined){
+			    	   		var data1 = [0,0,0,0,0]
+			    	   	}else{
+			    	   		for(var a of data.result){
+			    	   			if(a.subject==name){
+			    	   				var data1 = [objs.initPrate(a.highRate),
+			    	   					objs.initPrate(a.excellentRate),
+			    	   					objs.initPrate(a.commissionRate),
+			    	   					objs.initPrate(a.passRate),
+			    	   					objs.initPrate(a.failureRate)];
+			    	   			}
+			    	   		}
+							
+			    	   	}
+			    	   objs.option1.series[0].data = data1;
+			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
+			        });
 		},
     	compareSchool:function(){
     	},
@@ -406,7 +495,7 @@ export default {
     	}
     },
     mounted:function(){
-    	this.$refs.fristBit[0].className+="on";
+
     	//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;
@@ -430,9 +519,7 @@ export default {
     	this.option6 = this.IndexData.option6;
     	this.examination = this.IndexData.examination;
     	//等级分布图
-    	this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
     	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
-    	this.echarts.init(document.getElementById("topComparedChart")).setOption(this.option3);
     	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option6);
     	var olouceng = document.getElementsByClassName("louceng");
     	var oNav = document.getElementById("navInside").getElementsByTagName("li");
@@ -694,5 +781,8 @@ czxc
 	color: #3D3D3D;
 	letter-spacing: 0;
 	line-height: 24px;
+}
+#teachLevel .el-table .cell{
+	padding:5px;
 }
 </style>

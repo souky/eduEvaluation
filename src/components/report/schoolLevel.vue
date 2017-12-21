@@ -73,7 +73,7 @@
 		  </div>
 		  <div id="reportClass">
 		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-		      <el-table-column width="50" prop="ranking" label="排名">
+		      <el-table-column width="50" type="index" label="排名">
 		      </el-table-column>
 		      <el-table-column  prop="classroomName" label="班级">
 		      </el-table-column>
@@ -138,7 +138,7 @@
 		  </div>
 		  <div id="achievement">
 		  	<div class="achievementSelectBox">
-					<el-select v-model="changeSchool" class="myselect" placeholder="请选择">
+					<el-select v-model="changeSchool" @change="changeReprot($event)" class="myselect" placeholder="请选择">
 					    <el-option
 					      v-for="item in classList"
 					      :key="item"
@@ -181,6 +181,7 @@ import IndexData from '../../assets/data/schoolLevel.js'
 export default {
 	data(){
 		return {
+			ides:'',
 			activeList:0,
 			liList:[{
 				name:'学校整体成绩报告单',
@@ -228,20 +229,26 @@ export default {
 	           		obj.testList.push(value);
 	           		obj.classList = [];
 	           		obj.classList = value.subject.split(",");
+	           		obj.changeSchool = obj.classList[0];
 	           }
 	        });
+	        
 	    	this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
 	    		var datax = []; var data10 = []; var data20 = [];
 	    		var data50 = []; var data100 = []; var data200 = [];
 	    		var data500 = []; var data1000 = [];
-	    		for(var value of data.result){
-	           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
-	           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
-	           		data100.push(value.classTopOneHundredStuNum);
-	           		data200.push(value.classTopTwoHundredStuNum);
-	           		data500.push(value.classTopFiveHundredStuNum);
-	           		data1000.push(value.classTopFortyStuNum);
-	           }
+	    		if(data.result.classroomName == undefined){
+
+	    		}else{
+		    		for(var value of data.result){
+		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
+		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+		           		data100.push(value.classTopOneHundredStuNum);
+		           		data200.push(value.classTopTwoHundredStuNum);
+		           		data500.push(value.classTopFiveHundredStuNum);
+		           		data1000.push(value.classTopFortyStuNum);
+		           }
+	       		}
 			   obj.option3.xAxis[0].data = datax;
 	           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
 	           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
@@ -286,7 +293,7 @@ export default {
     	},
     	testChange(e){
     		var needData = {tab:'SCHOOL_REPORT',examId:this.testList[e].id};
-    		console.log(needData);
+    		this.ides = this.testList[e].id;
     		this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
 	    	   	if(data.result == undefined){
 	    	   		var data1 = [0,0,0,0,0]
@@ -300,10 +307,37 @@ export default {
 	    	   obj.option1.series[0].data = data1;
 	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
 	        });
+	        this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
+	    		var datax = []; var data10 = []; var data20 = [];
+	    		var data50 = []; var data100 = []; var data200 = [];
+	    		var data500 = []; var data1000 = [];
+	    		if(data.result == "没有最近一次考试的相关数据"){
+
+	    		}else{
+		    		for(var value of data.result){
+		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
+		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+		           		data100.push(value.classTopOneHundredStuNum);
+		           		data200.push(value.classTopTwoHundredStuNum);
+		           		data500.push(value.classTopFiveHundredStuNum);
+		           		data1000.push(value.classTopFortyStuNum);
+		           	}
+	       		}
+			   obj.option3.xAxis[0].data = datax;
+	           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
+	           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
+	           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
+	           obj.option3.series[6].data = data1000;
+	           console.log(obj.option3);
+	           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
+	        });
 	    	this.postHttp(this,needData,"score/geReportCards",function(obj,data){
 	           obj.tableData1 = data.result.scoreVOList;
 	           obj.tableData2 = data.result.classProcessedScore;
 	           obj.setmans = data.result.studentNum;
+	        });
+	        this.postHttp(this,{examId:this.testList[e].id,subject:this.changeSchool},"contribute/contributeRate",function(obj,data){
+	           console.log(data);
 	        });
     	},    
     	selectShow:function(){
@@ -313,6 +347,7 @@ export default {
     		this.showselect = !this.showselect;
     		this.$refs.carousel.setActiveItem(ename);
     	},
+
     	rowsClassName:function({row, rowIndex}){
 	       if(rowIndex%2===1)
     			return 'tableBackground'
@@ -331,90 +366,17 @@ export default {
     		}
     		return eachWorks;
     	},
-    	compareSchool:function(){
-    		if(this.changeSchool == ''){
-
-    		}else{
-    			this.option1.series = [
-		            {
-		                name:'班级',
-		                type:'bar',
-		                itemStyle:{
-		                    normal:{
-		                        color:'#70CDF3'
-		                    }
-		                },
-		                label:{
-		                    normal:{
-		                        show:true,
-		                        position:'top',
-		                        color:'#70CDF3'
-		                    }
-		                },
-		                barWidth : 60,
-		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
-		            },
-		            {
-		                name:'全校',
-		                type:'line',
-		                itemStyle:{
-		                    normal:{
-		                        color:'#FFD244'
-		                    }
-		                },
-		                label:{
-		                    normal:{
-		                        show:true,
-		                        position:'top',
-		                        color:'#FFD244'
-		                    }
-		                },
-		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
-		            },
-		            {
-		                name:'对比学校',
-		                type:'bar',
-		                itemStyle:{
-		                    normal:{
-		                        color:'#FF8585'
-		                    }
-		                },
-		                label:{
-		                    normal:{
-		                        show:true,
-		                        position:'top',
-		                        color:'#FF8585'
-		                    }
-		                },
-		                barWidth : 60,
-		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
-		            },
-		            {
-		                name:'全区县',
-		                type:'line',
-		                itemStyle:{
-		                    normal:{
-		                        color:'#919191'
-		                    }
-		                },
-		                label:{
-		                    normal:{
-		                        show:true,
-		                        position:'top',
-		                        color:'#919191'
-		                    }
-		                },
-		                data:[97.8, 77.24, 87.1, 27.78, 37.6]
-		            }
-		        ];
-				this.echarts.init(document.getElementById("rankedchart")).setOption(this.option1);
-    		}
-    	},
+    	
     	testtest:function(e){
     		var olouceng = document.getElementsByClassName("louceng");
     		var oNav = document.getElementById("navInside").getElementsByTagName("li");
     		this.activeList = e;
 			window.scrollTo(0 ,olouceng[e].offsetTop);
+    	},
+    	changeReprot(e){
+			this.postHttp(this,{examId:this.ides,subject:e},"contribute/contributeRate",function(obj,data){
+	           console.log(data);
+	        });
     	}
     },
     mounted:function(){
