@@ -391,7 +391,7 @@ export default {
 	    	   	}else{
 	    	   		highRates=[];excellentRates=[];
 	    	   		commissionRates=[];passRates=[];
-	    	   		failureRates=[];
+	    	   		failureRates=[];obj.option5.xAxis.data =[];
 	    	   		for(var a of data.result){
 	    	   			highRates.push(a.highRate);
 	    	   			excellentRates.push(a.excellentRate);
@@ -399,6 +399,7 @@ export default {
 	    	   			passRates.push(a.passRate);
 	    	   			failureRates.push(a.failureRate)
 					}
+					obj.option5.xAxis.data=obj.classroom;
 					obj.option5.series[0].data = highRates;
 	    	   		obj.option5.series[1].data = excellentRates;
 	    	   		obj.option5.series[2].data = commissionRates;

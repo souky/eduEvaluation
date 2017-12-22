@@ -51,7 +51,7 @@ export default {
   },
   mounted:function(){
   	//判断cookie登陆信息初始化
-  	
+  	this.getLoginUser();
   },
   methods:{
   	handleParentClick(e){
@@ -61,7 +61,12 @@ export default {
   	loginOut(){
   		//页面跳转
   		 this.$router.push({path:'/'});
-  	}
+  	},
+    getLoginUser:function(){
+      this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+        obj.username = data.result.userName;
+      });
+    }
   }
 }
 </script>

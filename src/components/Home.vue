@@ -7,7 +7,7 @@
 					<img src="../../static/img/header/xiao.png">
 					<div class="personalDetail">
 						<p>姓名：{{name}}</p>
-						<p>学籍号：{{code}}</p>
+						<p v-show='xueji'>学籍号：{{code}}</p>
 					</div>
 				</div>
 				<div id="average">
@@ -44,6 +44,7 @@ export default {
   data () {
 	return {
       msg: '顶部导航栏',
+      xueji:true,
       username:'用户13974289150',
       name:'王丫丫',
       code:'201706070003',
@@ -116,18 +117,30 @@ export default {
   mounted:function(){
   	//判断cookie登陆信息初始化
   	this.echarts.init(document.getElementById("average")).setOption(this.option1);
-
+  	this.getLoginUser();
   },
   methods:{
   	gotoReport:function(){
   		//页面跳转
-  		 this.$router.push({path:'/report'});
+  		this.$router.push({path:'/report'});
   	},
   	gotoResource:function(){
   		this.$router.push({path:'/resource'});
   	},
   	gotoManagement:function(){
   		this.$router.push({path:'/management'});
+  	},
+  	getLoginUser:function(){
+  		this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+	    	obj.name = data.result.name;obj.username = data.result.userName;
+	    	if(data.result.studentId==undefined){
+	    		obj.xueji = false
+	    	}else{
+	    		obj.xueji = true;
+	    		obj.code = data.result.studentId;
+	    	}
+
+	    });
   	}
   }
 }

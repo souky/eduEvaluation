@@ -261,8 +261,7 @@ export default {
                 },
                 markLine : {
                     data : [
-                        { name: '全校平均分',lineStyle:{normal:{color:'#FFD244'}},yAxis: 412.06},
-                        { name: '区县平均分',lineStyle:{normal:{color:'#64CA72'}},yAxis: 410.25}
+                        { name: '全校平均分',lineStyle:{normal:{color:'#FFD244'}},yAxis: 412.06}
                     ]
                 },
                 data: [{value:684.5,itemStyle:{normal:{color:"#FF8585"}}},552.29,490.4,482.61,476.29,463.98,463.51,451.37,443.76,438.21,426.69,419.76,407.91,396.37,386.34,371.64,369.16,362.43,357.68,349.37]
@@ -508,7 +507,7 @@ export default {
             {
                     show: true,
                     start: 1,
-                    end: 60
+                    end: 50
                 }
             ],
             xAxis:  {
@@ -521,8 +520,8 @@ export default {
                max:1
             },
             series: [
-           {
-            name: '高分率≥90%',
+            {
+            name: '100%≥高分率≥90%',
             type: 'bar',
             stack: '占比',
             label: {
@@ -538,7 +537,7 @@ export default {
             data: [0.21, 0.44, 0.39, 0.23, 0.29, 0.24, 0.32,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27]
         },
         {
-            name: '优秀率≥85%',
+            name: '90%≥优秀率≥80%',
             type: 'bar',
             stack: '占比',
             label: {
@@ -554,7 +553,23 @@ export default {
             data: [0.32, 0.15, 0.21, 0.26, 0.21, 0.32, 0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33]
         },
         {
-            name: '及格率≥60%',
+            name: '80%≥良好率≥70%',
+            type: 'bar',
+            stack: '占比',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'inside'
+                }
+            },
+            barWidth:'60',
+            itemStyle:{
+                normal:{color:'#BFEA7F'}
+            },
+            data: [0.32, 0.15, 0.21, 0.26, 0.21, 0.32, 0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33]
+        },
+        {
+            name: '60%≥及格率≥70%',
             type: 'bar',
             stack: '占比',
             label: {

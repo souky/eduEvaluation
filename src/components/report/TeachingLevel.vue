@@ -156,7 +156,7 @@
 		  <div id="topCompared">
 		  		 <div id="topComparedChart">
 		  		</div> 
-		  		<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
+		  		<p class="testTips">本次考试中，前10名最多的班级是8班和7班；前20名最多的班级的是8班、10班和11班；前50名最多的班级是10班、12班和14班。</p>
 		  </div>
 		  <div class="header louceng">
 			<p>试卷分析</p>
@@ -300,7 +300,7 @@ export default {
     	setParse(row, column){
     		var e = row[column.property];
 	        if(e<1){
-	        	return e*100000/1000 + '%';
+	        	return e*1000000/10000 + '%';
 	        }else{
 	        	return e;
 	        }
@@ -308,7 +308,7 @@ export default {
     	},
     	initPrate(e){
     		if(e<1){
-	        	return e*100000/1000;
+	        	return e*1000000/10000;
 	        }else{
 	        	return e;
 	        }
@@ -344,16 +344,18 @@ export default {
 					           		objs.option2.series[0].data.push(0);
 					           		objs.option4.series[0].data.push(0);
 					           }
+					           obj.option2.series[0].markLine.data[0].yAxis = 0;
 					           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 							}else{
 									avgList  =[];avgXAxis = [];
 									objs.tableData1.push(data.result.scoreVO);
-									objs.tableData2.push(data.result.classScoreVOList);
+									objs.tableData2=data.result.classScoreVOList;
 							        objs.setmans = data.result.studentNum;
 							        for(var a of data.result.classScoreVOList){
 							        	avgList.push(a.classSubjectAvgScore);
 							        	avgXAxis.push(a.classroomName);
 							        }
+							        obj.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgSubjectScore;
 							        obj.option2.series[0].data = avgList;
 							        obj.option2.series[0].data[0] = {value:avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
 									obj.option2.xAxis[0].data = avgXAxis;
@@ -361,13 +363,12 @@ export default {
 				    		}
 			        });
 					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getLevelDistribution",function(objs,data){
-			    	   	if(data.result[0].subject == "总分"){
+			    	   	if(data.result[1].subject == undefined){
 			    	   		var data1 = [0,0,0,0,0]
 			    	   	}else{
-			    	   		console.log(objs.subname);
+			    	   		
 			    	   		for(var a of data.result){
 			    	   			if(a.subject==objs.subname){
-			    	   				console.log("123123");
 			    	   				var data1 = [objs.initPrate(a.highRate),
 			    	   					objs.initPrate(a.excellentRate),
 			    	   					objs.initPrate(a.commissionRate),
@@ -381,7 +382,8 @@ export default {
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
 			        obj.postHttp(obj,{subject:obj.subname,examId:obj.testid},"/testAnalysis",function(objs,data){
-			           objs.examination = data.result;
+			           objs.examination = [];
+			           objs.examination = data.result.listVO;
 			        });
 					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getEachClassTopScores",function(objs,data){
 		    		var datax = []; var data10 = []; var data20 = [];
@@ -435,17 +437,17 @@ export default {
 		    	   		objs.option6.series[4].data = xAxisD;
 						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
 		    	   	}else{
-		    	   		highRates=[];excellentRates=[];
+						highRates=[];excellentRates=[];
 		    	   		commissionRates=[];passRates=[];
-		    	   		failureRates=[];
-		    	   		console.log(data.result.scoreVO);
-		    	   		for(var a of data.result.scoreVO){
-		    	   			highRates.push(a.highRate);
-		    	   			excellentRates.push(a.excellentRate);
-		    	   			commissionRates.push(a.commissionRate);
-		    	   			passRates.push(a.passRate);
-		    	   			failureRates.push(a.failureRate)
+		    	   		failureRates=[];objs.option6.xAxis.data =[];
+		    	   		for(var a of data.result.classScoreVOList){
+		    	   			highRates.push(objs.initPrate(a.highRate));
+		    	   			excellentRates.push(objs.initPrate(a.excellentRate));
+		    	   			commissionRates.push(objs.initPrate(a.commissionRate));
+		    	   			passRates.push(objs.initPrate(a.passRate));
+		    	   			failureRates.push(objs.initPrate(a.failureRate))
 						}
+						objs.option6.xAxis.data=objs.classroom;
 						objs.option6.series[0].data = highRates;
 		    	   		objs.option6.series[1].data = excellentRates;
 		    	   		objs.option6.series[2].data = commissionRates;
@@ -538,7 +540,7 @@ export default {
 				}
 			});
 			this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getLevelDistribution",function(objs,data){
-			    	   	if(data.result == undefined){
+			    	   	if(data.result[1].subject == undefined){
 			    	   		var data1 = [0,0,0,0,0]
 			    	   	}else{
 			    	   		for(var a of data.result){
@@ -556,7 +558,8 @@ export default {
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
 			this.postHttp(this,{subject:name,examId:this.testid},"/testAnalysis",function(objs,data){
-			           objs.examination = data.result;
+					   objs.examination = [];
+			           objs.examination = data.result.listVO;
 			        });
 			this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getEachClassTopScores",function(objs,data){
 	    		var datax = []; var data10 = []; var data20 = [];
