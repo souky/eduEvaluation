@@ -228,8 +228,8 @@ export default {
                 }
             }
         },
-         legend: {
-            data:['班级']
+        legend: {
+            data:['班级平均分']
         },
         calculable : true,
         xAxis: [
@@ -502,7 +502,7 @@ export default {
             }
         },
         legend: {
-            data: ['高分率≥90%', '优秀率≥85%','及格率≥60%','不及格率≤60%']
+            data: ['100%≥高分率≥90%', '90%≥优秀率≥80%','80%≥良好率≥70%','60%≥及格率≥70%','不及格率≤60%']
         },
         dataZoom: [
             {
@@ -521,71 +521,71 @@ export default {
                max:1
             },
             series: [
-            {
-                name: '高分率≥90%',
-                type: 'bar',
-                stack: '占比',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'inside'
-                    }
-                },
-                barWidth:'60',
-                itemStyle:{
-                    normal:{color:'#8F72E5'}
-                },
-                data: [0.21, 0.44, 0.39, 0.23, 0.29, 0.24, 0.32,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27]
+           {
+            name: '高分率≥90%',
+            type: 'bar',
+            stack: '占比',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'inside'
+                }
             },
-            {
-                name: '优秀率≥85%',
-                type: 'bar',
-                stack: '占比',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'inside'
-                    }
-                },
-                barWidth:'60',
-                itemStyle:{
-                    normal:{color:'#FFD244'}
-                },
-                data: [0.32, 0.15, 0.21, 0.26, 0.21, 0.32, 0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33]
+            barWidth:'60',
+            itemStyle:{
+                normal:{color:'#8F72E5'}
             },
-            {
-                name: '及格率≥60%',
-                type: 'bar',
-                stack: '占比',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'inside'
-                    }
-                },
-                barWidth:'60',
-                itemStyle:{
-                    normal:{color:'#FF8585'}
-                },
-                data: [0.31, 0.21, 0.3, 0.21, 0.28, 0.18, 0.16,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3]
+            data: [0.21, 0.44, 0.39, 0.23, 0.29, 0.24, 0.32,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27,0.27]
+        },
+        {
+            name: '优秀率≥85%',
+            type: 'bar',
+            stack: '占比',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'inside'
+                }
             },
-            {
-                name: '不及格率≤60%',
-                type: 'bar',
-                stack: '占比',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'inside'
-                    }
-                },
-                barWidth:'60',
-                itemStyle:{
-                    normal:{color:'#70CDF3'}
-                },
-                data: [0.16, 0.2, 0.1, 0.3, 0.22, 0.26, 0.19,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
-            }
-        ]
+            barWidth:'60',
+            itemStyle:{
+                normal:{color:'#FFD244'}
+            },
+            data: [0.32, 0.15, 0.21, 0.26, 0.21, 0.32, 0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33,0.33]
+        },
+        {
+            name: '及格率≥60%',
+            type: 'bar',
+            stack: '占比',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'inside'
+                }
+            },
+            barWidth:'60',
+            itemStyle:{
+                normal:{color:'#FF8585'}
+            },
+            data: [0.31, 0.21, 0.3, 0.21, 0.28, 0.18, 0.16,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3]
+        },
+        {
+            name: '不及格率≤60%',
+            type: 'bar',
+            stack: '占比',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'inside'
+                }
+            },
+            barWidth:'60',
+            itemStyle:{
+                normal:{color:'#70CDF3'}
+            },
+            data: [0.16, 0.2, 0.1, 0.3, 0.22, 0.26, 0.19,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
+        }
+            ]
     }
         
 }

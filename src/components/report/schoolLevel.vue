@@ -79,25 +79,25 @@
 		      </el-table-column>
 		      <el-table-column prop="classTeacherName" label="班主任">
 		      </el-table-column>
-		      <el-table-column prop="totalPoint" label="总分平均分">
+		      <el-table-column prop="classAvgScore" label="总分平均分">
 		      </el-table-column>
-		      <el-table-column width="60" prop="highest" label="最高分">
+		      <el-table-column width="60" prop="classTopScore" label="最高分">
 		      </el-table-column>
-		      <el-table-column width="60" prop="lowest" label="最低分">
+		      <el-table-column width="60" prop="classMinScore" label="最低分">
 		      </el-table-column>
-		      <el-table-column prop="standard" label="标准差">
+		      <el-table-column prop="classTotalStandardDeviation" label="标准差">
 		      </el-table-column>
-		      <el-table-column prop="differentiation" label="分化程度">
+		      <el-table-column prop="classTotalDiffCoefficient" label="分化程度">
 		      </el-table-column>
-		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
+		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="excellent" label=" 优秀率 (80%-89%)">
+		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-89%)">
 		      </el-table-column>
-		      <el-table-column prop="inCommission" label=" 良好率 (70%-79%)">
+		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-79%)">
 		      </el-table-column>
-		      <el-table-column prop="yield" label=" 合格率 (60%-69%)">
+		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-69%)">
 		      </el-table-column>
-		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
+		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
 		  </div>
@@ -149,19 +149,19 @@
 		  	</div>
 		  	<div id="achievementTable">
 			  	<el-table :data="tableData3" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-			      <el-table-column width="50" prop="rank" label="排名">
+			      <el-table-column width="50" type="index" label="排名">
 			      </el-table-column>
-			      <el-table-column width="50" prop="class" label="班级">
+			      <el-table-column prop="classroomName" label="班级">
 			      </el-table-column>
-			      <el-table-column width="100" prop="teacher" label="教师">
+			      <el-table-column width="100" prop="classTeacherName" label="教师">
 			      </el-table-column>
-			      <el-table-column prop="subjectAerage" label="班级科目平均分">
+			      <el-table-column prop="classSubjectAvgScore" width="140" label="班级科目平均分">
 			      </el-table-column>
-			      <el-table-column prop="countAerage" label="班级总分平均分">
+			      <el-table-column prop="classAvgScore" width="140" label="班级总分平均分">
 			      </el-table-column>
-			      <el-table-column prop="subjectStandard" label="班级科目标准分">
+			      <el-table-column prop="classSubjectStandardScore" width="140" label="班级科目标准分">
 			      </el-table-column>
-			      <el-table-column prop="countStandard" label="班级总分标准分">
+			      <el-table-column prop="classTotalStandardScore" width="140" label="班级总分标准分">
 			      </el-table-column>
 			      <el-table-column prop="contribution" label="科目贡献率(班级课目标准分/班级总分标准分*100)">
 			      </el-table-column>
@@ -197,6 +197,7 @@ export default {
 				id:3
 			}],
 			classList:[],
+			classroom:[],
 			setmans:0,
 			autoplay:false,
 			alse:'二中',
@@ -224,10 +225,11 @@ export default {
     	initAll:function(){
     		//初始化考试列表
     		var needData = {tab:'SCHOOL_REPORT'};
-	    	this.postHttp(this,'',"exam/queryExamsOnline",function(obj,data){
-	           for(var value of data.result){
+	    	this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
+	           for(var value of data.result.exams){
 	           		obj.testList.push(value);
 	           		obj.classList = [];
+	           		obj.classroom = value.classroom.split(",");
 	           		obj.classList = value.subject.split(",");
 	           		obj.changeSchool = obj.classList[0];
 	           }
@@ -268,28 +270,19 @@ export default {
     	setParse(row, column){
     		var e = row[column.property];
 	        if(e<1){
-	        	return e*100000/1000 + '%';
+	        	return e*1000000/10000 + '%';
 	        }else{
 	        	return e;
 	        }
 	         
     	},
     	initPrate(e){
-    		var f = parseFloat(e);    
-	        if (isNaN(f)) {    
-	            return false;    
-	        }    
-	        var f = Math.round(e*100)/100;    
-	        var s = f.toString();    
-	        var rs = s.indexOf('.');    
-	        if (rs < 0) {    
-	            rs = s.length;    
-	            s += '.';    
-	        }    
-	        while (s.length <= rs + 2) {    
-	            s += '0';    
-	        }    
-	        return s; 
+    		if(e<1){
+	        	return e*1000000/10000 ;
+	        }else{
+	        	return e;
+	        }
+	          
     	},
     	testChange(e){
     		var needData = {tab:'SCHOOL_REPORT',examId:this.testList[e].id};
@@ -298,22 +291,37 @@ export default {
 	    	   	if(data.result == undefined){
 	    	   		var data1 = [0,0,0,0,0]
 	    	   	}else{
-					var data1 = [obj.initPrate(data.result.highRate)*100,
-	    	   					obj.initPrate(data.result.excellentRate)*100,
-	    	   					obj.initPrate(data.result.commissionRate)*100,
-	    	   					obj.initPrate(data.result.passRate)*100,
-	    	   					obj.initPrate(data.result.failureRate)*100];
+					var data1 = [obj.initPrate(data.result.highRate),
+	    	   					obj.initPrate(data.result.excellentRate),
+	    	   					obj.initPrate(data.result.commissionRate),
+	    	   					obj.initPrate(data.result.passRate),
+	    	   					obj.initPrate(data.result.failureRate)];
 	    	   	}
 	    	   obj.option1.series[0].data = data1;
+
 	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
 	        });
 	        this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
-	    		var datax = []; var data10 = []; var data20 = [];
-	    		var data50 = []; var data100 = []; var data200 = [];
-	    		var data500 = []; var data1000 = [];
+	    		var datax ; var data10 ; var data20 ;
+	    		var data50 ; var data100 ; var data200 ;
+	    		var data500; var data1000;
 	    		if(data.result == "没有最近一次考试的相关数据"){
-
+	    			datax = [];data10 = [];data20 = [];data50 = [];
+	    			data100 = [];data200 = [];data500 = [];data1000 = [];
+	    			console.log(obj.classroom);
+					datax = obj.classroom;
+					for(var a of obj.classroom){
+		           		data10.push(0);
+		           		data20.push(0);
+		           		data50.push(0);
+		           		data100.push(0);
+		           		data200.push(0);
+		           		data500.push(0);
+		           		data1000.push(0);
+		           }
 	    		}else{
+	    			datax = [];data10 = [];data20 = [];data50 = [];
+	    			data100 = [];data200 = [];data500 = [];data1000 = [];
 		    		for(var value of data.result){
 		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
 		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
@@ -322,22 +330,82 @@ export default {
 		           		data500.push(value.classTopFiveHundredStuNum);
 		           		data1000.push(value.classTopFortyStuNum);
 		           	}
+		           	
 	       		}
-			   obj.option3.xAxis[0].data = datax;
-	           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
-	           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
-	           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
-	           obj.option3.series[6].data = data1000;
-	           console.log(obj.option3);
-	           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
+	       		obj.option3.xAxis[0].data = datax;
+		           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
+		           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
+		           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
+		           obj.option3.series[6].data = data1000;
+		           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
 	        });
-	    	this.postHttp(this,needData,"score/geReportCards",function(obj,data){
-	           obj.tableData1 = data.result.scoreVOList;
-	           obj.tableData2 = data.result.classProcessedScore;
-	           obj.setmans = data.result.studentNum;
+	    	this.postHttp(this,{tab:'SCHOOL_REPORT',examId:this.testList[e].id,subject:this.changeSchool},"score/geReportCards",function(obj,data){
+	    		if(data.result =="该考试尚未制定双向细目表"){
+					obj.tableData1 = [];
+		           obj.tableData2 = [];
+		           obj.option2.xAxis[0].data = obj.classroom;
+		           obj.option2.series[0].data = [];
+		           obj.option4.series[0].data = [];
+		           for(var a of obj.classroom){
+		           		obj.option2.series[0].data.push(0);
+		           		obj.option4.series[0].data.push(0);
+		           }
+		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
+		           obj.tableData3 = [];
+		           obj.option4.xAxis[0].data = obj.classroom;
+		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+				}else{
+	    		   obj.tableData1 = data.result.scoreVOList;
+		           obj.tableData2 = data.result.classScoreVOList;
+		           obj.option2.series[0].data = data.result.avgList;
+		           obj.option2.series[0].data[0] = {value:data.result.avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
+				   obj.option2.xAxis[0].data = data.result.classList;
+		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
+		           obj.setmans = data.result.studentNum;
+		           obj.tableData3 = data.result.classSubScoreList;
+		           var comtribution = [];
+		           for(var a of data.result.classSubScoreList){
+		           		comtribution.push(a.contribution);
+		           }
+		           obj.option4.series[0].data = comtribution;
+		           obj.option4.xAxis[0].data = data.result.classList;
+		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+	    		}
 	        });
-	        this.postHttp(this,{examId:this.testList[e].id,subject:this.changeSchool},"contribute/contributeRate",function(obj,data){
-	           console.log(data);
+			this.postHttp(this,needData,"score/getEachClassLevelDistribution",function(obj,data){
+				var xAxisD = [];var highRates;var excellentRates;
+				var commissionRates;var passRates;var failureRates;
+	    	   	if(data.result=="没有最近一次考试的相关数据"){
+	    	   		obj.option5.xAxis.data =[];
+	    	   		obj.option5.xAxis.data=obj.classroom;
+	    	   		obj.option5.xAxis.data.unshift("全校");
+	    	   		for(var a of obj.classroom){
+	    	   			xAxisD.push(0)
+	    	   		}
+	    	   		obj.option5.series[0].data = xAxisD;
+	    	   		obj.option5.series[1].data = xAxisD;
+	    	   		obj.option5.series[2].data = xAxisD;
+	    	   		obj.option5.series[3].data = xAxisD;
+	    	   		obj.option5.series[4].data = xAxisD;
+					obj.echarts.init(document.getElementById("contrastiveChart")).setOption(obj.option5);
+	    	   	}else{
+	    	   		highRates=[];excellentRates=[];
+	    	   		commissionRates=[];passRates=[];
+	    	   		failureRates=[];
+	    	   		for(var a of data.result){
+	    	   			highRates.push(a.highRate);
+	    	   			excellentRates.push(a.excellentRate);
+	    	   			commissionRates.push(a.commissionRate);
+	    	   			passRates.push(a.passRate);
+	    	   			failureRates.push(a.failureRate)
+					}
+					obj.option5.series[0].data = highRates;
+	    	   		obj.option5.series[1].data = excellentRates;
+	    	   		obj.option5.series[2].data = commissionRates;
+	    	   		obj.option5.series[3].data = passRates;
+	    	   		obj.option5.series[4].data = failureRates;
+					obj.echarts.init(document.getElementById("contrastiveChart")).setOption(obj.option5);
+	    	   	}
 	        });
     	},    
     	selectShow:function(){
@@ -374,9 +442,17 @@ export default {
 			window.scrollTo(0 ,olouceng[e].offsetTop);
     	},
     	changeReprot(e){
-			this.postHttp(this,{examId:this.ides,subject:e},"contribute/contributeRate",function(obj,data){
-	           console.log(data);
+			this.postHttp(this,{tab:'SCHOOL_REPORT',examId:this.ides,subject:e},"score/geReportCards",function(obj,data){
+	           obj.tableData3 = data.result.classSubScoreList;
+		           var comtribution = [];
+		           for(var a of data.result.classSubScoreList){
+		           		comtribution.push(a.contribution);
+		           }
+		           obj.option4.series[0].data = comtribution;
+		           obj.option4.xAxis[0].data = data.result.classList;
+		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
 	        });
+	        
     	}
     },
     mounted:function(){
@@ -424,9 +500,9 @@ export default {
 
 		//等级分布图
     	
-    	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
-    	this.echarts.init(document.getElementById("achievementChart")).setOption(this.option4);
-    	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option5);
+    	
+    	
+    	
     	this.initAll();
     }
 }

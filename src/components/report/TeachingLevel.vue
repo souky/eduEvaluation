@@ -65,12 +65,10 @@
 			  title="考试对比图"
 			  :visible.sync="dialogVisible"
 			  @open="alertas" @close="dialogClose">
-			  	
 			  	<center v-show="diaLoading" style="margin-top:20%;"><i class="el-icon-loading"></i></center>
 			  	<div id="compareTestChart">
 			  	</div>
-		  	  
-			  <span slot="footer" class="dialog-footer">
+		  	  <span slot="footer" class="dialog-footer">
 			    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
 			  </span>
 			</el-dialog>
@@ -99,33 +97,33 @@
 		  </div>
 		  <div id="reportClass">
 		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-		      <el-table-column width="50" prop="ranking" label="排名">
+		      <el-table-column width="50" type="index" label="排名">
 		      </el-table-column>
-		      <el-table-column width="50" prop="class" label="班级">
+		      <el-table-column  prop="classroomName" label="班级">
 		      </el-table-column>
-		      <el-table-column prop="teachername" label="班主任">
+		      <el-table-column prop="classTeacherName" label="班主任">
 		      </el-table-column>
-		      <el-table-column prop="classPoint" label="平均分(班级)">
+		      <el-table-column prop="classAvgScore" label="平均分(班级)">
 		      </el-table-column>
-		      <el-table-column prop="schoolPoint" label="平均分(校级)">
+		      <el-table-column prop="schoolAvgScore" label="平均分(校级)">
 		      </el-table-column>
-		      <el-table-column prop="highest" label="最高分">
+		      <el-table-column width="60" prop="classTopScore" label="最高分">
 		      </el-table-column>
-		      <el-table-column prop="lowest" label="最低分">
+		      <el-table-column width="60" prop="classMinScore" label="最低分">
 		      </el-table-column>
-		      <el-table-column prop="standard" label="标准差">
+		      <el-table-column prop="classTotalStandardDeviation" label="标准差">
 		      </el-table-column>
-		      <el-table-column prop="differentiation" label="分化程度(前三名提醒)">
+		      <el-table-column prop="classTotalDiffCoefficient" label="分化程度(前三名提醒)">
 		      </el-table-column>
-		      <el-table-column prop="highRate" label=" 高分率 (90%以上)">
+		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="excellent" label=" 优秀率 (80%-89%)">
+		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-89%)">
 		      </el-table-column>
-		      <el-table-column prop="inCommission" label=" 良好率 (70%-79%)">
+		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-79%)">
 		      </el-table-column>
-		      <el-table-column prop="yield" label=" 合格率 (60%-69%)">
+		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-69%)">
 		      </el-table-column>
-		      <el-table-column prop="failure" label=" 不及格率 (60%以下)">
+		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
 		  </div>
@@ -147,7 +145,8 @@
 		  	<div id="contrastiveChart">
 		  	
 		  	</div>
-		  	<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p>
+		  	<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。
+		  	</p>
 		  </div>
 
 		  <div class="header">
@@ -169,22 +168,22 @@
 D值为0.4以上表明区分度优秀； D值为0.3~0.39表明区分度合格；D值为0.2~0.29表明区分度尚可，需要改进；D值在0.19以下表明区分度劣，必须淘汰或改进以提高区分度。</p>
 		  	<div id="achievementTable">
 			  	<el-table :data="examination" style="width: 100%" class="borders" header-cell-class-name="formatRow" :row-class-name="rowsClassName">
-    					<el-table-column  prop="no" label="题号">
+    					<el-table-column  prop="qid" label="题号">
     					</el-table-column>
-    					<el-table-column prop="type" label="题型">
+    					<el-table-column prop="topic" label="题型">
     					</el-table-column>
-    					<el-table-column  prop="count" label="分值">
+    					<el-table-column  prop="fractionalValue" label="分值">
     					</el-table-column>
-    					<el-table-column prop="average" label="平均分">
+    					<el-table-column prop="divide" label="平均分">
     					</el-table-column>
     					<el-table-column label="得分率">
-      						<el-table-column prop="scoreSchool" label="校级"></el-table-column>
-      						<el-table-column  prop="scoreArea" label="地区级"></el-table-column>
+      						<el-table-column prop="divideSchool" label="校级"></el-table-column>
+      						<el-table-column  prop="divideAera" label="地区级"></el-table-column>
     					</el-table-column>
-    					<el-table-column prop="fullMarks" label="满分人数"></el-table-column>
-    					<el-table-column prop="wrongMarks" label="答错人数"></el-table-column>
+    					<el-table-column prop="trueNum" label="满分人数"></el-table-column>
+    					<el-table-column prop="falseNum" label="答错人数"></el-table-column>
     					<el-table-column prop="difficulty" label="难度"></el-table-column>
-    					<el-table-column prop="discrimination" label="区分度"></el-table-column>
+    					<el-table-column prop="differentiation" label="区分度"></el-table-column>
   					</el-table>
 		  	</div>
 		  	<!-- 产品版暂时不加<div id="twoDimensionalAnalysis">
@@ -271,10 +270,10 @@ export default {
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
 			tableData3:[],option4:{},dialogVisible:false,option5:{},option6:{},
 			subjects:[],
-			items:[],
-				optionTwoDimensionalAnalysis:{},
-				examination:[],
-				diaLoading:true,
+			items:[],classroom:[],
+			optionTwoDimensionalAnalysis:{},
+			examination:[],
+			diaLoading:true
 		}
 	},
 	created:function(){
@@ -284,16 +283,12 @@ export default {
     	//初始化信息
     	initAll:function(){
     		var needData = {tab:'TEACHING_REPORT'};
-    		this.postHttp(this,'',"exam/queryExamsOnline",function(obj,data){
-	           for(var value of data.result){
-	           		obj.testList.push(value);
+    		this.postHttp(this,needData,"exam/getExamListForTab",function(obj,data){
+	           for(var value of data.result.exams){
+	           		obj.testList.push(value);obj.classroom = value.classroom.split(",");
 	           }
 	        });
-
-
-
-    		
-    	},
+		},
     	//格式化
     	setRow(){
     		return '-'
@@ -322,7 +317,7 @@ export default {
     		var needData = {tab:'TEACHING_REPORT',examId:this.testList[e].id};
     		this.testid = this.testList[e].id;
     		var ids = this.testList[e].id;
-	    	this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
+	    	this.postHttp(this,needData,"exam/getExamListForTab",function(obj,data){
 	    		obj.items = [];
 	    		obj.subjects = [];
 	    		obj.indes = 0;
@@ -339,26 +334,40 @@ export default {
 				      childs[l]["id"] = id;
 				    }
 				    obj.subjects=childs;
-					obj.postHttp(obj,needData,"score/geReportCards",function(objs,data){
-							objs.tableData1 = [];
+					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/geReportCards",function(objs,data){
+							objs.tableData1 = [];objs.tableData2 = [];var avgList =[];var avgXAxis = [];
 							if(data.result == "该考试尚未制定双向细目表" ){
-								objs.tableData1 = [];
+								objs.tableData1 = [];obj.tableData2 = [];
+								objs.option2.xAxis[0].data = objs.classroom;
+				           		objs.option2.series[0].data = [];
+				           		for(var a of obj.classroom){
+					           		objs.option2.series[0].data.push(0);
+					           		objs.option4.series[0].data.push(0);
+					           }
+					           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 							}else{
-				    			for(var values of data.result.scoreVOList){
-				    				console.log("123");
-									if(values.subject==obj.subname){
-									   objs.tableData1.push(values);
-									   console.log(objs.tableData1);
-							           objs.setmans = data.result.studentNum;
-				    				}
-				    			}}
+									avgList  =[];avgXAxis = [];
+									objs.tableData1.push(data.result.scoreVO);
+									objs.tableData2.push(data.result.classScoreVOList);
+							        objs.setmans = data.result.studentNum;
+							        for(var a of data.result.classScoreVOList){
+							        	avgList.push(a.classSubjectAvgScore);
+							        	avgXAxis.push(a.classroomName);
+							        }
+							        obj.option2.series[0].data = avgList;
+							        obj.option2.series[0].data[0] = {value:avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
+									obj.option2.xAxis[0].data = avgXAxis;
+							        objs.echarts.init(document.getElementById("averageChart")).setOption(objs.option2);
+				    		}
 			        });
 					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getLevelDistribution",function(objs,data){
-			    	   	if(data.result == undefined){
+			    	   	if(data.result[0].subject == "总分"){
 			    	   		var data1 = [0,0,0,0,0]
 			    	   	}else{
+			    	   		console.log(objs.subname);
 			    	   		for(var a of data.result){
-			    	   			if(a.subject==obj.subname){
+			    	   			if(a.subject==objs.subname){
+			    	   				console.log("123123");
 			    	   				var data1 = [objs.initPrate(a.highRate),
 			    	   					objs.initPrate(a.excellentRate),
 			    	   					objs.initPrate(a.commissionRate),
@@ -371,32 +380,82 @@ export default {
 			    	   objs.option1.series[0].data = data1;
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
-
+			        obj.postHttp(obj,{subject:obj.subname,examId:obj.testid},"/testAnalysis",function(objs,data){
+			           objs.examination = data.result;
+			        });
+					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getEachClassTopScores",function(objs,data){
+		    		var datax = []; var data10 = []; var data20 = [];
+		    		var data50 = []; var data100 = []; var data200 = [];
+		    		var data500 = []; var data1000 = [];
+		    		if(data.result=="没有最近一次考试的相关数据"){
+		    			datax = [];data10 = [];data20 = [];data50 = [];
+		    			data100 = [];data200 = [];data500 = [];data1000 = [];
+						datax = objs.classroom;
+						for(var a of objs.classroom){
+			           		data10.push(0);
+			           		data20.push(0);
+			           		data50.push(0);
+			           		data100.push(0);
+			           		data200.push(0);
+			           		data500.push(0);
+			           		data1000.push(0);
+			           }
+		    		}else{
+						for(var value of data.result){
+			           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
+			           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+			           		data100.push(value.classTopOneHundredStuNum);
+			           		data200.push(value.classTopTwoHundredStuNum);
+			           		data500.push(value.classTopFiveHundredStuNum);
+			           		data1000.push(value.classTopFortyStuNum);
+		           		}
+		    		}
+		    		
+				   objs.option3.xAxis[0].data = datax;
+		           objs.option3.series[0].data = data10;obj.option3.series[1].data = data20;
+		           objs.option3.series[2].data = data50;obj.option3.series[3].data = data100;
+		           objs.option3.series[4].data = data200;obj.option3.series[5].data = data500;
+		           objs.option3.series[6].data = data1000;
+		           objs.echarts.init(document.getElementById("topComparedChart")).setOption(objs.option3);
+		        });
+				obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getEachSubjectLevelDistribution",function(objs,data){
+					var xAxisD = [];var highRates;var excellentRates;
+					var commissionRates;var passRates;var failureRates;
+		    	   	if(data.result=="没有最近一次考试的相关数据"){
+		    	   		objs.option6.xAxis.data =[];
+		    	   		objs.option6.xAxis.data=objs.classroom;
+		    	   		objs.option6.xAxis.data.unshift("全校");
+		    	   		for(var a of objs.classroom){
+		    	   			xAxisD.push(0)
+		    	   		}
+		    	   		objs.option6.series[0].data = xAxisD;
+		    	   		objs.option6.series[1].data = xAxisD;
+		    	   		objs.option6.series[2].data = xAxisD;
+		    	   		objs.option6.series[3].data = xAxisD;
+		    	   		objs.option6.series[4].data = xAxisD;
+						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
+		    	   	}else{
+		    	   		highRates=[];excellentRates=[];
+		    	   		commissionRates=[];passRates=[];
+		    	   		failureRates=[];
+		    	   		console.log(data.result.scoreVO);
+		    	   		for(var a of data.result.scoreVO){
+		    	   			highRates.push(a.highRate);
+		    	   			excellentRates.push(a.excellentRate);
+		    	   			commissionRates.push(a.commissionRate);
+		    	   			passRates.push(a.passRate);
+		    	   			failureRates.push(a.failureRate)
+						}
+						objs.option6.series[0].data = highRates;
+		    	   		objs.option6.series[1].data = excellentRates;
+		    	   		objs.option6.series[2].data = commissionRates;
+		    	   		objs.option6.series[3].data = passRates;
+		    	   		objs.option6.series[4].data = failureRates;
+						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
+		    	   	}
+		        });
 	        });
-	        this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
-	    		var datax = []; var data10 = []; var data20 = [];
-	    		var data50 = []; var data100 = []; var data200 = [];
-	    		var data500 = []; var data1000 = [];
-	    		if(data.result=="没有最近一次考试的相关数据"){
-
-	    		}else{
-					for(var value of data.result){
-		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
-		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
-		           		data100.push(value.classTopOneHundredStuNum);
-		           		data200.push(value.classTopTwoHundredStuNum);
-		           		data500.push(value.classTopFiveHundredStuNum);
-		           		data1000.push(value.classTopFortyStuNum);
-	           		}
-	    		}
-	    		
-			   obj.option3.xAxis[0].data = datax;
-	           obj.option3.series[0].data = data10;obj.option3.series[1].data = data20;
-	           obj.option3.series[2].data = data50;obj.option3.series[3].data = data100;
-	           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
-	           obj.option3.series[6].data = data1000;
-	           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
-	        });
+	        
 	        
     	}, 
     	subReport:function(ename){
@@ -451,18 +510,31 @@ export default {
     	},
     	rainbow:function(index,num,name){
 			this.indes = index;
-			var needDataR = {tab:'TEACHING_REPORT',examId:this.testid};
+			var needDataR = {tab:'TEACHING_REPORT',examId:this.testid,subject:name};
 			this.postHttp(this,needDataR,"score/geReportCards",function(objs,data){
-					objs.tableData1 = [];
+					objs.tableData1 = [];objs.tableData2 = [];
+					var avgList =[];var avgXAxis = [];
 					if(data.result == "该考试尚未制定双向细目表" ){
-						objs.tableData1 = [];
+						objs.tableData1 = [];objs.tableData2 = [];
+						objs.option2.xAxis[0].data = objs.classroom;
+		           		objs.option2.series[0].data = [];
+		           		for(var a of obj.classroom){
+			           		objs.option2.series[0].data.push(0);
+			           		objs.option4.series[0].data.push(0);
+			           }
+			           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 					}else{
-					    for(var values of data.result.scoreVOList){
-								if(values.subject==name){
-								objs.tableData1.push(values);
-								objs.setmans = data.result.studentNum;
-					    	}
-					}
+						objs.tableData1.push(data.result.scoreVO);
+						objs.setmans = data.result.studentNum;
+					   	objs.tableData2 = data.result.classScoreVOList;
+					   	for(var a of data.result.classScoreVOList){
+							avgList.push(a.classSubjectAvgScore);
+							avgXAxis.push(a.classroomName);
+						}
+						objs.option2.series[0].data = avgList;
+						objs.option2.series[0].data[0] = {value:avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
+						objs.option2.xAxis[0].data = avgXAxis;
+						objs.echarts.init(document.getElementById("averageChart")).setOption(objs.option2);
 				}
 			});
 			this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getLevelDistribution",function(objs,data){
@@ -483,6 +555,44 @@ export default {
 			    	   objs.option1.series[0].data = data1;
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
+			this.postHttp(this,{subject:name,examId:this.testid},"/testAnalysis",function(objs,data){
+			           objs.examination = data.result;
+			        });
+			this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getEachClassTopScores",function(objs,data){
+	    		var datax = []; var data10 = []; var data20 = [];
+	    		var data50 = []; var data100 = []; var data200 = [];
+	    		var data500 = []; var data1000 = [];
+	    		if(data.result=="没有最近一次考试的相关数据"){
+	    			datax = [];data10 = [];data20 = [];data50 = [];
+	    			data100 = [];data200 = [];data500 = [];data1000 = [];
+					datax = objs.classroom;
+					for(var a of objs.classroom){
+		           		data10.push(0);
+		           		data20.push(0);
+		           		data50.push(0);
+		           		data100.push(0);
+		           		data200.push(0);
+		           		data500.push(0);
+		           		data1000.push(0);
+		           }
+	    		}else{
+					for(var value of data.result){
+		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
+		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+		           		data100.push(value.classTopOneHundredStuNum);
+		           		data200.push(value.classTopTwoHundredStuNum);
+		           		data500.push(value.classTopFiveHundredStuNum);
+		           		data1000.push(value.classTopFortyStuNum);
+	           		}
+	    		}
+	    		
+			   objs.option3.xAxis[0].data = datax;
+	           objs.option3.series[0].data = data10;objs.option3.series[1].data = data20;
+	           objs.option3.series[2].data = data50;objs.option3.series[3].data = data100;
+	           objs.option3.series[4].data = data200;objs.option3.series[5].data = data500;
+	           objs.option3.series[6].data = data1000;
+	           objs.echarts.init(document.getElementById("topComparedChart")).setOption(objs.option3);
+	        });
 		},
     	compareSchool:function(){
     	},
@@ -519,8 +629,6 @@ export default {
     	this.option6 = this.IndexData.option6;
     	this.examination = this.IndexData.examination;
     	//等级分布图
-    	this.echarts.init(document.getElementById("averageChart")).setOption(this.option2);
-    	this.echarts.init(document.getElementById("contrastiveChart")).setOption(this.option6);
     	var olouceng = document.getElementsByClassName("louceng");
     	var oNav = document.getElementById("navInside").getElementsByTagName("li");
     	window.addEventListener('scroll',()=>{
