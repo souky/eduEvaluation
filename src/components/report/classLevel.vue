@@ -164,18 +164,18 @@
 		<div class="body pt20 mb10">
 			<div class="body-Vtitle">
 				<p>学生各等级人数分布图</p>
-				<p>共37人，满分150分</p>
+				<p>共{{studentTotleNum}}人，满分{{studentTotle}}分</p>
 			</div>
 			<div id="studentGradeDistribution1" class="l"></div>
 			<div id="studentGradeDistribution2" class="r">
 				<div class="studentGradeDistribution2-header">
-					<p>{{studentGradeheader.name}}{{studentGradeheader.level}}学生名单3人</p>
-					<p>分数区间(127.5~135分)</p>
+					<p>{{studentGradeheader.name}}{{studentGradeheader.level}}学生名单{{studentGradeheader.number}}人</p>
+					<p>分数区间({{studentGradeheader.startScore}}~{{studentGradeheader.endScore}}分)</p>
 				</div>
 				<div class="studentGradeDistribution2-body">
 					<div class="studentGradeDistribution-ranking-body">
 						<ul>
-							<li class="cl" v-for="item in studentGradeDistributionList"><p class="ranking-bodyName">{{item.name}}</p><p class="ranking-bodyNum">第{{item.num}}名</p></li>
+							<li class="cl" v-for="item in studentGradeDistributionList"><p class="ranking-bodyName">{{item.studentName}}</p><p class="ranking-bodyNum">第{{item.ranking}}名</p></li>
 						</ul>
 					</div>
 				</div>
@@ -313,13 +313,13 @@
 		<div id="classabilityAnalyze1"></div>
 		<div id="classabilityAnalyze2">
 			<el-table class="borders" :data="scoreName" style="width: 100%">
-				<el-table-column align="center" prop="name" label="能力"></el-table-column>
+				<el-table-column align="center" prop="ablityName" label="能力"></el-table-column>
 				<el-table-column align="center" label="得分率">
-					<el-table-column align="center" prop="scoreClass" label="班级"></el-table-column>
-					<el-table-column align="center" prop="scoreSchool" label="全校"></el-table-column>
-					<el-table-column align="center" prop="scoreArea" label="全区县"></el-table-column>
+					<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
+					<el-table-column align="center" prop="divideSchool" label="全校"></el-table-column>
+					<el-table-column align="center" prop="divideAera" label="全区县"></el-table-column>
 				</el-table-column>
-				<el-table-column align="center" prop="topicList" label="对应题目"></el-table-column>
+				<el-table-column align="center" prop="numbers" label="对应题目"></el-table-column>
 			</el-table>
 		</div>
 		<div class="abilityAnalyze-foot">
@@ -338,10 +338,11 @@ export default{
 	data(){
 		return{
 			basicData:{
-				subject:'',
+				subject:'总分',
 				class:'',
 				id:'',
 				topNum:50,
+				rateType:'',
 			},
 			activeList:0,
 			activeList1:0,
@@ -373,28 +374,51 @@ export default{
 			testAnalysisTable:[],
 			studentGradeheader:{
 				name:"高分",
-				level:"(90%~100%)"
+				level:"(90%~100%)",
+				endScore:0,
+				startScore:0,
+				number:0,
 			},
 			gradeInterval:[{
 				key:1,
 				name:"高分",
-				level:"(90%~100%)"
+				level:"(90%~100%)",
+				endScore:0,
+				startScore:0,
+				number:0,
+				value:'HIGH_SCORE',
 			},{
 				key:2,
 				name:"优秀",
-				level:"(85%~90%)"
+				level:"(85%~90%)",
+				endScore:0,
+				startScore:0,
+				number:0,
+				value:'EXCELLENT',
 			},{
 				key:3,
 				name:"良好",
-				level:"(75%~85%)"
+				level:"(75%~85%)",
+				endScore:0,
+				startScore:0,
+				number:0,
+				value:'WELL',
 			},{
 				key:4,
 				name:"及格",
-				level:"(60%~75%)"
+				level:"(60%~75%)",
+				endScore:0,
+				startScore:0,
+				number:0,
+				value:'PASS',
 			},{
 				key:5,
 				name:"不及格",
-				level:"(0%~60%)"
+				level:"(0%~60%)",
+				endScore:0,
+				startScore:0,
+				number:0,
+				value:'FAIL',
 			}],
 			displayAll:{
 				classTotalScore:true,
@@ -409,13 +433,7 @@ export default{
 				classknowledge:false,
 				classabilityAnalyze:false,
 			},
-			scoreName:[{
-				name:"空间想象能力",
-				scoreClass:45.3,
-				scoreSchool:53.4,
-				scoreArea:34243,
-				topicList:"123、231、342",
-			}],
+			scoreName:[],
 			falsetableData3:[],
 			truetableDatas:[{
 				truetableData3:[{
@@ -505,42 +523,27 @@ export default{
 				name : '名次进退步(校级)',
 				dataIndex:'changedRanking',
 			}],
-			testList:[],
-			tableData3:[{
-				place:1,
-				studentId:123,
-				name:"张三",
-				totalScore:343,
-				schoolPlace:23,
-				score:{
-					key:1,
-					value:23,
-				},
-				Chinese:12,
-				math:23,
-				english:23,
-				physics:23,
-				chemistry:54,
-				creature:43,
-				Richard:54,
+			SheaderData:[{
+				name : '名次',
+				dataIndex:'subject1Score',
 			},{
-				place:1,
-				studentId:123,
-				name:"张三",
-				totalScore:343,
-				schoolPlace:23,
-				score:{
-					key:0,
-					value:23,
-				},
-				Chinese:12,
-				math:23,
-				english:23,
-				physics:23,
-				chemistry:54,
-				creature:43,
-				Richard:54,
+				name : '考号/学号',
+				dataIndex:'studentNo',
+			},{
+				name : '姓名',
+				dataIndex:'studentName',
+			},{
+				name : '总分',
+				dataIndex:'totalScore',
+			},{
+				name : '名次(校级)',
+				dataIndex:'ranking',
+			},{
+				name : '名次进退步(校级)',
+				dataIndex:'changedRanking',
 			}],
+			testList:[],
+			tableData3:[],
 			subjects:[],
 			items:[{
 				id:1,
@@ -626,61 +629,12 @@ export default{
 				classStuNum:0,
 				schoolStuNum:0,
 			},
-			studentGradeDistributionList:[{
-				name:"张三",
-				num:1,
-			},{
-				name:"李四",
-				num:2,
-			},{
-				name:"王五",
-				num:3,
-			},{
-				name:"贾六",
-				num:4,
-			},{
-				name:"魏七",
-				num:5,
-			},{
-				name:"林八",
-				num:6,
-			},{
-				name:"张三",
-				num:1,
-			},{
-				name:"李四",
-				num:2,
-			},{
-				name:"王五",
-				num:3,
-			},{
-				name:"贾六",
-				num:4,
-			},{
-				name:"魏七",
-				num:5,
-			},{
-				name:"林八",
-				num:6,
-			},{
-				name:"张三",
-				num:1,
-			},{
-				name:"李四",
-				num:2,
-			},{
-				name:"王五",
-				num:3,
-			},{
-				name:"贾六",
-				num:4,
-			},{
-				name:"魏七",
-				num:5,
-			},{
-				name:"林八",
-				num:6,
-			}],
+			studentGradeDistributionList:[],
+			studentTotle:0,
+			studentTotleNum:0,
+			Personnel:{
+
+			},
 			rankingData:[{
 				topic10:0,
 				topic20:0,
@@ -777,7 +731,7 @@ export default{
 			    	name:'人数',
 			    	type:'bar',
 			    	barWidth: '60%',
-			    	data:[0, 0, 0, 14, 57, 321, 445]
+			    	data:[0, 0, 0, 0, 0, 0, 0]
 			    }
 			    ]
 			},
@@ -846,7 +800,6 @@ export default{
 						data:['个人','平均水平']
 					},
 					radar: [
-
 					{
 						indicator: [
 						{text: '总分', max: 100},
@@ -864,7 +817,7 @@ export default{
 						type: 'radar',
 						data: [
 						{
-							name: '个人',
+							name: '班级',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
@@ -1308,10 +1261,10 @@ export default{
 			},
 			mounted:function(){
 				this.$refs.fristBit[0].className+=" on";
-				this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
+				//this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
 				this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
-				this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
-				this.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(this.optionClassdisciplinesLevelRight);
+				//this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
+				//this.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(this.optionClassdisciplinesLevelRight);
 				this.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(this.optionstudentGradeDistribution);
 				this.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(this.optionClassScoreQuestion);
 				this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
@@ -1357,15 +1310,6 @@ export default{
 					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
 						obj.testList=res.result.exams;
 					});
-					// this.postHttp(this,{examId:'',tab:'CLASS_REPORT', subject:'总分'},'score/getLevelDistribution',function(obj,res){
-					// 	var num=0;
-					// 	for(var i=0;i<res.result.length;i++){
-					// 		if(res.result[i].subject=="数学"){
-					// 			num=i
-					// 		}
-					// 	};
-
-					// });
 				},
 				testChange(e){
 					var name=this.testList[e].id;
@@ -1376,6 +1320,7 @@ export default{
 						obj.items=res.result[name].subject;
 						obj.schoolList=res.result[name].classroom;
 						obj.basicData.class=res.result[name].classroom[0].id;
+						obj.basicData.subject="总分";
 						obj.items.unshift(totle);
 						var childNum=Math.ceil(obj.items.length/11);
 						var childs=[];
@@ -1388,7 +1333,10 @@ export default{
 							childs[l]["id"] = id;
 						}
 						obj.subjects=childs;
-						console.log(name)
+						obj.headerData=[];
+						for(var p=0;p<obj.SheaderData.length;p++){
+							obj.headerData.push(obj.SheaderData[p])
+						}
 						for(var q=5;q<parseInt(res.result[name].subject.length)+4;q++){
 							var arr={
 								"name":res.result[name].subject[q-4].subjectName,
@@ -1396,8 +1344,7 @@ export default{
 							}
 							obj.headerData.push(arr);
 						}
-						obj.getTopOrgScoresInClass();
-						obj.getClassRankingReport();
+						obj.rainbow(0,0,"总分");
 					});
 					
 				}, 
@@ -1444,8 +1391,10 @@ export default{
 						this.displayAll.classabilityAnalyze=false;
 
 						this.basicData.subject=name;
+						this.getLevelDistribution();
 						this.getTopOrgScoresInClass();
 						this.getClassRankingReport();
+						this.geReportCards();
 					}else{
 						var oNav = document.getElementById("navInside").getElementsByTagName("li");
 						for(var a = 0;a<oNav.length;a++){
@@ -1463,55 +1412,143 @@ export default{
 						this.displayAll.classtwoDimensionalAnalysis=true;
 						this.displayAll.classknowledge=true;
 						this.displayAll.classabilityAnalyze=true;
-
-						this.postHttp(this,{examId:'',tab:'CLASS_REPORT', subject:'总分'},'score/getLevelDistribution',function(obj,res){
-						var number=0;
-						for(var i=0;i<res.result.length;i++){
-							if(res.result[i].subject==name){
-								number=i
-							}
-						};
-						obj.optionstudentGradeDistribution.series[0].data[0].value=res.result[number].highRate;
-						obj.optionstudentGradeDistribution.series[0].data[1].value=res.result[number].excellentRate;
-						obj.optionstudentGradeDistribution.series[0].data[2].value=res.result[number].commissionRate;
-						obj.optionstudentGradeDistribution.series[0].data[3].value=res.result[number].passRate;
-						obj.optionstudentGradeDistribution.series[0].data[4].value=res.result[number].failureRate;
-						obj.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(obj.optionstudentGradeDistribution);
-					});
 						
 						this.basicData.subject=name;
 						this.testAnalysis();
+						this.getLevelDistribution();
+						this.ablityAnalysis();
+						this.knowAnalysis();
 					}
 				},
 				changeClassName(value){
-					if(this.basicData.subject=="总分"||this.basicData.subject==""){
-						this.getTopOrgScoresInClass();
-						this.getClassRankingReport();
-					}else{
-						this.basicData.class=value;
-						this.testAnalysis();
-					}
+					this.basicData.class=value;
+					this.rainbow(0,0,"总分");
+				},
+				geReportCards:function(){
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject},'score/geReportCards',function(obj,res){
+						obj.optionClassdisciplinesLevel.xAxis[0].data=[];
+						obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
+						obj.optionClassdisciplinesLevel.series[0].data=[];
+						obj.optionClassdisciplinesLevel.series[0].data=res.result.standardScoreList;
+						obj.optionClassdisciplinesLevel.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+						obj.optionClassdisciplinesLevelRight.series[0].data[0].value=[];
+						obj.optionClassdisciplinesLevelRight.series[0].data[1].value=[];
+						obj.optionClassdisciplinesLevelRight.series[0].data[0].value=res.result.classAvgScoreList;
+						obj.optionClassdisciplinesLevelRight.series[0].data[1].value=res.result.schoolAvgScoreList;
+						obj.optionClassdisciplinesLevelRight.radar[0].indicator=[];
+						for(var i=0;i<res.result.subjectList.length;i++){
+							var arr={
+								"text":res.result.subjectList[i],
+								"max":100,
+							}
+							obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
+						}
+						obj.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(obj.optionClassdisciplinesLevelRight);
+						obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
+					})
+				},
+				knowAnalysis:function(){//没写完
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/knowAnalysis',function(obj,res){
+						
+					})
+				},
+				ablityAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/ablityAnalysis',function(obj,res){
+						obj.scoreName=res.result;
+						obj.optionclassabilityAnalyze.series[0].data[0].value=[];
+						obj.optionclassabilityAnalyze.series[0].data[1].value=[];
+						obj.optionclassabilityAnalyze.series[0].data[2].value=[];
+						for(var i=0;i<res.result.length;i++){
+							obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result[i].divideClass)
+							obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result[i].divideSchool)
+							obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result[i].divideAera)
+						}
+						obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
+					})
+				},
+				getLevelDistribution:function(){
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
+						var type=(typeof res.result);
+						if(type=="string"){
+							obj.optiongradeDistribution.series[0].data=[];
+							obj.optiongradeDistribution.series[1].data=[];
+							obj.optiongradeDistribution.series[2].data=[];
+							obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
+						}else{
+							if(obj.basicData.subject=="总分"){
+								if(res.result[0].scoreLevel=="SCHOOL"){
+									obj.optiongradeDistribution.series[1].data=[];
+									obj.optiongradeDistribution.series[1].data.push(res.result[0].highRate * 1000000/10000);
+									obj.optiongradeDistribution.series[1].data.push(res.result[0].excellentRate * 1000000/10000);
+									obj.optiongradeDistribution.series[1].data.push(res.result[0].commissionRate * 1000000/10000);
+									obj.optiongradeDistribution.series[1].data.push(res.result[0].passRate * 1000000/10000);
+									obj.optiongradeDistribution.series[1].data.push(res.result[0].failureRate * 1000000/10000);
+
+									obj.optiongradeDistribution.series[2].data=[];
+									obj.optiongradeDistribution.series[2].data.push(res.result[0].highRate * 1000000/10000);
+									obj.optiongradeDistribution.series[2].data.push(res.result[0].excellentRate * 1000000/10000);
+									obj.optiongradeDistribution.series[2].data.push(res.result[0].commissionRate * 1000000/10000);
+									obj.optiongradeDistribution.series[2].data.push(res.result[0].passRate * 1000000/10000);
+									obj.optiongradeDistribution.series[2].data.push(res.result[0].failureRate * 1000000/10000);
+								}
+								if(res.result[1].scoreLevel=="CLASS"){
+									obj.optiongradeDistribution.series[0].data=[];
+									obj.optiongradeDistribution.series[0].data.push(res.result[1].highRate * 1000000/10000);
+									obj.optiongradeDistribution.series[0].data.push(res.result[1].excellentRate * 1000000/10000);
+									obj.optiongradeDistribution.series[0].data.push(res.result[1].commissionRate * 1000000/10000);
+									obj.optiongradeDistribution.series[0].data.push(res.result[1].passRate * 1000000/10000);
+									obj.optiongradeDistribution.series[0].data.push(res.result[1].failureRate * 1000000/10000);
+								}
+								obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
+							}else{
+								if(res.result.scoreVOList){
+									var num=0;
+									for(var i=0;i<res.result.scoreVOList.length;i++){
+										if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+											num=i;
+										}
+									}
+									obj.studentTotle=res.result.scoreVOList[num].fullMarks;
+									obj.studentTotleNum=res.result.stuNum;
+									obj.optionstudentGradeDistribution.series[0].data[0].value=res.result.scoreVOList[num].highRate;
+									obj.optionstudentGradeDistribution.series[0].data[1].value=res.result.scoreVOList[num].excellentRate;
+									obj.optionstudentGradeDistribution.series[0].data[2].value=res.result.scoreVOList[num].commissionRate;
+									obj.optionstudentGradeDistribution.series[0].data[3].value=res.result.scoreVOList[num].passRate;
+									obj.optionstudentGradeDistribution.series[0].data[4].value=res.result.scoreVOList[num].failureRate;
+									obj.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(obj.optionstudentGradeDistribution);
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}
+							}
+						}
+					});
 				},
 				testAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/testAnalysis',function(obj,res){
-							obj.testAnalysisTable=res.result;
-							obj.optionClassScoreQuestion.xAxis[0].data=[];
-							obj.optionClassScoreQuestion.series[0].data=[];
-							obj.optionClassScoreQuestion.series[1].data=[];
-							obj.optionClassScoreQuestion.series[2].data=[];
-							for(var i=0;i<res.result.length;i++){
-								obj.optionClassScoreQuestion.xAxis[0].data.push(res.result[i].qid);
-								obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result[i].divideClass));
-								obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result[i].divideSchool));
-								obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result[i].divideAera));
-							}
-							obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
-						});
+						obj.testAnalysisTable=res.result;
+						obj.optionClassScoreQuestion.xAxis[0].data=[];
+						obj.optionClassScoreQuestion.series[0].data=[];
+						obj.optionClassScoreQuestion.series[1].data=[];
+						obj.optionClassScoreQuestion.series[2].data=[];
+						for(var i=0;i<res.result.length;i++){
+							obj.optionClassScoreQuestion.xAxis[0].data.push(res.result[i].qid);
+							obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result[i].divideClass));
+							obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result[i].divideSchool));
+							obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result[i].divideAera));
+						}
+						obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
+					});
 				},
 				getTopOrgScoresInClass:function(){
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class,topNum:this.basicData.topNum},'score/getTopOrgScoresInClass',function(obj,res){
-						if(res.result=="没有最近一次考试的相关数据"){
-							obj.notify_jr(obj,'信息错误',res.result,'error');
+						var type=(typeof res.result);
+						if(type=="string"){
+							//obj.notify_jr(obj,'信息错误',res.result,'error');
+							obj.optionranking.series[0].data=[];
+							obj.rankingData=[];
+							obj.rankingList=[];
 						}else{
 							obj.rankingList=res.result.resultScoreList;
 							obj.rankingListS.classStuNum=res.result.classStuNum;
@@ -1531,18 +1568,17 @@ export default{
 							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwoHundredStuNum);
 							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiveHundredStuNum);
 							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneThousandStuNum);
-							obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
-							}
-						});
+						}
+						obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
+					});
 				},
-				getClassRankingReport:function(){
+				getClassRankingReport:function(){//有Bug没考试时接口500
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
-							for(var i=0;i<res.result.classScoreList.length;i++){
-								res.result.classScoreList[i].subject1Score=i+1;
-							}
-							console.log(res.result.classScoreList)
-							obj.tableData3=res.result.classScoreList;
-						});
+						for(var i=0;i<res.result.classScoreList.length;i++){
+							res.result.classScoreList[i].subject1Score=i+1;
+						}
+						obj.tableData3=res.result.classScoreList;
+					});
 				},
 				gradeIntervalfun:function(e){
 					var num=parseInt(e.currentTarget.getElementsByTagName("button")[0].getAttribute("data-key"));
@@ -1553,6 +1589,13 @@ export default{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="none";
 							this.studentGradeheader.name=this.gradeInterval[num-1].name;
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[4].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
+								obj.studentGradeDistributionList=res.result.stuScoreList;
+								obj.studentGradeheader.startScore=res.result.startScore;
+								obj.studentGradeheader.endScore=res.result.endScore;
+								obj.studentGradeheader.number=res.result.stuScoreList.length;
+							});
 						}else{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="block";
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
@@ -1561,6 +1604,13 @@ export default{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
 							this.studentGradeheader.name=this.gradeInterval[num-1].name;
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[num-1].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								obj.studentGradeDistributionList=res.result.stuScoreList;
+								obj.studentGradeheader.startScore=res.result.startScore;
+								obj.studentGradeheader.endScore=res.result.endScore;
+								obj.studentGradeheader.number=res.result.stuScoreList.length;
+							});
 						}
 					}else{
 						if(num==1){
@@ -1569,6 +1619,13 @@ export default{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="none";
 							this.studentGradeheader.name=this.gradeInterval[num-1].name;
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[0].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
+								obj.studentGradeDistributionList=res.result.stuScoreList;
+								obj.studentGradeheader.startScore=res.result.startScore;
+								obj.studentGradeheader.endScore=res.result.endScore;
+								obj.studentGradeheader.number=res.result.stuScoreList.length;
+							});
 						}else{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="block";
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
@@ -1577,6 +1634,13 @@ export default{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
 							this.studentGradeheader.name=this.gradeInterval[num-1].name;
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[num-1].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								obj.studentGradeDistributionList=res.result.stuScoreList;
+								obj.studentGradeheader.startScore=res.result.startScore;
+								obj.studentGradeheader.endScore=res.result.endScore;
+								obj.studentGradeheader.number=res.result.stuScoreList.length;
+							});
 						}
 					}
 				},

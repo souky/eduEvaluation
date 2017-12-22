@@ -34,13 +34,13 @@
 			</div>
 			<div class="body">
 				<el-table class="borders" :data="tableData" stripe style="width: 100%" header-row-class-name="table-header">
-					<el-table-column align="center" prop="subjects" label="科目"></el-table-column>
+					<el-table-column align="center" prop="subject" label="科目"></el-table-column>
 					<el-table-column align="center" prop="score" label="分数"></el-table-column>
-					<el-table-column align="center" prop="grades" label="分数等级"></el-table-column>
-					<el-table-column align="center" prop="averageScore" label="平均分(校级)"></el-table-column>
-					<el-table-column align="center" prop="highestClass" label="最高分(班级)"></el-table-column>
-					<el-table-column align="center" prop="highestSchool" label="最高分(校级)"></el-table-column>
-					<el-table-column align="center" prop="highestArea" label="最高分(地区级)"></el-table-column>
+					<el-table-column align="center" prop="scoreLevel" label="分数等级"></el-table-column>
+					<el-table-column align="center" prop="schoolAvgScore" label="平均分(校级)"></el-table-column>
+					<el-table-column align="center" prop="classTopScore" label="最高分(班级)"></el-table-column>
+					<el-table-column align="center" prop="schoolTopScore" label="最高分(校级)"></el-table-column>
+					<el-table-column align="center" prop="regionTopScore" label="最高分(地区级)"></el-table-column>
 				</el-table>
 			</div>
 		</div>
@@ -51,11 +51,11 @@
 			</div>
 			<div class="body">
 				<el-table class="borders" :data="anothertableData" stripe style="width: 100%" header-row-class-name="table-header">
-					<el-table-column align="center" prop="rawScore" label="原始分数"></el-table-column>
-					<el-table-column align="center" prop="score" label="平均分(校级)"></el-table-column>
-					<el-table-column align="center" prop="highestClass" label="最高分(班级)"></el-table-column>
-					<el-table-column align="center" prop="highestSchool" label="最高分(校级)"></el-table-column>
-					<el-table-column align="center" prop="highestArea" label="最高分(地区级)"></el-table-column>
+					<el-table-column align="center" prop="score" label="原始分数"></el-table-column>
+					<el-table-column align="center" prop="scoschoolAvgScorere" label="平均分(校级)"></el-table-column>
+					<el-table-column align="center" prop="classTopScore" label="最高分(班级)"></el-table-column>
+					<el-table-column align="center" prop="schoolTopScore" label="最高分(校级)"></el-table-column>
+					<el-table-column align="center" prop="regionTopScore" label="最高分(地区级)"></el-table-column>
 				</el-table>
 			</div>
 		</div>
@@ -182,11 +182,11 @@
 								<span v-else v-bind:class="{active: (scope.row.rightOrNot == 1)}">{{ scope.row.studentScore }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column align="center" prop="divideClass" label="班级均分"></el-table-column>
-						<el-table-column align="center" prop="divideSchool" label="校级均分"></el-table-column>
-						<el-table-column align="center" prop="divideAera" label="区县级均分"></el-table-column>
-						<el-table-column align="center" prop="knowPoint" label="考察知识点"></el-table-column>
-						<el-table-column align="center" prop="ablity" label="考察能力"></el-table-column>
+						<el-table-column align="center" :formatter="dateFormat" prop="divideClass" label="班级均分"></el-table-column>
+						<el-table-column align="center" :formatter="dateFormat1" prop="divideSchool" label="校级均分"></el-table-column>
+						<el-table-column align="center" :formatter="dateFormat2" prop="divideAera" label="区县级均分"></el-table-column>
+						<el-table-column align="center" prop="knowPoint" :show-overflow-tooltip="true" label="考察知识点"></el-table-column>
+						<el-table-column align="center" prop="ablity" :show-overflow-tooltip="true" label="考察能力"></el-table-column>
 						<el-table-column align="center" prop="difficulty" label="难度"></el-table-column>
 						<el-table-column align="center" prop="differentiation" label="区分度"></el-table-column>
 					</el-table>
@@ -259,23 +259,23 @@
 						<el-table-column align="center" prop="date" label="对应题目"></el-table-column>
 					</el-table>
 					<div v-for="truetableData3 in truetableDatas">
-						<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.truetableData3" style="width: 100%">
+						<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.knowDetail" style="width: 100%">
 							<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
 							<el-table-column align="center" prop="knowledge" label="知识点"></el-table-column>
 							<el-table-column align="center" label="得分率%">
-								<el-table-column align="center" prop="classscore" label="班级"></el-table-column>
-								<el-table-column align="center" prop="schoolscore" label="校级"></el-table-column>
-								<el-table-column align="center" prop="areascore" label="区级"></el-table-column>
-								<el-table-column align="center" prop="difference" label="差值(相对于校级)"></el-table-column>
+								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
+								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
+								<el-table-column align="center" prop="divideAera" label="区级"></el-table-column>
+								<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)"></el-table-column>
 							</el-table-column>
-							<el-table-column align="center" prop="topic" label="对应题目"></el-table-column>
+							<el-table-column align="center" prop="qid" label="对应题目"></el-table-column>
 						</el-table>
 						<div class="knowledge-table-trueTotle">
 							<div class="knowledge-table-trueTotleBit"><p>总分:{{truetableData3.totle}}分</p></div>
 							<div class="knowledge-table-trueTotleBit"><p>得分:{{truetableData3.score}}分</p></div>
-							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.class}}</p></div>
-							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.school}}</p></div>
-							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.area}}</p></div>
+							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideClass}}</p></div>
+							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideSchool}}</p></div>
+							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideAera}}</p></div>
 						</div>
 					</div>
 				</div>
@@ -293,13 +293,13 @@
 				<div id="abilityAnalyze1"></div>
 				<div id="abilityAnalyze2">
 					<el-table class="borders" :data="scoreName" style="width: 100%">
-						<el-table-column align="center" prop="name" label="能力"></el-table-column>
+						<el-table-column align="center" prop="ablityName" label="能力"></el-table-column>
 						<el-table-column align="center" label="得分率">
-							<el-table-column align="center" prop="scoreClass" label="班级"></el-table-column>
-							<el-table-column align="center" prop="scoreSchool" label="全校"></el-table-column>
-							<el-table-column align="center" prop="scoreArea" label="全区县"></el-table-column>
+							<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
+							<el-table-column align="center" prop="divideSchool" label="全校"></el-table-column>
+							<el-table-column align="center" prop="divideAera" label="全区县"></el-table-column>
 						</el-table-column>
-						<el-table-column align="center" prop="topicList" label="对应题目"></el-table-column>
+						<el-table-column align="center" prop="numbers" label="对应题目"></el-table-column>
 					</el-table>
 				</div>
 				<div class="abilityAnalyze-foot">
@@ -316,7 +316,7 @@ export default {
 	data(){
 		return{
 			basicData:{
-				subject:'',
+				subject:'总分',
 				student:'8ebf3e1697ca4537a07c9be1eaedf7ed',
 				id:'',
 				topNum:50,
@@ -352,7 +352,7 @@ export default {
 				beyondRate:true,
 				growthTrend:true,
 				subjectsDiagnosis:true,
-				myGoal:true,
+				myGoal:false,
 				anotherpersonalAchievement:false,
 				testAnalysis:false,
 				optionScoreQuestion:false,
@@ -484,23 +484,7 @@ export default {
 				name:'音乐',
 				color:'#D070F3',
 			}],
-			tableData:[{
-				subjects:'语文',
-				score:'100',
-				grades:'良好',
-				averageScore:'1231',
-				highestClass:'21321',
-				highestSchool:'1231',
-				highestArea:'123213',
-			},{
-				subjects:'数学',
-				score:'100',
-				grades:'良好',
-				averageScore:'1231',
-				highestClass:'21321',
-				highestSchool:'1231',
-				highestArea:'123213',
-			}],
+			tableData:[],
 			anothertableData:[{
 				rawScore:90,
 				score:'23',
@@ -1180,6 +1164,21 @@ export default {
 						obj.testList=res.result.exams;
 					});
 				},
+				dateFormat:function(row,column){
+					var data=this.accDiv(parseInt(row.divideClass),100);
+					var data1=this.accMul(row.studentScore,data);
+					return data1;
+				},
+				dateFormat1:function(row,column){
+					var data=this.accDiv(parseInt(row.divideSchool),100);
+					var data1=this.accMul(row.studentScore,data);
+					return data1;
+				},
+				dateFormat2:function(row,column){
+					var data=this.accDiv(parseInt(row.divideAera),100);
+					var data1=this.accMul(row.studentScore,data);
+					return data1;
+				},
 				testChange(e){
 					var name=this.testList[e].id;
 					this.basicData.id=name;
@@ -1200,6 +1199,9 @@ export default {
 							childs[l]["id"] = id;
 						}
 						obj.subjects=childs;
+						obj.rainbow(0,0,"总分");
+
+						//obj.geReportCards();
 					});
 					
 				}, 
@@ -1237,7 +1239,7 @@ export default {
 						this.displayAll.beyondRate=true;
 						this.displayAll.growthTrend=true;
 						this.displayAll.subjectsDiagnosis=true;
-						this.displayAll.myGoal=true;
+						this.displayAll.myGoal=false;
 						this.displayAll.anotherpersonalAchievement=false;
 						this.displayAll.testAnalysis=false;
 						this.displayAll.optionScoreQuestion=false;
@@ -1245,6 +1247,8 @@ export default {
 						this.displayAll.knowledge=false;
 						this.displayAll.abilityAnalyze=false;
 						this.activeList = 0;this.activeList1 = 0;
+						this.basicData.subject=name;
+						this.geReportCards();
 					}else{
 						var oNav = document.getElementById("navInside").getElementsByTagName("li");
 						for(var a = 0;a<oNav.length;a++){
@@ -1255,7 +1259,7 @@ export default {
 						this.displayAll.beyondRate=true;
 						this.displayAll.growthTrend=true;
 						this.displayAll.subjectsDiagnosis=false;
-						this.displayAll.myGoal=false;
+						this.displayAll.myGoal=true;
 						this.displayAll.anotherpersonalAchievement=true;
 						this.displayAll.testAnalysis=true;
 						this.displayAll.optionScoreQuestion=true;
@@ -1266,12 +1270,131 @@ export default {
 
 						this.basicData.subject=name;
 						this.testAnalysis();
+						this.knowAnalysis();
+						this.ablityAnalysis();
+						this.geReportCards();
 					}
+				},
+				knowAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/knowAnalysis',function(obj,res){
+						obj.truetableDatas=res.result;
+						obj.optionknowledge.series[0].data[0].value=[];
+						obj.optionknowledge.series[0].data[1].value=[];
+						obj.optionknowledge.series[0].data[2].value=[];
+						obj.optionknowledge.series[0].data[3].value=[];
+						for(var i=0;i<res.result.length;i++){
+							obj.optionknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
+							obj.optionknowledge.series[0].data[0].value.push(res.result[i].divideStudent);
+							obj.optionknowledge.series[0].data[1].value.push(res.result[i].divideClass);
+							obj.optionknowledge.series[0].data[2].value.push(res.result[i].divideSchool);
+							obj.optionknowledge.series[0].data[3].value.push(res.result[i].divideAera);
+						}
+						obj.echarts.init(document.getElementById("knowledge1")).setOption(obj.optionknowledge);
+					})
+				},
+				ablityAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/ablityAnalysis',function(obj,res){
+						obj.scoreName=res.result;
+						obj.optionabilityAnalyze.series[0].data[0].value=[];
+						obj.optionabilityAnalyze.series[0].data[1].value=[];
+						obj.optionabilityAnalyze.series[0].data[2].value=[];
+						obj.optionabilityAnalyze.series[0].data[3].value=[];
+						for(var i=0;i<res.result.length;i++){
+							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result[i].divideStudent)
+							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result[i].divideClass)
+							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result[i].divideSchool)
+							obj.optionabilityAnalyze.series[0].data[3].value.push(res.result[i].divideAera)
+						}
+						obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
+					})
 				},
 				testAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/testAnalysis',function(obj,res){
-							obj.testAnalysisTable=res.result;
-						});
+						obj.testAnalysisTable=res.result;
+						obj.optionScoreQuestion.xAxis[0].data=[];
+						obj.optionScoreQuestion.series[0].data=[];
+						obj.optionScoreQuestion.series[1].data=[];
+						obj.optionScoreQuestion.series[2].data=[];
+						obj.optionScoreQuestion.series[3].data=[];
+						obj.optionTwoDimensionalAnalysis.series[0].data=[];
+						obj.optionTwoDimensionalAnalysis.series[1].data=[];
+						for(var i=0;i<res.result.length;i++){
+							obj.optionScoreQuestion.xAxis[0].data.push(res.result[i].qid);
+							obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result[i].divideStudent));
+							obj.optionScoreQuestion.series[1].data.push(parseFloat(res.result[i].divideClass));
+							obj.optionScoreQuestion.series[2].data.push(parseFloat(res.result[i].divideSchool));
+							obj.optionScoreQuestion.series[2].data.push(parseFloat(res.result[i].divideAera));
+							if(parseFloat(res.result[i].divideStudentToClass)>=0){
+								var list=[];
+								list.push(res.result[i].difficulty);
+								list.push(parseFloat(res.result[i].divideStudentToClass));
+								list.push(res.result[i].topic);
+								list.push(parseInt(res.result[i].fractionalValue));
+								list.push(parseInt(res.result[i].qid));
+								obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
+							}else{
+								var list1=[];
+								list1.push(res.result[i].difficulty);
+								list1.push(parseFloat(res.result[i].divideStudentToClass));
+								list1.push(res.result[i].topic);
+								list1.push(parseInt(res.result[i].fractionalValue));
+								list1.push(parseInt(res.result[i].qid));
+								obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+							}
+						}
+						obj.echarts.init(document.getElementById("scoreQuestion1")).setOption(obj.optionScoreQuestion);
+						obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
+					});
+				},
+				geReportCards:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT"},'score/geReportCards',function(obj,res){
+						var type=(typeof res.result);
+						if(type=="string"){
+							obj.tableData=[];
+							obj.anothertableData=[];
+						}else{
+							if(obj.basicData.subject=="总分"){
+								obj.tableData=res.result.scoreVOList;
+								obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+								obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+								obj.optionSubjectsDiagnosis.series[0].data=[];
+								obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+								obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.classAvgScoreList;
+								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.schoolAvgScoreList;
+								obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+								for(var i=0;i<res.result.subjectList.length;i++){
+									var arr={
+										"text":res.result.subjectList[i],
+										"max":100,
+									}
+									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+								}
+								obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+							}else{
+								if(res.result.scoreVOList){
+									var num=0;
+									obj.anothertableData=[];
+									for(var i=0;i<res.result.scoreVOList.length;i++){
+										if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+											num=i;
+										}
+									}
+									var arr={
+										"score":res.result.scoreVOList[num].score,
+										"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+										"classTopScore":res.result.scoreVOList[num].classTopScore,
+										"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+										"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+									}
+									obj.anothertableData.push(arr);
+								}
+							}
+						}
+					})
 				},
 				chooseArea:function(e,num){
 					document.getElementById("growthTrend").getElementsByClassName("choose-area-left")[0].style.background="#fff";
@@ -1294,7 +1417,6 @@ export default {
 					this.echarts.init(document.getElementById("growthTrend1")).setOption(this.optionGrowthTrend);
 				},
 				chooseSubject:function(e,num){
-					alert(123)
 					document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-left")[0].style.background="#fff";
 					document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-left")[0].style.color="#46C4F8";
 					document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-midle")[0].style.background="#fff";
@@ -1347,7 +1469,7 @@ export default {
 					if (columnIndex === 0) {
 						if (rowIndex === 0) {
 							return {
-								rowspan: row.qwe,
+								rowspan: row.knowledgeNum,
 								colspan: 1
 							};
 						} else {
@@ -1358,6 +1480,28 @@ export default {
 						}
 					}
 				},
+				accMul(arg1,arg2){   //乘法
+					if(arg1==undefined){
+						return
+					}
+					var m=0,s1=arg1.toString(),s2=arg2.toString();
+					try{m+=s1.split(".")[1].length}catch(e){}
+					try{m+=s2.split(".")[1].length}catch(e){}
+					return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+				},
+				accDiv(arg1,arg2){		//除法
+					if(arg1==undefined){
+						return
+					}
+					var t1=0,t2=0,r1,r2;
+					try{t1=arg1.toString().split(".")[1].length}catch(e){}
+					try{t2=arg2.toString().split(".")[1].length}catch(e){}
+					
+					r1=Number(arg1.toString().replace(".",""))
+					r2=Number(arg2.toString().replace(".",""))
+					return (r1/r2)*Math.pow(10,t2-t1);
+					
+				}
 			}
 		}
 		</script>
@@ -1713,9 +1857,6 @@ export default {
 			background: #70CDF3;
 			color: #fff;
 		}
-		#studentlevel #knowledge-table .el-table_1_column_26_column_30{
-			border-right: 1px solid #e6ebf5 !important;
-		}
 		#studentlevel #knowledge-table-header .el-table__body-wrapper{
 			display: none;
 		}
@@ -1877,5 +2018,8 @@ export default {
 		}
 		#studentlevel .alltest{
 			cursor: pointer;
+		}
+		.hand{
+			cursor:pointer;
 		}
 		</style>
