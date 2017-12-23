@@ -63,8 +63,9 @@
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="班级"  v-show="showInfo" prop="classroomName">
-			  	<el-input v-model="classroom.classroomName" placeholder="班级"></el-input>
+			  <el-form-item label="班级"  v-show="showInfo" prop="classroomNames" style="position: relative;">
+			  	<el-input v-model.number="classroom.classroomNames" placeholder="班级"></el-input>
+			  	<div style="height:40px;line-height: 40px;width:20px;text-align: center;position: absolute;right: 10px;top: 0px;">班</div>
 			  </el-form-item>
 			  <el-form-item label="班主任">
 			    <el-select v-model="classroom.classTeacherId" placeholder="请选择">
@@ -111,8 +112,9 @@ export default {
 	      gradeCode: [
 	        { required: true, message: '请选择年级', trigger: 'change' }
 	      ],
-	      classroomName: [
+	      classroomNames: [
 	        { required: true, message: '请输入班级', trigger: 'blur'},
+	        { type: 'number', message: '班级必须为数字值'}
 	      ],
       }
     }
@@ -163,10 +165,9 @@ export default {
 	  		}else{
 	  			this.$refs['classroom'].validate((valid) => {
           			if (valid) {
-			  			var classNo = this.classroom.classroomName;
+			  			var classNo = this.classroom.classroomNames;
 				  		var grade = this.classroom.gradeCode;
-				  		delete dataS["gradeCode"];
-				  		dataS.classroomName = grade + "(" + classNo + ")班";
+				  		dataS['classroomName'] = grade + "(" + classNo + ")班";
 				  		
 				  		this.postHttp(this,dataS,address,function(obj,res){
 				  			if(res.code == '10000'){

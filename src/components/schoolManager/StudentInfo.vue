@@ -37,8 +37,12 @@
 		      <el-table-column prop="studentContact" align="center"  label="联系人"></el-table-column>
 		      <el-table-column prop="studentContactMobile" align="center"  label="联系方式"></el-table-column>
 		      <el-table-column prop="classroomName" align="center"  label="班级"></el-table-column>
-		      <el-table-column align="center" label="操作" width='200'>
+		       <el-table-column prop="userName" align="center" show-overflow-tooltip  label="用户名"></el-table-column>
+		      <el-table-column align="center" label="操作" width='300'>
 		      	<template scope="scope">
+		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
+		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
+		      		<el-button type="primary forbid" v-else icon="el-icon-upload">开通账号</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
@@ -65,6 +69,9 @@
 				    <el-option v-for="item in sexOption" :key="item.id" :label="item.value" :value="item.id">
 				    </el-option>
 				</el-select>
+			  </el-form-item>
+			  <el-form-item label="学号"  >
+			  	<el-input v-model="student.studentNo" placeholder="学号"></el-input>
 			  </el-form-item>
 			  <el-form-item label="年龄"  >
 			  	<el-input v-model="student.studentAge" placeholder="年龄"></el-input>
@@ -146,7 +153,7 @@ export default {
           classroomId: [
             { required: true, message: '请选择班级', trigger: 'change' }
           ],
-      }
+     },
     }
   },
   mounted:function(){
@@ -232,10 +239,10 @@ export default {
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
-		this.$refs['student'].resetFields();
 		this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
   			if(res.code == '10000'){
   				obj.student = res.result;
+  				obj.$refs['student'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}
@@ -258,6 +265,19 @@ export default {
         }).catch(() => {
         	
         });
+	},
+	allotAuth(id){
+		var loading = this.loading('正在开通...');
+		this.postHttp(this,{id:id},"user/saveStudentUser",function(o,res){
+			loading.close();
+			if(res.code == "10000"){
+				o.notify_success();
+				o.queryInfo();
+				o.$alert('开通账户成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+			}else{
+				o.notify_jr(o,'操作错误',res.message,'error');
+			}
+		})
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
@@ -303,5 +323,9 @@ export default {
 #studentInfo .student_info_table{
 	width: 90%;
 	margin:20px auto;
+}
+#studentInfo .forbid{
+	background:#C0C0C0!important;
+	border-color: #C0C0C0!important;
 }
 </style>

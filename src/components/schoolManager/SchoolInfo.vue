@@ -87,7 +87,6 @@ export default {
   			res.result['subjectArray'] = new Array();
   		}
   		obj.schoolInfo = res.result;
-  		console.log(obj.schoolInfo)
   	})
   },
   methods:{

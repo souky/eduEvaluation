@@ -100,6 +100,19 @@ Vue.prototype.notify_success = function(){
     });
 }
 
+/* 
+ * 封装loading提示
+ * */
+Vue.prototype.loading = function(text){
+	var loading = this.$loading({
+	    lock: true,
+	    text: text,
+	    spinner: 'el-icon-loading',
+	    background: 'rgba(0, 0, 0, 0.7)'
+	  });
+	return loading;
+}
+
 Vue.prototype.getBaseUrl = function(){
 	return baseUrl;
 }

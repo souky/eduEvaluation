@@ -167,12 +167,13 @@ export default {
   		this.$refs['role'].resetFields();
   	},
 	editInfo(id){
-		this.$refs['role'].resetFields();
 		this.diaTitle = "编辑";
+		this.dialogVisible = true;
 		this.postHttp(this,{id:id},'role/getRoleById',function(obj,res){
   			if(res.code == '10000'){
   				obj.role = res.result;
-  				obj.dialogVisible = true;
+  				
+  				obj.$refs['role'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}
@@ -222,6 +223,8 @@ export default {
 	},
 	saveAuth(){
 		var s = this.$refs.tree.getCheckedKeys();
+		console.log(s)
+		return;
 		var id = this.roleIdAuth;
 		var Objects = new Object();
 		Objects['roleId'] = id;
@@ -277,7 +280,7 @@ export default {
 	width: 90%;
 	margin:20px auto;
 }
-.forbid{
+#roleManager .forbid{
 	background:#C0C0C0!important;
 	border-color: #C0C0C0!important;
 }

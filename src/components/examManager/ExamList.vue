@@ -401,18 +401,27 @@ export default {
   		
   		//获取学生
   		var s = this.student;
+  		var classroom = '';
   		var examStudent = new Array();
   		for(var i = 0;i<s.length;i++){
   			var ss = s[i].list;
+  			if(i == 0){
+  				classroom += s[i].classroomName;
+  			}else{
+  				classroom += ','+s[i].classroomName;
+  			}
   			for(var j = 0;j<ss.length;j++){
   				if(ss[j]['checked']){
   					examStudent.push(ss[j]);
   				}
   			}
   		}
+  		
+  		
   		var examStudent = JSON.stringify(examStudent)
 		this.exam["examStudent"] = examStudent;
 		this.exam["examSpecification"] = JSON.stringify(this.subject);
+		this.exam['classroom'] = classroom;
 		
 		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
 	  		if(res.code == "10000"){

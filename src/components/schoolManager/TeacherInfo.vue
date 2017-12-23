@@ -39,9 +39,12 @@
 		      <el-table-column prop="teacherMobile" align="center"  label="电话"></el-table-column>
 		      <el-table-column prop="teacherDuty" align="center"  label="职责"></el-table-column>
 		      <el-table-column prop="teacherJobTitle" align="center"  label="职称"></el-table-column>
-		      <el-table-column prop="schoolName" show-overflow-tooltip align="center"  label="学校"></el-table-column>
-		      <el-table-column align="center" label="操作">
+		      <el-table-column prop="userName" show-overflow-tooltip align="center"  label="帐户名"></el-table-column>
+		      <el-table-column align="center" label="操作" width="300">
 		      	<template scope="scope">
+		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
+		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
+		      		<el-button type="primary forbid" v-else icon="el-icon-upload">开通账号</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
@@ -237,16 +240,17 @@ export default {
   			subjectArray:[],
       		classArray:[]
   		};
+  		this.classOption = [];
   		this.$refs['teacher'].resetFields();
   		
   	},
 	editInfo(id){
 		this.dialogVisible = true;
-  		this.$refs['teacher'].resetFields();
 		this.diaTitle = "编辑";
 		this.postHttp(this,{id:id},"teacher/getTeacherById",function(obj,res){
   			if(res.code == '10000'){
   				obj.teacher = res.result;
+  				obj.$refs['teacher'].resetFields();
   				var grade = res.result.grade;
   				obj.postHttp(obj,{grade:grade},'classroom/queryClassroomsByGrade',function(obj,res){
 			  		obj.classOption = res.result;
@@ -273,6 +277,19 @@ export default {
         }).catch(() => {
         	
         });
+	},
+	allotAuth(id){
+		var loading = this.loading('正在开通...');
+		this.postHttp(this,{id:id},"user/saveTeacherUser",function(o,res){
+			loading.close();
+			if(res.code == "10000"){
+				o.notify_success();
+				o.queryInfo();
+				o.$alert('开通账户成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+			}else{
+				o.notify_jr(o,'操作错误',res.message,'error');
+			}
+		})
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
