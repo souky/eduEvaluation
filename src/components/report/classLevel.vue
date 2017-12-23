@@ -40,9 +40,9 @@
 			<div class="body pt20">
 				<el-table class="borders" :data="schoolSelectBoxData" stripe style="width: 100%" header-row-class-name="table-header">
 					<el-table-column align="center" prop="name" label=""></el-table-column>
-					<el-table-column align="center" prop="class" label="班级"></el-table-column>
-					<el-table-column align="center" prop="school" label="学校"></el-table-column>
-					<el-table-column align="center" prop="area" label="地区"></el-table-column>
+					<el-table-column align="center" prop="classScore" label="班级"></el-table-column>
+					<el-table-column align="center" prop="schoolScore" label="学校"></el-table-column>
+					<el-table-column align="center" prop="regionScore" label="地区"></el-table-column>
 				</el-table>
 				<div class="body-foot">
 					<p>在本次考试中，本班级总分平均分高于校级平均分，高于区级平均分，表明本班级学生的整体水平要高于学校平均水平，高于区级水平，请继续保持。
@@ -68,9 +68,9 @@
 					<p>在本次考试中，本班级高分率、优秀率和良好率低于学校水平，合格率高于学校水平，请继续保持。本班不及格率高于学校水平，需要特别注意</p>
 				</div>
 				<div class="classSelectBox">
-					<el-select v-model="changeSchool" class="myselectS" placeholder="请选择">
+					<el-select v-model="changeSchool" @change="changeClassName1" class="myselectS" placeholder="请选择">
 						<el-option
-						v-for="item in schoolList"
+						v-for="item in schoolList1"
 						:key="item.id"
 						:label="item.classroomName"
 						:value="item.id">
@@ -191,9 +191,9 @@
 				</div>
 			</div>
 			<div class="classSelectBox">
-				<el-select v-model="changeSchool" class="myselectS" placeholder="请选择">
+				<el-select v-model="changeSchoolS" @change="changeClassName2" class="myselectS" placeholder="请选择">
 					<el-option
-					v-for="item in schoolList"
+					v-for="item in schoolList2"
 					:key="item.id"
 					:label="item.classroomName"
 					:value="item.id">
@@ -282,23 +282,23 @@
 				<el-table-column align="center" prop="date" label="对应题目"></el-table-column>
 			</el-table>
 			<div v-for="truetableData3 in truetableDatas">
-				<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.truetableData3" style="width: 100%">
+				<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.knowDetail" style="width: 100%">
 					<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
 					<el-table-column align="center" prop="knowledge" label="知识点"></el-table-column>
 					<el-table-column align="center" label="得分率%">
-						<el-table-column align="center" prop="classscore" label="班级"></el-table-column>
-						<el-table-column align="center" prop="schoolscore" label="校级"></el-table-column>
-						<el-table-column align="center" prop="areascore" label="区级"></el-table-column>
-						<el-table-column align="center" prop="difference" label="差值(相对于校级)"></el-table-column>
+						<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
+						<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
+						<el-table-column align="center" prop="divideAera" label="区级"></el-table-column>
+						<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)"></el-table-column>
 					</el-table-column>
-					<el-table-column align="center" prop="topic" label="对应题目"></el-table-column>
+					<el-table-column align="center" prop="qid" label="对应题目"></el-table-column>
 				</el-table>
 				<div class="knowledge-table-trueTotle">
 					<div class="knowledge-table-trueTotleBit"><p>总分:{{truetableData3.totle}}分</p></div>
 					<div class="knowledge-table-trueTotleBit"><p>得分:{{truetableData3.score}}分</p></div>
-					<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.class}}</p></div>
-					<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.school}}</p></div>
-					<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.area}}</p></div>
+					<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideClass}}</p></div>
+					<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideSchool}}</p></div>
+					<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideAera}}</p></div>
 				</div>
 			</div>
 		</div>
@@ -340,6 +340,7 @@ export default{
 			basicData:{
 				subject:'总分',
 				class:'',
+				anotherclass:'',
 				id:'',
 				topNum:50,
 				rateType:'',
@@ -435,75 +436,7 @@ export default{
 			},
 			scoreName:[],
 			falsetableData3:[],
-			truetableDatas:[{
-				truetableData3:[{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				}],
-				totle:30,
-				score:18,
-				class:45,
-				school:45,
-				area:34,
-			},{
-				truetableData3:[{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				}],
-				totle:30,
-				score:18,
-				class:45,
-				school:45,
-				area:34,	
-			}],
+			truetableDatas:[],
 			headerData:[{
 				name : '名次',
 				dataIndex:'subject1Score',
@@ -591,6 +524,7 @@ export default{
 				color:'#D070F3',
 			}],
 			changeSchool:'',
+			changeSchoolS:'',
 			schoolList:[{
 				id:'001',
 				name:'1班'
@@ -598,32 +532,9 @@ export default{
 				id:'002',
 				name:'2班'
 			}],
-			schoolSelectBoxData:[{
-				name:"平均分",
-				class:234,
-				school:456,
-				area:342,
-			},{
-				name:"最高分",
-				class:234,
-				school:456,
-				area:342,
-			},{
-				name:"最低分",
-				class:234,
-				school:456,
-				area:342,
-			},{
-				name:"分化程度",
-				class:"16.32%",
-				school:'32.34%',
-				area:'98.23%',
-			},{
-				name:"排名",
-				class:234,
-				school:456,
-				area:342,
-			}],
+			schoolList1:[],
+			schoolList2:[],
+			schoolSelectBoxData:[],
 			rankingList:[],
 			rankingListS:{
 				classStuNum:0,
@@ -802,11 +713,11 @@ export default{
 					radar: [
 					{
 						indicator: [
-						{text: '总分', max: 100},
-						{text: '语文', max: 100},
-						{text: '数学', max: 100},
-						{text: '英语', max: 100},
-						{text: '综合', max: 100}
+						{text: '总分', max: 1},
+						{text: '语文', max: 1},
+						{text: '数学', max: 1},
+						{text: '英语', max: 1},
+						{text: '综合', max: 1}
 						],
 						radius: 200,
 						center: ['50%','55%'],
@@ -922,352 +833,360 @@ export default{
 					}
 					]
 				},
-				optionTwoDimensionalAnalysis:{
+				optionTwoDimensionalAnalysisS:{
 					tooltip : {
 						padding: 10,
 						backgroundColor: '#222',
 						borderColor: '#777',
 						borderWidth: 1,
 						formatter:"",
-					},
-					xAxis : [
-					{
-						type : 'value',
-						scale:true,
-						min: 0.1,
-						max: 1,
-						interval: 0.1,
-					}
-					],
-					yAxis : [
-					{
-						type : 'value',
-						name:'得分率差距',
-						show: true,
-						nameLocation:'middle',
-						nameGap:50,
-						min: -100,
-						max: 100,
-						interval: 20,
-						axisLabel: {  
-							show: true,  
-							interval: 'auto',  
-							formatter: '{value} %'  
-						},
-					}
-					],
-					series : [
-					{
-						name:'sin',
-						type:'scatter',
-						symbolSize :[25,25],
-						large: true,
-						label:{normal:{show:true}},
-						markArea: {
-							silent: true,
-							data: [[{
-								xAxis: '0.1',
-								yAxis: '0',
-								itemStyle:{
-									normal:{color:'rgba(112,205,243,0.5)'},
-								}
-							}, {
-								xAxis: '0.4',
-								yAxis: '100',
-							}],[{
-								xAxis: '0.4',
-								yAxis: '0',
-								itemStyle:{
-									normal:{color:'rgba(145,218,249,0.5)'},
-								}
-							}, {
-								xAxis: '0.7',
-								yAxis: '100',
-							}],[{
-								xAxis: '0.7',
-								yAxis: '0',
-								itemStyle:{
-									normal:{color:'rgba(187,230,248,0.5)'},
-								}
-							}, {
-								xAxis: '1.0',
-								yAxis: '100',
-							}]]
-						},
-						itemStyle:{
-							normal:{color:'#FF8585'},
-						},
-						data:[[0.2,30,"客观题",5,1],[0.5,30,"客观题",3,2],[0.7,30,"客观题",3,3]]
-					},
-					{
-						name:'cos',
-						type:'scatter',
-						large: true,
-						symbolSize :[25,25],
-						label:{normal:{show:true}},
-						markArea: {
-							silent: true,
-							data: [[{
-								xAxis: '0.1',
-								yAxis: '0',
-								itemStyle:{
-									normal:{color:'rgba(255,210,68,0.5)'},
-								}
-							}, {
-								xAxis: '0.4',
-								yAxis: '-100',
-							}],[{
-								xAxis: '0.4',
-								yAxis: '0',
-								itemStyle:{
-									normal:{color:'rgba(255,226,133,0.5)'},
-								}
-							}, {
-								xAxis: '0.7',
-								yAxis: '-100',
-							}],[{
-								xAxis: '0.7',
-								yAxis: '0',
-								itemStyle:{
-									normal:{color:'rgba(253,234,175,0.5)'},
-								}
-							}, {
-								xAxis: '1.0',
-								yAxis: '-100',
-							}]]
-						},
-						itemStyle:{
-							normal:{color:'#A079D9'},
-						},
-						data:[[0.2,-30,"客观题",5,4],[0.5,-30,"客观题",3,5],[0.7,-30,"客观题",3,6]]
-					}
-					]
-				},
-				optionclassknowledge:{
-					tooltip: {
-						trigger: 'axis'
-					},
-					legend: {
-						x: 'center',
-						data:['班级','全校','全区县']
-					},
-					radar: [
-					{
-						indicator: [
-						{text: '函数', max: 100},
-						{text: '三角函数', max: 100},
-						{text: '圆锥曲线与方程', max: 100},
-						],
-						radius: 200,
-						center: ['50%','65%'],
-					}
-					],
-					series: [
-					{
-						type: 'radar',
-						data: [
-						{
-							name: '班级',
-							value: [23,43,54,65,23],
-							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
-						},
-						{
-							name:'全校',
-							value:[34,54,56,76,87],
-							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
-						},{
-							name:'全区县',
-							value:[34,34,56,76,87],
-							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
-						}
-						]
-					}
-					]
-				},
-				optionclassabilityAnalyze:{
-					tooltip: {
-						trigger: 'axis'
-					},
-					legend: {
-						x: 'center',
-						data:['班级','全校','全区县']
-					},
-					radar: [
-					{
-						indicator: [
-						{text: '空间想象能力', max: 100},
-						{text: '抽象概括能力', max: 100},
-						{text: '推理论证能力', max: 100},
-						{text: '运算求解能力', max: 100},
-						{text: '数据处理能力', max: 100},
-						{text: '综合应用能力', max: 100},
-						],
-						radius: 200,
-						center: ['50%','52%'],
-					}
-					],
-					series: [
-					{
-						type: 'radar',
-						data: [
-						{
-							name: '班级',
-							value: [23,43,54,65,23,43,78],
-							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
-						},
-						{
-							name:'全校',
-							value:[34,54,56,76,87,53,43],
-							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
-						},{
-							name:'全区县',
-							value:[34,34,56,76,87,42,57],
-							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
-						}
-						]
-					}
-					]
-				},
-				optionclassLastScore:{
-					tooltip: {
-						trigger: 'axis'
-					},
-					legend: {
-						data:['平均分']
-					},
-					grid: {
-						left: '3%',
-						right: '4%',
-						bottom: '3%',
-						containLabel: true
-					},
-					xAxis: {
-						type: 'category',
-						data: ['2017期末考试','2017期中考试','2016期末考试','2016期中考试','2015期末考试']
-					},
-					yAxis: {
-						type: 'value'
-					},
-					series: [
-					{
-						name:'平均分',
-						type:'line',
-						label:{normal:{show:true,position:'top'},},
-						itemStyle:{
-							normal:{color:'#70CDF3'},
-						},
-						data:[120, 132, 101, 134, 90]
-					}
-					]
-				},
-				optionclassLastStudents:{
-					tooltip: {
-						trigger: 'item',
-						formatter: "{a} <br/>{b}: {c} ({d}%)"
-					},
-					legend: {
-						data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
-					},
-					series: [
-					{
-						name:'数据',
-						type:'pie',
-						radius: [0, '60%'],
-						label: {
-							normal: {
-								position: 'inner'
-							}
-						},
-						labelLine: {
-							normal: {
-								show: false
-							}
-						},
-						data:[
-						{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-						{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-						{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-						{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-						{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
-						]
-					},
-					{
-						name:'对比班级',
-						type:'pie',
-						radius: ['70%', '85%'],
+				        /*formatter: function (obj) {
+				            var value = obj.value;
+				            return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+				                + '</div>' + "题型" + '：' + value[2] + '<br>'
+				                + "题号" + '：' + value[4] + '<br>'
+				                + "满分值" + '：' + value[3] + '<br>'
+				                + "得分率差距" + '：' + value[5] + '<br>'
+				            }*/
+				        },
+				        xAxis : [
+				        {
+				        	type : 'value',
+				        	scale:true,
+				        	min: 0.1,
+				        	max: 1,
+				        	interval: 0.1,
+				        }
+				        ],
+				        yAxis : [
+				        {
+				        	type : 'value',
+				        	name:'得分率差距',
+				        	show: true,
+				        	nameLocation:'middle',
+				        	nameGap:50,
+				        	min: -100,
+				        	max: 100,
+				        	interval: 20,
+				        	axisLabel: {  
+				        		show: true,  
+				        		interval: 'auto',  
+				        		formatter: '{value} %'  
+				        	},
+				        }
+				        ],
+				        series : [
+				        {
+				        	name:'sin',
+				        	type:'scatter',
+				        	symbolSize :[25,25],
+				        	large: true,
+				        	label:{normal:{show:true}},
+				        	markArea: {
+				        		silent: true,
+				        		data: [[{
+				        			xAxis: '0.1',
+				        			yAxis: '0',
+				        			itemStyle:{
+				        				normal:{color:'rgba(112,205,243,0.5)'},
+				        			}
+				        		}, {
+				        			xAxis: '0.4',
+				        			yAxis: '100',
+				        		}],[{
+				        			xAxis: '0.4',
+				        			yAxis: '0',
+				        			itemStyle:{
+				        				normal:{color:'rgba(145,218,249,0.5)'},
+				        			}
+				        		}, {
+				        			xAxis: '0.7',
+				        			yAxis: '100',
+				        		}],[{
+				        			xAxis: '0.7',
+				        			yAxis: '0',
+				        			itemStyle:{
+				        				normal:{color:'rgba(187,230,248,0.5)'},
+				        			}
+				        		}, {
+				        			xAxis: '1.0',
+				        			yAxis: '100',
+				        		}]]
+				        	},
+				        	itemStyle:{
+				        		normal:{color:'#FF8585'},
+				        	},
+				        	data:[[0.2,30,"客观题",5,1],[0.5,30,"客观题",3,2],[0.7,30,"客观题",3,3]]
+				        },
+				        {
+				        	name:'cos',
+				        	type:'scatter',
+				        	large: true,
+				        	symbolSize :[25,25],
+				        	label:{normal:{show:true}},
+				        	markArea: {
+				        		silent: true,
+				        		data: [[{
+				        			xAxis: '0.1',
+				        			yAxis: '0',
+				        			itemStyle:{
+				        				normal:{color:'rgba(255,210,68,0.5)'},
+				        			}
+				        		}, {
+				        			xAxis: '0.4',
+				        			yAxis: '-100',
+				        		}],[{
+				        			xAxis: '0.4',
+				        			yAxis: '0',
+				        			itemStyle:{
+				        				normal:{color:'rgba(255,226,133,0.5)'},
+				        			}
+				        		}, {
+				        			xAxis: '0.7',
+				        			yAxis: '-100',
+				        		}],[{
+				        			xAxis: '0.7',
+				        			yAxis: '0',
+				        			itemStyle:{
+				        				normal:{color:'rgba(253,234,175,0.5)'},
+				        			}
+				        		}, {
+				        			xAxis: '1.0',
+				        			yAxis: '-100',
+				        		}]]
+				        	},
+				        	itemStyle:{
+				        		normal:{color:'#A079D9'},
+				        	},
+				        	data:[[0.2,-30,"客观题",5,4],[0.5,-30,"客观题",3,5],[0.7,-30,"客观题",3,6]]
+				        }
+				        ]
+				    },
+				    optionclassknowledge:{
+				    	tooltip: {
+				    		trigger: 'axis'
+				    	},
+				    	legend: {
+				    		x: 'center',
+				    		data:['班级','全校','全区县']
+				    	},
+				    	radar: [
+				    	{
+				    		indicator: [
+				    		{text: '函数', max: 100},
+				    		{text: '三角函数', max: 100},
+				    		{text: '圆锥曲线与方程', max: 100},
+				    		],
+				    		radius: 200,
+				    		center: ['50%','65%'],
+				    	}
+				    	],
+				    	series: [
+				    	{
+				    		type: 'radar',
+				    		data: [
+				    		{
+				    			name: '班级',
+				    			value: [23,43,54,65,23],
+				    			itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
+				    		},
+				    		{
+				    			name:'全校',
+				    			value:[34,54,56,76,87],
+				    			itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
+				    		},{
+				    			name:'全区县',
+				    			value:[34,34,56,76,87],
+				    			itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
+				    		}
+				    		]
+				    	}
+				    	]
+				    },
+				    optionclassabilityAnalyze:{
+				    	tooltip: {
+				    		trigger: 'axis'
+				    	},
+				    	legend: {
+				    		x: 'center',
+				    		data:['班级','全校','全区县']
+				    	},
+				    	radar: [
+				    	{
+				    		indicator: [
+				    		{text: '空间想象能力', max: 100},
+				    		{text: '抽象概括能力', max: 100},
+				    		{text: '推理论证能力', max: 100},
+				    		{text: '运算求解能力', max: 100},
+				    		{text: '数据处理能力', max: 100},
+				    		{text: '综合应用能力', max: 100},
+				    		],
+				    		radius: 200,
+				    		center: ['50%','52%'],
+				    	}
+				    	],
+				    	series: [
+				    	{
+				    		type: 'radar',
+				    		data: [
+				    		{
+				    			name: '班级',
+				    			value: [23,43,54,65,23,43,78],
+				    			itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
+				    		},
+				    		{
+				    			name:'全校',
+				    			value:[34,54,56,76,87,53,43],
+				    			itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
+				    		},{
+				    			name:'全区县',
+				    			value:[34,34,56,76,87,42,57],
+				    			itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
+				    		}
+				    		]
+				    	}
+				    	]
+				    },
+				    optionclassLastScore:{
+				    	tooltip: {
+				    		trigger: 'axis'
+				    	},
+				    	legend: {
+				    		data:['平均分']
+				    	},
+				    	grid: {
+				    		left: '3%',
+				    		right: '4%',
+				    		bottom: '3%',
+				    		containLabel: true
+				    	},
+				    	xAxis: {
+				    		type: 'category',
+				    		data: ['2017期末考试','2017期中考试','2016期末考试','2016期中考试','2015期末考试']
+				    	},
+				    	yAxis: {
+				    		type: 'value'
+				    	},
+				    	series: [
+				    	{
+				    		name:'平均分',
+				    		type:'line',
+				    		label:{normal:{show:true,position:'top'},},
+				    		itemStyle:{
+				    			normal:{color:'#70CDF3'},
+				    		},
+				    		data:[120, 132, 101, 134, 90]
+				    	}
+				    	]
+				    },
+				    optionclassLastStudents:{
+				    	tooltip: {
+				    		trigger: 'item',
+				    		formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    	},
+				    	legend: {
+				    		data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
+				    	},
+				    	series: [
+				    	{
+				    		name:'数据',
+				    		type:'pie',
+				    		radius: [0, '60%'],
+				    		label: {
+				    			normal: {
+				    				position: 'inner'
+				    			}
+				    		},
+				    		labelLine: {
+				    			normal: {
+				    				show: false
+				    			}
+				    		},
+				    		data:[
+				    		{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
+				    		{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+				    		{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
+				    		{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+				    		{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+				    		]
+				    	},
+				    	{
+				    		name:'对比班级',
+				    		type:'pie',
+				    		radius: ['70%', '85%'],
 
-						data:[
-						{value:335,
-							label: {
-								normal: {
-									formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}}  {per|{d}%}  ',
-									backgroundColor: '#eee',
-									borderColor: '#aaa',
-									borderWidth: 1,
-									borderRadius: 4,
-									rich: {
-										a: {
-											color: '#999',
-											lineHeight: 22,
-											align: 'center'
-										},
-										hr: {
-											borderColor: '#aaa',
-											width: '100%',
-											borderWidth: 0.5,
-											height: 0
-										},
-										per: {
-											color: '#eee',
-											backgroundColor: '#334455',
-											padding: [2, 4],
-											borderRadius: 2
-										}
-									}
-								}
-							}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-							{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-							{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-							{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-							{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
-							]
-						}
-						]
+				    		data:[
+				    		{value:335,
+				    			label: {
+				    				normal: {
+				    					formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}}  {per|{d}%}  ',
+				    					backgroundColor: '#eee',
+				    					borderColor: '#aaa',
+				    					borderWidth: 1,
+				    					borderRadius: 4,
+				    					rich: {
+				    						a: {
+				    							color: '#999',
+				    							lineHeight: 22,
+				    							align: 'center'
+				    						},
+				    						hr: {
+				    							borderColor: '#aaa',
+				    							width: '100%',
+				    							borderWidth: 0.5,
+				    							height: 0
+				    						},
+				    						per: {
+				    							color: '#eee',
+				    							backgroundColor: '#334455',
+				    							padding: [2, 4],
+				    							borderRadius: 2
+				    						}
+				    					}
+				    				}
+				    			}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
+				    			{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+				    			{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
+				    			{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+				    			{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+				    			]
+				    		}
+				    		]
+				    	}
+				    }
+				},
+				created:function(){
+					this.data();
+					var childNum=Math.ceil(this.items.length/11);
+					var childs=[];
+					for(var l=0;l<childNum;l++){
+						var id=l+1;
+						var e=11*(l+1);
+						var s=e-11;
+						childs[l] = []
+						childs[l]["childs"]=this.items.slice(s,e);
+						childs[l]["id"] = id;
 					}
-				}
-			},
-			created:function(){
-				this.data();
-				var childNum=Math.ceil(this.items.length/11);
-				var childs=[];
-				for(var l=0;l<childNum;l++){
-					var id=l+1;
-					var e=11*(l+1);
-					var s=e-11;
-					childs[l] = []
-					childs[l]["childs"]=this.items.slice(s,e);
-					childs[l]["id"] = id;
-				}
-				this.subjects=childs;
+					this.subjects=childs;
 
-				this.optionTwoDimensionalAnalysis.tooltip.formatter=function (obj) {
-					var value = obj.value;
-					return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-					+ '</div>' + "题型" + '：' + value[2] + '<br>'
-					+ "题号" + '：' + value[4] + '<br>'
-					+ "满分值" + '：' + value[3] + '<br>'
-					+ "得分率差距" + '：' + value[1]+"%" + '<br>'
-				};
-			},
-			mounted:function(){
-				this.$refs.fristBit[0].className+=" on";
+					this.optionTwoDimensionalAnalysisS.tooltip.formatter=function (obj) {
+						var value = obj.value;
+						return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+						+ '</div>' + "题型" + '：' + value[2] + '<br>'
+						+ "题号" + '：' + value[4] + '<br>'
+						+ "满分值" + '：' + value[3] + '<br>'
+						+ "得分率差距" + '：' + value[1]+"%" + '<br>'
+					};
+				},
+				mounted:function(){
+					this.$refs.fristBit[0].className+=" on";
 				//this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
 				this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
 				//this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
 				//this.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(this.optionClassdisciplinesLevelRight);
 				this.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(this.optionstudentGradeDistribution);
-				this.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(this.optionClassScoreQuestion);
-				this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
+				//this.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(this.optionClassScoreQuestion);
+				this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysisS);
 				this.echarts.init(document.getElementById("classknowledge1")).setOption(this.optionclassknowledge);
 				this.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(this.optionclassabilityAnalyze);
 				var olouceng = document.getElementsByClassName("louceng");
@@ -1319,6 +1238,8 @@ export default{
 						obj.testList=res.result.exams;
 						obj.items=res.result[name].subject;
 						obj.schoolList=res.result[name].classroom;
+						obj.schoolList1=res.result[name].classroom;
+						obj.schoolList2=res.result[name].classroom;
 						obj.basicData.class=res.result[name].classroom[0].id;
 						obj.basicData.subject="总分";
 						obj.items.unshift(totle);
@@ -1395,6 +1316,7 @@ export default{
 						this.getTopOrgScoresInClass();
 						this.getClassRankingReport();
 						this.geReportCards();
+						this.getClassScoreReport();
 					}else{
 						var oNav = document.getElementById("navInside").getElementsByTagName("li");
 						for(var a = 0;a<oNav.length;a++){
@@ -1418,14 +1340,77 @@ export default{
 						this.getLevelDistribution();
 						this.ablityAnalysis();
 						this.knowAnalysis();
+						this.getClassScoreReport();
 					}
 				},
 				changeClassName(value){
 					this.basicData.class=value;
 					this.rainbow(0,0,"总分");
 				},
+				changeClassName1(value){
+					this.basicData.anotherclass=value;
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,classroomId:value},'score/getLevelDistribution',function(obj,res){
+						obj.optiongradeDistribution.legend.data=[];
+						obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
+						console.log(obj.optiongradeDistribution.series.length)
+						if(obj.optiongradeDistribution.series.length==3){
+							var list=[];
+							list.push(res.result[1].highRate* 1000000/10000);
+							list.push(res.result[1].excellentRate* 1000000/10000);
+							list.push(res.result[1].commissionRate* 1000000/10000);
+							list.push(res.result[1].passRate* 1000000/10000);
+							list.push(res.result[1].failureRate* 1000000/10000);
+							var arr={
+								"name":"对比班级",
+								"type":'bar',
+								"barWidth": '30%',	
+								"label":"{normal:{show:true,position:'top'},}",
+								"itemStyle":"{normal:{color:'#FF8585'},}",
+								"data":list
+							}
+							obj.optiongradeDistribution.series.push(arr);
+						}else{
+							obj.optiongradeDistribution.series[3].data=[];
+							obj.optiongradeDistribution.series[3].data.push(res.result[1].highRate* 1000000/10000);
+							obj.optiongradeDistribution.series[3].data.push(res.result[1].excellentRate* 1000000/10000);
+							obj.optiongradeDistribution.series[3].data.push(res.result[1].commissionRate* 1000000/10000);
+							obj.optiongradeDistribution.series[3].data.push(res.result[1].passRate* 1000000/10000);
+							obj.optiongradeDistribution.series[3].data.push(res.result[1].failureRate* 1000000/10000);
+						}
+						//obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
+					})
+				},
+				changeClassName2(value){
+					this.basicData.anotherclass=value;
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',subject:this.basicData.subject,classroomId:value,rateType:''},'score/getLevelDistribution',function(obj,res){
+						obj.optionclassLastStudents.series[0].data[0].value=obj.optionstudentGradeDistribution.series[0].data[0].value;
+						obj.optionclassLastStudents.series[0].data[1].value=obj.optionstudentGradeDistribution.series[0].data[1].value;
+						obj.optionclassLastStudents.series[0].data[2].value=obj.optionstudentGradeDistribution.series[0].data[2].value;
+						obj.optionclassLastStudents.series[0].data[3].value=obj.optionstudentGradeDistribution.series[0].data[3].value;
+						obj.optionclassLastStudents.series[0].data[4].value=obj.optionstudentGradeDistribution.series[0].data[4].value;
+						if(res.result.scoreVOList){
+							var num=0;
+							for(var i=0;i<res.result.scoreVOList.length;i++){
+								if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+									num=i;
+								}
+							}
+							obj.optionclassLastStudents.series[1].name=res.result.classroomName;
+							obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
+							obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
+							obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
+							obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
+							obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
+						}
+					})
+				},
+				getClassScoreReport:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassScoreReport',function(obj,res){
+						obj.schoolSelectBoxData=res.result;
+					})
+				},
 				geReportCards:function(){
-					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject},'score/geReportCards',function(obj,res){
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS'},'score/geReportCards',function(obj,res){
 						obj.optionClassdisciplinesLevel.xAxis[0].data=[];
 						obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
 						obj.optionClassdisciplinesLevel.series[0].data=[];
@@ -1439,7 +1424,7 @@ export default{
 						for(var i=0;i<res.result.subjectList.length;i++){
 							var arr={
 								"text":res.result.subjectList[i],
-								"max":100,
+								"max":1,
 							}
 							obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
 						}
@@ -1447,9 +1432,26 @@ export default{
 						obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
 					})
 				},
-				knowAnalysis:function(){//没写完
+				knowAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/knowAnalysis',function(obj,res){
-						
+						obj.truetableDatas=res.result;
+						obj.optionclassknowledge.series[0].data[0].value=[];
+						obj.optionclassknowledge.series[0].data[1].value=[];
+						obj.optionclassknowledge.series[0].data[2].value=[];
+						if(res.result){
+							document.getElementById("knowledge1").style.display="block";
+							if(res.result.length>=3){
+								for(var i=0;i<res.result.length;i++){
+									obj.optionclassknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
+									obj.optionclassknowledge.series[0].data[0].value.push(res.result[i].divideClass);
+									obj.optionclassknowledge.series[0].data[1].value.push(res.result[i].divideSchool);
+									obj.optionclassknowledge.series[0].data[2].value.push(res.result[i].divideAera);
+								}
+								obj.echarts.init(document.getElementById("classknowledge1")).setOption(obj.optionclassknowledge);
+							}else{
+								document.getElementById("knowledge1").style.display="none";
+							}
+						}
 					})
 				},
 				ablityAnalysis:function(){
@@ -1527,18 +1529,40 @@ export default{
 				},
 				testAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/testAnalysis',function(obj,res){
-						obj.testAnalysisTable=res.result;
+						obj.testAnalysisTable=res.result.listVO;
 						obj.optionClassScoreQuestion.xAxis[0].data=[];
 						obj.optionClassScoreQuestion.series[0].data=[];
 						obj.optionClassScoreQuestion.series[1].data=[];
 						obj.optionClassScoreQuestion.series[2].data=[];
-						for(var i=0;i<res.result.length;i++){
-							obj.optionClassScoreQuestion.xAxis[0].data.push(res.result[i].qid);
-							obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result[i].divideClass));
-							obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result[i].divideSchool));
-							obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result[i].divideAera));
-						}
+						obj.optionTwoDimensionalAnalysisS.series[0].data=[];
+						obj.optionTwoDimensionalAnalysisS.series[1].data=[];
+
+						for(var i=0;i<res.result.listVO.length;i++){
+							obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
+							obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result.listVO[i].divideClass));
+							obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result.listVO[i].divideSchool));
+							obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result.listVO[i].divideAera));
+							var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
+							if(number>=0){
+								var list=[];
+								list.push(res.result.listVO[i].difficulty);
+								list.push(number);
+								list.push(res.result.listVO[i].topic);
+								list.push(parseInt(res.result.listVO[i].fractionalValue));
+								list.push(parseInt(res.result.listVO[i].qid));
+								obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
+							}else{
+								var list1=[];
+								list1.push(res.result.listVO[i].difficulty);
+								list1.push(number);
+								list1.push(res.result.listVO[i].topic);
+								list1.push(parseInt(res.result.listVO[i].fractionalValue));
+								list1.push(parseInt(res.result.listVO[i].qid));
+								obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
+							}
+						}						
 						obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
+						obj.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysisS);
 					});
 				},
 				getTopOrgScoresInClass:function(){
@@ -1572,7 +1596,7 @@ export default{
 						obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
 					});
 				},
-				getClassRankingReport:function(){//有Bug没考试时接口500
+				getClassRankingReport:function(){
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
 						for(var i=0;i<res.result.classScoreList.length;i++){
 							res.result.classScoreList[i].subject1Score=i+1;
@@ -1649,79 +1673,18 @@ export default{
 					if(this.diaLoading){
 						setTimeout(function(){
 							selfs.diaLoading = false;
+							selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+								obj.optionclassLastScore.xAxis.data=[];
+								obj.optionclassLastScore.xAxis.data=res.result.examNameList;
+								obj.optionclassLastScore.series[0].data=[];
+								obj.optionclassLastScore.series[0].data=res.result.scoreAvgList;
 
-							selfs.echarts.init(document.getElementById("classLastScore")).setOption(selfs.optionclassLastScore);
+								obj.echarts.init(document.getElementById("classLastScore")).setOption(obj.optionclassLastScore);
+							})
 						},1000);
 					}
 				},
 				gradeDistributionshow(){
-					this.optiongradeDistribution={
-						tooltip: {
-							trigger: 'axis',
-						},
-						legend: {
-							data:['班级','对比班级','全校','全区县']
-						},
-						xAxis: [
-						{
-							type: 'category',
-							data: ['高分率','优秀率','良好率','合格率','不及格率'],
-							axisPointer: {
-								type: 'shadow'
-							}
-						}
-						],
-						yAxis: [
-						{
-							type: 'value',
-							show: true,
-							min: 0,
-							max: 100,
-							interval: 20,
-							name:'得分率/%',
-						},
-						],
-						series: [
-						{
-							name:'班级',
-							type:'bar',
-							barWidth: '30%',	
-							label:{normal:{show:true,position:'top'},},
-							itemStyle:{
-								normal:{color:'#46C4F8'},
-							},
-							data:[3.0, 3.9, 5.0, 22.2, 21.6]
-						},
-						{
-							name:'对比班级',
-							type:'bar',
-							barWidth: '30%',	
-							label:{normal:{show:true,position:'top'},},
-							itemStyle:{
-								normal:{color:'#FF8585'},
-							},
-							data:[2.0, 4.9, 7.0, 23.2, 25.6]
-						},
-						{
-							name:'全校',
-							type:'line',
-							label:{normal:{show:true,position:'top'},},
-							itemStyle:{
-								normal:{color:'#FFD244'},
-							},
-							data:[2.6, 5.9, 9.0, 26.4, 28.7]
-						},
-						{
-							name:'全区县',
-							type:'line',
-							label:{normal:{show:true,position:'top'},},
-							itemStyle:{
-								normal:{color:'#919191'},
-							},
-							data:[2.0, 2.2, 3.3, 4.5, 6.3]
-						}
-						]
-					}
 					this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
 				},
 				classLastStudentsshow(){
@@ -1747,7 +1710,7 @@ export default{
 					if (columnIndex === 0) {
 						if (rowIndex === 0) {
 							return {
-								rowspan: row.qwe,
+								rowspan: row.knowledgeNum,
 								colspan: 1
 							};
 						} else {
