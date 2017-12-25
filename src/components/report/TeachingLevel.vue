@@ -363,9 +363,6 @@ export default {
 				    		}
 			        });
 					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getLevelDistribution",function(objs,data){
-			    	   	if(data.result[1].subject == undefined){
-			    	   		var data1 = [0,0,0,0,0]
-			    	   	}else{
 			    	   		
 			    	   		for(var a of data.result){
 			    	   			if(a.subject==objs.subname){
@@ -374,10 +371,13 @@ export default {
 			    	   					objs.initPrate(a.commissionRate),
 			    	   					objs.initPrate(a.passRate),
 			    	   					objs.initPrate(a.failureRate)];
+			    	   					break
+			    	   			}else{
+			    	   				var data1 = [0,0,0,0,0]
 			    	   			}
 			    	   		}
 							
-			    	   	}
+			    	   	
 			    	   objs.option1.series[0].data = data1;
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
@@ -423,6 +423,7 @@ export default {
 				obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/getEachSubjectLevelDistribution",function(objs,data){
 					var xAxisD = [];var highRates;var excellentRates;
 					var commissionRates;var passRates;var failureRates;
+					var xDatas = [];
 		    	   	if(data.result=="没有最近一次考试的相关数据"){
 		    	   		objs.option6.xAxis.data =[];
 		    	   		objs.option6.xAxis.data=objs.classroom;
@@ -440,14 +441,16 @@ export default {
 						highRates=[];excellentRates=[];
 		    	   		commissionRates=[];passRates=[];
 		    	   		failureRates=[];objs.option6.xAxis.data =[];
+		    	   		xDatas = [];
 		    	   		for(var a of data.result.classScoreVOList){
 		    	   			highRates.push(objs.initPrate(a.highRate));
 		    	   			excellentRates.push(objs.initPrate(a.excellentRate));
 		    	   			commissionRates.push(objs.initPrate(a.commissionRate));
 		    	   			passRates.push(objs.initPrate(a.passRate));
-		    	   			failureRates.push(objs.initPrate(a.failureRate))
+		    	   			failureRates.push(objs.initPrate(a.failureRate));
+		    	   			xDatas.push(a.classroomName);
 						}
-						objs.option6.xAxis.data=objs.classroom;
+						objs.option6.xAxis.data=xDatas;
 						objs.option6.series[0].data = highRates;
 		    	   		objs.option6.series[1].data = excellentRates;
 		    	   		objs.option6.series[2].data = commissionRates;
@@ -496,11 +499,18 @@ export default {
     	},
     	alertas:function(){
     		var selfs = this;
+
     		if(this.diaLoading){
     			setTimeout(function(){
 	    			selfs.diaLoading = false;
-
-		    		selfs.echarts.init(document.getElementById("compareTestChart")).setOption(selfs.option5);
+					selfs.postHttp(selfs,{tab:'TEACHING_REPORT',examId:selfs.testid},"score/compareExamScores",function(objs,data){
+					    			objs.option5.series[0].data = [];
+									objs.option5.series[0].data=data.result.scoreAvgList;
+									objs.option5.xAxis[0].data = [];
+									objs.option5.xAxis[0].data=data.result.examNameList;
+									objs.echarts.init(document.getElementById("compareTestChart")).setOption(objs.option5);
+					});
+		    		
 	    		},1000);
     		}
     		
@@ -540,9 +550,6 @@ export default {
 				}
 			});
 			this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getLevelDistribution",function(objs,data){
-			    	   	if(data.result[1].subject == undefined){
-			    	   		var data1 = [0,0,0,0,0]
-			    	   	}else{
 			    	   		for(var a of data.result){
 			    	   			if(a.subject==name){
 			    	   				var data1 = [objs.initPrate(a.highRate),
@@ -550,10 +557,13 @@ export default {
 			    	   					objs.initPrate(a.commissionRate),
 			    	   					objs.initPrate(a.passRate),
 			    	   					objs.initPrate(a.failureRate)];
+			    	   					break;
+			    	   			}else{
+			    	   				var data1 = [0,0,0,0,0]
 			    	   			}
 			    	   		}
 							
-			    	   	}
+			    	   	
 			    	   objs.option1.series[0].data = data1;
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
@@ -596,6 +606,45 @@ export default {
 	           objs.option3.series[6].data = data1000;
 	           objs.echarts.init(document.getElementById("topComparedChart")).setOption(objs.option3);
 	        });
+	        this.postHttp(this,{tab:'TEACHING_REPORT',examId:this.testid,subject:name},"score/getEachSubjectLevelDistribution",function(objs,data){
+					var xAxisD = [];var highRates;var excellentRates;
+					var commissionRates;var passRates;var failureRates;
+					var xDaras = [];
+		    	   	if(data.result=="没有最近一次考试的相关数据"){
+		    	   		objs.option6.xAxis.data =[];
+		    	   		objs.option6.xAxis.data=objs.classroom;
+		    	   		objs.option6.xAxis.data.unshift("全校");
+		    	   		for(var a of objs.classroom){
+		    	   			xAxisD.push(0)
+		    	   		}
+		    	   		objs.option6.series[0].data = xAxisD;
+		    	   		objs.option6.series[1].data = xAxisD;
+		    	   		objs.option6.series[2].data = xAxisD;
+		    	   		objs.option6.series[3].data = xAxisD;
+		    	   		objs.option6.series[4].data = xAxisD;
+						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
+		    	   	}else{
+						highRates=[];excellentRates=[];
+		    	   		commissionRates=[];passRates=[];
+		    	   		failureRates=[];objs.option6.xAxis.data =[];xDaras = [];
+		    	   		for(var a of data.result.classScoreVOList){
+		    	   			highRates.push(objs.initPrate(a.highRate));
+		    	   			excellentRates.push(objs.initPrate(a.excellentRate));
+		    	   			commissionRates.push(objs.initPrate(a.commissionRate));
+		    	   			passRates.push(objs.initPrate(a.passRate));
+		    	   			failureRates.push(objs.initPrate(a.failureRate));
+		    	   			xDaras.push(a.classroomName);
+						}
+						
+						objs.option6.xAxis.data = xDaras;
+						objs.option6.series[0].data = highRates;
+		    	   		objs.option6.series[1].data = excellentRates;
+		    	   		objs.option6.series[2].data = commissionRates;
+		    	   		objs.option6.series[3].data = passRates;
+		    	   		objs.option6.series[4].data = failureRates;
+						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
+		    	   	}
+		        });
 		},
     	compareSchool:function(){
     	},

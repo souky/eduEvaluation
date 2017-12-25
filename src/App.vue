@@ -16,6 +16,7 @@
     mounted:function(){
       var height = document.documentElement.clientHeight;
       document.getElementById("app").style.minHeight = height+"px";
+      
   	},
   	methods:{
       goToDetail:function(item){
@@ -26,6 +27,15 @@
         }else{
           this.$refs.BHeader.handleParentClick("other");
         }
+      },
+      getLoginUser:function(){
+        this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+          if(data.code=="60000"||data.code=="50000"||data.code=="11111"){
+              
+          }else{
+              
+          }
+        });
       }
   	}
 	}
