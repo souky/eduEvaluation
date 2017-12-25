@@ -795,7 +795,7 @@ export default {
             }
         },
          legend: {
-            data:['第一次考试','第二次考试','第三次考试','第四次考试']
+            data:['班级平均分']
         },
         calculable : true,
         xAxis: [

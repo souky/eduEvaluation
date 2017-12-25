@@ -53,6 +53,9 @@ export default {
   	//判断cookie登陆信息初始化
   	this.getLoginUser();
   },
+  watch:{
+    '$route':'getLoginUser'
+  },
   methods:{
   	handleParentClick(e){
   		this.isShow=e;
@@ -60,11 +63,15 @@ export default {
   	//退出登陆操作
   	loginOut(){
   		//页面跳转
-  		 this.$router.push({path:'/'});
+      this.postHttp(this,'',"/logout",function(obj,data){
+          obj.$router.push({path:'/login'});
+      });
+  		 
   	},
-    getLoginUser:function(){
+    getLoginUser(){
       this.postHttp(this,'',"user/getLoginUser",function(obj,data){
         obj.username = data.result.userName;
+        console.log("23");
       });
     }
   }

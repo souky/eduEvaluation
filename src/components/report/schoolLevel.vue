@@ -375,6 +375,7 @@ export default {
 			this.postHttp(this,needData,"score/getEachClassLevelDistribution",function(obj,data){
 				var xAxisD = [];var highRates;var excellentRates;
 				var commissionRates;var passRates;var failureRates;
+				var xdatas = [];
 	    	   	if(data.result=="没有最近一次考试的相关数据"){
 	    	   		obj.option5.xAxis.data =[];
 	    	   		obj.option5.xAxis.data=obj.classroom;
@@ -392,14 +393,16 @@ export default {
 	    	   		highRates=[];excellentRates=[];
 	    	   		commissionRates=[];passRates=[];
 	    	   		failureRates=[];obj.option5.xAxis.data =[];
+	    	   		xdatas=[];
 	    	   		for(var a of data.result){
-	    	   			highRates.push(a.highRate);
-	    	   			excellentRates.push(a.excellentRate);
-	    	   			commissionRates.push(a.commissionRate);
-	    	   			passRates.push(a.passRate);
-	    	   			failureRates.push(a.failureRate)
+	    	   			highRates.push(obj.initPrate(a.highRate));
+	    	   			excellentRates.push(obj.initPrate(a.excellentRate));
+	    	   			commissionRates.push(obj.initPrate(a.commissionRate));
+	    	   			passRates.push(obj.initPrate(a.passRate));
+	    	   			failureRates.push(obj.initPrate(a.failureRate));
+	    	   			xdatas.push(a.classroomName)
 					}
-					obj.option5.xAxis.data=obj.classroom;
+					obj.option5.xAxis.data=xdatas;
 					obj.option5.series[0].data = highRates;
 	    	   		obj.option5.series[1].data = excellentRates;
 	    	   		obj.option5.series[2].data = commissionRates;

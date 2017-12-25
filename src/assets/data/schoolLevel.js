@@ -517,7 +517,7 @@ export default {
             },
             yAxis: {
                type: 'value',
-               max:1
+               name:'百分比%'
             },
             series: [
             {
