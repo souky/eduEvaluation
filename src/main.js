@@ -39,7 +39,9 @@ var baseUrl = "http://192.168.1.213:8080/edu-system/"
  * fn : 成功返回方法  带参数  obj,data  obj : this data : response
  * */
 Vue.prototype.postHttp = function(obj,data,address,fn){
-	obj.$axios.post(baseUrl+address,querystring.stringify(data),{withCredentials : true}).then(response => {
+	var dates = new Date();
+	dates = dates.getTime();
+	obj.$axios.post(baseUrl+address+"?jy_pc_viewer&timer="+dates,querystring.stringify(data),{withCredentials : true}).then(response => {
   		if(response.data.code == "60000" || response.data.code == "50000" || response.data.code=="11111"){
   			obj.$router.push({ path: '/login' });
   		}else{

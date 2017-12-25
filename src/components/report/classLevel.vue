@@ -659,7 +659,7 @@ export default{
 				    },
 				    grid: {
 				    	left: '3%',
-				    	right: '4%',
+				    	right: '6%',
 				    	bottom: '3%',
 				    	containLabel: true
 				    },
@@ -1091,7 +1091,7 @@ export default{
 				    	{
 				    		name:'数据',
 				    		type:'pie',
-				    		radius: [0, '60%'],
+				    		radius: [0, '45%'],
 				    		label: {
 				    			normal: {
 				    				position: 'inner'
@@ -1113,7 +1113,7 @@ export default{
 				    	{
 				    		name:'对比班级',
 				    		type:'pie',
-				    		radius: ['70%', '85%'],
+				    		radius: ['55%', '70%'],
 
 				    		data:[
 				    		{value:335,
@@ -1181,14 +1181,14 @@ export default{
 				mounted:function(){
 					this.$refs.fristBit[0].className+=" on";
 				//this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
-				this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
+				//this.echarts.init(document.getElementById("ranking1")).setOption(this.optionranking);
 				//this.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(this.optionClassdisciplinesLevel);
 				//this.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(this.optionClassdisciplinesLevelRight);
-				this.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(this.optionstudentGradeDistribution);
+				//this.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(this.optionstudentGradeDistribution);
 				//this.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(this.optionClassScoreQuestion);
-				this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysisS);
-				this.echarts.init(document.getElementById("classknowledge1")).setOption(this.optionclassknowledge);
-				this.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(this.optionclassabilityAnalyze);
+				//this.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysisS);
+				//this.echarts.init(document.getElementById("classknowledge1")).setOption(this.optionclassknowledge);
+				//this.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(this.optionclassabilityAnalyze);
 				var olouceng = document.getElementsByClassName("louceng");
 				var oNav = document.getElementById("navInside").getElementsByTagName("li");
 				var olouceng1 = document.getElementsByClassName("louceng1");
@@ -1227,7 +1227,11 @@ export default{
 			methods:{
 				data:function(){
 					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
-						obj.testList=res.result.exams;
+						if(res.code == '10000'){
+							obj.testList=res.result.exams;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
 					});
 				},
 				testChange(e){
@@ -1235,37 +1239,41 @@ export default{
 					this.basicData.id=name;
 					var totle={createDate:1512647749000,createUser:"1",id:"0",isDelete:0,orgId:"",remark:"",schoolId:"",subjectCode:1,subjectColor:"#F37070",subjectName:"总分",updateDate:1513586055000};
 					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
-						obj.testList=res.result.exams;
-						obj.items=res.result[name].subject;
-						obj.schoolList=res.result[name].classroom;
-						obj.schoolList1=res.result[name].classroom;
-						obj.schoolList2=res.result[name].classroom;
-						obj.basicData.class=res.result[name].classroom[0].id;
-						obj.basicData.subject="总分";
-						obj.items.unshift(totle);
-						var childNum=Math.ceil(obj.items.length/11);
-						var childs=[];
-						for(var l=0;l<childNum;l++){
-							var id=l+1;
-							var e=11*(l+1);
-							var s=e-11;
-							childs[l] = []
-							childs[l]["childs"]=obj.items.slice(s,e);
-							childs[l]["id"] = id;
-						}
-						obj.subjects=childs;
-						obj.headerData=[];
-						for(var p=0;p<obj.SheaderData.length;p++){
-							obj.headerData.push(obj.SheaderData[p])
-						}
-						for(var q=5;q<parseInt(res.result[name].subject.length)+4;q++){
-							var arr={
-								"name":res.result[name].subject[q-4].subjectName,
-								"dataIndex":"code"+res.result[name].subject[q-4].id,
+						if(res.code == '10000'){
+							obj.testList=res.result.exams;
+							obj.items=res.result[name].subject;
+							obj.schoolList=res.result[name].classroom;
+							obj.schoolList1=res.result[name].classroom;
+							obj.schoolList2=res.result[name].classroom;
+							obj.basicData.class=res.result[name].classroom[0].id;
+							obj.basicData.subject="总分";
+							obj.items.unshift(totle);
+							var childNum=Math.ceil(obj.items.length/11);
+							var childs=[];
+							for(var l=0;l<childNum;l++){
+								var id=l+1;
+								var e=11*(l+1);
+								var s=e-11;
+								childs[l] = []
+								childs[l]["childs"]=obj.items.slice(s,e);
+								childs[l]["id"] = id;
 							}
-							obj.headerData.push(arr);
+							obj.subjects=childs;
+							obj.headerData=[];
+							for(var p=0;p<obj.SheaderData.length;p++){
+								obj.headerData.push(obj.SheaderData[p])
+							}
+							for(var q=5;q<parseInt(res.result[name].subject.length)+4;q++){
+								var arr={
+									"name":res.result[name].subject[q-4].subjectName,
+									"dataIndex":"code"+res.result[name].subject[q-4].id,
+								}
+								obj.headerData.push(arr);
+							}
+							obj.rainbow(0,0,"总分");
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.rainbow(0,0,"总分");
 					});
 					
 				}, 
@@ -1350,225 +1358,262 @@ export default{
 				changeClassName1(value){
 					this.basicData.anotherclass=value;
 					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,classroomId:value},'score/getLevelDistribution',function(obj,res){
-						obj.optiongradeDistribution.legend.data=[];
-						obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
-						console.log(obj.optiongradeDistribution.series.length)
-						if(obj.optiongradeDistribution.series.length==3){
-							var list=[];
-							list.push(res.result[1].highRate* 1000000/10000);
-							list.push(res.result[1].excellentRate* 1000000/10000);
-							list.push(res.result[1].commissionRate* 1000000/10000);
-							list.push(res.result[1].passRate* 1000000/10000);
-							list.push(res.result[1].failureRate* 1000000/10000);
-							var arr={
-								"name":"对比班级",
-								"type":'bar',
-								"barWidth": '30%',	
-								"label":"{normal:{show:true,position:'top'},}",
-								"itemStyle":"{normal:{color:'#FF8585'},}",
-								"data":list
+						if(res.code == '10000'){
+							obj.optiongradeDistribution.legend.data=[];
+							obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
+							console.log(obj.optiongradeDistribution.series.length)
+							if(obj.optiongradeDistribution.series.length==3){
+								var list=[];
+								list.push(res.result[1].highRate* 1000000/10000);
+								list.push(res.result[1].excellentRate* 1000000/10000);
+								list.push(res.result[1].commissionRate* 1000000/10000);
+								list.push(res.result[1].passRate* 1000000/10000);
+								list.push(res.result[1].failureRate* 1000000/10000);
+								var arr={
+									"name":"对比班级",
+									"type":'bar',
+									"barWidth": '30%',	
+									"label":"{normal:{show:true,position:'top'},}",
+									"itemStyle":"{normal:{color:'#FF8585'},}",
+									"data":list
+								}
+								obj.optiongradeDistribution.series.push(arr);
+							}else{
+								obj.optiongradeDistribution.series[3].data=[];
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].highRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].excellentRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].commissionRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].passRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].failureRate* 1000000/10000);
 							}
-							obj.optiongradeDistribution.series.push(arr);
-						}else{
-							obj.optiongradeDistribution.series[3].data=[];
-							obj.optiongradeDistribution.series[3].data.push(res.result[1].highRate* 1000000/10000);
-							obj.optiongradeDistribution.series[3].data.push(res.result[1].excellentRate* 1000000/10000);
-							obj.optiongradeDistribution.series[3].data.push(res.result[1].commissionRate* 1000000/10000);
-							obj.optiongradeDistribution.series[3].data.push(res.result[1].passRate* 1000000/10000);
-							obj.optiongradeDistribution.series[3].data.push(res.result[1].failureRate* 1000000/10000);
-						}
 						//obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
-					})
+					}else{
+						obj.notify_jr(obj,'错误提示',res.message,'error');
+					}
+				})
 				},
 				changeClassName2(value){
 					this.basicData.anotherclass=value;
 					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',subject:this.basicData.subject,classroomId:value,rateType:''},'score/getLevelDistribution',function(obj,res){
-						obj.optionclassLastStudents.series[0].data[0].value=obj.optionstudentGradeDistribution.series[0].data[0].value;
-						obj.optionclassLastStudents.series[0].data[1].value=obj.optionstudentGradeDistribution.series[0].data[1].value;
-						obj.optionclassLastStudents.series[0].data[2].value=obj.optionstudentGradeDistribution.series[0].data[2].value;
-						obj.optionclassLastStudents.series[0].data[3].value=obj.optionstudentGradeDistribution.series[0].data[3].value;
-						obj.optionclassLastStudents.series[0].data[4].value=obj.optionstudentGradeDistribution.series[0].data[4].value;
-						if(res.result.scoreVOList){
-							var num=0;
-							for(var i=0;i<res.result.scoreVOList.length;i++){
-								if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-									num=i;
+						if(res.code == '10000'){
+							obj.optionclassLastStudents.series[0].data[0].value=obj.optionstudentGradeDistribution.series[0].data[0].value;
+							obj.optionclassLastStudents.series[0].data[1].value=obj.optionstudentGradeDistribution.series[0].data[1].value;
+							obj.optionclassLastStudents.series[0].data[2].value=obj.optionstudentGradeDistribution.series[0].data[2].value;
+							obj.optionclassLastStudents.series[0].data[3].value=obj.optionstudentGradeDistribution.series[0].data[3].value;
+							obj.optionclassLastStudents.series[0].data[4].value=obj.optionstudentGradeDistribution.series[0].data[4].value;
+							if(res.result.scoreVOList){
+								var num=0;
+								for(var i=0;i<res.result.scoreVOList.length;i++){
+									if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+										num=i;
+									}
 								}
+								obj.optionclassLastStudents.series[1].name=res.result.classroomName;
+								obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
+								obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
+								obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
+								obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
+								obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
 							}
-							obj.optionclassLastStudents.series[1].name=res.result.classroomName;
-							obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
-							obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
-							obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
-							obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
-							obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
 					})
 				},
 				getClassScoreReport:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassScoreReport',function(obj,res){
-						obj.schoolSelectBoxData=res.result;
+						if(res.code == '10000'){
+							obj.schoolSelectBoxData=res.result;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
 					})
 				},
 				geReportCards:function(){
 					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS'},'score/geReportCards',function(obj,res){
-						obj.optionClassdisciplinesLevel.xAxis[0].data=[];
-						obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
-						obj.optionClassdisciplinesLevel.series[0].data=[];
-						obj.optionClassdisciplinesLevel.series[0].data=res.result.standardScoreList;
-						obj.optionClassdisciplinesLevel.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-						obj.optionClassdisciplinesLevelRight.series[0].data[0].value=[];
-						obj.optionClassdisciplinesLevelRight.series[0].data[1].value=[];
-						obj.optionClassdisciplinesLevelRight.series[0].data[0].value=res.result.classAvgScoreList;
-						obj.optionClassdisciplinesLevelRight.series[0].data[1].value=res.result.schoolAvgScoreList;
-						obj.optionClassdisciplinesLevelRight.radar[0].indicator=[];
-						for(var i=0;i<res.result.subjectList.length;i++){
-							var arr={
-								"text":res.result.subjectList[i],
-								"max":1,
+						if(res.code == '10000'){
+							obj.optionClassdisciplinesLevel.xAxis[0].data=[];
+							obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
+							obj.optionClassdisciplinesLevel.series[0].data=[];
+							obj.optionClassdisciplinesLevel.series[0].data=res.result.standardScoreList;
+							obj.optionClassdisciplinesLevel.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+							obj.optionClassdisciplinesLevelRight.series[0].data[0].value=[];
+							obj.optionClassdisciplinesLevelRight.series[0].data[1].value=[];
+							obj.optionClassdisciplinesLevelRight.series[0].data[0].value=res.result.classAvgScoreList;
+							obj.optionClassdisciplinesLevelRight.series[0].data[1].value=res.result.schoolAvgScoreList;
+							obj.optionClassdisciplinesLevelRight.radar[0].indicator=[];
+							for(var i=0;i<res.result.subjectList.length;i++){
+								var arr={
+									"text":res.result.subjectList[i],
+									"max":1,
+								}
+								obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
 							}
-							obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
+							obj.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(obj.optionClassdisciplinesLevelRight);
+							obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(obj.optionClassdisciplinesLevelRight);
-						obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
 					})
 				},
 				knowAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/knowAnalysis',function(obj,res){
-						obj.truetableDatas=res.result;
-						obj.optionclassknowledge.series[0].data[0].value=[];
-						obj.optionclassknowledge.series[0].data[1].value=[];
-						obj.optionclassknowledge.series[0].data[2].value=[];
-						if(res.result){
-							document.getElementById("knowledge1").style.display="block";
-							if(res.result.length>=3){
-								for(var i=0;i<res.result.length;i++){
-									obj.optionclassknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
-									obj.optionclassknowledge.series[0].data[0].value.push(res.result[i].divideClass);
-									obj.optionclassknowledge.series[0].data[1].value.push(res.result[i].divideSchool);
-									obj.optionclassknowledge.series[0].data[2].value.push(res.result[i].divideAera);
+						if(res.code == '10000'){
+							obj.truetableDatas=res.result;
+							obj.optionclassknowledge.series[0].data[0].value=[];
+							obj.optionclassknowledge.series[0].data[1].value=[];
+							obj.optionclassknowledge.series[0].data[2].value=[];
+							if(res.result){
+								document.getElementById("classknowledge1").style.display="block";
+								if(res.result.length>=3){
+									for(var i=0;i<res.result.length;i++){
+										obj.optionclassknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
+										obj.optionclassknowledge.series[0].data[0].value.push(res.result[i].divideClass);
+										obj.optionclassknowledge.series[0].data[1].value.push(res.result[i].divideSchool);
+										obj.optionclassknowledge.series[0].data[2].value.push(res.result[i].divideAera);
+									}
+									obj.echarts.init(document.getElementById("classknowledge1")).setOption(obj.optionclassknowledge);
+								}else{
+									document.getElementById("classknowledge1").style.display="none";
 								}
-								obj.echarts.init(document.getElementById("classknowledge1")).setOption(obj.optionclassknowledge);
-							}else{
-								document.getElementById("knowledge1").style.display="none";
 							}
+						}else{
+							document.getElementById("classknowledge1").style.display="none";
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
 					})
 				},
 				ablityAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/ablityAnalysis',function(obj,res){
-						obj.scoreName=res.result;
-						obj.optionclassabilityAnalyze.series[0].data[0].value=[];
-						obj.optionclassabilityAnalyze.series[0].data[1].value=[];
-						obj.optionclassabilityAnalyze.series[0].data[2].value=[];
-						for(var i=0;i<res.result.length;i++){
-							obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result[i].divideClass)
-							obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result[i].divideSchool)
-							obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result[i].divideAera)
+						if(res.code == '10000'){
+							obj.scoreName=res.result;
+							obj.optionclassabilityAnalyze.series[0].data[0].value=[];
+							obj.optionclassabilityAnalyze.series[0].data[1].value=[];
+							obj.optionclassabilityAnalyze.series[0].data[2].value=[];
+							for(var i=0;i<res.result.length;i++){
+								obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result[i].divideClass)
+								obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result[i].divideSchool)
+								obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result[i].divideAera)
+							}
+							obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
 					})
 				},
 				getLevelDistribution:function(){
 					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
-						var type=(typeof res.result);
-						if(type=="string"){
-							obj.optiongradeDistribution.series[0].data=[];
-							obj.optiongradeDistribution.series[1].data=[];
-							obj.optiongradeDistribution.series[2].data=[];
-							obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
-						}else{
-							if(obj.basicData.subject=="总分"){
-								if(res.result[0].scoreLevel=="SCHOOL"){
-									obj.optiongradeDistribution.series[1].data=[];
-									obj.optiongradeDistribution.series[1].data.push(res.result[0].highRate * 1000000/10000);
-									obj.optiongradeDistribution.series[1].data.push(res.result[0].excellentRate * 1000000/10000);
-									obj.optiongradeDistribution.series[1].data.push(res.result[0].commissionRate * 1000000/10000);
-									obj.optiongradeDistribution.series[1].data.push(res.result[0].passRate * 1000000/10000);
-									obj.optiongradeDistribution.series[1].data.push(res.result[0].failureRate * 1000000/10000);
-
-									obj.optiongradeDistribution.series[2].data=[];
-									obj.optiongradeDistribution.series[2].data.push(res.result[0].highRate * 1000000/10000);
-									obj.optiongradeDistribution.series[2].data.push(res.result[0].excellentRate * 1000000/10000);
-									obj.optiongradeDistribution.series[2].data.push(res.result[0].commissionRate * 1000000/10000);
-									obj.optiongradeDistribution.series[2].data.push(res.result[0].passRate * 1000000/10000);
-									obj.optiongradeDistribution.series[2].data.push(res.result[0].failureRate * 1000000/10000);
-								}
-								if(res.result[1].scoreLevel=="CLASS"){
-									obj.optiongradeDistribution.series[0].data=[];
-									obj.optiongradeDistribution.series[0].data.push(res.result[1].highRate * 1000000/10000);
-									obj.optiongradeDistribution.series[0].data.push(res.result[1].excellentRate * 1000000/10000);
-									obj.optiongradeDistribution.series[0].data.push(res.result[1].commissionRate * 1000000/10000);
-									obj.optiongradeDistribution.series[0].data.push(res.result[1].passRate * 1000000/10000);
-									obj.optiongradeDistribution.series[0].data.push(res.result[1].failureRate * 1000000/10000);
-								}
+						if(res.code == '10000'){
+							var type=(typeof res.result);
+							if(type=="string"){
+								obj.optiongradeDistribution.series[0].data=[];
+								obj.optiongradeDistribution.series[1].data=[];
+								obj.optiongradeDistribution.series[2].data=[];
 								obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
 							}else{
-								if(res.result.scoreVOList){
-									var num=0;
-									for(var i=0;i<res.result.scoreVOList.length;i++){
-										if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-											num=i;
-										}
+								if(obj.basicData.subject=="总分"){
+									if(res.result[0].scoreLevel=="SCHOOL"){
+										obj.optiongradeDistribution.series[1].data=[];
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].failureRate * 1000000/10000);
+
+										obj.optiongradeDistribution.series[2].data=[];
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].failureRate * 1000000/10000);
 									}
-									obj.studentTotle=res.result.scoreVOList[num].fullMarks;
-									obj.studentTotleNum=res.result.stuNum;
-									obj.optionstudentGradeDistribution.series[0].data[0].value=res.result.scoreVOList[num].highRate;
-									obj.optionstudentGradeDistribution.series[0].data[1].value=res.result.scoreVOList[num].excellentRate;
-									obj.optionstudentGradeDistribution.series[0].data[2].value=res.result.scoreVOList[num].commissionRate;
-									obj.optionstudentGradeDistribution.series[0].data[3].value=res.result.scoreVOList[num].passRate;
-									obj.optionstudentGradeDistribution.series[0].data[4].value=res.result.scoreVOList[num].failureRate;
-									obj.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(obj.optionstudentGradeDistribution);
-									obj.studentGradeDistributionList=res.result.stuScoreList;
-									obj.studentGradeheader.startScore=res.result.startScore;
-									obj.studentGradeheader.endScore=res.result.endScore;
-									obj.studentGradeheader.number=res.result.stuScoreList.length;
+									if(res.result[1].scoreLevel=="CLASS"){
+										obj.optiongradeDistribution.series[0].data=[];
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].failureRate * 1000000/10000);
+									}
+									obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
+								}else{
+									if(res.result.scoreVOList){
+										var num=0;
+										for(var i=0;i<res.result.scoreVOList.length;i++){
+											if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+												num=i;
+											}
+										}
+										obj.studentTotle=res.result.scoreVOList[num].fullMarks;
+										obj.studentTotleNum=res.result.stuNum;
+										obj.optionstudentGradeDistribution.series[0].data[0].value=res.result.scoreVOList[num].highRate;
+										obj.optionstudentGradeDistribution.series[0].data[1].value=res.result.scoreVOList[num].excellentRate;
+										obj.optionstudentGradeDistribution.series[0].data[2].value=res.result.scoreVOList[num].commissionRate;
+										obj.optionstudentGradeDistribution.series[0].data[3].value=res.result.scoreVOList[num].passRate;
+										obj.optionstudentGradeDistribution.series[0].data[4].value=res.result.scoreVOList[num].failureRate;
+										obj.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(obj.optionstudentGradeDistribution);
+										obj.studentGradeDistributionList=res.result.stuScoreList;
+										obj.studentGradeheader.startScore=res.result.startScore;
+										obj.studentGradeheader.endScore=res.result.endScore;
+										obj.studentGradeheader.number=res.result.stuScoreList.length;
+									}
 								}
 							}
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
 					});
 				},
 				testAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/testAnalysis',function(obj,res){
-						obj.testAnalysisTable=res.result.listVO;
-						obj.optionClassScoreQuestion.xAxis[0].data=[];
-						obj.optionClassScoreQuestion.series[0].data=[];
-						obj.optionClassScoreQuestion.series[1].data=[];
-						obj.optionClassScoreQuestion.series[2].data=[];
-						obj.optionTwoDimensionalAnalysisS.series[0].data=[];
-						obj.optionTwoDimensionalAnalysisS.series[1].data=[];
+						if(res.code == '10000'){
+							obj.testAnalysisTable=res.result.listVO;
+							obj.optionClassScoreQuestion.xAxis[0].data=[];
+							obj.optionClassScoreQuestion.series[0].data=[];
+							obj.optionClassScoreQuestion.series[1].data=[];
+							obj.optionClassScoreQuestion.series[2].data=[];
+							obj.optionTwoDimensionalAnalysisS.series[0].data=[];
+							obj.optionTwoDimensionalAnalysisS.series[1].data=[];
 
-						for(var i=0;i<res.result.listVO.length;i++){
-							obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-							obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result.listVO[i].divideClass));
-							obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result.listVO[i].divideSchool));
-							obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result.listVO[i].divideAera));
-							var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
-							if(number>=0){
-								var list=[];
-								list.push(res.result.listVO[i].difficulty);
-								list.push(number);
-								list.push(res.result.listVO[i].topic);
-								list.push(parseInt(res.result.listVO[i].fractionalValue));
-								list.push(parseInt(res.result.listVO[i].qid));
-								obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
-							}else{
-								var list1=[];
-								list1.push(res.result.listVO[i].difficulty);
-								list1.push(number);
-								list1.push(res.result.listVO[i].topic);
-								list1.push(parseInt(res.result.listVO[i].fractionalValue));
-								list1.push(parseInt(res.result.listVO[i].qid));
-								obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
-							}
-						}						
-						obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
-						obj.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysisS);
+							for(var i=0;i<res.result.listVO.length;i++){
+								obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
+								obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result.listVO[i].divideClass));
+								obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result.listVO[i].divideSchool));
+								obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result.listVO[i].divideAera));
+								var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
+								if(number>=0){
+									var list=[];
+									list.push(res.result.listVO[i].difficulty);
+									list.push(number);
+									list.push(res.result.listVO[i].topic);
+									list.push(parseInt(res.result.listVO[i].fractionalValue));
+									list.push(parseInt(res.result.listVO[i].qid));
+									obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
+								}else{
+									var list1=[];
+									list1.push(res.result.listVO[i].difficulty);
+									list1.push(number);
+									list1.push(res.result.listVO[i].topic);
+									list1.push(parseInt(res.result.listVO[i].fractionalValue));
+									list1.push(parseInt(res.result.listVO[i].qid));
+									obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
+								}
+							}						
+							obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
+							obj.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysisS);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
 					});
 				},
 				getTopOrgScoresInClass:function(){
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class,topNum:this.basicData.topNum},'score/getTopOrgScoresInClass',function(obj,res){
-						var type=(typeof res.result);
-						if(type=="string"){
+						if(res.code == '10000'){
+							obj.testAnalysisTable=res.result.listVO;
+							obj.optionClassScoreQuestion.xAxis[0].data=[];
+							obj.opti
+							var type=(typeof res.result);
+							if(type=="string"){
 							//obj.notify_jr(obj,'信息错误',res.result,'error');
 							obj.optionranking.series[0].data=[];
 							obj.rankingData=[];
@@ -1594,14 +1639,21 @@ export default{
 							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneThousandStuNum);
 						}
 						obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
-					});
+					}else{
+						obj.notify_jr(obj,'错误提示',res.message,'error');
+					}
+				});
 				},
 				getClassRankingReport:function(){
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
-						for(var i=0;i<res.result.classScoreList.length;i++){
-							res.result.classScoreList[i].subject1Score=i+1;
+						if(res.code == '10000'){
+							for(var i=0;i<res.result.classScoreList.length;i++){
+								res.result.classScoreList[i].subject1Score=i+1;
+							}
+							obj.tableData3=res.result.classScoreList;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.tableData3=res.result.classScoreList;
 					});
 				},
 				gradeIntervalfun:function(e){
@@ -1615,10 +1667,14 @@ export default{
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
 							this.basicData.rateType=this.gradeInterval[4].value;
 							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
-								obj.studentGradeDistributionList=res.result.stuScoreList;
-								obj.studentGradeheader.startScore=res.result.startScore;
-								obj.studentGradeheader.endScore=res.result.endScore;
-								obj.studentGradeheader.number=res.result.stuScoreList.length;
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
 							});
 						}else{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="block";
@@ -1630,10 +1686,14 @@ export default{
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
 							this.basicData.rateType=this.gradeInterval[num-1].value;
 							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
-								obj.studentGradeDistributionList=res.result.stuScoreList;
-								obj.studentGradeheader.startScore=res.result.startScore;
-								obj.studentGradeheader.endScore=res.result.endScore;
-								obj.studentGradeheader.number=res.result.stuScoreList.length;
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
 							});
 						}
 					}else{
@@ -1645,10 +1705,14 @@ export default{
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
 							this.basicData.rateType=this.gradeInterval[0].value;
 							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
-								obj.studentGradeDistributionList=res.result.stuScoreList;
-								obj.studentGradeheader.startScore=res.result.startScore;
-								obj.studentGradeheader.endScore=res.result.endScore;
-								obj.studentGradeheader.number=res.result.stuScoreList.length;
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
 							});
 						}else{
 							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="block";
@@ -1660,10 +1724,14 @@ export default{
 							this.studentGradeheader.level=this.gradeInterval[num-1].level;
 							this.basicData.rateType=this.gradeInterval[num-1].value;
 							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
-								obj.studentGradeDistributionList=res.result.stuScoreList;
-								obj.studentGradeheader.startScore=res.result.startScore;
-								obj.studentGradeheader.endScore=res.result.endScore;
-								obj.studentGradeheader.number=res.result.stuScoreList.length;
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
 							});
 						}
 					}
@@ -1674,12 +1742,16 @@ export default{
 						setTimeout(function(){
 							selfs.diaLoading = false;
 							selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+								if(res.code == '10000'){
 								obj.optionclassLastScore.xAxis.data=[];
 								obj.optionclassLastScore.xAxis.data=res.result.examNameList;
 								obj.optionclassLastScore.series[0].data=[];
 								obj.optionclassLastScore.series[0].data=res.result.scoreAvgList;
 
 								obj.echarts.init(document.getElementById("classLastScore")).setOption(obj.optionclassLastScore);
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
 							})
 						},1000);
 					}
