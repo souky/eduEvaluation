@@ -18,10 +18,13 @@ Vue.use(Router)
 export default new Router({
   mode:'history',
   routes: [
-    {
-      path: '/',
-      name: 'login',
-      component: Login
+  {
+    path: '/',
+      //name: 'login',
+      //component: Login
+      redirect: {
+        name:'login'
+      }
     },{
       path: '/login',
       name: 'login',
@@ -32,12 +35,15 @@ export default new Router({
       component: Home
     },{
       path:'/report',
-      name:'report',
+      //name:'report',
       component:Report,
       children:[{
         path:'/',
-        name:'schoolLevel',
-        component:SchoolLevel,
+        redirect: {
+          name:'schoolLevel'
+        }
+        //name:'schoolLevel',
+        //component:SchoolLevel,
       },{
         path:'/report/schoolLevel',
         name:'schoolLevel',
@@ -64,5 +70,5 @@ export default new Router({
       name:'management',
       component:Management
     }
-  ]
-})
+    ]
+  })

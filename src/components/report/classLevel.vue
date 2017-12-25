@@ -146,7 +146,7 @@
 			<el-table :data="tableData3" style="width: 100%" header-row-class-name="table-header">
 				<template v-for="item in headerData">
 					<el-table-column align="center" v-if="item.isImproved=='0'" :key="item.name" :label="item.name" :prop="item.dataIndex">
-						<template scope="scope">
+						<template slot-scope="scope">
 							<span v-if="scope.row.isImproved == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.isImproved}}</span>
 							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.isImproved}}</span>
 						</template>
@@ -1361,7 +1361,6 @@ export default{
 						if(res.code == '10000'){
 							obj.optiongradeDistribution.legend.data=[];
 							obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
-							console.log(obj.optiongradeDistribution.series.length)
 							if(obj.optiongradeDistribution.series.length==3){
 								var list=[];
 								list.push(res.result[1].highRate* 1000000/10000);
