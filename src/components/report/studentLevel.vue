@@ -133,7 +133,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="myGoal" class="louceng1" v-show="displayAll.myGoal">
+		<div id="myGoal" v-show="displayAll.myGoal">
 			<div class="header">
 				<p>我的目标：下次考试可以增加？分</p>
 				<div class="header-title-foot"></div>
@@ -347,10 +347,10 @@ export default {
 			},{
 				name:'科目诊断',
 				id:1
-			},{
+			}/*,{
 				name:'我的目标',
 				id:2
-			}],
+			}*/],
 			displaystulList:true,
 			stulList:[{
 				id:1,
@@ -379,75 +379,7 @@ export default {
 			}],
 			changeSchool:'',
 			falsetableData3:[],
-			truetableDatas:[{
-				truetableData3:[{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				}],
-				totle:30,
-				score:18,
-				class:45,
-				school:45,
-				area:34,
-			},{
-				truetableData3:[{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				},{
-					knowledgemodule:"三角函数",
-					knowledge:"1231",
-					classscore:"1231",
-					schoolscore:"1231231",
-					areascore:"342432",
-					difference:"2342342",
-					topic:"1",
-					qwe:3,
-				}],
-				totle:30,
-				score:18,
-				class:45,
-				school:45,
-				area:34,	
-			}],
+			truetableDatas:[],
 			classGold:{
 				easyNum:0,
 				secondaryNum:0,
@@ -1145,21 +1077,25 @@ export default {
 			methods:{
 				data:function(){
 					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
-						obj.testList=res.result.exams;
+						if(res.code == '10000'){
+							obj.testList=res.result.exams;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
 					});
 				},
 				dateFormat:function(row,column){
-					var data=this.accDiv(parseInt(row.divideClass),100);
+					var data=this.accDiv(parseFloat(row.divideClass),100);
 					var data1=this.accMul(row.studentScore,data);
 					return data1;
 				},
 				dateFormat1:function(row,column){
-					var data=this.accDiv(parseInt(row.divideSchool),100);
+					var data=this.accDiv(parseFloat(row.divideSchool),100);
 					var data1=this.accMul(row.studentScore,data);
 					return data1;
 				},
 				dateFormat2:function(row,column){
-					var data=this.accDiv(parseInt(row.divideAera),100);
+					var data=this.accDiv(parseFloat(row.divideAera),100);
 					var data1=this.accMul(row.studentScore,data);
 					return data1;
 				},
@@ -1168,35 +1104,42 @@ export default {
 					this.basicData.id=name;
 					var totle={createDate:1512647749000,createUser:"1",id:"0",isDelete:0,orgId:"",remark:"",schoolId:"",subjectCode:1,subjectColor:"#F37070",subjectName:"总分",updateDate:1513586055000};
 					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
-						obj.testList=res.result.exams;
-						obj.items=res.result[name].subject;
-						obj.items.unshift(totle);
-						var childNum=Math.ceil(obj.items.length/11);
-						var childs=[];
-						for(var l=0;l<childNum;l++){
-							var id=l+1;
-							var e=11*(l+1);
-							var s=e-11;
-							childs[l] = []
-							childs[l]["childs"]=obj.items.slice(s,e);
-							childs[l]["id"] = id;
+						if(res.code == '10000'){
+							obj.testList=res.result.exams;
+							obj.items=res.result[name].subject;
+							obj.items.unshift(totle);
+							var childNum=Math.ceil(obj.items.length/11);
+							var childs=[];
+							for(var l=0;l<childNum;l++){
+								var id=l+1;
+								var e=11*(l+1);
+								var s=e-11;
+								childs[l] = []
+								childs[l]["childs"]=obj.items.slice(s,e);
+								childs[l]["id"] = id;
+							}
+							obj.subjects=childs;
+							obj.getStudentOrList();
+							obj.rainbow(0,0,"总分");
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.subjects=childs;
-						obj.getStudentOrList();
-						obj.rainbow(0,0,"总分");
-
 					});
 					
 				}, 
 				getStudentOrList:function(){
 					this.postHttp(this,{examId:this.basicData.id},'score/getStudentOrList',function(obj,res){
-						if(res.result.schoolScores){
-							obj.displaystulList=true;
-							obj.stulList=res.result.schoolScores;
-							obj.basicData.student=res.result.schoolScores[0].studentId;
+						if(res.code == '10000'){
+							if(res.result.schoolScores){
+								obj.displaystulList=true;
+								obj.stulList=res.result.schoolScores;
+								obj.basicData.student=res.result.schoolScores[0].studentId;
+							}else{
+								obj.displaystulList=false;
+								obj.basicData.student=res.result.studentId;
+							}
 						}else{
-							obj.displaystulList=false;
-							obj.basicData.student=res.result.studentId;
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
 					})
 				},
@@ -1276,38 +1219,47 @@ export default {
 				},
 				getPercentageRank:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'score/getPercentageRank',function(obj,res){
-						obj.optionBeyondRate.series[0].data[0].value=res.result.classPercentageRank;
-						obj.optionBeyondRate.series[0].data[1].value=res.result.schoolPercentageRank;
-						obj.optionBeyondRate.series[0].data[2].value=res.result.schoolPercentageRank;
-						obj.echarts.init(document.getElementById("beyondRate1")).setOption(obj.optionBeyondRate);
+						if(res.code == '10000'){
+							obj.optionBeyondRate.series[0].data[0].value=res.result.classPercentageRank;
+							obj.optionBeyondRate.series[0].data[1].value=res.result.schoolPercentageRank;
+							obj.optionBeyondRate.series[0].data[2].value=res.result.schoolPercentageRank;
+							obj.echarts.init(document.getElementById("beyondRate1")).setOption(obj.optionBeyondRate);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
 					})
 				},
 				knowAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/knowAnalysis',function(obj,res){
-						obj.truetableDatas=res.result;
-						obj.optionknowledge.series[0].data[0].value=[];
-						obj.optionknowledge.series[0].data[1].value=[];
-						obj.optionknowledge.series[0].data[2].value=[];
-						obj.optionknowledge.series[0].data[3].value=[];
-						obj.optionknowledge.radar[0].indicator=[];
-						if(res.result){
-							if(res.result.length>=3){
-								document.getElementById("knowledge1").style.display="block";
-								for(var i=0;i<res.result.length;i++){
-									var arr={
-										"text":res.result[i].knowDetail[0].knowledgemodule,
-										"max":100,
+						if(res.code == '10000'){
+							obj.truetableDatas=res.result;
+							obj.optionknowledge.series[0].data[0].value=[];
+							obj.optionknowledge.series[0].data[1].value=[];
+							obj.optionknowledge.series[0].data[2].value=[];
+							obj.optionknowledge.series[0].data[3].value=[];
+							obj.optionknowledge.radar[0].indicator=[];
+							if(res.result){
+								if(res.result.length>=3){
+									document.getElementById("knowledge1").style.display="block";
+									for(var i=0;i<res.result.length;i++){
+										var arr={
+											"text":res.result[i].knowDetail[0].knowledgemodule,
+											"max":100,
+										}
+										obj.optionknowledge.radar[0].indicator.push(arr);
+										obj.optionknowledge.series[0].data[0].value.push(res.result[i].divideStudent);
+										obj.optionknowledge.series[0].data[1].value.push(res.result[i].divideClass);
+										obj.optionknowledge.series[0].data[2].value.push(res.result[i].divideSchool);
+										obj.optionknowledge.series[0].data[3].value.push(res.result[i].divideAera);
 									}
-									obj.optionknowledge.radar[0].indicator.push(arr);
-									obj.optionknowledge.series[0].data[0].value.push(res.result[i].divideStudent);
-									obj.optionknowledge.series[0].data[1].value.push(res.result[i].divideClass);
-									obj.optionknowledge.series[0].data[2].value.push(res.result[i].divideSchool);
-									obj.optionknowledge.series[0].data[3].value.push(res.result[i].divideAera);
+									obj.echarts.init(document.getElementById("knowledge1")).setOption(obj.optionknowledge);
+								}else{
+									document.getElementById("knowledge1").style.display="none";
 								}
-								obj.echarts.init(document.getElementById("knowledge1")).setOption(obj.optionknowledge);
-							}else{
-								document.getElementById("knowledge1").style.display="none";
 							}
+						}else{
+							document.getElementById("knowledge1").style.display="none";
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
 					})
 				},
@@ -1317,140 +1269,172 @@ export default {
 				},
 				getGrowthTrends:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,range:'CLASS'},'score/getGrowthTrends',function(obj,res){
-						obj.optionGrowthTrend.xAxis.data=[];
-						obj.optionGrowthTrend.xAxis.data=res.result.examDates;
-						obj.optionGrowthTrend.series[0].data=[];
-						obj.optionGrowthTrend.series[0].data=res.result.standardScores;
-						obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+						if(res.code == '10000'){
+							obj.optionGrowthTrend.xAxis.data=[];
+							for(var i=0;i<res.result.examDates.length;i++){
+								var date = new Date();  
+								date.setTime(parseInt(res.result.examDates[i]));  
+								var y = date.getFullYear();      
+								var m = date.getMonth() + 1;      
+								m = m < 10 ? ('0' + m) : m;      
+								var d = date.getDate();      
+								d = d < 10 ? ('0' + d) : d;          
+								var number= y + '-' + m + '-' + d;   
+								console.log(number)
+								obj.optionGrowthTrend.xAxis.data.push(number);
+							}
+							//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
+							console.log(obj.optionGrowthTrend.xAxis.data)
+							obj.optionGrowthTrend.series[0].data=[];
+							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
 					})
+				},
+				fmtDate:function(obj){
+					
 				},
 				ablityAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/ablityAnalysis',function(obj,res){
-						obj.scoreName=res.result;
-						obj.optionabilityAnalyze.series[0].data[0].value=[];
-						obj.optionabilityAnalyze.series[0].data[1].value=[];
-						obj.optionabilityAnalyze.series[0].data[2].value=[];
-						obj.optionabilityAnalyze.series[0].data[3].value=[];
-						for(var i=0;i<res.result.length;i++){
-							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result[i].divideStudent)
-							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result[i].divideClass)
-							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result[i].divideSchool)
-							obj.optionabilityAnalyze.series[0].data[3].value.push(res.result[i].divideAera)
+						if(res.code == '10000'){
+							obj.scoreName=res.result;
+							obj.optionabilityAnalyze.series[0].data[0].value=[];
+							obj.optionabilityAnalyze.series[0].data[1].value=[];
+							obj.optionabilityAnalyze.series[0].data[2].value=[];
+							obj.optionabilityAnalyze.series[0].data[3].value=[];
+							for(var i=0;i<res.result.length;i++){
+								obj.optionabilityAnalyze.series[0].data[0].value.push(res.result[i].divideStudent)
+								obj.optionabilityAnalyze.series[0].data[1].value.push(res.result[i].divideClass)
+								obj.optionabilityAnalyze.series[0].data[2].value.push(res.result[i].divideSchool)
+								obj.optionabilityAnalyze.series[0].data[3].value.push(res.result[i].divideAera)
+							}
+							obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
 					})
 				},
 				testAnalysis:function(){
-					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:"8ebf3e1697ca4537a07c9be1eaedf7ed"},'/testAnalysis',function(obj,res){
-						obj.testAnalysisTable=res.result.listVO;
-						obj.classGold=res.result.targetVO;
-						obj.optionMyGoal.series[0].data=[];
-						obj.optionMyGoal.series[1].data=[];
-						obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideEasy))
-						obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideSecondary))
-						obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideDifficult))
-						obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideEasy))
-						obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideSecondary))
-						obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideDifficult))
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/testAnalysis',function(obj,res){
+						if(res.code == '10000'){
+							obj.testAnalysisTable=res.result.listVO;
+							obj.classGold=res.result.targetVO;
+							obj.optionMyGoal.series[0].data=[];
+							obj.optionMyGoal.series[1].data=[];
+							obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideEasy))
+							obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideSecondary))
+							obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideDifficult))
+							obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideEasy))
+							obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideSecondary))
+							obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideDifficult))
 
 
-						obj.optionScoreQuestion.xAxis[0].data=[];
-						obj.optionScoreQuestion.series[0].data=[];
-						obj.optionScoreQuestion.series[1].data=[];
-						obj.optionScoreQuestion.series[2].data=[];
-						obj.optionScoreQuestion.series[3].data=[];
-						obj.optionTwoDimensionalAnalysis.series[0].data=[];
-						obj.optionTwoDimensionalAnalysis.series[1].data=[];
-						obj.testAnalysisTableAS.number1=0;
-						obj.testAnalysisTableAS.number2=0;
-						obj.testAnalysisTableAS.number3=0;
-						obj.testAnalysisTableAS.number4=0;
-						for(var i=0;i<res.result.listVO.length;i++){
-							obj.testAnalysisTableAS.number1=obj.testAnalysisTableAS.number1+res.result.listVO[i].studentScore;
-							if(res.result.listVO[i].rightOrNot=="1"){
-								obj.testAnalysisTableAS.number2=obj.testAnalysisTableAS.number2+1;
+							obj.optionScoreQuestion.xAxis[0].data=[];
+							obj.optionScoreQuestion.series[0].data=[];
+							obj.optionScoreQuestion.series[1].data=[];
+							obj.optionScoreQuestion.series[2].data=[];
+							obj.optionScoreQuestion.series[3].data=[];
+							obj.optionTwoDimensionalAnalysis.series[0].data=[];
+							obj.optionTwoDimensionalAnalysis.series[1].data=[];
+							obj.testAnalysisTableAS.number1=0;
+							obj.testAnalysisTableAS.number2=0;
+							obj.testAnalysisTableAS.number3=0;
+							obj.testAnalysisTableAS.number4=0;
+							for(var i=0;i<res.result.listVO.length;i++){
+								obj.testAnalysisTableAS.number1=obj.testAnalysisTableAS.number1+res.result.listVO[i].studentScore;
+								if(res.result.listVO[i].rightOrNot=="1"){
+									obj.testAnalysisTableAS.number2=obj.testAnalysisTableAS.number2+1;
+								}
+								if(res.result.listVO[i].studentScore==0){
+									obj.testAnalysisTableAS.number3=obj.testAnalysisTableAS.number3+1;
+								}
+
+
+								obj.optionScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
+								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideStudent));
+								obj.optionScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideClass));
+								obj.optionScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideSchool));
+								obj.optionScoreQuestion.series[3].data.push(parseFloat(res.result.listVO[i].divideAera));
+								if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
+									var list=[];
+									list.push(res.result.listVO[i].difficulty);
+									list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+									list.push(res.result.listVO[i].topic);
+									list.push(parseInt(res.result.listVO[i].fractionalValue));
+									list.push(parseInt(res.result.listVO[i].qid));
+									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
+								}else{
+									var list1=[];
+									list1.push(res.result.listVO[i].difficulty);
+									list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+									list1.push(res.result.listVO[i].topic);
+									list1.push(parseInt(res.result.listVO[i].fractionalValue));
+									list1.push(parseInt(res.result.listVO[i].qid));
+									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+								}
 							}
-							if(res.result.listVO[i].studentScore==0){
-								obj.testAnalysisTableAS.number3=obj.testAnalysisTableAS.number3+1;
-							}
-
-
-							obj.optionScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-							obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideStudent));
-							obj.optionScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideClass));
-							obj.optionScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideSchool));
-							obj.optionScoreQuestion.series[3].data.push(parseFloat(res.result.listVO[i].divideAera));
-							if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
-								var list=[];
-								list.push(res.result.listVO[i].difficulty);
-								list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
-								list.push(res.result.listVO[i].topic);
-								list.push(parseInt(res.result.listVO[i].fractionalValue));
-								list.push(parseInt(res.result.listVO[i].qid));
-								obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
-							}else{
-								var list1=[];
-								list1.push(res.result.listVO[i].difficulty);
-								list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
-								list1.push(res.result.listVO[i].topic);
-								list1.push(parseInt(res.result.listVO[i].fractionalValue));
-								list1.push(parseInt(res.result.listVO[i].qid));
-								obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
-							}
+							obj.testAnalysisTableAS.number4=res.result.listVO.length-obj.testAnalysisTableAS.number2-obj.testAnalysisTableAS.number3;
+							obj.echarts.init(document.getElementById("scoreQuestion1")).setOption(obj.optionScoreQuestion);
+							obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
+							obj.echarts.init(document.getElementById("myGoal1")).setOption(obj.optionMyGoal);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
-						obj.testAnalysisTableAS.number4=res.result.listVO.length-obj.testAnalysisTableAS.number2-obj.testAnalysisTableAS.number3;
-						obj.echarts.init(document.getElementById("scoreQuestion1")).setOption(obj.optionScoreQuestion);
-						obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
-						obj.echarts.init(document.getElementById("myGoal1")).setOption(obj.optionMyGoal);
 					});
 				},
 				geReportCards:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
-						var type=(typeof res.result);
-						if(type=="string"){
-							obj.tableData=[];
-							obj.anothertableData=[];
-						}else{
-							if(obj.basicData.subject=="总分"){
-								obj.tableData=res.result.scoreVOList;
-								obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-								obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-								obj.optionSubjectsDiagnosis.series[0].data=[];
-								obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-								obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-								obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-								for(var i=0;i<res.result.subjectList.length;i++){
-									var arr={
-										"text":res.result.subjectList[i],
-										"max":1,
-									}
-									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
-								}
-								obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+						if(res.code == '10000'){
+							var type=(typeof res.result);
+							if(type=="string"){
+								obj.tableData=[];
+								obj.anothertableData=[];
 							}else{
-								if(res.result.scoreVOList){
-									var num=0;
-									obj.anothertableData=[];
-									for(var i=0;i<res.result.scoreVOList.length;i++){
-										if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-											num=i;
+								if(obj.basicData.subject=="总分"){
+									obj.tableData=res.result.scoreVOList;
+									obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+									obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+									obj.optionSubjectsDiagnosis.series[0].data=[];
+									obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+									obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+									obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+									obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+									obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+									obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+									obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+									for(var i=0;i<res.result.subjectList.length;i++){
+										var arr={
+											"text":res.result.subjectList[i],
+											"max":1,
 										}
+										obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
 									}
-									var arr={
-										"score":res.result.scoreVOList[num].score,
-										"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-										"classTopScore":res.result.scoreVOList[num].classTopScore,
-										"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-										"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+									obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+									obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+								}else{
+									if(res.result.scoreVOList){
+										var num=0;
+										obj.anothertableData=[];
+										for(var i=0;i<res.result.scoreVOList.length;i++){
+											if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+												num=i;
+											}
+										}
+										var arr={
+											"score":res.result.scoreVOList[num].score,
+											"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+											"classTopScore":res.result.scoreVOList[num].classTopScore,
+											"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+											"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+										}
+										obj.anothertableData.push(arr);
 									}
-									obj.anothertableData.push(arr);
 								}
 							}
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
 					})
 				},
@@ -1465,29 +1449,95 @@ export default {
 					e.currentTarget.style.color="#fff";
 					if(num=="class"){
 						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,range:'CLASS'},'score/getGrowthTrends',function(obj,res){
-							obj.optionGrowthTrend.xAxis.data=[];
-							obj.optionGrowthTrend.xAxis.data=res.result.examDates;
-							obj.optionGrowthTrend.series[0].data=[];
-							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
-							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							if(res.code == '10000'){
+								obj.optionGrowthTrend.xAxis.data=[];
+								for(var i=0;i<res.result.examDates.length;i++){
+									var date = new Date();  
+									date.setTime(parseInt(res.result.examDates[i]));  
+									var y = date.getFullYear();      
+									var m = date.getMonth() + 1;      
+									m = m < 10 ? ('0' + m) : m;      
+									var d = date.getDate();      
+									d = d < 10 ? ('0' + d) : d;      
+									var h = date.getHours();    
+									h = h < 10 ? ('0' + h) : h;    
+									var minute = date.getMinutes();    
+									var second = date.getSeconds();    
+									minute = minute < 10 ? ('0' + minute) : minute;      
+									second = second < 10 ? ('0' + second) : second;     
+									var number= y + '-' + m + '-' + d;   
+									console.log(number)
+									obj.optionGrowthTrend.xAxis.data.push(number);
+								}
+								//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
+								obj.optionGrowthTrend.series[0].data=[];
+								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
 						})
 					}
 					if(num=="school"){
 						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,range:'SCHOOL'},'score/getGrowthTrends',function(obj,res){
-							obj.optionGrowthTrend.xAxis.data=[];
-							obj.optionGrowthTrend.xAxis.data=res.result.examDates;
-							obj.optionGrowthTrend.series[0].data=[];
-							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
-							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							if(res.code == '10000'){
+								obj.optionGrowthTrend.xAxis.data=[];
+								for(var i=0;i<res.result.examDates.length;i++){
+									var date = new Date();  
+									date.setTime(parseInt(res.result.examDates[i]));  
+									var y = date.getFullYear();      
+									var m = date.getMonth() + 1;      
+									m = m < 10 ? ('0' + m) : m;      
+									var d = date.getDate();      
+									d = d < 10 ? ('0' + d) : d;      
+									var h = date.getHours();    
+									h = h < 10 ? ('0' + h) : h;    
+									var minute = date.getMinutes();    
+									var second = date.getSeconds();    
+									minute = minute < 10 ? ('0' + minute) : minute;      
+									second = second < 10 ? ('0' + second) : second;     
+									var number= y + '-' + m + '-' + d;   
+									console.log(number)
+									obj.optionGrowthTrend.xAxis.data.push(number);
+								}
+								//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
+								obj.optionGrowthTrend.series[0].data=[];
+								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
 						})
 					}
 					if(num=="area"){
 						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,range:'REGION'},'score/getGrowthTrends',function(obj,res){
-							obj.optionGrowthTrend.xAxis.data=[];
-							obj.optionGrowthTrend.xAxis.data=res.result.examDates;
-							obj.optionGrowthTrend.series[0].data=[];
-							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
-							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							if(res.code == '10000'){
+								obj.optionGrowthTrend.xAxis.data=[];
+								for(var i=0;i<res.result.examDates.length;i++){
+									var date = new Date();  
+									date.setTime(parseInt(res.result.examDates[i]));  
+									var y = date.getFullYear();      
+									var m = date.getMonth() + 1;      
+									m = m < 10 ? ('0' + m) : m;      
+									var d = date.getDate();      
+									d = d < 10 ? ('0' + d) : d;      
+									var h = date.getHours();    
+									h = h < 10 ? ('0' + h) : h;    
+									var minute = date.getMinutes();    
+									var second = date.getSeconds();    
+									minute = minute < 10 ? ('0' + minute) : minute;      
+									second = second < 10 ? ('0' + second) : second;     
+									var number= y + '-' + m + '-' + d;   
+									console.log(number)
+									obj.optionGrowthTrend.xAxis.data.push(number);
+								}
+								//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
+								obj.optionGrowthTrend.series[0].data=[];
+								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
 						})
 					}
 				},
@@ -1502,90 +1552,102 @@ export default {
 					e.currentTarget.style.color="#fff";
 					if(num=="class"){
 						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
-						var type=(typeof res.result);
-						if(type=="string"){
-						}else{
-							if(obj.basicData.subject=="总分"){
-								obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-								obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-								obj.optionSubjectsDiagnosis.series[0].data=[];
-								obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-								obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-								obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-								for(var i=0;i<res.result.subjectList.length;i++){
-									var arr={
-										"text":res.result.subjectList[i],
-										"max":1,
-									}
-									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+							if(res.code == '10000'){
+								var type=(typeof res.result);
+								if(type=="string"){
+								}else{
+									if(obj.basicData.subject=="总分"){
+										obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+										obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+										obj.optionSubjectsDiagnosis.series[0].data=[];
+										obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+										obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+										obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+										obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+										obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+										obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+										obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+										for(var i=0;i<res.result.subjectList.length;i++){
+											var arr={
+												"text":res.result.subjectList[i],
+												"max":1,
+											}
+											obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+										}
+										obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+										obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+									}else{}
 								}
-								obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
-							}else{}
-						}
-					})
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
+						})
 					}
 					if(num=="school"){
 						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'SCHOOL'},'score/geReportCards',function(obj,res){
-						var type=(typeof res.result);
-						if(type=="string"){
-						}else{
-							if(obj.basicData.subject=="总分"){
-								obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-								obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-								obj.optionSubjectsDiagnosis.series[0].data=[];
-								obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-								obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-								obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-								for(var i=0;i<res.result.subjectList.length;i++){
-									var arr={
-										"text":res.result.subjectList[i],
-										"max":1,
-									}
-									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+							if(res.code == '10000'){
+								var type=(typeof res.result);
+								if(type=="string"){
+								}else{
+									if(obj.basicData.subject=="总分"){
+										obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+										obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+										obj.optionSubjectsDiagnosis.series[0].data=[];
+										obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+										obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+										obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+										obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+										obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+										obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+										obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+										for(var i=0;i<res.result.subjectList.length;i++){
+											var arr={
+												"text":res.result.subjectList[i],
+												"max":1,
+											}
+											obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+										}
+										obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+										obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+									}else{}
 								}
-								obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
-							}else{}
-						}
-					})
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
+						})
 					}
 					if(num=="area"){
 						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'REGION'},'score/geReportCards',function(obj,res){
-						var type=(typeof res.result);
-						if(type=="string"){
-						}else{
-							if(obj.basicData.subject=="总分"){
-								obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-								obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-								obj.optionSubjectsDiagnosis.series[0].data=[];
-								obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-								obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-								obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-								obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-								obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-								for(var i=0;i<res.result.subjectList.length;i++){
-									var arr={
-										"text":res.result.subjectList[i],
-										"max":1,
-									}
-									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+							if(res.code == '10000'){
+								var type=(typeof res.result);
+								if(type=="string"){
+								}else{
+									if(obj.basicData.subject=="总分"){
+										obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+										obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+										obj.optionSubjectsDiagnosis.series[0].data=[];
+										obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+										obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+										obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+										obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+										obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+										obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+										obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+										for(var i=0;i<res.result.subjectList.length;i++){
+											var arr={
+												"text":res.result.subjectList[i],
+												"max":1,
+											}
+											obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+										}
+										obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+										obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+									}else{}
 								}
-								obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
-							}else{}
-						}
-					})
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
+						})
 					}
 					this.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(this.optionSubjectsDiagnosis);
 					this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);
@@ -1596,87 +1658,99 @@ export default {
 					}
 					if(obj=='class'){
 						e.currentTarget.className="body-icon-color color-red";
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:"8ebf3e1697ca4537a07c9be1eaedf7ed"},'/testAnalysis',function(obj,res){
-							obj.optionTwoDimensionalAnalysis.series[0].data=[];
-							obj.optionTwoDimensionalAnalysis.series[1].data=[];
-							for(var i=0;i<res.result.listVO.length;i++){
-								if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
-									var list=[];
-									list.push(res.result.listVO[i].difficulty);
-									list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
-									list.push(res.result.listVO[i].topic);
-									list.push(parseInt(res.result.listVO[i].fractionalValue));
-									list.push(parseInt(res.result.listVO[i].qid));
-									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
-								}else{
-									var list1=[];
-									list1.push(res.result.listVO[i].difficulty);
-									list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
-									list1.push(res.result.listVO[i].topic);
-									list1.push(parseInt(res.result.listVO[i].fractionalValue));
-									list1.push(parseInt(res.result.listVO[i].qid));
-									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/testAnalysis',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionTwoDimensionalAnalysis.series[0].data=[];
+								obj.optionTwoDimensionalAnalysis.series[1].data=[];
+								for(var i=0;i<res.result.listVO.length;i++){
+									if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
+										var list=[];
+										list.push(res.result.listVO[i].difficulty);
+										list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+										list.push(res.result.listVO[i].topic);
+										list.push(parseInt(res.result.listVO[i].fractionalValue));
+										list.push(parseInt(res.result.listVO[i].qid));
+										obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
+									}else{
+										var list1=[];
+										list1.push(res.result.listVO[i].difficulty);
+										list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+										list1.push(res.result.listVO[i].topic);
+										list1.push(parseInt(res.result.listVO[i].fractionalValue));
+										list1.push(parseInt(res.result.listVO[i].qid));
+										obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+									}
 								}
+								obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
 							}
-							obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 						})
 					}
 					if(obj=='school'){
 						e.currentTarget.className="body-icon-color color-green";
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:"8ebf3e1697ca4537a07c9be1eaedf7ed"},'/testAnalysis',function(obj,res){
-							obj.optionTwoDimensionalAnalysis.series[0].data=[];
-							obj.optionTwoDimensionalAnalysis.series[1].data=[];
-							for(var i=0;i<res.result.listVO.length;i++){
-								if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
-									var list=[];
-									list.push(res.result.listVO[i].difficulty);
-									list.push(parseFloat(res.result.listVO[i].divideStudentToSchool));
-									list.push(res.result.listVO[i].topic);
-									list.push(parseInt(res.result.listVO[i].fractionalValue));
-									list.push(parseInt(res.result.listVO[i].qid));
-									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
-								}else{
-									var list1=[];
-									list1.push(res.result.listVO[i].difficulty);
-									list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
-									list1.push(res.result.listVO[i].topic);
-									list1.push(parseInt(res.result.listVO[i].fractionalValue));
-									list1.push(parseInt(res.result.listVO[i].qid));
-									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/testAnalysis',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionTwoDimensionalAnalysis.series[0].data=[];
+								obj.optionTwoDimensionalAnalysis.series[1].data=[];
+								for(var i=0;i<res.result.listVO.length;i++){
+									if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
+										var list=[];
+										list.push(res.result.listVO[i].difficulty);
+										list.push(parseFloat(res.result.listVO[i].divideStudentToSchool));
+										list.push(res.result.listVO[i].topic);
+										list.push(parseInt(res.result.listVO[i].fractionalValue));
+										list.push(parseInt(res.result.listVO[i].qid));
+										obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
+									}else{
+										var list1=[];
+										list1.push(res.result.listVO[i].difficulty);
+										list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+										list1.push(res.result.listVO[i].topic);
+										list1.push(parseInt(res.result.listVO[i].fractionalValue));
+										list1.push(parseInt(res.result.listVO[i].qid));
+										obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+									}
 								}
+								obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
 							}
-							obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 						})
 						
 					}
 					if(obj=='area'){
 						e.currentTarget.className="body-icon-color color-blue";
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:"8ebf3e1697ca4537a07c9be1eaedf7ed"},'/testAnalysis',function(obj,res){
-							obj.optionTwoDimensionalAnalysis.series[0].data=[];
-							obj.optionTwoDimensionalAnalysis.series[1].data=[];
-							for(var i=0;i<res.result.listVO.length;i++){
-								if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
-									var list=[];
-									list.push(res.result.listVO[i].difficulty);
-									list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
-									list.push(res.result.listVO[i].topic);
-									list.push(parseInt(res.result.listVO[i].fractionalValue));
-									list.push(parseInt(res.result.listVO[i].qid));
-									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
-								}else{
-									var list1=[];
-									list1.push(res.result.listVO[i].difficulty);
-									list1.push(parseFloat(res.result.listVO[i].divideStudentToArea));
-									list1.push(res.result.listVO[i].topic);
-									list1.push(parseInt(res.result.listVO[i].fractionalValue));
-									list1.push(parseInt(res.result.listVO[i].qid));
-									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/testAnalysis',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionTwoDimensionalAnalysis.series[0].data=[];
+								obj.optionTwoDimensionalAnalysis.series[1].data=[];
+								for(var i=0;i<res.result.listVO.length;i++){
+									if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
+										var list=[];
+										list.push(res.result.listVO[i].difficulty);
+										list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+										list.push(res.result.listVO[i].topic);
+										list.push(parseInt(res.result.listVO[i].fractionalValue));
+										list.push(parseInt(res.result.listVO[i].qid));
+										obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
+									}else{
+										var list1=[];
+										list1.push(res.result.listVO[i].difficulty);
+										list1.push(parseFloat(res.result.listVO[i].divideStudentToArea));
+										list1.push(res.result.listVO[i].topic);
+										list1.push(parseInt(res.result.listVO[i].fractionalValue));
+										list1.push(parseInt(res.result.listVO[i].qid));
+										obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
+									}
 								}
+								obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
 							}
-							obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 						})
 					}
-					this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
+					//this.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(this.optionTwoDimensionalAnalysis);
 				},
 				objectSpanMethod({ row, column, rowIndex, columnIndex }) {
 					if (columnIndex === 0) {
@@ -1695,6 +1769,7 @@ export default {
 				},
 				accMul(arg1,arg2){   //乘法
 					if(arg1==undefined){
+						arg1=0;
 						return
 					}
 					var m=0,s1=arg1.toString(),s2=arg2.toString();
@@ -1704,6 +1779,7 @@ export default {
 				},
 				accDiv(arg1,arg2){		//除法
 					if(arg1==undefined){
+						arg1=0;
 						return
 					}
 					var t1=0,t2=0,r1,r2;
