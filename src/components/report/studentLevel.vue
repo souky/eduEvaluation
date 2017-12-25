@@ -1801,7 +1801,16 @@ export default {
 					return (r1/r2)*Math.pow(10,t2-t1);
 					
 				}
-			}
+			},
+    updated:function(){
+    	 if(this.$route.query.name!=undefined){
+    		for(var a of this.testList){
+    				if(a.id==this.$route.query.name){
+    					this.$refs.carousel.setActiveItem(a.examName);
+    				}
+    			}
+    		}
+    }
 		}
 		</script>
 		<style>
