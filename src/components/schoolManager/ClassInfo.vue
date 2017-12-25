@@ -166,7 +166,7 @@ export default {
 	  			this.$refs['classroom'].validate((valid) => {
           			if (valid) {
 			  			var classNo = this.classroom.classroomNames;
-				  		var grade = this.classroom.gradeCode;
+				  		var grade = this.classroom.gradeCodes;
 				  		dataS['classroomName'] = grade + "(" + classNo + ")班";
 				  		
 				  		this.postHttp(this,dataS,address,function(obj,res){
