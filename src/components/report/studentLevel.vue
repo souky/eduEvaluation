@@ -917,6 +917,12 @@ export default {
 				    		x: 'center',
 				    		data:['我的','班级','全校','全区县']
 				    	},
+				    	 grid: {
+				    	left: '3%',
+				    	right: '4%',
+				    	bottom: '3%',
+				    	containLabel: true
+				    },
 				    	radar: [
 				    	{
 				    		indicator: [
@@ -924,8 +930,8 @@ export default {
 				    		{text: '三角函数', max: 100},
 				    		{text: '圆锥曲线与方程', max: 100},
 				    		],
-				    		radius: 200,
-				    		center: ['50%','65%'],
+				    		radius: 190,
+				    		center: ['50%','55%'],
 				    	}
 				    	],
 				    	series: [
@@ -1120,7 +1126,7 @@ export default {
 							}
 							obj.subjects=childs;
 							obj.getStudentOrList();
-							obj.rainbow(0,0,"总分");
+							
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
@@ -1131,12 +1137,15 @@ export default {
 					this.postHttp(this,{examId:this.basicData.id},'score/getStudentOrList',function(obj,res){
 						if(res.code == '10000'){
 							if(res.result.schoolScores){
+								obj.changeSchool='';
 								obj.displaystulList=true;
 								obj.stulList=res.result.schoolScores;
 								obj.basicData.student=res.result.schoolScores[0].studentId;
+								obj.rainbow(0,0,"总分");
 							}else{
 								obj.displaystulList=false;
 								obj.basicData.student=res.result.studentId;
+								obj.rainbow(0,0,"总分");
 							}
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -1268,6 +1277,12 @@ export default {
 					this.rainbow(0,0,"总分");
 				},
 				getGrowthTrends:function(){
+					document.getElementById("growthTrend").getElementsByClassName("choose-area-left")[0].style.background="#46C4F8";
+					document.getElementById("growthTrend").getElementsByClassName("choose-area-left")[0].style.color="#fff";
+					document.getElementById("growthTrend").getElementsByClassName("choose-area-midle")[0].style.background="#fff";
+					document.getElementById("growthTrend").getElementsByClassName("choose-area-midle")[0].style.color="#46C4F8";
+					document.getElementById("growthTrend").getElementsByClassName("choose-area-right")[0].style.background="#fff";
+					document.getElementById("growthTrend").getElementsByClassName("choose-area-right")[0].style.color="#46C4F8";
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,range:'CLASS'},'score/getGrowthTrends',function(obj,res){
 						if(res.code == '10000'){
 							obj.optionGrowthTrend.xAxis.data=[];
@@ -2130,7 +2145,7 @@ export default {
 		}
 		#studentlevel #knowledge1{
 			width: 1080px;
-			height: 400px;
+			height: 500px;
 			margin: auto;
 		}
 		#studentlevel .knowledge-table{
