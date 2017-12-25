@@ -1091,7 +1091,7 @@ export default{
 				    	{
 				    		name:'数据',
 				    		type:'pie',
-				    		radius: [0, '60%'],
+				    		radius: [0, '45%'],
 				    		label: {
 				    			normal: {
 				    				position: 'inner'
@@ -1113,7 +1113,7 @@ export default{
 				    	{
 				    		name:'对比班级',
 				    		type:'pie',
-				    		radius: ['70%', '85%'],
+				    		radius: ['55%', '70%'],
 
 				    		data:[
 				    		{value:335,
