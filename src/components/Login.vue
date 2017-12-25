@@ -88,7 +88,7 @@ export default {
 #login .login-foot{
 	width: 100%;
 	height: 110px;
-	background: #fff;
+	background: rgba(0,0,0,0.7);
 	position: absolute;
 	bottom: 0px;
 	text-align: center;
@@ -96,8 +96,9 @@ export default {
 #login .login-foot p{
 	line-height: 110px;
 	font-size: 24px;
-	color: #3D3D3D;
+	color: #fff;
 	letter-spacing: 0;
+	
 }
 #login .login-main{
 	position: absolute;
