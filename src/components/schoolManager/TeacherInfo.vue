@@ -75,8 +75,8 @@
 			  <el-form-item label="年龄"  >
 			  	<el-input v-model="teacher.teacherAge" placeholder="年龄"></el-input>
 			  </el-form-item>
-			  <el-form-item label="手机号"  >
-			  	<el-input v-model="teacher.teacherMobile" placeholder="手机号"></el-input>
+			  <el-form-item label="手机号"  prop="teacherMobile">
+			  	<el-input v-model="teacher.teacherMobile" :maxlength="maxLength" placeholder="手机号"></el-input>
 			  </el-form-item>
 			  <el-form-item label="职务" prop="teacherDuty" >
 			  	<el-select v-model="teacher.teacherDuty" placeholder="请选择">
@@ -118,7 +118,17 @@
 import TeacherInfo from '../../assets/schoolManagerData/TeacherInfo'
 export default {
   data () {
-
+	var validatePhone = (rule, value, callback) => {
+		var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
+		console.log(value.length)
+		if(!reg.test(value)){
+          callback(new Error('电话格式不正确'));
+        }else if(value.length != 11){
+          callback(new Error('电话格式不正确'));	
+        }else{
+        	callback();
+        }
+    };
     return {
 	  msg: 'TeacherInfo',
 	  tableData:[],
@@ -159,6 +169,7 @@ export default {
 	  subjectOption:[],
 	  classOption:[],
 	  
+	  maxLength:11,
 	  rules: {
           teacherName: [
             { required: true, message: '请输入老师名字', trigger: 'blur' }
@@ -178,6 +189,9 @@ export default {
           subjectArray: [
             { type: 'array', required: true, message: '请至少选择一个学科', trigger: 'change' }
           ],
+          teacherMobile:[
+          	{validator:validatePhone}
+          ]
       }
     }
   },

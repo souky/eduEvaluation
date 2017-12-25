@@ -16,7 +16,7 @@
 			  <el-form-item label="学校地址">
 			    <el-input v-model="schoolInfo.schoolAddr"></el-input>
 			  </el-form-item>
-			  <el-form-item label="学校手机">
+			  <el-form-item label="学校手机" prop="schoolMobile">
 			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校唯一码">
@@ -25,7 +25,7 @@
 			  <el-form-item label="学校联系人">
 			    <el-input v-model="schoolInfo.schoolContact"></el-input>
 			  </el-form-item>
-			  <el-form-item label="联系人手机">
+			  <el-form-item label="联系人手机"  prop="schoolContactMobile">
 			    <el-input v-model="schoolInfo.schoolContactMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校学科" prop="subjectArray">
@@ -55,7 +55,17 @@
 <script>
 export default {
   data () {
-
+	var validatePhone = (rule, value, callback) => {
+		var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
+		console.log(value.length)
+		if(!reg.test(value)){
+          callback(new Error('电话格式不正确'));
+        }else if(value.length != 11){
+          callback(new Error('电话格式不正确'));	
+        }else{
+        	callback();
+        }
+    };
     return {
       msg: 'schoolInfo',
       schoolInfo:{},
@@ -69,6 +79,12 @@ export default {
           ],
           subjectArray: [
             { type: 'array', required: true, message: '请至少选择一个学科', trigger: 'change' }
+          ],
+          schoolMobile:[
+          	{validator: validatePhone, trigger: 'blur'}
+          ],
+          schoolContactMobile:[
+          	{validator: validatePhone, trigger: 'blur'}
           ],
       }
     }
