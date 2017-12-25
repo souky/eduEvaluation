@@ -117,7 +117,8 @@ export default {
         yAxis: [
             {
                 type: 'value',
-                name: '百分比%'
+                name: '百分比%',
+                max:100
             }
         ],
         series: [
@@ -261,7 +262,7 @@ export default {
                 },
                 markLine : {
                     data : [
-                        { name: '全校平均分',lineStyle:{normal:{color:'#FFD244'}},yAxis: 412.06}
+                        { name: '全校平均分',lineStyle:{normal:{color:'#FFD244'}},yAxis: 0}
                     ]
                 },
                 data: [{value:684.5,itemStyle:{normal:{color:"#FF8585"}}},552.29,490.4,482.61,476.29,463.98,463.51,451.37,443.76,438.21,426.69,419.76,407.91,396.37,386.34,371.64,369.16,362.43,357.68,349.37]

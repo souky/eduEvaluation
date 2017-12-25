@@ -161,30 +161,36 @@ export default {
 	    		}
 				datas = [];
 	    		obj.postHttp(obj,'',"score/getHomePageChart",function(objs,data){
-	    			objs.name = data.result.name
-	    			objs.code = data.result.label
-	    			datas = [obj.initPrate(data.result.rateMap.highRate),
-	    					 obj.initPrate(data.result.rateMap.excellentRate),
-	    					 obj.initPrate(data.result.rateMap.commissionRate),
-	    					 obj.initPrate(data.result.rateMap.passRate),
-	    					 obj.initPrate(data.result.rateMap.failureRate)];
-	    			if(data.result.studentLevel=='高分'){
-	    				datas[0] = {value : obj.initPrate(data.result.rateMap.highRate),itemStyle:{normal:{color:"#FFD700"}}}
+	    			if(data.result.msg=="没有该教师所在班级的最近一场考试数据"){
+						objs.name = data.result.name
+	    				objs.code = data.result.labels
+	    				objs.option1.series[0].data =[0,0,0,0,0];
+		    			objs.echarts.init(document.getElementById("average")).setOption(obj.option1);
+	    			}else{
+						datas = [obj.initPrate(data.result.rateMap.highRate),
+		    					 obj.initPrate(data.result.rateMap.excellentRate),
+		    					 obj.initPrate(data.result.rateMap.commissionRate),
+		    					 obj.initPrate(data.result.rateMap.passRate),
+		    					 obj.initPrate(data.result.rateMap.failureRate)];
+		    			if(data.result.studentLevel=='高分'){
+		    				datas[0] = {value : obj.initPrate(data.result.rateMap.highRate),itemStyle:{normal:{color:"#FFD700"}}}
+		    			}
+		    			if(data.result.studentLevel=='优秀'){
+		    				datas[1] = {value : obj.initPrate(data.result.rateMap.excellentRate),itemStyle:{normal:{color:"#FFD700"}}}
+		    			}
+		    			if(data.result.studentLevel=='良好'){
+		    				datas[2] = {value : obj.initPrate(data.result.rateMap.commissionRate),itemStyle:{normal:{color:"#FFD700"}}}
+		    			}
+		    			if(data.result.studentLevel=='合格'){
+		    				datas[3] = {value : obj.initPrate(data.result.rateMap.passRate),itemStyle:{normal:{color:"#FFD700"}}}
+		    			}
+		    			if(data.result.studentLevel=='不及格'){
+		    				datas[4] = {value : obj.initPrate(data.result.rateMap.failureRate),itemStyle:{normal:{color:"#FFD700"}}}
+		    			}
+		    			objs.option1.series[0].data =datas;
+		    			objs.echarts.init(document.getElementById("average")).setOption(obj.option1);
 	    			}
-	    			if(data.result.studentLevel=='优秀'){
-	    				datas[1] = {value : obj.initPrate(data.result.rateMap.excellentRate),itemStyle:{normal:{color:"#FFD700"}}}
-	    			}
-	    			if(data.result.studentLevel=='良好'){
-	    				datas[2] = {value : obj.initPrate(data.result.rateMap.commissionRate),itemStyle:{normal:{color:"#FFD700"}}}
-	    			}
-	    			if(data.result.studentLevel=='合格'){
-	    				datas[3] = {value : obj.initPrate(data.result.rateMap.passRate),itemStyle:{normal:{color:"#FFD700"}}}
-	    			}
-	    			if(data.result.studentLevel=='不及格'){
-	    				datas[4] = {value : obj.initPrate(data.result.rateMap.failureRate),itemStyle:{normal:{color:"#FFD700"}}}
-	    			}
-	    			obj.option1.series[0].data =datas;
-	    			obj.echarts.init(document.getElementById("average")).setOption(obj.option1);
+	    		
 	    		});
 	    	}
 

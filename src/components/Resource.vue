@@ -41,7 +41,7 @@
 					      <el-table-column prop="subject" align="center"  label="科目"></el-table-column>
 					      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
 					      <el-table-column align="center" label="操作" width='250'>
-					      	<template scope="scope">
+					      	<template slot-scope="scope">
 					      		<el-button type="primary" v-show="scope.row.examStatus==2" icon="el-icon-search" @click="report(scope.row.id)">查看报告</el-button>
 					      	</template>
 					      </el-table-column>
@@ -95,7 +95,7 @@
 						      <el-table-column prop="subjectCode" align="center"  label="科目"></el-table-column>
 						      <el-table-column prop="createDate" align="center" :formatter="timeFormatter"  label="创建时间"></el-table-column>
 						      <el-table-column align="center" label="操作" width='250'>
-						      	<template scope="scope">
+						      	<template slot-scope="scope">
 						      		<el-button type="primary" icon="el-icon-search" @click="showInfo(scope.row.id)">查看</el-button>
 						      	</template>
 						      </el-table-column>
