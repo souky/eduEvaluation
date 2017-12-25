@@ -195,13 +195,14 @@ export default {
   		this.$refs['classroom'].resetFields();
   	},
 	editInfo(id){
-		this.$refs['classroom'].resetFields();
+		
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
 		this.postHttp(this,{id:id},"classroom/getClassroomById",function(obj,res){
   			if(res.code == '10000'){
   				obj.classroom = res.result;
+  				obj.$refs['classroom'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}
