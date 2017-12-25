@@ -182,7 +182,7 @@
 						<el-table-column align="center" prop="topic" label="题型"></el-table-column>
 						<el-table-column align="center" prop="fractionalValue" label="分值"></el-table-column>
 						<el-table-column align="center" prop="studentScore" label="得分">
-							<template scope="scope">
+							<template slot-scope="scope">
 								<span v-if="scope.row.studentScore == 0" v-bind:class="{activeS: (scope.row.studentScore == 0)}">{{ scope.row.studentScore }}</span>
 								<span v-else v-bind:class="{active: (scope.row.rightOrNot == 1)}">{{ scope.row.studentScore }}</span>
 							</template>
@@ -1280,11 +1280,9 @@ export default {
 								var d = date.getDate();      
 								d = d < 10 ? ('0' + d) : d;          
 								var number= y + '-' + m + '-' + d;   
-								console.log(number)
 								obj.optionGrowthTrend.xAxis.data.push(number);
 							}
 							//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
-							console.log(obj.optionGrowthTrend.xAxis.data)
 							obj.optionGrowthTrend.series[0].data=[];
 							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
 							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
@@ -1466,7 +1464,6 @@ export default {
 									minute = minute < 10 ? ('0' + minute) : minute;      
 									second = second < 10 ? ('0' + second) : second;     
 									var number= y + '-' + m + '-' + d;   
-									console.log(number)
 									obj.optionGrowthTrend.xAxis.data.push(number);
 								}
 								//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
@@ -1497,7 +1494,6 @@ export default {
 									minute = minute < 10 ? ('0' + minute) : minute;      
 									second = second < 10 ? ('0' + second) : second;     
 									var number= y + '-' + m + '-' + d;   
-									console.log(number)
 									obj.optionGrowthTrend.xAxis.data.push(number);
 								}
 								//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
@@ -1528,7 +1524,6 @@ export default {
 									minute = minute < 10 ? ('0' + minute) : minute;      
 									second = second < 10 ? ('0' + second) : second;     
 									var number= y + '-' + m + '-' + d;   
-									console.log(number)
 									obj.optionGrowthTrend.xAxis.data.push(number);
 								}
 								//obj.optionGrowthTrend.xAxis.data=res.result.examDates;
