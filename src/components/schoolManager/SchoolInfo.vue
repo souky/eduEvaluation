@@ -17,10 +17,7 @@
 			    <el-input v-model="schoolInfo.schoolAddr"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校手机">
-			    <el-input v-model="schoolInfo.schoolMobile"></el-input>
-			  </el-form-item>
-			  <el-form-item label="学校电话">
-			    <el-input v-model="schoolInfo.schoolTel"></el-input>
+			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校唯一码">
 			    <el-input v-model="schoolInfo.schoolOnlyCode" readonly></el-input>
@@ -29,10 +26,7 @@
 			    <el-input v-model="schoolInfo.schoolContact"></el-input>
 			  </el-form-item>
 			  <el-form-item label="联系人手机">
-			    <el-input v-model="schoolInfo.schoolContactMobile"></el-input>
-			  </el-form-item>
-			  <el-form-item label="联系人电话">
-			    <el-input v-model="schoolInfo.schoolContactTel"></el-input>
+			    <el-input v-model="schoolInfo.schoolContactMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校学科" prop="subjectArray">
 			    <el-checkbox-group v-model="schoolInfo.subjectArray">
@@ -65,6 +59,7 @@ export default {
     return {
       msg: 'schoolInfo',
       schoolInfo:{},
+      maxLength:11,
       rules: {
           schoolName: [
             { required: true, message: '请输入考试名称', trigger: 'blur' }

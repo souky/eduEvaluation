@@ -57,8 +57,8 @@
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="classroom" class="demo-ruleForm" label-width="80px" :model="classroom">
-			  <el-form-item label="年级" v-show="showInfo" prop="gradeCode">
-			    <el-select v-model="classroom.gradeCode" placeholder="请选择">
+			  <el-form-item label="年级" v-show="showInfo" prop="gradeCodes">
+			    <el-select v-model="classroom.gradeCodes" placeholder="请选择">
 				    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 				    </el-option>
 				</el-select>
@@ -109,7 +109,7 @@ export default {
       teacherOption:[],
       
 	   rules: {
-	      gradeCode: [
+	      gradeCodes: [
 	        { required: true, message: '请选择年级', trigger: 'change' }
 	      ],
 	      classroomNames: [
