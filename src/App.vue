@@ -33,7 +33,6 @@
           if(data.code=="60000"||data.code=="50000"||data.code=="11111"){
               
           }else{
-              
           }
         });
       }

@@ -340,7 +340,7 @@ export default {
 		           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
 	        });
 	    	this.postHttp(this,{tab:'SCHOOL_REPORT',examId:this.testList[e].id,subject:this.changeSchool},"score/geReportCards",function(obj,data){
-	    		if(data.result =="该考试尚未制定双向细目表"){
+	    		if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
 					obj.tableData1 = [];
 		           obj.tableData2 = [];
 		           obj.option2.xAxis[0].data = obj.classroom;
@@ -447,7 +447,13 @@ export default {
     	},
     	changeReprot(e){
 			this.postHttp(this,{tab:'SCHOOL_REPORT',examId:this.ides,subject:e},"score/geReportCards",function(obj,data){
-	           obj.tableData3 = data.result.classSubScoreList;
+				if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
+					obj.tableData3 = [];
+					obj.option4.series[0].data = [];
+					obj.option4.xAxis[0].data = obj.classroom;
+					obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+				}else{
+				   obj.tableData3 = data.result.classSubScoreList;
 		           var comtribution = [];
 		           for(var a of data.result.classSubScoreList){
 		           		comtribution.push(a.contribution);
@@ -455,6 +461,8 @@ export default {
 		           obj.option4.series[0].data = comtribution;
 		           obj.option4.xAxis[0].data = data.result.classList;
 		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+				}
+	           
 	        });
 	        
     	}

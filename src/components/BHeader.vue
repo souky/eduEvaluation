@@ -16,8 +16,8 @@
       <span class="titleJRY">金阳测评</span>
       <div class="leftPart l">
         <div class="l">
-          <router-link to="/report">
-            <div class="leftItems leftItemsActive l">成绩报告</div>
+          <router-link :to="report">
+            <div class="leftItems l">成绩报告</div>
           </router-link>
           
           <router-link to="/resource">
@@ -41,12 +41,14 @@
 </template>
 
 <script>
+
 export default {
   data () {
   return {
       isShow:'',
       msg: '顶部导航栏',
-      username:'用户13974289150'
+      username:'用户13974289150',
+      report:''
     }
   },
   mounted:function(){
@@ -71,7 +73,10 @@ export default {
     getLoginUser(){
       this.postHttp(this,'',"user/getLoginUser",function(obj,data){
         obj.username = data.result.userName;
-        console.log("23");
+        if(data.result.roleName=='老师')
+          obj.report = '/report'
+        if(data.result.roleName=='学生')
+          obj.report = '/report/studentLevel'
       });
     }
   }

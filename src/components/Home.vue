@@ -4,7 +4,7 @@
 			<div class="home_body">
 				<img class="backgroundImg" src="../../static/img/header/bg-s.png" />
 				<div class="personal">
-					<img src="../../static/img/header/xiao.png">
+					<img src="../../static/img/header/n3.png">
 					<div class="personalDetail">
 						<p>姓名：{{name}}</p>
 						<p v-show='xueji'>学籍号：{{code}}</p>
@@ -45,6 +45,7 @@ export default {
   data () {
 	return {
       msg: '顶部导航栏',
+      report:'',
       xueji:true,
       username:'用户13974289150',
       name:'王丫丫',
@@ -132,7 +133,7 @@ export default {
     },
   	gotoReport:function(){
   		//页面跳转
-  		this.$router.push({path:'/report'});
+  		this.$router.push({path:this.report});
   	},
   	gotoResource:function(){
   		this.$router.push({path:'/resource'});
@@ -144,17 +145,24 @@ export default {
   		var datas = [];
   		this.postHttp(this,'',"user/getLoginUser",function(obj,data){
 	    	obj.name = data.result.name;obj.username = data.result.userName;
-	    	if(data.result.studentId==undefined){
-	    		obj.xueji = false
-	    	}else{
-	    		obj.xueji = true;
-	    		obj.code = data.result.studentId;
-	    	}
+	    	
 	    	if(data.result.roleName=="超级管理员"){
 
 	    	}else{
-	    		datas = [];
+	    		if(data.result.roleName=='老师'){
+	    			obj.xueji = false;
+	    			obj.jiaoshi = true;
+	    			obj.report = '/report/schoolLevel'
+	    		}
+	    		if(data.result.roleName=='学生'){
+	    			obj.xueji = true;
+	    			obj.jiaoshi = false;
+	    			obj.report = '/report/studentLevel'
+	    		}
+				datas = [];
 	    		obj.postHttp(obj,'',"score/getHomePageChart",function(objs,data){
+	    			objs.name = data.result.name
+	    			objs.code = data.result.label
 	    			datas = [obj.initPrate(data.result.rateMap.highRate),
 	    					 obj.initPrate(data.result.rateMap.excellentRate),
 	    					 obj.initPrate(data.result.rateMap.commissionRate),

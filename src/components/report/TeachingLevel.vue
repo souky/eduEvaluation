@@ -336,7 +336,7 @@ export default {
 				    obj.subjects=childs;
 					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/geReportCards",function(objs,data){
 							objs.tableData1 = [];objs.tableData2 = [];var avgList =[];var avgXAxis = [];
-							if(data.result == "该考试尚未制定双向细目表" ){
+							if(data.result == "该考试尚未制定双向细目表"||data.code=="20000"){
 								objs.tableData1 = [];obj.tableData2 = [];
 								objs.option2.xAxis[0].data = objs.classroom;
 				           		objs.option2.series[0].data = [];
@@ -526,7 +526,7 @@ export default {
 			this.postHttp(this,needDataR,"score/geReportCards",function(objs,data){
 					objs.tableData1 = [];objs.tableData2 = [];
 					var avgList =[];var avgXAxis = [];
-					if(data.result == "该考试尚未制定双向细目表" ){
+					if(data.result == "该考试尚未制定双向细目表"||data.code=="20000"){
 						objs.tableData1 = [];objs.tableData2 = [];
 						objs.option2.xAxis[0].data = objs.classroom;
 		           		objs.option2.series[0].data = [];

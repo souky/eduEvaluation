@@ -2,10 +2,10 @@
 <div class="main_body-header">
 	<div class="main_body">
 		 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
-		  <el-menu-item index="/report/schoolLevel">校级报告</el-menu-item>
-		  <el-menu-item index="/report/teachingLevel">教研报告</el-menu-item>
-		  <el-menu-item index="/report/classLevel">班级报告</el-menu-item>
-		  <el-menu-item index="/report/studentLevel">学生报告</el-menu-item>
+		  <el-menu-item v-if="roleName=='老师'" index="/report/schoolLevel">校级报告</el-menu-item>
+		  <el-menu-item v-if="roleName=='老师'" index="/report/teachingLevel">教研报告</el-menu-item>
+		  <el-menu-item v-if="roleName=='老师'" index="/report/classLevel">班级报告</el-menu-item>
+		  <el-menu-item v-if="roleName=='老师'||roleName=='学生'" index="/report/studentLevel">学生报告</el-menu-item>
 		</el-menu>
 		<router-view></router-view>
 	</div>
@@ -19,20 +19,30 @@
 export default {
 	data(){
 		return {
-	      activeIndex:'/report/schoolLevel'
+	      activeIndex:'',
+	      roleName:''
 	    }
 	},
 	created: function(){
 		this.$emit('refreshbizlines','other');
 		this.activeIndex=window.location.pathname;
 		if(window.location.pathname=="/report"){
+
 			this.activeIndex="/report/schoolLevel";
 		}
+	},
+	mounted:function(){
+		this.getLoginUser()
 	},
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
-      }
+      },
+	  getLoginUser(){
+	      this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+	        obj.roleName = data.result.roleName;
+	      });
+	  }
     }
 }
 </script>
@@ -60,7 +70,6 @@ export default {
 }
 .el-menu--horizontal .el-menu-item:hover{
 	background-color: white;
-
 	border-bottom:0px;
 }
 .el-menu--horizontal .el-menu-item.is-active:hover{
