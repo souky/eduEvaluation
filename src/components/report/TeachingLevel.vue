@@ -134,7 +134,7 @@
 		  </div>
 		  <div id="averageCompare">
 		  		<div id="averageChart"></div>
-		  		<p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p>
+		  		<!-- <p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p> -->
 		  </div>
 
 		  <div class="header louceng">
@@ -145,8 +145,8 @@
 		  	<div id="contrastiveChart">
 		  	
 		  	</div>
-		  	<p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。
-		  	</p>
+		  	<!-- <p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。
+		  	</p> -->
 		  </div>
 
 		  <div class="header">
@@ -156,7 +156,7 @@
 		  <div id="topCompared">
 		  		 <div id="topComparedChart">
 		  		</div> 
-		  		<p class="testTips">本次考试中，前10名最多的班级是8班和7班；前20名最多的班级的是8班、10班和11班；前50名最多的班级是10班、12班和14班。</p>
+		  		<!-- <p class="testTips">本次考试中，前10名最多的班级是8班和7班；前20名最多的班级的是8班、10班和11班；前50名最多的班级是10班、12班和14班。</p> -->
 		  </div>
 		  <div class="header louceng">
 			<p>试卷分析</p>

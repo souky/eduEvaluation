@@ -183,7 +183,14 @@ export default {
   },
   methods:{
   	report(){
-  		this.$router.push({path:'/report/schoolLevel'})
+  		
+  		this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+        obj.username = data.result.userName;
+        if(data.result.roleName=='老师')
+          obj.$router.push({path:'/report/schoolLevel'});
+        if(data.result.roleName=='学生')
+          obj.$router.push({path:'/report/studentLevel'});
+      	});
   	},
   	queryInfo(){
   		var datas = this.ajaxData();
@@ -293,8 +300,8 @@ export default {
 		data["pageSize"] = this.pageSize;
 		data["pageNum"] = this.pageNum;
 		data["specificationName"] = this.queryInfos1.specificationName;
-		data["gradeCode"] = this.queryInfos1.gradeCode;
-		data["subjectCode"] = this.queryInfos1.subjectCode;
+		data["gradeCode"] = this.queryInfos1.gradeName;
+		data["subjectCode"] = this.queryInfos1.subjectName;
 		return data;
 	},
   }
