@@ -41,7 +41,7 @@
 		      <el-table-column prop="teacherJobTitle" align="center"  label="职称"></el-table-column>
 		      <el-table-column prop="userName" show-overflow-tooltip align="center"  label="帐户名"></el-table-column>
 		      <el-table-column align="center" label="操作" width="300">
-		      	<template scope="scope">
+		      	<template slot-scope="scope">
 		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
 		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
 		      		<el-button type="primary forbid" v-else icon="el-icon-upload">开通账号</el-button>
@@ -95,12 +95,12 @@
 			  </el-form-item>
 			  <el-form-item label="班级" prop="classArray" >
 			  	<el-checkbox-group v-model="teacher.classArray">
-			  		<el-checkbox v-for="e in classOption" :label="e.classroomName" name="classArray"></el-checkbox>
+			  		<el-checkbox v-for="e in classOption" :key="e.id" :label="e.classroomName" name="classArray"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			  <el-form-item label="学科" prop="subjectArray" >
 			  	<el-checkbox-group v-model="teacher.subjectArray">
-			      <el-checkbox v-for="e in subjectOption" :label="e" name="subjectArray"></el-checkbox>
+			      <el-checkbox v-for="e in subjectOption" :key="e" :label="e" name="subjectArray"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			</el-form>
@@ -241,16 +241,20 @@ export default {
       		classArray:[]
   		};
   		this.classOption = [];
-  		this.$refs['teacher'].resetFields();
+  		if(this.$refs['teacher']){
+  			this.$refs['teacher'].resetFields();
+  		}
   		
   	},
 	editInfo(id){
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
+		if(this.$refs['teacher']){
+  			this.$refs['teacher'].resetFields();
+  		}
 		this.postHttp(this,{id:id},"teacher/getTeacherById",function(obj,res){
   			if(res.code == '10000'){
   				obj.teacher = res.result;
-  				obj.$refs['teacher'].resetFields();
   				var grade = res.result.grade;
   				obj.postHttp(obj,{grade:grade},'classroom/queryClassroomsByGrade',function(obj,res){
 			  		obj.classOption = res.result;

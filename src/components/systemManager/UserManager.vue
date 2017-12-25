@@ -43,7 +43,7 @@
 		      <el-table-column prop="userName" align="center"  label="用户名"></el-table-column>
 		      <el-table-column prop="roleName" align="center"  label="角色"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
-		      	<template scope="scope">
+		      	<template slot-scope="scope">
 		      		<el-button type="primary" icon="el-icon-edit" @click="initPsw(scope.row.id)">重置密码</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
@@ -207,16 +207,20 @@ export default {
   		this.showPsw = true;
   		this.user = {};
   		this.diaTitle = "新增";
-  		this.$refs['user'].resetFields();
+  		if(this.$refs['user']){
+  			this.$refs['user'].resetFields();
+  		}
   	},
 	editInfo(id){
 		this.diaTitle = "编辑";
+		if(this.$refs['user']){
+  			this.$refs['user'].resetFields();
+  		}
 		this.postHttp(this,{id:id},'user/getUserById',function(obj,res){
   			if(res.code == '10000'){
   				obj.user = res.result;
   				obj.showPsw = false;
   				obj.dialogVisible = true;
-  				obj.$refs['user'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}

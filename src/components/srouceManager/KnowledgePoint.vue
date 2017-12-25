@@ -96,6 +96,9 @@ export default {
   		this.konw = {};
   		this.konw["parentId"] = "";
   		this.konw["subjectId"] = this.queryName;
+  		if(this.$refs['konw']){
+  			this.$refs['konw'].resetFields();
+  		}
   	},
   	saveEdit(){
   		var address = 'knowledgepoint/saveKnowledgePoint';

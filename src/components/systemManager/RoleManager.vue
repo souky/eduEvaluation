@@ -32,7 +32,7 @@
 		      <el-table-column prop="roleName" align="center" label="名称"></el-table-column>
 		      <el-table-column prop="remark" align="center"  label="备注"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
-		      	<template scope="scope" >
+		      	<template slot-scope="scope" >
 		      		<div v-if="scope.row.orgId != '' || user.userType == '0' ">
 		      			<el-button type="primary" icon="el-icon-menu"  @click="authorizationInfo(scope.row.id)">授权</el-button>
 			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
@@ -164,16 +164,19 @@ export default {
   		this.dialogVisible = true;
   		this.role = {};
   		this.diaTitle = "新增";
-  		this.$refs['role'].resetFields();
+  		if(this.$refs['role']){
+  			this.$refs['role'].resetFields();
+  		}
   	},
 	editInfo(id){
 		this.diaTitle = "编辑";
 		this.dialogVisible = true;
+		if(this.$refs['role']){
+  			this.$refs['role'].resetFields();
+  		}
 		this.postHttp(this,{id:id},'role/getRoleById',function(obj,res){
   			if(res.code == '10000'){
   				obj.role = res.result;
-  				
-  				obj.$refs['role'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}

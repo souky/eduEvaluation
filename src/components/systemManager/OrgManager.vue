@@ -15,7 +15,7 @@
 				<el-table :data="tableData" style="width: 100%">
 			      <el-table-column prop="orgName" align="center" label="名称"></el-table-column>
 			      <el-table-column align="center" label="操作" width='400'>
-			      	<template scope="scope">
+			      	<template slot-scope="scope">
 			      		<el-button type="primary" icon="el-icon-plus" @click="addManager(scope.row.id)">添加管理员</el-button>
 			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
@@ -201,16 +201,19 @@ export default {
 	addNew(){
 		this.dialogVisible = true;
 		this.showInfo = true;
-  		this.$refs['org'].resetFields();
   		this.diaTitle = "新增";
   		this.org = {};
+  		if(this.$refs['org']){
+  			this.$refs['org'].resetFields();
+  		}
 	},
 	editInfo(id){
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
-  		this.$refs['org'].resetFields();
-		
+		if(this.$refs['org']){
+  			this.$refs['org'].resetFields();
+  		}		
 		this.postHttp(this,{id:id},"organization/getOrganizationById",function(obj,res){
 			if(res.code == '10000'){
 				obj.org = res.result;
@@ -243,7 +246,9 @@ export default {
 	addManager(orgId){
 		this.managerOrgId = orgId;
 		this.showManager = true;
-		this.$refs['user'].resetFields();
+		if(this.$refs['user']){
+  			this.$refs['user'].resetFields();
+  		}
 	},
 	saveEditU(){
 		this.$refs['user'].validate((valid) => {

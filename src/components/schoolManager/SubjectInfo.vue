@@ -29,12 +29,12 @@
 		      <el-table-column prop="subjectCode" align="center" label="科目编码"></el-table-column>
 		      <el-table-column prop="subjectName" align="center" label="科目名称"></el-table-column>
 		      <el-table-column  align="center" label="背景颜色">
-		      	<template scope="scope">
+		      	<template slot-scope="scope">
 		      		<div class="colrs" :style="{background:scope.row.subjectColor}">{{scope.row.subjectColor}}</div>
 		      	</template>
 		      </el-table-column>
 		      <!--<el-table-column align="center" label="操作">
-		      	<template scope="scope">
+		      	<template slot-scope="scope">
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>

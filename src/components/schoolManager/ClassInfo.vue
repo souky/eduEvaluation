@@ -37,7 +37,7 @@
 		      <el-table-column prop="teacherName" align="center" show-overflow-tooltip label="班主任"></el-table-column>
 		      <el-table-column prop="studentCount" align="center" label="班级人数"></el-table-column>
 		      <el-table-column align="center" label="操作">
-		      	<template scope="scope">
+		      	<template slot-scope="scope">
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
@@ -192,7 +192,9 @@ export default {
   		this.showInfo = true;
   		this.diaTitle = "新增";
   		this.classroom = {};
-  		this.$refs['classroom'].resetFields();
+  		if(this.$refs['classroom']){
+  			this.$refs['classroom'].resetFields();
+  		}
   	},
 	editInfo(id){
 		

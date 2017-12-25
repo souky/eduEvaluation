@@ -39,7 +39,7 @@
 		      <el-table-column prop="classroomName" align="center"  label="班级"></el-table-column>
 		       <el-table-column prop="userName" align="center" show-overflow-tooltip  label="用户名"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
-		      	<template scope="scope">
+		      	<template slot-scope="scope">
 		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
 		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
 		      		<el-button type="primary forbid" v-else icon="el-icon-upload">开通账号</el-button>
@@ -233,16 +233,20 @@ export default {
   		this.showInfo = true;
   		this.classroom = {};
   		this.diaTitle = "新增";
-  		this.$refs['student'].resetFields();
+  		if(this.$refs['student']){
+  			this.$refs['student'].resetFields();
+  		}
   	},
 	editInfo(id){
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
+		if(this.$refs['student']){
+  			this.$refs['student'].resetFields();
+  		}
 		this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
   			if(res.code == '10000'){
   				obj.student = res.result;
-  				obj.$refs['student'].resetFields();
   			}else{
   				obj.notify_jr(obj,'操作错误',res.message,'error');
   			}

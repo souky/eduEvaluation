@@ -41,7 +41,7 @@
 			      <el-table-column prop="subject" align="center"  label="科目"></el-table-column>
 			      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
 			      <el-table-column align="center" label="操作" width='200'>
-			      	<template scope="scope">
+			      	<template slot-scope="scope">
 			      		<!--<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>-->
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 			      	</template>
@@ -85,12 +85,12 @@
 						  </el-form-item>
 						  <el-form-item label="年级">
 						  	<el-select v-model="grade" placeholder="请选择活动区域">
-						      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+						      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 						    </el-select>
 						  </el-form-item>
 						  <el-form-item label="学科">
 						  	<el-checkbox-group v-model="exam.subject" @change='subjectChange'>
-						      <el-checkbox v-for="e in subjectArray" :label="e" name="subjectArray"></el-checkbox>
+						      <el-checkbox v-for="e in subjectArray" :key="e" :label="e" name="subjectArray"></el-checkbox>
 						    </el-checkbox-group>
 						  </el-form-item>
 						</el-form>
@@ -98,11 +98,11 @@
 			    	
 			    	<div class="add_exam_three l">
 			    		<div class="item_titel">双向细目表</div>
-						<div class="two_way_subject fix" v-for="(e,index) in subject">
+						<div class="two_way_subject fix" v-for="(e,index) in subject" :key="e.id">
 							<div class="title l">{{e.name}}</div>
 							<div class="selete_item l">
 								<el-select v-model="e.spId" placeholder="选择细目表">
-							      <el-option v-for="e in twList" :label="e.specificationName" :value="e.id" :key="e.id"></el-option>
+							      <el-option v-for="e in twList"  :label="e.specificationName" :value="e.id" :key="e.id"></el-option>
 							    </el-select>
 							</div>
 							<div class="add_two_way l" @click="add_two_way">添加细目表</div>
@@ -115,7 +115,7 @@
 		    	<div class="add_exam_two">
 		    		<div class="item_titel">学生信息</div>
 		    		<el-collapse accordion>
-					  <el-collapse-item v-for="(e,index) in student" :title="e.classroomName" :name="index">
+					  <el-collapse-item v-for="(e,index) in student" :key="e.id" :title="e.classroomName" :name="index">
 						<el-row>
 							<el-col :span="5"></el-col>
 							<el-col :span="1">序号</el-col>
@@ -128,7 +128,7 @@
 						  	<el-col :span="2">缺考</el-col>
 						  	<el-col :span="6"></el-col>
 						</el-row>
-						<el-row v-for="(ee,indexs) in e.list">
+						<el-row v-for="(ee,indexs) in e.list" :key="e.id">
 							<el-col :span="5"></el-col>
 							<el-col :span="1">{{indexs+1}}</el-col>
 						  	<el-col :span="1">
@@ -168,7 +168,7 @@
 			  	<div class="l">年级</div>
 			  	<div class="r">
 			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
-				      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+				      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 				    </el-select>
 			  	</div>
 			  </el-col>
@@ -200,7 +200,7 @@
 			</el-row>
 			
 			<el-row v-model="two_way_D" :gutter="10">
-				<div v-for="e in two_way_D">
+				<div v-for="e in two_way_D" :key="e.id">
 					<el-col :span="1">
 						<el-input v-model="e.itemNo" ></el-input>
 					</el-col>

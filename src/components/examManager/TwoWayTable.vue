@@ -14,7 +14,7 @@
 				  	<div class="l">年级</div>
 				  	<div class="r">
 				  		<el-select v-model="queryInfos.gradeCode" placeholder="年级">
-					      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+					      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 					    </el-select>
 				  	</div>
 				  </el-col>
@@ -47,7 +47,7 @@
 			      <el-table-column prop="subjectCode" align="center"  label="科目"></el-table-column>
 			      <el-table-column prop="createDate" align="center" :formatter="timeFormatter"  label="创建时间"></el-table-column>
 			      <el-table-column align="center" label="操作" width='250'>
-			      	<template scope="scope">
+			      	<template slot-scope="scope">
 			      		<el-button type="primary" icon="el-icon-search" @click="showInfo(scope.row)">查看</el-button>
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 			      	</template>
@@ -91,7 +91,7 @@
 			      </el-table-column>
 			      <el-table-column prop="knowledgeName" align="center" width='250' show-overflow-tooltip label="知识点"></el-table-column>
 			      <el-table-column align="center" label="操作" width='250'>
-			      	<template scope="scope">
+			      	<template slot-scope="scope">
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfoDetail(scope.row.id)">删除</el-button>
 			      	</template>
 			      </el-table-column>
@@ -112,7 +112,7 @@
 			  	<div class="l">年级</div>
 			  	<div class="r">
 			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
-				      <el-option v-for="e in gradeOption" :label="e" :value="e"></el-option>
+				      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 				    </el-select>
 			  	</div>
 			  </el-col>
@@ -144,7 +144,7 @@
 			</el-row>
 			
 			<el-row v-model="two_way_D" :gutter="10">
-				<div v-for="e in two_way_D">
+				<div v-for="e in two_way_D" :key="e.id">
 					<el-col :span="1">
 						<el-input v-model="e.itemNo" ></el-input>
 					</el-col>
