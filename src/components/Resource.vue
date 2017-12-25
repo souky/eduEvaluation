@@ -182,14 +182,13 @@ export default {
 		this.queryInfo1();
   },
   methods:{
-  	report(){
-  		
+  	report(id){
   		this.postHttp(this,'',"user/getLoginUser",function(obj,data){
         obj.username = data.result.userName;
         if(data.result.roleName=='老师')
-          obj.$router.push({path:'/report/schoolLevel'});
+          obj.$router.push({path:'/report/schoolLevel',query:{name:id}});
         if(data.result.roleName=='学生')
-          obj.$router.push({path:'/report/studentLevel'});
+          obj.$router.push({path:'/report/studentLevel',query:{name:id}});
       	});
   	},
   	queryInfo(){
