@@ -149,6 +149,7 @@ export default {
 	                	self.konw.parentId = data.id;
 	                	self.konw.subjectId = self.queryName;
 	                	self.dialogVisible = true;
+	                	self.$refs['konw'].resetFields();
 	                	self.konw.knowledgeContent = "";
 	                }  
 	            }},""),  
