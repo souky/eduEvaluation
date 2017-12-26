@@ -3,9 +3,9 @@
     "title": "JS Components",
     "list": [
       {
-        "path": "/cell",
-        "name": "cell",
-        "icon": "cell"
+        "path": "/setting",
+        "name": "setting",
+        "icon": "setting"
       }
     ]
   }

@@ -39,8 +39,32 @@
            <p class="bottomWord">提升教学质量从这里开始</p>
         </mt-tab-container-item>  
         <mt-tab-container-item id="成绩">  
-           <mt-header title="成绩报告">
-           </mt-header>
+          <div class="header-nav">
+            <p>成绩报告</p>
+          </div>
+           <div id="grade">
+           <div class="grade-nav">
+              <div v-show="display.subject" ref="fristBit" v-for="item in subjectLsit" :data-id="item.id" class="grade-nav-bit" @click="subjectButton($event)">
+                <p>{{item.name}}</p>
+              </div>
+              <div v-show="display.allSubject" class="grade-nav-bit1">
+                <p>全部分类</p>
+              </div>
+              <div class="grade-navMore">
+                <div class="grade-navMore-bit">
+                  <span @click="allButton($event)"><img class="grade-navMore-bitImg" src="../static/img/APPImg/gfh@1x.png" alt=""></span>
+                </div>
+              </div>
+            </div>
+            <div v-show="display.allSubject" class="grade-nav-more">
+              <div class="Gnav-moreConment">
+                <div class="Gnav-moreConment-bit" v-for="item in subject">
+                  <p>{{item.name}}</p>
+                </div>
+                <div class="cl"></div>
+              </div>
+            </div>
+          </div>
             <mt-cell v-for="item in reportList" :key="item.id" :title=item.name>
               <mt-button class="viewReport">查看报告</mt-button>
             </mt-cell>
@@ -112,7 +136,7 @@
                 <span class="studentClass">高三一班</span><br>
                 <span class="schoolClass">金阳一中</span>
               </p>
-              <i class="mint-cell-allow-right"></i>
+              <i class="mint-cell-allow-right" @click="teds()"></i>
             </div>
             <div class="rightPart">
               
@@ -122,10 +146,10 @@
             <a href="tel:400-820-8856" class="kfcall"><span>400-820-8856</span></a>
             <img slot="icon" src="../static/img/APPImg/kf@1x.png" width="24" height="24">
           </mt-cell>     
-          <mt-cell title="帮助中心" to="/" is-link>
+          <mt-cell title="帮助中心" to="/helping" is-link>
             <img slot="icon" src="../static/img/APPImg/bz@1x.png" width="24" height="24">
           </mt-cell>
-           <mt-cell title="设置" to="/" is-link>
+           <mt-cell title="设置" to="/setting" is-link>
             <img slot="icon" src="../static/img/APPImg/sz@1x.png" width="24" height="24">
           </mt-cell>
         </mt-tab-container-item>  
@@ -166,35 +190,16 @@
     </div> -->
   </section>
 </template>
-<style type="text/css">
-  #topNav {
-  width: 100%;
-  overflow: hidden;
-  font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
-  border-bottom:1px solid #f8f8f8;
-}
-#topNav .swiper-slide {
-  padding: 0 5px;
-  letter-spacing:2px;
-  width:3rem;
-  text-align:center;
-}
-#topNav .swiper-slide span{
-
-  transition:all .3s ease;
-  display:block;
-}
-#topNav .active span{
-  transform:scale(1.1);
-  color:#FF2D2D;
-}
-</style>
 <script type="text/babel">
   import { navs } from './router/index';
 
   export default {
     data() {
       return {
+        display:{
+          subject:true,
+          allSubject:false,
+        },
         navs: [],
         selected: '首页',
         selected1:'1',
@@ -239,17 +244,82 @@
         },{
           id:'4',
           name:'金阳一中高三年级2014年期末考试'
-        }]
+        }],
+        subjectLsit:[],
+      subject:[{
+        id:1,
+        name:'总分',
+      },{
+        id:2,
+        name:'数学',
+      },{
+        id:3,
+        name:'英语',
+      },{
+        id:4,
+        name:'物理',
+      },{
+        id:5,
+        name:'化学',
+      },{
+        id:6,
+        name:'语文',
+      },{
+        id:7,
+        name:'生物',
+      },{
+        id:8,
+        name:'历史',
+      },{
+        id:9,
+        name:'地理',
+      },{
+        id:10,
+        name:'政治',
+      }]
       };
     },
 
     created() {
       this.navs = navs;
+      for(var i=0;i<5;i++){
+        this.subjectLsit.push(this.subject[i]);
+      }
+    },
+    computed:{
     },
     mounted(){
-      this.lunbo();
+      if(this.$store.state.label=='4'){
+        this.selected='我的'
+      }
+      if(this.$store.state.label=='3'){
+        this.selected='资源'
+      }
+      if(this.$store.state.label=='2'){
+        this.selected='成绩'
+      }
+      if(this.$store.state.label=='1'){
+        this.selected='首页'
+      }
+      this.lunbo();this.$refs.fristBit[0].className+=" navOn";
+
     },
     methods:{
+      subjectButton:function(e){
+        for(var i=0;i<e.currentTarget.parentNode.getElementsByClassName("grade-nav-bit").length;i++){
+          e.currentTarget.parentNode.getElementsByClassName("grade-nav-bit")[i].className="grade-nav-bit";
+        }
+        e.currentTarget.className+=" navOn";
+      },
+      allButton:function(e){
+        if(e.currentTarget.childNodes[0].className=="grade-navMore-bitImg"){
+          e.currentTarget.childNodes[0].className="grade-navMore-bitImg1"
+        }else{
+          e.currentTarget.childNodes[0].className="grade-navMore-bitImg"
+        }
+        this.display.subject=!this.display.subject;
+        this.display.allSubject=!this.display.allSubject;
+      },
       lunbo(){
         new Swiper('#swiperTest', {
           nextButton: '.swiper-button-next',
@@ -258,7 +328,11 @@
           grabCursor: true,
           initialSlide: 1,
           autoplayDisableOnInteraction: false
-        })
+        });
+
+      },
+      teds(){
+        this.$router.push({path:'/personal'})
       }
     }
   };
@@ -415,7 +489,13 @@
     }
     #pageDemo .mint-cell-wrapper{
       background-color: white;
-      margin-bottom: 2vh
+      margin-bottom: 2vh;
+      font-size: 4vw
+    }
+    #pageDemo .margintop .mint-cell-wrapper{
+      margin-bottom: 0;
+      margin-top: 2vh;
+      border-bottom: 1px solid #f5f5f5
     }
     #pageDemo .nomargin .mint-cell-wrapper{
       margin-bottom: 0;
@@ -459,5 +539,85 @@
     #pageDemo .myCenter p span{
         display: inline-block;
         margin-bottom: 0.5vh;
+    }
+    #grade{
+      overflow: hidden;
+      margin-top: 7vh;border-bottom: 1px solid #f5f5f5;
+    } 
+    #grade .grade-nav{
+      width: 100%;
+      height: 48px;
+    }
+    .grade-nav-bit{
+      width: 11%;
+      height: 100%;
+      margin-left: 5%;
+      float: left;
+    }
+    .grade-nav-bit1{
+      width: 70%;
+      height: 100%;
+      margin-left: 5%;
+      float: left;
+    }
+    .grade-nav-bit p{
+      text-align: center;
+      line-height: 45px;
+    }
+    .grade-nav-bit1 p{
+      line-height: 45px;
+    }
+    .grade-navMore{
+      height: 100%;
+      width: 15%;
+      float: right;
+    }
+    .navOn{
+      border-bottom: 2px solid #19AFFF;
+    }
+    .grade-navMore-bit{
+      width: 100%;
+      height: 80%;
+      margin-top: 5px;
+      border-left:1px solid #C4C4C4;
+      text-align: center;
+    }
+    .grade-navMore-bit .grade-navMore-bitImg{
+      margin-top:10px;
+      transform:rotate(-90deg);
+      -ms-transform:rotate(-90deg);   /* IE 9 */
+      -moz-transform:rotate(-90deg);  /* Firefox */
+      -webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(-90deg);  /* Opera */
+    }
+    .grade-navMore-bit .grade-navMore-bitImg1{
+      margin-top:10px;
+      transform:rotate(90deg);
+      -ms-transform:rotate(90deg);  /* IE 9 */
+      -moz-transform:rotate(90deg);   /* Firefox */
+      -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(90deg);   /* Opera */
+    }
+    .grade-nav-more{
+      width: 100%;
+      height: auto;
+      position: fixed;
+      z-index: 999;
+      background-color: rgb(245, 245, 245);
+    }
+    .Gnav-moreConment{
+      width: 85%;
+      margin: auto
+    }
+    .Gnav-moreConment-bit{
+      width: 20%;
+      height: 40px;
+      margin-right: 5%;
+      margin-top: 10px;
+      float: left;
+    }
+    .Gnav-moreConment-bit p{
+      text-align: center;
+      margin-top: 10px;
     }
 </style>

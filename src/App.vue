@@ -28,8 +28,8 @@
     background-color: #19AFFF;
     text-align: center;
     position: absolute;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
   }
   .header-nav p{
     font-size: 1.125rem;
@@ -46,12 +46,19 @@
   export default {
     computed: {
       visible() {
+
         return ['/','/home'].indexOf(this.$route.path) < 0;
       }
     },
     methods:{
       header:function(){
-        this.$router.go(-1)
+        if(this.$store.state.label=='5'){
+          this.$router.push({path:'/setting'})
+        }else if(this.$store.state.label=='6'){
+          this.$router.push({path:'/personal'})
+        }else{
+          this.$router.push({path:'/home'})
+        }
       }
     }
   };

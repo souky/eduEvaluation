@@ -38,6 +38,21 @@ route.route.push({
 },{
   path: '/knowledge',
   component: require('../components/knowledge/knowledge.vue')
+},{
+  path: '/setting',
+  component: require('../components/pages/setting.vue')
+},{
+  path: '/fixpassWord',
+  component: require('../components/pages/fixpassWord.vue')
+},{
+  path: '/helping',
+  component: require('../components/pages/helping.vue')
+},{
+  path: '/personal',
+  component: require('../components/pages/personal.vue')
+},{
+  path: '/fixname',
+  component: require('../components/pages/fixname.vue')
 });
 
 export const navs = route.navs;
