@@ -1152,9 +1152,9 @@ export default {
 			getPercentageRank:function(){
 				this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'score/getPercentageRank',function(obj,res){
 					if(res.code == '10000'){
-						obj.optionBeyondRate.series[0].data[0].value=res.result.classPercentageRank;
+						obj.optionBeyondRate.series[0].data[0].value=res.result.schoolPercentageRank;
 						obj.optionBeyondRate.series[0].data[1].value=res.result.schoolPercentageRank;
-						obj.optionBeyondRate.series[0].data[2].value=res.result.schoolPercentageRank;
+						obj.optionBeyondRate.series[0].data[2].value=res.result.classPercentageRank;
 						obj.echarts.init(document.getElementById("beyondRate1")).setOption(obj.optionBeyondRate);
 					}else{
 						obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -1281,6 +1281,9 @@ export default {
 						obj.testAnalysisTableAS.number3=0;
 						obj.testAnalysisTableAS.number4=0;
 						for(var i=0;i<res.result.listVO.length;i++){
+							if(res.result.listVO[i].studentScore==undefined ||res.result.listVO[i].studentScore==""){
+								res.result.listVO[i].studentScore=0
+							}
 							obj.testAnalysisTableAS.number1=obj.testAnalysisTableAS.number1+res.result.listVO[i].studentScore;
 							if(res.result.listVO[i].rightOrNot=="1"){
 								obj.testAnalysisTableAS.number2=obj.testAnalysisTableAS.number2+1;
