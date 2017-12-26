@@ -15,7 +15,7 @@
 		</div>
 		<div v-show="display.allSubject" class="grade-nav-more">
 			<div class="Gnav-moreConment">
-				<div class="Gnav-moreConment-bit" v-for="item in subject">
+				<div class="Gnav-moreConment-bit" :data-id="item.id" @click="subjectButton1($event)" v-for="item in subject">
 					<p>{{item.name}}</p>
 				</div>
 				<div class="cl"></div>
@@ -908,6 +908,48 @@ export default {
 						this.display.knowledgeAnalysis=true;
 						this.display.abilityAnalyze=true;
 					}
+				},
+				subjectButton1:function(e){
+					var number=parseInt(e.currentTarget.getAttribute("data-id"));
+					if(number==1){
+						for(var l=0;l<this.$refs.fristBit.length;l++){
+							this.$refs.fristBit[l].className="grade-nav-bit";
+						}
+						this.$refs.fristBit[0].className+=" navOn";
+					}else{
+						if(parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number<4){
+							this.subjectLsit=[];
+							for(var i=0;i<4;i++){
+								var num=number-1;
+								this.subjectLsit.push(this.subject[num+i])
+							}
+							var arr={
+								id:1,
+								name:'总分'
+							}
+							this.subjectLsit.unshift(arr);
+							for(var l=0;l<this.$refs.fristBit.length;l++){
+								this.$refs.fristBit[l].className="grade-nav-bit";
+							}
+							this.$refs.fristBit[1].className+=" navOn";
+						}else{
+							this.subjectLsit=[];
+							for(var i=0;i<4;i++){
+								var num=number-1;
+								this.subjectLsit.push(this.subject[num+i])
+							}
+							var arr={
+								id:1,
+								name:'总分'
+							}
+							this.subjectLsit.unshift(arr);
+							for(var l=0;l<this.$refs.fristBit.length;l++){
+								this.$refs.fristBit[l].className="grade-nav-bit";
+							}
+							this.$refs.fristBit[1].className+=" navOn";
+						}
+					}
+					this.colse();
 				},
 				allButton:function(e){
 					if(e.currentTarget.childNodes[0].className=="grade-navMore-bitImg"){
