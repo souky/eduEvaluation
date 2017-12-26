@@ -65,11 +65,15 @@
               </div>
             </div>
           </div>
-            <mt-cell v-for="item in reportList" :key="item.id" :title=item.name>
-              <mt-button class="viewReport">查看报告</mt-button>
+            <mt-cell v-for="item in reportList" :key="item.id" :title="item.name">
+              <mt-button class="viewReport" @click="gotoReport">查看报告</mt-button>
             </mt-cell>
         </mt-tab-container-item>  
-        <mt-tab-container-item id="资源">  
+        <mt-tab-container-item id="资源"> 
+          <div class="header-nav">
+            <p>知识点</p>
+          </div> 
+          <div id="knowPoint">
            <div class="point">
              <div class="points">
                   <img src="../static/img/APPImg/yw@1x.png" />
@@ -126,6 +130,7 @@
                   <p>政治</p>
              </div>
            </div>
+         </div>
         </mt-tab-container-item>  
         <mt-tab-container-item id="我的">
           <div class="myCenter">
@@ -333,6 +338,9 @@
       },
       teds(){
         this.$router.push({path:'/personal'})
+      },
+      gotoReport(){
+        this.$router.push({path:'/grade'})
       }
     }
   };
@@ -539,6 +547,10 @@
     #pageDemo .myCenter p span{
         display: inline-block;
         margin-bottom: 0.5vh;
+    }
+    #knowPoint{
+      float: left;
+      margin-top: 7vh;
     }
     #grade{
       overflow: hidden;

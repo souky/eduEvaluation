@@ -21,6 +21,9 @@ export default {
 
 		}
 	},
+	created:function(){
+		this.$store.commit('newTab','1')
+	},
 	mounted:function(){
 		let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 		this.$refs.loginHight.style.height=h+"px";

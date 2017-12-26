@@ -6,6 +6,7 @@
 	  <mt-cell title="用户名" ><span>{{username}}</span>
 	  </mt-cell>
 	  <mt-cell title="用户昵称" class="hasTop" to="/fixname" is-link>
+	  	<span>{{nickname}}</span>
 	  </mt-cell>
 	  <mt-cell title="学校"><span>{{userSchool}}</span>
 	  </mt-cell>
@@ -19,7 +20,8 @@ export default {
 		return{
 			username:'丫丫',
 			userSchool:'金阳一中',
-			userClass:'高三一班'
+			userClass:'高三一班',
+			nickname:'丫丫'
 		}
 	},
 	created:function(){
