@@ -24,13 +24,13 @@
 			    </div>
 			  </el-col>
 			  <el-col :span="8">
-			  	<div class="gotoResource homeBox" @click="gotoResource">
+			  	<div class="gotoResource homeBox" @click="gotoManagement">
 			  		<img src="../../static/img/header/zy.png" />
 			  		<div class="bottomBtn">资源中心</div>
 			  	</div>
 			  </el-col>
 			  <el-col :span="8">
-			  	<div class="gotoManagement homeBox" @click="gotoManagement">
+			  	<div class="gotoManagement homeBox" @click="gotoResource">
 			  		<img src="../../static/img/header/ks.png" />
 			  		<div class="bottomBtn">考试管理</div>
 			  	</div>

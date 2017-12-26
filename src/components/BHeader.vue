@@ -1,8 +1,10 @@
 <template>
 	<div v-if="isShow=='home'" id="header" class="fix box_s">
 		<div class="logoImg">
-			<img src="../../static/img/header/logo.png" />
-			<span class="titleJRY">金阳测评</span>
+        <router-link to="/home">
+  			<img src="../../static/img/header/logo.png" />
+  			<span class="titleJRY hometitles">金阳测评</span>
+        </router-link>
 			<div class="rightPart r">
 				<div class="l">
 					<span class="userName">{{username}}</span>  <span @click="loginOut">退出</span>
@@ -12,8 +14,10 @@
 	</div>
   <div v-else-if="isShow=='other'" id="header" class="fix box_s box_other">
     <div class="logoImg">
+      <router-link to="/home">
       <img src="../../static/img/header/logo.png" />
-      <span class="titleJRY">金阳测评</span>
+      <span class="titleJRY reporthomes">金阳测评</span>
+      </router-link>
       <div class="leftPart l">
         <div class="l">
           <router-link :to="report">
@@ -84,8 +88,14 @@ export default {
 </script>
 
 <style>
-.titleJRY{
+#header .titleJRY{
   font-size: 24px;
+}
+#header .hometitles{
+  color: #000
+}
+#header .reporthomes{
+  color: #fff
 }
 #header .leftItems{
     padding: 0 20px;

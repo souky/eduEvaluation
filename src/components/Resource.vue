@@ -43,7 +43,7 @@
 					      <el-table-column align="center" label="操作" width='250'>
 					      	<template slot-scope="scope">
 					      		<el-button type="primary" v-show="scope.row.examStatus==2" icon="el-icon-search" @click="report(scope.row.id)">查看报告</el-button>
-					      	</template>
+					     	</template>
 					      </el-table-column>
 					    </el-table>
 					    
