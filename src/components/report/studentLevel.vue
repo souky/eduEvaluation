@@ -390,19 +390,7 @@ export default {
 				color:'#F37070',
 			}],
 			tableData:[],
-			anothertableData:[{
-				rawScore:90,
-				score:'23',
-				highestClass:'21321',
-				highestSchool:'1231',
-				highestArea:'123213',
-			},{
-				rawScore:20,
-				score:'23',
-				highestClass:'21321',
-				highestSchool:'1231',
-				highestArea:'123213',
-			}],
+			anothertableData:[],
 			testAnalysisTableAS:{
 				number1:0,
 				number2:0,
@@ -1335,6 +1323,7 @@ export default {
 				});
 			},
 			geReportCards:function(){
+				this.tableData=[];
 				document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-left")[0].style.background="#46C4F8";
 				document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-left")[0].style.color="#fff";
 				document.getElementById("subjectsDiagnosis").getElementsByClassName("choose-area-midle")[0].style.background="#fff";
