@@ -238,7 +238,7 @@
 						<p>知识点分析</p>
 					</div>
 					<div id="knowledgeAnalysis1"></div>
-					<div class="knowledgeNutton">
+					<div class="knowledgeNutton" @click="knowledgeMore()">
 						<p>知识点诊断</p>
 					</div>
 				</div>
@@ -252,7 +252,7 @@
 						<p>能力点分析</p>
 					</div>
 					<div id="abilityAnalyze1"></div>
-					<div class="abilityNutton">
+					<div class="abilityNutton" @click="abilityMore()">
 						<p>能力点诊断</p>
 					</div>
 				</div>
@@ -966,6 +966,12 @@ export default {
 					}
 					this.display.subject=!this.display.subject;
 					this.display.allSubject=!this.display.allSubject;
+				},
+				knowledgeMore:function(){
+					this.$router.push({path:'/knowledges'});
+				},
+				abilityMore:function(){
+					this.$router.push({path:'/ability'});
 				},
 				chooseSubject:function(e,num){
 					document.getElementsByClassName("growth")[0].getElementsByClassName("choose-area-left")[0].style.background="#fff";
