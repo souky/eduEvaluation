@@ -124,7 +124,7 @@ export default {
   },
   methods:{
   	initPrate(e){
-    		if(e<1){
+    		if(e<1||e==1){
 	        	return e*1000000/10000 ;
 	        }else{
 	        	return e;
@@ -149,7 +149,7 @@ export default {
 	    	if(data.result.roleName=="超级管理员"){
 
 	    	}else{
-	    		if(data.result.roleName=='老师'){
+	    		if(data.result.roleName=='老师'||data.result.roleName=='教师'){
 	    			obj.xueji = false;
 	    			obj.jiaoshi = true;
 	    			obj.report = '/report/schoolLevel'
@@ -161,7 +161,7 @@ export default {
 	    		}
 				datas = [];
 	    		obj.postHttp(obj,'',"score/getHomePageChart",function(objs,data){
-	    			if(data.result.msg=="没有该教师所在班级的最近一场考试数据"){
+	    			if(data.result=="没有该教师所在班级的最近一场考试数据"){
 						objs.name = data.result.name
 	    				objs.code = data.result.labels
 	    				objs.option1.series[0].data =[0,0,0,0,0];
