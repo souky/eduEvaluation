@@ -77,7 +77,7 @@ export default {
     getLoginUser(){
       this.postHttp(this,'',"user/getLoginUser",function(obj,data){
         obj.username = data.result.userName;
-        if(data.result.roleName=='老师')
+        if(data.result.roleName=='老师'||data.result.roleName=='教师')
           obj.report = '/report'
         if(data.result.roleName=='学生')
           obj.report = '/report/studentLevel'

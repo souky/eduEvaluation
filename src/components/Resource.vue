@@ -185,7 +185,7 @@ export default {
   	report(id){
   		this.postHttp(this,'',"user/getLoginUser",function(obj,data){
         obj.username = data.result.userName;
-        if(data.result.roleName=='老师')
+        if(data.result.roleName=='老师'||data.result.roleName=='教师')
           obj.$router.push({path:'/report/schoolLevel',query:{name:id}});
         if(data.result.roleName=='学生')
           obj.$router.push({path:'/report/studentLevel',query:{name:id}});
