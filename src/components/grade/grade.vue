@@ -29,7 +29,7 @@
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
-						<p>总分：550分</p>
+						<p>{{titleName}}：550分</p>
 					</div>
 					<div class="totle-conment-body">
 						<table class="gridtable">
@@ -264,6 +264,7 @@
 export default {
 	data(){
 		return{
+			titleName:'总分',
 			display:{
 				totle:true,
 				beyondRate:true,
@@ -897,6 +898,7 @@ export default {
 						this.display.twoAnalysis=false;
 						this.display.knowledgeAnalysis=false;
 						this.display.abilityAnalyze=false;
+						this.titleName="总分";
 					}else{
 						this.display.totle=true;
 						this.display.beyondRate=true;
@@ -907,6 +909,7 @@ export default {
 						this.display.twoAnalysis=true;
 						this.display.knowledgeAnalysis=true;
 						this.display.abilityAnalyze=true;
+						this.titleName="科目";
 					}
 				},
 				subjectButton1:function(e){
@@ -916,11 +919,12 @@ export default {
 							this.$refs.fristBit[l].className="grade-nav-bit";
 						}
 						this.$refs.fristBit[0].className+=" navOn";
+						this.titleName="总分";
 					}else{
 						if(parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number<4){
 							this.subjectLsit=[];
 							for(var i=0;i<4;i++){
-								var num=number-1;
+								var num=parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-4;
 								this.subjectLsit.push(this.subject[num+i])
 							}
 							var arr={
@@ -931,7 +935,9 @@ export default {
 							for(var l=0;l<this.$refs.fristBit.length;l++){
 								this.$refs.fristBit[l].className="grade-nav-bit";
 							}
-							this.$refs.fristBit[1].className+=" navOn";
+							var totle=parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number;
+							this.$refs.fristBit[4-totle].className+=" navOn";
+							this.titleName="科目";
 						}else{
 							this.subjectLsit=[];
 							for(var i=0;i<4;i++){
@@ -947,6 +953,7 @@ export default {
 								this.$refs.fristBit[l].className="grade-nav-bit";
 							}
 							this.$refs.fristBit[1].className+=" navOn";
+							this.titleName="科目";
 						}
 					}
 					this.colse();
