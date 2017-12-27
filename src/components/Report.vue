@@ -2,8 +2,8 @@
 <div class="main_body-header">
 	<div class="main_body">
 		 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
-		  <el-menu-item v-if="roleName=='老师'roleName=='教师'" index="/report/schoolLevel">校级报告</el-menu-item>
-		  <el-menu-item v-if="roleName=='老师'roleName=='教师'" index="/report/teachingLevel">教研报告</el-menu-item>
+		  <el-menu-item v-if="roleName=='老师'||roleName=='教师'" index="/report/schoolLevel">校级报告</el-menu-item>
+		  <el-menu-item v-if="roleName=='老师'||roleName=='教师'" index="/report/teachingLevel">教研报告</el-menu-item>
 		  <el-menu-item v-if="roleName=='老师'||roleName=='教师'" index="/report/classLevel">班级报告</el-menu-item>
 		  <el-menu-item v-if="roleName=='老师'||roleName=='学生'roleName=='教师'" index="/report/studentLevel">学生报告</el-menu-item>
 		</el-menu>
