@@ -47,7 +47,7 @@
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
-		      layout="sizes, prev, pager, next, jumper"
+		      layout="sizes, prev, pager, next, jumper, total"
 		      :total="total" class="tc mt20"
 		      >
 		    </el-pagination>
