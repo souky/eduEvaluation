@@ -145,10 +145,11 @@
 		<div class="body pt20">
 			<el-table :data="tableData3" style="width: 100%" header-row-class-name="table-header">
 				<template v-for="item in headerData">
-					<el-table-column align="center" v-if="item.isImproved=='0'" :key="item.name" :label="item.name" :prop="item.dataIndex">
+					<el-table-column align="center" v-if="item.dataIndex=='changedRanking'" :key="item.name" :label="item.name" :prop="item.dataIndex">
 						<template slot-scope="scope">
-							<span v-if="scope.row.isImproved == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.isImproved}}</span>
-							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.isImproved}}</span>
+							<span v-if="scope.row.isImproved == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.changedRanking}}</span>
+							<span v-else-if="scope.row.isImproved == 0">{{ scope.row.changedRanking}}</span>
+							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.changedRanking}}</span>
 						</template>
 					</el-table-column>
 					<el-table-column align="center" v-else :key="item.name" :label="item.name" :prop="item.dataIndex"></el-table-column>
