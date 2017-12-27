@@ -109,6 +109,7 @@ export default {
 	  authKey:[],
 	  roleIdAuth:"",
 	  user:{},
+      isdeep:true,
       
       role:{},
       rules: {
@@ -140,10 +141,7 @@ export default {
   	},
   	handleChange(nodes,bo,childs){
   		if(bo){
-  			if(this.authKey.indexOf(nodes.id) == -1){
-  				this.authKey.push(nodes.id);
-  			}
-  			if(nodes.children != undefined){
+  			if(nodes.children != undefined && this.isdeep){
   				for(var i = 0;i<nodes.children.length;i++){
   					if(this.authKey.indexOf(nodes.children[i].id) == -1){
   						this.authKey.push(nodes.children[i].id);
@@ -151,13 +149,30 @@ export default {
   					}
   				}
   			}
+  			if(this.authKey.indexOf(nodes.id) == -1){
+  				this.authKey.push(nodes.id);
+  				if(nodes.pid != undefined){
+  					this.isdeep = false;
+  					if(this.authKey.indexOf(nodes.pid) != -1){
+  						this.isdeep = true;
+  					}else{
+  						this.authKey.push(nodes.pid);
+  						this.$refs.tree.setChecked(nodes.pid,true,false);
+  					}
+  				}else{
+  					this.isdeep = true;
+  				}
+  			}else{
+  				this.isdeep = true;
+  			}
+  			
   			this.$refs.tree.setChecked(nodes.id,true,false);
   		}else{
   			var index = this.authKey.indexOf(nodes.id);
   			if(index >= 0){
 				this.authKey.splice(index,1);
 			}
-  			if(nodes.children != undefined){
+  			if(nodes.children != undefined && this.isdeep){
   				for(var i = 0;i<nodes.children.length;i++){
   					var indexs = this.authKey.indexOf(nodes.children[i].id);
   					if(indexs >= 0){

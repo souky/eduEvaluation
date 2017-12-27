@@ -100,7 +100,6 @@
 	background: #FFD100;
 	border-radius: 3px;
 	cursor: pointer;
-	margin-top: 10px;
 
 }
 
@@ -109,6 +108,9 @@
 	padding-bottom: 20px;
 	border-bottom:1px solid #ececec;
 }
+#queryForm .queryItems{
+	margin-bottom:10px;
+}
 #queryForm .queryItems .l{
 	width:25%;
 	text-align: left;
@@ -116,6 +118,7 @@
 	line-height: 40px;
 	color:#5a5e66;
 	font-size:14px;
+	
 }
 #queryForm .queryItems .r{
 	width:75%;

@@ -100,7 +100,7 @@
 		</div>
 		</transition>
 		
-		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="70%">
+		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="90%">
 		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
 			  <el-col class="queryItems" :span="6" >
 			  	<div class="l">名称</div>
@@ -461,6 +461,13 @@ export default {
 	},
 	add_two_way(){
 		this.dialogVisible = true;
+		this.two_way_D = [{
+			itemNo:'',
+	  		itemType:'0',
+	  		itemScore:'',
+	  		itemAnswer:'',
+	  		itemAbility:[]
+		}];
 	},
 	subjectChange(){
 		var subjectName = this.TwoWaySpecification.subjectCode;
@@ -562,8 +569,10 @@ export default {
 			itemAbilityString +='0';
 		}
 		data.itemAbility = itemAbilityString;
-		var knowledgeId = data.knowledgeId[(data.knowledgeId.length -1)];
-		data.knowledgeId = knowledgeId;
+		if(data.knowledgeId != undefined){
+			var knowledgeId = data.knowledgeId[(data.knowledgeId.length -1)];
+			data.knowledgeId = knowledgeId;
+		}
 		return data;
 	},
 	formatDate(){
@@ -603,8 +612,10 @@ export default {
 				itemAbilityString +='0';
 			}
 			data[i].itemAbility = itemAbilityString;
-			var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
-			data[i].knowledgeId = knowledgeId;
+			if(data[i].knowledgeId != undefined){
+				var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
+				data[i].knowledgeId = knowledgeId;
+			}
 			dataArray[i] = data[i];
 		}
 		return dataArray;
@@ -644,4 +655,5 @@ export default {
     text-align: center;
     margin-bottom:2px;
 }
+#twoWayTable .el-col-1 .el-input__inner{padding:0px;text-align: center;}
 </style>
