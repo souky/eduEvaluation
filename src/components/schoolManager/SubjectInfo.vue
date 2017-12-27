@@ -79,7 +79,7 @@ export default {
   	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
-		this.pageSzie = val;
+		this.pageSize = val;
 		//ajax_data(this);
 	},
 	handleCurrentChange(val) {

@@ -294,7 +294,7 @@ export default {
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
-		this.pageSzie = val;
+		this.pageSize = val;
 		this.queryInfo();
 	},
 	handleCurrentChange(val) {

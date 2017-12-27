@@ -156,7 +156,7 @@
 		</div>
 		</transition>
 		
-		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="70%">
+		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="90%">
 		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
 			  <el-col class="queryItems" :span="6" >
 			  	<div class="l">名称</div>
@@ -617,8 +617,10 @@ export default {
 				itemAbilityString +='0';
 			}
 			data[i].itemAbility = itemAbilityString;
-			var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
-			data[i].knowledgeId = knowledgeId;
+			if(data[i].knowledgeId != undefined){
+				var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
+				data[i].knowledgeId = knowledgeId;
+			}
 			dataArray[i] = data[i];
 		}
 		return dataArray;
@@ -673,6 +675,7 @@ export default {
     text-align: center;
     margin-bottom:2px;
 }
+#examList .el-col-1 .el-input__inner{padding:0px;text-align: center;}
 
 #examList .two_way_subject{
     width: 600px;
