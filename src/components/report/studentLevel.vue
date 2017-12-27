@@ -1361,7 +1361,7 @@ export default {
 								for(var i=0;i<res.result.subjectList.length;i++){
 									var arr={
 										"text":res.result.subjectList[i],
-										"max":1,
+										"max":100,
 									}
 									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
 								}

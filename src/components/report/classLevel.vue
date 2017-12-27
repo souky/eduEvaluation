@@ -667,11 +667,11 @@ export default{
 					radar: [
 					{
 						indicator: [
-						{text: '总分', max: 1},
-						{text: '语文', max: 1},
-						{text: '数学', max: 1},
-						{text: '英语', max: 1},
-						{text: '综合', max: 1}
+						{text: '总分', max: 100},
+						{text: '语文', max: 100},
+						{text: '数学', max: 100},
+						{text: '英语', max: 100},
+						{text: '综合', max: 100}
 						],
 						radius: 200,
 						center: ['50%','55%'],
@@ -1360,7 +1360,7 @@ export default{
 						})
 					},
 					geReportCards:function(){
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS'},'score/geReportCards',function(obj,res){
+						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS',classroomId:this.basicData.class},'score/geReportCards',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionClassdisciplinesLevel.xAxis[0].data=[];
 								obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
@@ -1375,7 +1375,7 @@ export default{
 								for(var i=0;i<res.result.subjectList.length;i++){
 									var arr={
 										"text":res.result.subjectList[i],
-										"max":1,
+										"max":100,
 									}
 									obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
 								}
@@ -1432,7 +1432,7 @@ export default{
 						})
 					},
 					getLevelDistribution:function(){
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
+						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
 							if(res.code == '10000'){
 								var type=(typeof res.result);
 								if(type=="string"){
@@ -1595,7 +1595,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[4].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class, subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
@@ -1614,7 +1614,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[num-1].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
@@ -1633,7 +1633,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[0].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
@@ -1652,7 +1652,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[num-1].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
