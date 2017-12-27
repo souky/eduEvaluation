@@ -7,6 +7,7 @@
            <div class="indexImg">
              <div class="mainImg">
                <mt-search cancel-text='' placeholder="搜索"></mt-search>
+               <div class="tesrra">
                 <div class="swiper-container" id="swiperTest">
                   <div class="swiper-wrapper">
                       <div class="swiper-slide" v-for="item in testList" :key="item.id">{{item.name}}</div>
@@ -14,13 +15,14 @@
                   <!-- 如果需要导航按钮 -->
                   <div class="swiper-button-prev"></div>
                   <div class="swiper-button-next"></div>
-              </div>
-              <div class="showGread">
-                   <p v-for="item in personalData"><span>{{item.name}} :</span> <span>{{item.gread}}</span></p>
-               </div>
-              <div class="mbtn">
-                查看详细报告
-              </div>
+                </div>
+                <div class="showGread">
+                     <p v-for="item in personalData"><span>{{item.name}} :</span> <span>{{item.gread}}</span></p>
+                 </div>
+                <div class="mbtn">
+                  查看详细报告
+                </div>
+                </div>
              </div>
            </div>
            <div class="l silderBox"><hr class="silider"><span class="l">金阳测评</span><hr class="silider"></div>
@@ -382,8 +384,13 @@
       background-size: 100%;
       position: relative;
     }
+    .tesrra{
+        position: absolute;
+        top: 12vw;
+        width: 100%;
+    }
   #pageDemo .mint-search{
-      height: 6vh;display: flex;
+      height: 11vw;position: absolute;top: 5px;width: 100%
     }
   #pageDemo .mint-searchbar{
       background-color: inherit;height: 100%;width: 100%
@@ -398,7 +405,7 @@
   #pageDemo .showGread{
       color: #553B08;
       text-align: center;
-      margin-top: 22%
+      margin-top: 20%
     }
   #pageDemo .mint-searchbar-core{
       background-color: rgba(0,0,0,0);color: white;
@@ -416,6 +423,7 @@
   #pageDemo .mbtn{
       width: 38vw;
       height: 4vh;
+      min-height: 28px;
       border: 1px solid #000;
       border-radius: 8px;
       background-color: #FF7070;
@@ -424,7 +432,7 @@
       text-align: center;
       line-height: 4vh;
       position: absolute;
-      bottom: 2vh;
+      bottom: -9vh;
       right: 15vw
     }
   #pageDemo .silderBox{
@@ -439,6 +447,7 @@
   #pageDemo .silider{
       float: left;
       width: 35%;
+      border:0;
       border-top:1px solid #19AFFF;
     }
   #pageDemo .gotoBox{
@@ -498,7 +507,8 @@
     #pageDemo .mint-cell-wrapper{
       background-color: white;
       margin-bottom: 2vh;
-      font-size: 4vw
+      font-size: 4vw;
+      background-size: 120% 0px
     }
     #pageDemo .margintop .mint-cell-wrapper{
       margin-bottom: 0;

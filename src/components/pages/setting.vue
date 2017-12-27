@@ -34,7 +34,8 @@ export default {
 	padding-top: 7vh
 }
 #settingPage .mint-cell-wrapper{
-    border-bottom: 1px solid #f5f5f5;font-size: 4vw
+    border-bottom: 1px solid #f5f5f5;font-size: 4vw;
+    background-size: 120% 0px;
 }
 #settingPage .hasTop{
 	margin-top:2vh

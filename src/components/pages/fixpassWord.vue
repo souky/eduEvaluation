@@ -104,7 +104,8 @@ export default {
 }
 #passwordPage .mint-cell-wrapper{
     border-bottom: 1px solid #f5f5f5;
-    font-size: 4vw
+    font-size: 4vw;
+    background-size: 120% 0px
 }
 #passwordPage .hasTop{
 	margin-top:2vh;

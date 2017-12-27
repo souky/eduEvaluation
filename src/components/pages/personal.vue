@@ -1,7 +1,7 @@
 <template>
 	<section class="page-demo" id="personPage">
 	  <mt-cell title="头像" class="hasTop">
-	  	<span><img src="/static/img/APPImg/tx@1x.png" height="60" width="60" /></span>
+	  	<span><img src="static/img/APPImg/tx@1x.png" height="60" width="60" /></span>
 	  </mt-cell>
 	  <mt-cell title="用户名" ><span>{{username}}</span>
 	  </mt-cell>
@@ -35,7 +35,8 @@ export default {
 	padding-top: 7vh
 }
 #personPage .mint-cell-wrapper{
-    border-bottom: 1px solid #f5f5f5;font-size: 4vw
+    border-bottom: 1px solid #f5f5f5;font-size: 4vw;
+    background-size: 120% 0px
 }
 #personPage .mint-cell-wrapper img{
 	padding:10px 0;
