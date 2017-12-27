@@ -74,22 +74,6 @@ export default {
 				id:11,
 				name:'音乐',
 				color:'#D070F3',
-			},{
-				id:12,
-				name:'测试12',
-				color:'red',
-			},{
-				id:13,
-				name:'测试13',
-				color:'red',
-			},{
-				id:14,
-				name:'测试14',
-				color:'red',
-			},{
-				id:15,
-				name:'测试15',
-				color:'red',
 			}],
 			queryName:'语文',
 		}

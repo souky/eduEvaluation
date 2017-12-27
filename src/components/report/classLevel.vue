@@ -248,13 +248,13 @@
 		<div id="classtwoDimensionalAnalysis1"></div>
 		<div class="twoDimensionalAnalysis-foot">
 			<div class="difficultyLevel easy">
-				<p>容易</p>
+				<p>难</p>
 			</div>
 			<div class="difficultyLevel midde">
 				<p>中等</p>
 			</div>
 			<div class="difficultyLevel difficult">
-				<p>难</p>
+				<p>容易</p>
 			</div>
 		</div>
 		<div class="foot-word">
@@ -659,9 +659,7 @@ export default{
 				    ]
 				},
 				optionClassdisciplinesLevelRight:{
-					tooltip: {
-						trigger: 'axis'
-					},
+					tooltip: {},
 					legend: {
 						x: 'center',
 						data:['个人','平均水平']
@@ -911,9 +909,7 @@ export default{
 				        ]
 				    },
 				    optionclassknowledge:{
-				    	tooltip: {
-				    		trigger: 'axis'
-				    	},
+				    	tooltip: {},
 				    	legend: {
 				    		x: 'center',
 				    		data:['班级','全校','全区县']
@@ -952,9 +948,7 @@ export default{
 				    	]
 				    },
 				    optionclassabilityAnalyze:{
-				    	tooltip: {
-				    		trigger: 'axis'
-				    	},
+				    	tooltip: {},
 				    	legend: {
 				    		x: 'center',
 				    		data:['班级','全校','全区县']
@@ -1513,25 +1507,25 @@ export default{
 
 								for(var i=0;i<res.result.listVO.length;i++){
 									obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-									obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result.listVO[i].divideClass));
-									obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result.listVO[i].divideSchool));
-									obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result.listVO[i].divideAera));
+									obj.optionClassScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideClass));
+									obj.optionClassScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideSchool));
+									obj.optionClassScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideAera));
 									var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
 									if(number>=0){
 										var list=[];
 										list.push(res.result.listVO[i].difficulty);
 										list.push(number);
 										list.push(res.result.listVO[i].topic);
-										list.push(parseInt(res.result.listVO[i].fractionalValue));
-										list.push(parseInt(res.result.listVO[i].qid));
+										list.push(parseFloat(res.result.listVO[i].fractionalValue));
+										list.push(parseFloat(res.result.listVO[i].qid));
 										obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
 									}else{
 										var list1=[];
 										list1.push(res.result.listVO[i].difficulty);
 										list1.push(number);
 										list1.push(res.result.listVO[i].topic);
-										list1.push(parseInt(res.result.listVO[i].fractionalValue));
-										list1.push(parseInt(res.result.listVO[i].qid));
+										list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+										list1.push(parseFloat(res.result.listVO[i].qid));
 										obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
 									}
 								}						
