@@ -96,7 +96,7 @@
 						      <el-table-column prop="createDate" align="center" :formatter="timeFormatter"  label="创建时间"></el-table-column>
 						      <el-table-column align="center" label="操作" width='250'>
 						      	<template slot-scope="scope">
-						      		<el-button type="primary" icon="el-icon-search" @click="showInfo(scope.row.id)">查看</el-button>
+						      		<el-button type="primary" icon="el-icon-search" @click="showInfo(scope.row)">查看</el-button>
 						      	</template>
 						      </el-table-column>
 						    </el-table>
@@ -206,6 +206,7 @@ export default {
 	  		obj.pageNum1 = res.result.pageNum;
 	  		obj.pageSize1 = res.result.pageSize;
 	  		obj.total1 = res.result.total;
+
 	  		obj.tableData1 = res.result.list;
 	  	})
   	},
