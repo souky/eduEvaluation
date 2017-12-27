@@ -35,10 +35,10 @@ route.route.push({
 },{
   path: '/grade',
   component: require('../components/grade/grade.vue')
-},{
+}/*,{
   path: '/knowledge',
   component: require('../components/knowledge/knowledge.vue')
-},{
+}*/,{
   path: '/setting',
   component: require('../components/pages/setting.vue')
 },{
@@ -53,6 +53,12 @@ route.route.push({
 },{
   path: '/fixname',
   component: require('../components/pages/fixname.vue')
+},{
+   path: '/ability',
+   component: require('../components/grade/Ability.vue')
+},{
+  path: '/knowledges',
+  component: require('../components/grade/knowledge.vue')
 });
 
 export const navs = route.navs;
