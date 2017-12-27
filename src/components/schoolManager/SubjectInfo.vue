@@ -72,11 +72,6 @@ export default {
   },
   mounted:function(){
   	var list = document.getElementsByClassName("colrs");
-//	for(var e = 0;e < list.length;e++){
-//		var gbk = list[e].getAttribute("data-bgk");
-//		console.log(list[e]);
-//		list[e].style.backgroundColor = ''+gbk;
-//	}
   },
   methods:{
 	queryInfo(){

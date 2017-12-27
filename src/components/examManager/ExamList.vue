@@ -206,8 +206,8 @@
 					</el-col>
 					<el-col :span="2">
 						<el-select v-model="e.itemType" >
-					      <el-option label="主观题" value="0"></el-option>
-					      <el-option label="客观题" value="1"></el-option>
+					      <el-option label="主观题" value="1"></el-option>
+					      <el-option label="客观题" value="0"></el-option>
 					    </el-select>
 					</el-col>
 					<el-col :span="1">

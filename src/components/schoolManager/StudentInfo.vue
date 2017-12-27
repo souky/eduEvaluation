@@ -231,7 +231,7 @@ export default {
   	addNew(){
   		this.dialogVisible = true;
   		this.showInfo = true;
-  		this.classroom = {};
+  		this.student = {};
   		this.diaTitle = "新增";
   		if(this.$refs['student']){
   			this.$refs['student'].resetFields();

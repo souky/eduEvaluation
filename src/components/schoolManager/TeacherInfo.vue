@@ -120,7 +120,6 @@ export default {
   data () {
 	var validatePhone = (rule, value, callback) => {
 		var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
-		console.log(value.length)
 		if(!reg.test(value)){
           callback(new Error('电话格式不正确'));
         }else if(value.length != 11){
@@ -190,7 +189,7 @@ export default {
             { type: 'array', required: true, message: '请至少选择一个学科', trigger: 'change' }
           ],
           teacherMobile:[
-          	{validator:validatePhone}
+          	{required: true,validator:validatePhone}
           ]
       }
     }
@@ -355,5 +354,9 @@ export default {
 #teacherInfo .teacher_info_table{
 	width: 90%;
 	margin:20px auto;
+}
+#teacherInfo .forbid{
+	background:#C0C0C0!important;
+	border-color: #C0C0C0!important;
 }
 </style>

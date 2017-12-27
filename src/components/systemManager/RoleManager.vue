@@ -71,7 +71,7 @@
 		</el-dialog>
 		
 		<el-dialog title="授权" :visible.sync="dialogVisibleAuth" width="50%">
-			<el-tree id="textBookT" :data="authorization" ref="tree" :default-checked-keys="authKey"  node-key="id" :props="defaultProps" show-checkbox></el-tree>
+			<el-tree id="textBookT" :data="authorization" ref="tree" check-strictly :default-checked-keys="authKey" @check-change="handleChange"  node-key="id" :props="defaultProps" show-checkbox></el-tree>
 			<span slot="footer" class="dialog-footer">
 			    <el-button type="primary" @click="closeAuth">取 消</el-button>
 			    <el-button type="primary" @click="saveAuth">确 定</el-button>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import RoleManager from '../../assets/systemManagerData/RoleManager'
+let id = 1000;
 export default {
   data () {
 
@@ -137,6 +137,37 @@ export default {
   	colseDia(){
   		this.dialogVisible = false;
   		this.role = {};
+  	},
+  	handleChange(nodes,bo,childs){
+  		if(bo){
+  			if(this.authKey.indexOf(nodes.id) == -1){
+  				this.authKey.push(nodes.id);
+  			}
+  			if(nodes.children != undefined){
+  				for(var i = 0;i<nodes.children.length;i++){
+  					if(this.authKey.indexOf(nodes.children[i].id) == -1){
+  						this.authKey.push(nodes.children[i].id);
+  						this.$refs.tree.setChecked(nodes.children[i].id,true,false); 
+  					}
+  				}
+  			}
+  			this.$refs.tree.setChecked(nodes.id,true,false);
+  		}else{
+  			var index = this.authKey.indexOf(nodes.id);
+  			if(index >= 0){
+				this.authKey.splice(index,1);
+			}
+  			if(nodes.children != undefined){
+  				for(var i = 0;i<nodes.children.length;i++){
+  					var indexs = this.authKey.indexOf(nodes.children[i].id);
+  					if(indexs >= 0){
+  						this.authKey.splice(indexs,1);
+  						this.$refs.tree.setChecked(nodes.children[i].id,false,false);
+  					}
+  				}
+  			}
+  			this.$refs.tree.setChecked(nodes.id,false,false);
+  		}
   	},
   	saveEdit(){
   		var id = this.role.id;
@@ -218,6 +249,7 @@ export default {
 	  					if(oo[j].isHasPermission == 1){
 			  				arrays.push(oo[j].id);
 			  			}
+	  					oo[j]['pid'] = o.id;
 	  				}
 	  			}
 	  		}
@@ -225,9 +257,7 @@ export default {
 		});
 	},
 	saveAuth(){
-		var s = this.$refs.tree.getCheckedKeys();
-		console.log(s)
-		return;
+		var s = this.authKey;
 		var id = this.roleIdAuth;
 		var Objects = new Object();
 		Objects['roleId'] = id;
