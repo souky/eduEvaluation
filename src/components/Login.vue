@@ -114,13 +114,13 @@ export default {
 		onSubmit:function(){
 			this.postHttp(this,this.form,'login',function(obj,res){
 				if(res.code == '10000'){
-					if(res.result.isChangedPsw == '0'){
-						obj.dialogVisible = true;
-					}else{
+//					if(res.result.isChangedPsw == '0'){
+//						obj.dialogVisible = true;
+//					}else{
 						document.getElementById("header").style.display = 'block';
 						document.getElementById("menu").style.display = 'block';
 						obj.$router.push({path:'/home'});
-					}
+//					}
 				}else{
 					obj.notify_jr(obj,'错误提示',res.message,'error');
 				}

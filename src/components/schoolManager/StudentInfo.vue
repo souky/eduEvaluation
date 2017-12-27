@@ -10,10 +10,31 @@
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
+			  		<div class="l">学号</div>
+				  	<div class="r">
+				  		<el-input v-model="queryInfos.studentNo" placeholder="学号"></el-input>
+				  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">	
-			  	
+			  		<div class="l">年级</div>
+				  	<div class="r">
+				  		<el-select v-model="grade" @change='changeGrade' placeholder="请选择">
+						    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
+						    </el-option>
+						</el-select>
+				  	</div>
 			  </el-col>
+			  <el-col class="queryItems" :span="6">	
+			  		<div class="l">班级</div>
+				  	<div class="r">
+				  		<el-select v-model="queryInfos.classroomId" placeholder="请选择">
+					  		<el-option v-for="e in classOption" :label="e.classroomName" :key="e.id" :value="e.id" name="classId"></el-option>
+						</el-select>
+				  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6"></el-col>	
+			  <el-col class="queryItems" :span="6"></el-col>
+			  <el-col class="queryItems" :span="6"></el-col>
 			  <el-col :span="6">
 			  	<div class="btn_query r" @click="queryInfo">
 			  		<i class="el-icon-search">查询</i>
@@ -52,7 +73,7 @@
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
-		      layout="sizes, prev, pager, next, jumper"
+		      layout="sizes, prev, pager, next, jumper, total"
 		      :total="total" class="tc mt20"
 		      >
 		    </el-pagination>
@@ -70,7 +91,7 @@
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="学号"  >
+			  <el-form-item label="学号"  prop="studentNo">
 			  	<el-input v-model="student.studentNo" placeholder="学号"></el-input>
 			  </el-form-item>
 			  <el-form-item label="年龄"  >
@@ -80,7 +101,7 @@
 			  	<el-input v-model="student.studentContact" placeholder="联系人"></el-input>
 			  </el-form-item>
 			  <el-form-item label="联系方式"  >
-			  	<el-input v-model="student.studentContactMobile" placeholder="联系方式"></el-input>
+			  	<el-input v-model="student.studentContactMobile" :maxlength="maxLength" placeholder="联系方式"></el-input>
 			  </el-form-item>
 			  <el-form-item label="年级" v-show="showInfo">
 			    <el-select v-model="grade" @change='changeGrade' placeholder="请选择">
@@ -105,7 +126,6 @@
 </template>
 
 <script>
-import StudentInfo from '../../assets/schoolManagerData/StudentInfo'
 export default {
   data () {
 
@@ -113,9 +133,7 @@ export default {
 	  msg: 'studentInfo',
 	  tableData:[],
 	  queryInfos:{
-	  	teacherName:'',
-	  	teacherDuty:'',
-	  	schoolName:''
+	  	classroomId:'',
 	  },
 	  
 	  pageNum:1,
@@ -125,14 +143,15 @@ export default {
       dialogVisible:false,
       diaTitle:'新增',
       gradeOption:[],
-      student:{},
+      maxLength:11,
+      student:{classroomId:'',},
       sexOption:[
 	  	{
-	  		id:'1',
+	  		id:1,
 	  		value:'男'
 	  	},
 	  	{
-	  		id:'0',
+	  		id:0,
 	  		value:'女'
 	  	}
 	  ],
@@ -153,6 +172,10 @@ export default {
           classroomId: [
             { required: true, message: '请选择班级', trigger: 'change' }
           ],
+          studentNo:[
+            { required: true, message: '请输入学号', trigger: 'blur' }
+          ],
+          
      },
     }
   },
@@ -175,13 +198,18 @@ export default {
   	},
   	colseDia(){
   		this.dialogVisible = false;
-  		this.student = {};
+  		this.student = {classroomId:'',};
   	},
   	saveEdit(){
   		var id = this.student.id;
   		var address = 'student/saveStudent';
   		delete this.student["createDate"];
   		delete this.student["updateDate"];
+  		var age = this.student["studentAge"];
+  		var reg = new RegExp("^[0-9]*$");
+  		if(!reg.test(age)){
+  			delete this.student["studentAge"];
+  		}
   		var dataS = this.student;
   		if(id){
   			address = 'student/updateStudent';
@@ -231,7 +259,8 @@ export default {
   	addNew(){
   		this.dialogVisible = true;
   		this.showInfo = true;
-  		this.student = {};
+  		this.student = {classroomId:'',};
+  		this.grade = "";
   		this.diaTitle = "新增";
   		if(this.$refs['student']){
   			this.$refs['student'].resetFields();
@@ -308,11 +337,15 @@ export default {
 		data["pageSize"] = this.pageSize;
 		data["pageNum"] = this.pageNum;
 		data["studentName"] = this.queryInfos.studentName;
+		data["studentNo"] = this.queryInfos.studentNo;
+		data["classroomId"] = this.queryInfos.classroomId;
 		return data;
 	},
 	changeGrade(val){
 		this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
 	  		obj.classOption = res.result;
+	  		obj.queryInfos["classroomId"] = "";
+	  		obj.student["classroomId"] = "";
 	  	});
 	}
   }

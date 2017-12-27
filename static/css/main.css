@@ -100,6 +100,8 @@
 	background: #FFD100;
 	border-radius: 3px;
 	cursor: pointer;
+	margin-top: 10px;
+
 }
 
 /*queryFrom*/
@@ -170,6 +172,7 @@
 .el-pagination__editor:focus{border-color:#FFD100}
 .el-pagination__sizes .el-input .el-input__inner:hover{border-color:#FFD100!important}
 .el-pagination__sizes .el-input.is-focus .el-input__inner{border-color:#FFD100}
+.el-pagination__total{margin-left:20px;}
 
 .el-checkbox__inner:hover{border-color:#FFD100}
 .el-checkbox__input.is-checked .el-checkbox__inner{background:#FFD100;border-color:#FFD100;}
