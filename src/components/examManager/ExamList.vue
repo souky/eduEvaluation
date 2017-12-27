@@ -379,10 +379,12 @@ export default {
   			this.notify_jr(this,'操作错误','请选择科目','warning');
   			return;
   		}
+  		var loading = this.loading('正在处理...');
       	this.postHttp(this,this.TwoWaySpecification,address,function(obj,res){
 			if(res.code == '10000'){
 				obj.dialogVisible = false;
 				obj.notify_success();
+				loading.close();
 				this.postHttp(this,{pageNum:1,pageSize:100},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
 			  		var s = res.result.list;
 			  		for(var i = 0;i<s.length;i++){
@@ -391,11 +393,13 @@ export default {
 			  		obj.twList = res.result.list;
 			  	});
 			}else{
+				loading.close();
 				obj.notify_jr(obj,'操作错误',res.message,'error');
 			}
         });
   	},
   	saveEdit(){
+  		var loading = this.loading('正在处理...');
 		this.exam.examStartDate = this.timeF(this.exam.examStartDateS).format("YYYY-MM-DD HH:mm:ss");
 		this.exam.examEndDate = this.timeF(this.exam.examEndDateS).format("YYYY-MM-DD HH:mm:ss");
   		
@@ -425,10 +429,13 @@ export default {
 		
 		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
 	  		if(res.code == "10000"){
+	  			loading.close();
 	  			obj.notify_success();
 				obj.queryInfo();
 				obj.backList();
+				
 	  		}else{
+	  			loading.close();
 	  			obj.notify_jr(obj,'操作错误',res.message,'error');
 	  		}
 	  	});

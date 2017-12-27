@@ -184,6 +184,7 @@ export default {
   	
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
+  		obj.gradeOption.unshift("全部");
   	});
   },
   methods:{

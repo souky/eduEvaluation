@@ -367,12 +367,15 @@ export default {
   			this.notify_jr(this,'操作错误','请选择科目','warning');
   			return;
   		}
+  		var loading = this.loading('正在处理...');
       	this.postHttp(this,this.TwoWaySpecification,address,function(obj,res){
 			if(res.code == '10000'){
+				loading.close();
 				obj.dialogVisible = false;
 				obj.notify_success();
 				obj.queryInfo();
 			}else{
+				loading.close();
 				obj.notify_jr(obj,'操作错误',res.message,'error');
 			}
         });
@@ -426,13 +429,16 @@ export default {
 	saveDetials(){
 		this.two_way_D_single["parentId"] = this.parentId;
 		var data = this.formatDateSingle();
+		var loading = this.loading('正在处理...');
 		this.postHttp(this,data,"twowayspecificationdetail/saveTwoWaySpecificationDetail",function(obj,res){
 			if(res.code == '10000'){
+				loading.close();
 				obj.dialogEdit = false;
 				obj.notify_success();
 				var row = {id:obj.parentId,subjectCode:obj.dialogSubject};
 				obj.showInfo(row);
 			}else{
+				loading.close();
 				obj.notify_jr(obj,'操作错误',res.message,'error');
 			}
         });

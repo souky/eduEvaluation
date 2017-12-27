@@ -88,7 +88,14 @@
 import ClassInfo from '../../assets/schoolManagerData/ClassInfo'
 export default {
   data () {
-
+	var validateClass = (rule, value, callback) => {
+	      var reg = new RegExp("^[1-9][0-9]*$");
+	      if(!reg.test(value)){
+	      	callback(new Error('班级必须为大于零的正整数'));
+	      }else{
+	      	callback();
+	      }
+	};
     return {
 	  msg: 'classInfo',
 	  tableData:[],
@@ -113,8 +120,7 @@ export default {
 	        { required: true, message: '请选择年级', trigger: 'change' }
 	      ],
 	      classroomNames: [
-	        { required: true, message: '请输入班级', trigger: 'blur'},
-	        { type: 'number', message: '班级必须为数字值'}
+	        { required: true, validator: validateClass, trigger: 'blur'},
 	      ],
       }
     }
@@ -152,29 +158,34 @@ export default {
 	  		delete this.classroom["updateDate"];
 	  		var dataS = this.classroom;
 	  		if(id){
+	  			var loading = this.loading('正在处理...');
 	  			address = 'classroom/updateClassroom';
 	  			this.postHttp(this,dataS,address,function(obj,res){
 		  			if(res.code == '10000'){
+		  				loading.close();
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.queryInfo();
 		  			}else{
+		  				loading.close();
 		  				obj.notify_jr(obj,'操作错误',res.message,'error');
 		  			}
 		  		})
 	  		}else{
 	  			this.$refs['classroom'].validate((valid) => {
           			if (valid) {
+          				var loading = this.loading('正在处理...');
 			  			var classNo = this.classroom.classroomNames;
 				  		var grade = this.classroom.gradeCodes;
 				  		dataS['classroomName'] = grade + "(" + classNo + ")班";
-				  		
 				  		this.postHttp(this,dataS,address,function(obj,res){
 				  			if(res.code == '10000'){
+				  				loading.close();
 				  				obj.dialogVisible = false;
 				  				obj.notify_success();
 				  				obj.queryInfo();
 				  			}else{
+				  				loading.close();
 				  				obj.notify_jr(obj,'操作错误',res.message,'error');
 				  			}
 				  		})
@@ -216,11 +227,14 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+        	var loading = this.loading('正在处理...');
         	this.postHttp(this,{id:id},'classroom/deleteClassroom',function(obj,res){
 		  		if(res.code == "10000"){
+		  			loading.close();
 		  			obj.notify_success();
 		  			obj.queryInfo();
 		  		}else{
+		  			loading.close();
 		  			obj.notify_jr(obj,'操作错误',res.message,'error');
 		  		}
 		  	});

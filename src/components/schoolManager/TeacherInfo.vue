@@ -15,6 +15,27 @@
 			  		<el-input v-model="queryInfos.teacherDuty" placeholder="职责"></el-input>
 			  	</div>
 			  </el-col>
+			  <el-col class="queryItems" :span="6">	
+			  		<div class="l">年级</div>
+				  	<div class="r">
+				  		<el-select v-model="grade" @change='changeGrade' placeholder="请选择">
+						    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
+						    </el-option>
+						</el-select>
+				  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6">	
+			  		<div class="l">班级</div>
+				  	<div class="r">
+				  		<el-select v-model="queryInfos.classroom" placeholder="请选择">
+					  		<el-option v-for="e in classOption" :label="e.classroomName" :key="e.classroomName" :value="e.classroomName" name="classId"></el-option>
+						</el-select>
+				  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6">
+			  </el-col>
+			  <el-col class="queryItems" :span="6">
+			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  </el-col>
 			  <el-col :span="6">
@@ -36,6 +57,8 @@
 		      <el-table-column prop="teacherName" align="center" label="姓名"></el-table-column>
 		      <el-table-column prop="teacherSex" :formatter='sexFormatter' align="center" label="性别"></el-table-column>
 		      <el-table-column prop="teacherAge" align="center"  label="年龄"></el-table-column>
+		      <el-table-column prop="classroom" align="center" show-overflow-tooltip  label="班级"></el-table-column>
+		      <el-table-column prop="subject" align="center" show-overflow-tooltip  label="学科"></el-table-column>
 		      <el-table-column prop="teacherMobile" align="center"  label="电话"></el-table-column>
 		      <el-table-column prop="teacherDuty" align="center"  label="职责"></el-table-column>
 		      <el-table-column prop="teacherJobTitle" align="center"  label="职称"></el-table-column>
@@ -78,7 +101,7 @@
 			  <el-form-item label="手机号"  prop="teacherMobile">
 			  	<el-input v-model="teacher.teacherMobile" :maxlength="maxLength" placeholder="手机号"></el-input>
 			  </el-form-item>
-			  <el-form-item label="职务" prop="teacherDuty" >
+			  <el-form-item label="职责" prop="teacherDuty" >
 			  	<el-select v-model="teacher.teacherDuty" placeholder="请选择">
 			  		<el-option v-for="item in dutyOption" :key="item.id" :label="item.id" :value="item.id">
 				    </el-option>
@@ -164,6 +187,9 @@ export default {
 	  		id:'班主任'
 	  	}
 	  ],
+	  
+	  classOption:[],
+	  grade:'',
 	  gradeOption:[],
 	  subjectOption:[],
 	  classOption:[],
@@ -249,6 +275,7 @@ export default {
   	addNew(){
   		this.dialogVisible = true;
   		this.diaTitle = "新增";
+  		this.grade = "";
   		this.teacher = {
   			subjectArray:[],
       		classArray:[]
@@ -334,7 +361,7 @@ export default {
 		data["pageNum"] = this.pageNum;
 		data["teacherName"] = this.queryInfos.teacherName;
 		data["teacherDuty"] = this.queryInfos.teacherDuty;
-		data["teacherDuty"] = this.queryInfos.teacherDuty;
+		data["classroom"] = this.queryInfos.classroom;
 		return data;
 	},
 	changeGrade(val){
