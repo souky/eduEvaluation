@@ -4,6 +4,8 @@ import routes from './router/index'
 
 import VueRouter from 'vue-router'
 import ElementUI from 'mint-ui'
+import ElementUIS from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import 'mint-ui/lib/style.css'
 import 'swiper/dist/css/swiper.min.css'
 import 'swiper/dist/js/swiper.min.js'
@@ -19,6 +21,7 @@ Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = false
 
 /* 附加插件 */
+Vue.use(ElementUIS)
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.use(Vuex)
