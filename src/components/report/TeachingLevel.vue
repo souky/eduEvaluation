@@ -46,6 +46,8 @@
 		      <el-table-column :formatter="setRow" label=" 排名 (地区)">
 		      </el-table-column>
 		      <el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
+		      	</el-table-column>
+		      	<el-table-column width="80" prop="schoolMinScore" :formatter='setParse' label="最低分">
 		      </el-table-column>
 		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
 		      </el-table-column>

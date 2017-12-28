@@ -226,6 +226,7 @@ export default {
     		
     		var needData = {tab:'SCHOOL_REPORT'};
 	    	this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
+	    	   obj.testList=[];
 	           for(var value of data.result.exams){
 	           		obj.testList.push(value);
 	           		obj.classList = [];
