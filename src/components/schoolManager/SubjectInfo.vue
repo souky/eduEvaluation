@@ -1,18 +1,15 @@
 <template>
 	<div id="subjectInfo" class="main_body">
-		<!--<div class="subject_info_search">
+		<div class="subject_info_search">
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
-			  <el-col class="queryItems" :span="6">
-			  	<div class="l">科目编码</div>
-			  	<div class="r">
-			  		<el-input v-model="queryInfos.subjectCode" placeholder="科目编码"></el-input>
-			  	</div>
-			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">科目名称</div>
 			  	<div class="r">
 			  		<el-input v-model="queryInfos.subjectName" placeholder="科目名称"></el-input>
 			  	</div>
+			  </el-col>
+			  <el-col class="queryItems" :span="6">
+			  	
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  </el-col>
@@ -22,7 +19,7 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-		</div>-->
+		</div>
 		
 		<div class="subject_info_table">
 			<el-table :data="tableData" style="width: 100%">
@@ -54,15 +51,13 @@
 </template>
 
 <script>
-import SubjectInfo from '../../assets/schoolManagerData/SubjectInfo'
 export default {
   data () {
 
     return {
       msg: 'subjectInfo',
-      tableData:SubjectInfo.data,
+      tableData:[],
 	  queryInfos:{
-	  	subjectCode:'',
 	  	subjectName:''
 	  },
 	  pageNum:1,
@@ -71,20 +66,33 @@ export default {
     }
   },
   mounted:function(){
-  	var list = document.getElementsByClassName("colrs");
+  	this.queryInfo();
   },
   methods:{
 	queryInfo(){
-  		
+  		var datas = this.ajaxData();
+	  	this.postHttp(this,datas,'subject/querySubjects',function(obj,res){
+	  		obj.pageNum = res.result.pageNum;
+	  		obj.pageSize = res.result.pageSize;
+	  		obj.total = res.result.total;
+	  		obj.tableData = res.result.list;
+	  	})
   	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
 		this.pageSize = val;
-		//ajax_data(this);
+		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+		this.queryInfo();
+	},
+	ajaxData(){
+		var data = new Object();
+		data["pageSize"] = this.pageSize;
+		data["pageNum"] = this.pageNum;
+		data["subjectName"] = this.queryInfos.subjectName;
+		return data;
 	},
   }
 }

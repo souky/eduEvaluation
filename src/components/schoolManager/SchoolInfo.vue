@@ -30,15 +30,7 @@
 			  </el-form-item>
 			  <el-form-item label="学校学科" prop="subjectArray">
 			    <el-checkbox-group v-model="schoolInfo.subjectArray">
-			      <el-checkbox label="语文" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="数学" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="英语" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="物理" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="化学" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="生物" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="历史" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="政治" name="subjectArrays"></el-checkbox>
-			      <el-checkbox label="地理" name="subjectArrays"></el-checkbox>
+			      <el-checkbox v-for="e in subjectList" :label="e.subjectName" :key="e.subjectName" :value="e.subjectName" name="subjectArrays"></el-checkbox>
 			    </el-checkbox-group>
 			  </el-form-item>
 			</el-form>
@@ -69,6 +61,7 @@ export default {
       msg: 'schoolInfo',
       schoolInfo:{},
       maxLength:11,
+      subjectList:[],
       rules: {
           schoolName: [
             { required: true, message: '请输入考试名称', trigger: 'blur' }
@@ -97,6 +90,10 @@ export default {
   			res.result['subjectArray'] = new Array();
   		}
   		obj.schoolInfo = res.result;
+  	})
+  	
+  	this.postHttp(this,{pageNum:1,pageSize:0},'subject/querySubjects',function(obj,res){
+  		obj.subjectList = res.result.list;
   	})
   },
   methods:{

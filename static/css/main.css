@@ -75,7 +75,7 @@
     width: calc(100% - 350px);
     background-color: #F9F9F9;
     overflow-y:auto ;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 /*btn*/

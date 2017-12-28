@@ -84,7 +84,7 @@
 						  	<el-date-picker v-model="exam.examEndDateS" type="datetime" placeholder="考试结束时间"></el-date-picker>
 						  </el-form-item>
 						  <el-form-item label="年级">
-						  	<el-select v-model="grade" placeholder="请选择活动区域">
+						  	<el-select v-model="grade" placeholder="请选择年级" @change="queryStudent">
 						      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 						    </el-select>
 						  </el-form-item>
@@ -330,18 +330,8 @@ export default {
   		}
   		obj.twList = res.result.list;
   	});
-  	this.postHttp(this,{},'student/queryStudentsWithoutPage',function(obj,res){
-  		var s = res.result;
-  		for(var i = 0;i<s.length;i++){
-  			var ss = s[i].list;
-  			for(var j = 0;j<ss.length;j++){
-  				ss[j]['checked'] = true;
-  				ss[j]['examStuNo'] = ss[j]['studentNo'];
-  				ss[j]['studentId'] = ss[j]['id'];
-  			}
-  		}
-  		obj.student = s;
-  	});
+  	
+  	//this.queryStudent();
   },
   methods:{
   	queryInfo(){
@@ -385,7 +375,7 @@ export default {
 				obj.dialogVisible = false;
 				obj.notify_success();
 				loading.close();
-				this.postHttp(this,{pageNum:1,pageSize:100},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+				obj.postHttp(obj,{pageNum:1,pageSize:0},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
 			  		var s = res.result.list;
 			  		for(var i = 0;i<s.length;i++){
 			  			s[i]['spId'] = s[i]['id'];
@@ -586,6 +576,24 @@ export default {
 		data["examName"] = this.queryInfos.examName;
 		data["subject"] = this.queryInfos.subject;
 		return data;
+	},
+	queryStudent(grade){
+		var data = {};
+		if(grade != undefined){
+			data = {grade:grade}
+		}
+		this.postHttp(this,data,'student/queryStudentsWithoutPage',function(obj,res){
+	  		var s = res.result;
+	  		for(var i = 0;i<s.length;i++){
+	  			var ss = s[i].list;
+	  			for(var j = 0;j<ss.length;j++){
+	  				ss[j]['checked'] = true;
+	  				ss[j]['examStuNo'] = ss[j]['studentNo'];
+	  				ss[j]['studentId'] = ss[j]['id'];
+	  			}
+	  		}
+	  		obj.student = s;
+	  	});
 	},
 	formatDate(){
 		var data = JSON.parse(JSON.stringify(this.two_way_D));

@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import OrgManager from '../../assets/systemManagerData/OrgManager'
 export default {
   data () {
     return {
@@ -156,20 +155,24 @@ export default {
   		delete this.org["updateDate"];
   		var address = 'organization/saveOrganization';
   		if(id){
+  			
   			address = 'organization/updateOrganization';
   			this.org.regionCode = "1";
   			this.$refs['org'].validate((valid) => {
 	          if (valid) {
+	          	var loading = this.loading('正在处理');
 	          	delete this.org.regionCode;
 	          	this.postHttp(this,this.org,address,function(obj,res){
 		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.tableData = null;
+		  				loading.close();
 		  				obj.postHttp(obj,{},'organization/loadOrganizations',function(obj,res){
 					  		obj.data = res.result;
 					  	});
 		  			}else{
+		  				loading.close();
 		  				obj.notify_jr(obj,'操作错误',res.message,'error');
 		  			}
 		  		})
@@ -180,15 +183,18 @@ export default {
   		}else{
   			this.$refs['org'].validate((valid) => {
 	          if (valid) {
+	          	var loading = this.loading('正在处理');
 	          	this.postHttp(this,this.org,address,function(obj,res){
 		  			if(res.code == '10000'){
 		  				obj.dialogVisible = false;
 		  				obj.notify_success();
 		  				obj.tableData = null;
+		  				loading.close();
 		  				obj.postHttp(obj,{},'organization/loadOrganizations',function(obj,res){
 					  		obj.data = res.result;
 					  	});
 		  			}else{
+		  				loading.close();
 		  				obj.notify_jr(obj,'操作错误',res.message,'error');
 		  			}
 		  		})
