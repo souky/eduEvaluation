@@ -49,13 +49,13 @@
 		      	</el-table-column>
 		      	<el-table-column width="80" prop="schoolMinScore" :formatter='setParse' label="最低分">
 		      </el-table-column>
-		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
+		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%-100%)">
 		      </el-table-column>
-		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-89%)">
+		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-90%)">
 		      </el-table-column>
-		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-79%)">
+		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-80%)">
 		      </el-table-column>
-		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-69%)">
+		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-70%)">
 		      </el-table-column>
 		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
@@ -137,6 +137,7 @@
 		  <div id="averageCompare">
 		  		<div id="averageChart"></div>
 		  		<!-- <p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p> -->
+		  		<div class="allaverag"><img src="/static/img/header/Group.png" /> 全校平均分</div>
 		  </div>
 
 		  <div class="header louceng">
@@ -728,6 +729,15 @@ czxc
     height: 50px;
     margin-top: 30px;
     line-height: 50px;
+}
+#teachLevel #averageCompare{
+	position: relative;
+}
+#teachLevel #averageCompare .allaverag{
+	position: absolute;
+	font-size: 13px;
+	left: 620px;
+	top: 3px
 }
 #teachLevel #rainbow .el-carousel{
     width: 1100px;
