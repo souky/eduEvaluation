@@ -1350,12 +1350,20 @@ export default{
 										num=i;
 									}
 								}
+								obj.optionclassLastStudents.series[1].name="";
+								obj.optionclassLastStudents.series[1].data[0].value="";
+								obj.optionclassLastStudents.series[1].data[1].value="";
+								obj.optionclassLastStudents.series[1].data[2].value="";
+								obj.optionclassLastStudents.series[1].data[3].value="";
+								obj.optionclassLastStudents.series[1].data[4].value="";
 								obj.optionclassLastStudents.series[1].name=res.result.classroomName;
 								obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
 								obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
 								obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
 								obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
 								obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
+								//console.log(obj.optionclassLastStudents.series[1].name)
+								//obj.echarts.init(document.getElementById("classLastStudents")).setOption(obj.optionclassLastStudents);
 							}
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -1695,6 +1703,19 @@ export default{
 								}
 							})
 						},1000);
+					}else{
+						selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionclassLastScore.xAxis.data=[];
+								obj.optionclassLastScore.xAxis.data=res.result.examNameList;
+								obj.optionclassLastScore.series[0].data=[];
+								obj.optionclassLastScore.series[0].data=res.result.scoreAvgList;
+
+								obj.echarts.init(document.getElementById("classLastScore")).setOption(obj.optionclassLastScore);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
+						})
 					}
 				},
 				gradeDistributionshow(){
@@ -1708,6 +1729,8 @@ export default{
 
 							selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
 						},1000);
+					}else{
+						selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
 					}
 				},
 				rankingTopic(e){
