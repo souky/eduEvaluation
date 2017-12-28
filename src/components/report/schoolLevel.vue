@@ -471,7 +471,11 @@ export default {
     		}else{
     		}
     	});
-
+    	window.addEventListener('click',(e)=>{
+    		if(e.target.className!='alltest'){
+    			this.showselect =false
+    		}
+    	});
 		//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;

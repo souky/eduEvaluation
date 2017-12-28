@@ -1160,7 +1160,11 @@ export default{
 						}else{
 						}
 					});
-
+					window.addEventListener('click',(e)=>{
+			    		if(e.target.className!='alltest'){
+			    			this.showselect =false
+			    		}
+			    	});
 				},
 				methods:{
 					data:function(){

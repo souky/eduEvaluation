@@ -163,10 +163,12 @@ export default {
 	    		obj.postHttp(obj,'',"score/getHomePageChart",function(objs,data){
 	    			if(data.result=="没有该教师所在班级的最近一场考试数据"){
 						objs.name = data.result.name
-	    				objs.code = data.result.labels
+	    				objs.code = data.result.label
 	    				objs.option1.series[0].data =[0,0,0,0,0];
 		    			objs.echarts.init(document.getElementById("average")).setOption(obj.option1);
 	    			}else{
+	    				objs.name = data.result.name
+	    				objs.code = data.result.label
 						datas = [obj.initPrate(data.result.rateMap.highRate),
 		    					 obj.initPrate(data.result.rateMap.excellentRate),
 		    					 obj.initPrate(data.result.rateMap.commissionRate),
