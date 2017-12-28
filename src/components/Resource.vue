@@ -270,7 +270,7 @@ export default {
 	},
 	typeFormatter(row, column, cellValue){
 		var type = row[column.property];  
-		if(type == '0'){
+		if(type == '1'){
 	  		return '主观题';
 	  	}else{
 	  		return '客观题';
