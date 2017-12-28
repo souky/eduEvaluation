@@ -392,7 +392,7 @@ export default{
 			},{
 				key:2,
 				name:"优秀",
-				level:"(85%~90%)",
+				level:"(80%~90%)",
 				endScore:0,
 				startScore:0,
 				number:0,
@@ -400,7 +400,7 @@ export default{
 			},{
 				key:3,
 				name:"良好",
-				level:"(75%~85%)",
+				level:"(70%~80%)",
 				endScore:0,
 				startScore:0,
 				number:0,
@@ -408,7 +408,7 @@ export default{
 			},{
 				key:4,
 				name:"及格",
-				level:"(60%~75%)",
+				level:"(60%~70%)",
 				endScore:0,
 				startScore:0,
 				number:0,
@@ -702,7 +702,7 @@ export default{
 						formatter: "{a} <br/>{b} : {c} ({d}%)"
 					},
 					legend: {
-						data: ['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(0%~60%)']
+						data: ['高分(90%~100%)','优秀(80%~90%)','良好(70%~80%)','及格(60%~70%)','不及格(0%~60%)']
 					},
 					series : [
 					{
@@ -712,9 +712,9 @@ export default{
 						center: ['50%', '55%'],
 						data:[
 						{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-						{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-						{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-						{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+						{value:310, name:'优秀(80%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+						{value:234, name:'良好(70%~80%)',itemStyle:{normal:{color:'#70CDF3'}}},
+						{value:135, name:'及格(60%~70%)',itemStyle:{normal:{color:'#7092F3'}}},
 						{value:1548, name:'不及格(0%~60%)',itemStyle:{normal:{color:'#70F3A9'}}}
 						],
 					}
@@ -1028,7 +1028,7 @@ export default{
 						formatter: "{a} <br/>{b}: {c} ({d}%)"
 					},
 					legend: {
-						data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
+						data:['高分(90%~100%)','优秀(80%~90%)','良好(70%~80%)','及格(60%~70%)','不及格(0%~60%)']
 					},
 					series: [
 					{
@@ -1047,10 +1047,10 @@ export default{
 						},
 						data:[
 						{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-						{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-						{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-						{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-						{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+						{value:310, name:'优秀(80%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+						{value:234, name:'良好(70%~80%)',itemStyle:{normal:{color:'#70CDF3'}}},
+						{value:135, name:'及格(60%~70%)',itemStyle:{normal:{color:'#7092F3'}}},
+						{value:1048, name:'不及格(0%~60%)',itemStyle:{normal:{color:'#70F3A9'}}},
 						]
 					},
 					{
@@ -1088,10 +1088,10 @@ export default{
 									}
 								}
 							}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-							{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-							{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-							{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-							{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+							{value:310, name:'优秀(80%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+							{value:234, name:'良好(70%~80%)',itemStyle:{normal:{color:'#70CDF3'}}},
+							{value:135, name:'及格(60%~70%)',itemStyle:{normal:{color:'#7092F3'}}},
+							{value:1048, name:'不及格(0%~60%)',itemStyle:{normal:{color:'#70F3A9'}}},
 							]
 						}
 						]
