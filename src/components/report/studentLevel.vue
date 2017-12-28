@@ -109,7 +109,7 @@
 		</div>
 		<div id="subjectsDiagnosis" class="louceng1" v-show="displayAll.subjectsDiagnosis">
 			<div class="header">
-				<p>科目诊断</p>
+				<p>个人学科均衡水平</p>
 				<div class="header-title-foot"></div>
 			</div>
 			<div class="body">
@@ -124,6 +124,8 @@
 						<p>本区县</p>
 					</div>
 				</div>
+				<div class="subjectsDiagnosis1-title"><p>学科均衡性</p></div>
+				<div class="subjectsDiagnosis2-title"><p>个人与水均水平对比</p></div>
 				<div id="subjectsDiagnosis1"></div>
 				<div id="subjectsDiagnosis2"></div>
 				<div class="cl"></div>
@@ -230,13 +232,13 @@
 				<div id="twoDimensionalAnalysis1"></div>
 				<div class="twoDimensionalAnalysis-foot">
 					<div class="difficultyLevel easy">
-						<p>容易</p>
+						<p>难</p>
 					</div>
 					<div class="difficultyLevel midde">
 						<p>中等</p>
 					</div>
 					<div class="difficultyLevel difficult">
-						<p>难</p>
+						<p>容易</p>
 					</div>
 				</div>
 				<div class="foot-word">
@@ -256,6 +258,7 @@
 						<el-table-column align="center" prop="date" label="知识点模块"></el-table-column>
 						<el-table-column align="center" prop="date" label="知识点"></el-table-column>
 						<el-table-column align="center" label="得分率%">
+							<el-table-column align="center" prop="name" label="我的"></el-table-column>
 							<el-table-column align="center" prop="name" label="班级"></el-table-column>
 							<el-table-column align="center" prop="name" label="校级"></el-table-column>
 							<el-table-column align="center" prop="name" label="区级"></el-table-column>
@@ -268,6 +271,7 @@
 							<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
 							<el-table-column align="center" prop="knowledge" label="知识点"></el-table-column>
 							<el-table-column align="center" label="得分率%">
+								<el-table-column align="center" prop="divideClass" label="我的"></el-table-column>
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
 								<el-table-column align="center" prop="divideAera" label="区级"></el-table-column>
@@ -278,6 +282,7 @@
 						<div class="knowledge-table-trueTotle">
 							<div class="knowledge-table-trueTotleBit"><p>总分:{{truetableData3.totle}}分</p></div>
 							<div class="knowledge-table-trueTotleBit"><p>得分:{{truetableData3.score}}分</p></div>
+							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideStudent}}</p></div>
 							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideClass}}</p></div>
 							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideSchool}}</p></div>
 							<div class="knowledge-table-trueTotleBit"><p>得分率:{{truetableData3.divideAera}}</p></div>
@@ -345,7 +350,7 @@ export default {
 				name:'个人成绩报告单',
 				id:0
 			},{
-				name:'科目诊断',
+				name:'个人学科均衡水平',
 				id:1
 			}],
 			displaystulList:true,
@@ -500,7 +505,7 @@ export default {
 				    },
 				    grid: {
 				    	left: '3%',
-				    	right: '5%',
+				    	right: '8%',
 				    	bottom: '3%',
 				    	containLabel: true
 				    },
@@ -544,9 +549,7 @@ export default {
 				    ]
 				},
 				optionSubjectsDiagnosisRight:{
-					tooltip: {
-						trigger: 'axis'
-					},
+					tooltip: {},
 					legend: {
 						x: 'center',
 						data:['个人','平均水平']
@@ -649,9 +652,7 @@ export default {
 				    ]
 				},
 				optionScoreQuestion:{
-					tooltip: {
-						trigger: 'axis',
-					},
+					tooltip: {},
 					legend: {
 						data:['个人','班级','全校','全区县']
 					},
@@ -847,9 +848,7 @@ export default {
 					]
 				},
 				optionknowledge:{
-					tooltip: {
-						trigger: 'axis'
-					},
+					tooltip: {},
 					legend: {
 						x: 'center',
 						data:['我的','班级','全校','全区县']
@@ -872,7 +871,7 @@ export default {
 					}
 					],
 					series: [
-					{
+					{	
 						type: 'radar',
 						data: [
 						{
@@ -899,9 +898,7 @@ export default {
 					]
 				},
 				optionabilityAnalyze:{
-					tooltip: {
-						trigger: 'axis'
-					},
+					tooltip: {},
 					legend: {
 						x: 'center',
 						data:['我的','班级','全校','全区县']
@@ -1020,19 +1017,22 @@ export default {
 				});
 			},
 			dateFormat:function(row,column){
-				var data=this.accDiv(parseFloat(row.divideClass),100);
-				var data1=this.accMul(row.studentScore,data);
-				return data1;
+				var data=this.accDiv(parseFloat(row.divideClass),parseFloat(100));
+				var data1=parseInt(this.accMul(row.fractionalValue,data)*100);
+				var data2=parseFloat(data1)/100;
+				return data2;
 			},
 			dateFormat1:function(row,column){
-				var data=this.accDiv(parseFloat(row.divideSchool),100);
-				var data1=this.accMul(row.studentScore,data);
-				return data1;
+				var data=this.accDiv(parseFloat(row.divideClass),parseFloat(100));
+				var data1=parseInt(this.accMul(row.fractionalValue,data)*100);
+				var data2=parseFloat(data1)/100;
+				return data2;
 			},
 			dateFormat2:function(row,column){
-				var data=this.accDiv(parseFloat(row.divideAera),100);
-				var data1=this.accMul(row.studentScore,data);
-				return data1;
+				var data=this.accDiv(parseFloat(row.divideClass),parseFloat(100));
+				var data1=parseInt(this.accMul(row.fractionalValue,data)*100);
+				var data2=parseFloat(data1)/100;
+				return data2;
 			},
 			testChange(e){
 				var name=this.testList[e].id;
@@ -1216,7 +1216,7 @@ export default {
 						obj.optionGrowthTrend.xAxis.data=[];
 						for(var i=0;i<res.result.examDates.length;i++){
 							var date = new Date();  
-							date.setTime(parseInt(res.result.examDates[i]));  
+							date.setTime(parseFloat(res.result.examDates[i]));  
 							var y = date.getFullYear();      
 							var m = date.getMonth() + 1;      
 							m = m < 10 ? ('0' + m) : m;      
@@ -1269,9 +1269,15 @@ export default {
 						obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideEasy))
 						obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideSecondary))
 						obj.optionMyGoal.series[1].data.push(parseFloat(res.result.targetVO.divideDifficult))
-						obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideEasy))
-						obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideSecondary))
-						obj.optionMyGoal.series[0].data.push(100.00-parseFloat(res.result.targetVO.divideDifficult))
+						var number1=parseInt((parseFloat(100)-parseFloat(res.result.targetVO.divideEasy))*100)
+						var num1=parseFloat(number1)/100;
+						var number2=parseInt((parseFloat(100)-parseFloat(res.result.targetVO.divideSecondary))*100)
+						var num2=parseFloat(number2)/100;
+						var number3=parseInt((parseFloat(100)-parseFloat(res.result.targetVO.divideDifficult))*100)
+						var num3=parseFloat(number3)/100;
+						obj.optionMyGoal.series[0].data.push(num1)
+						obj.optionMyGoal.series[0].data.push(num2)
+						obj.optionMyGoal.series[0].data.push(num3)
 
 
 						obj.optionScoreQuestion.xAxis[0].data=[];
@@ -1308,16 +1314,16 @@ export default {
 								list.push(res.result.listVO[i].difficulty);
 								list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
 								list.push(res.result.listVO[i].topic);
-								list.push(parseInt(res.result.listVO[i].fractionalValue));
-								list.push(parseInt(res.result.listVO[i].qid));
+								list.push(parseFloat(res.result.listVO[i].fractionalValue));
+								list.push(parseFloat(res.result.listVO[i].qid));
 								obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
 							}else{
 								var list1=[];
 								list1.push(res.result.listVO[i].difficulty);
 								list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
 								list1.push(res.result.listVO[i].topic);
-								list1.push(parseInt(res.result.listVO[i].fractionalValue));
-								list1.push(parseInt(res.result.listVO[i].qid));
+								list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+								list1.push(parseFloat(res.result.listVO[i].qid));
 								obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
 							}
 						}
@@ -1360,7 +1366,7 @@ export default {
 								for(var i=0;i<res.result.subjectList.length;i++){
 									var arr={
 										"text":res.result.subjectList[i],
-										"max":1,
+										"max":100,
 									}
 									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
 								}
@@ -1615,16 +1621,16 @@ export default {
 									list.push(res.result.listVO[i].difficulty);
 									list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
 									list.push(res.result.listVO[i].topic);
-									list.push(parseInt(res.result.listVO[i].fractionalValue));
-									list.push(parseInt(res.result.listVO[i].qid));
+									list.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
 								}else{
 									var list1=[];
 									list1.push(res.result.listVO[i].difficulty);
 									list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
 									list1.push(res.result.listVO[i].topic);
-									list1.push(parseInt(res.result.listVO[i].fractionalValue));
-									list1.push(parseInt(res.result.listVO[i].qid));
+									list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list1.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
 								}
 							}
@@ -1646,16 +1652,16 @@ export default {
 									list.push(res.result.listVO[i].difficulty);
 									list.push(parseFloat(res.result.listVO[i].divideStudentToSchool));
 									list.push(res.result.listVO[i].topic);
-									list.push(parseInt(res.result.listVO[i].fractionalValue));
-									list.push(parseInt(res.result.listVO[i].qid));
+									list.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
 								}else{
 									var list1=[];
 									list1.push(res.result.listVO[i].difficulty);
 									list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
 									list1.push(res.result.listVO[i].topic);
-									list1.push(parseInt(res.result.listVO[i].fractionalValue));
-									list1.push(parseInt(res.result.listVO[i].qid));
+									list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list1.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
 								}
 							}
@@ -1678,16 +1684,16 @@ export default {
 									list.push(res.result.listVO[i].difficulty);
 									list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
 									list.push(res.result.listVO[i].topic);
-									list.push(parseInt(res.result.listVO[i].fractionalValue));
-									list.push(parseInt(res.result.listVO[i].qid));
+									list.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysis.series[0].data.push(list);
 								}else{
 									var list1=[];
 									list1.push(res.result.listVO[i].difficulty);
 									list1.push(parseFloat(res.result.listVO[i].divideStudentToArea));
 									list1.push(res.result.listVO[i].topic);
-									list1.push(parseInt(res.result.listVO[i].fractionalValue));
-									list1.push(parseInt(res.result.listVO[i].qid));
+									list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list1.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysis.series[1].data.push(list1);
 								}
 							}
@@ -1912,14 +1918,36 @@ export default {
 		#subjectsDiagnosis1{
 			width: 600px;
 			height: 500px;
-			margin-top:70px;
+			margin-top:40px;
 			float: left;
+		}
+		.subjectsDiagnosis1-title{
+			width: 600px;
+			margin-top: 20px;
+			float: left;
+			text-align: center;
+		}
+		.subjectsDiagnosis1-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		.subjectsDiagnosis2-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		.subjectsDiagnosis2-title{
+			width: 470px;
+			margin-top: 20px;
+			float: left;
+			text-align: center;
 		}
 		#studentlevel #subjectsDiagnosis2{
 			width: 470px;
 			height: 500px;
 			float: left;
-			margin-top:70px;
+			margin-top:40px;
 			margin-left: 20px;
 		}
 		#studentlevel .subjectsDiagnosisText{
@@ -1974,7 +2002,7 @@ export default {
 			padding-top: 20px;
 		}
 		#studentlevel #testAnalysis .body-Vtitle{
-			width: 345px;
+			width: 370px;
 			margin: auto;
 		}
 		#studentlevel #testAnalysis .body-Vtitle p{
@@ -2115,7 +2143,7 @@ export default {
 		#studentlevel .knowledge-table-trueTotle .knowledge-table-trueTotleBit{
 			line-height: 50px;
 			float: left;
-			width: 160px;
+			width: 140px;
 			color: #fff;
 			text-align: center;
 		}

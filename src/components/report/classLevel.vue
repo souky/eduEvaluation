@@ -145,10 +145,11 @@
 		<div class="body pt20">
 			<el-table :data="tableData3" style="width: 100%" header-row-class-name="table-header">
 				<template v-for="item in headerData">
-					<el-table-column align="center" v-if="item.isImproved=='0'" :key="item.name" :label="item.name" :prop="item.dataIndex">
+					<el-table-column align="center" v-if="item.dataIndex=='changedRanking'" :key="item.name" :label="item.name" :prop="item.dataIndex">
 						<template slot-scope="scope">
-							<span v-if="scope.row.isImproved == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.isImproved}}</span>
-							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.isImproved}}</span>
+							<span v-if="scope.row.isImproved == 1"><i class="el-icon-arrow-up mr5"></i>{{ scope.row.changedRanking}}</span>
+							<span v-else-if="scope.row.isImproved == 0">{{ scope.row.changedRanking}}</span>
+							<span v-else><i class="el-icon-arrow-down mr5"></i>{{ scope.row.changedRanking}}</span>
 						</template>
 					</el-table-column>
 					<el-table-column align="center" v-else :key="item.name" :label="item.name" :prop="item.dataIndex"></el-table-column>
@@ -248,13 +249,13 @@
 		<div id="classtwoDimensionalAnalysis1"></div>
 		<div class="twoDimensionalAnalysis-foot">
 			<div class="difficultyLevel easy">
-				<p>容易</p>
+				<p>难</p>
 			</div>
 			<div class="difficultyLevel midde">
 				<p>中等</p>
 			</div>
 			<div class="difficultyLevel difficult">
-				<p>难</p>
+				<p>容易</p>
 			</div>
 		</div>
 		<div class="foot-word">
@@ -659,9 +660,7 @@ export default{
 				    ]
 				},
 				optionClassdisciplinesLevelRight:{
-					tooltip: {
-						trigger: 'axis'
-					},
+					tooltip: {},
 					legend: {
 						x: 'center',
 						data:['个人','平均水平']
@@ -669,11 +668,11 @@ export default{
 					radar: [
 					{
 						indicator: [
-						{text: '总分', max: 1},
-						{text: '语文', max: 1},
-						{text: '数学', max: 1},
-						{text: '英语', max: 1},
-						{text: '综合', max: 1}
+						{text: '总分', max: 100},
+						{text: '语文', max: 100},
+						{text: '数学', max: 100},
+						{text: '英语', max: 100},
+						{text: '综合', max: 100}
 						],
 						radius: 200,
 						center: ['50%','55%'],
@@ -911,9 +910,7 @@ export default{
 				        ]
 				    },
 				    optionclassknowledge:{
-				    	tooltip: {
-				    		trigger: 'axis'
-				    	},
+				    	tooltip: {},
 				    	legend: {
 				    		x: 'center',
 				    		data:['班级','全校','全区县']
@@ -952,9 +949,7 @@ export default{
 				    	]
 				    },
 				    optionclassabilityAnalyze:{
-				    	tooltip: {
-				    		trigger: 'axis'
-				    	},
+				    	tooltip: {},
 				    	legend: {
 				    		x: 'center',
 				    		data:['班级','全校','全区县']
@@ -1370,7 +1365,7 @@ export default{
 						})
 					},
 					geReportCards:function(){
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS'},'score/geReportCards',function(obj,res){
+						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS',classroomId:this.basicData.class},'score/geReportCards',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionClassdisciplinesLevel.xAxis[0].data=[];
 								obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
@@ -1385,7 +1380,7 @@ export default{
 								for(var i=0;i<res.result.subjectList.length;i++){
 									var arr={
 										"text":res.result.subjectList[i],
-										"max":1,
+										"max":100,
 									}
 									obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
 								}
@@ -1442,7 +1437,7 @@ export default{
 						})
 					},
 					getLevelDistribution:function(){
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
+						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
 							if(res.code == '10000'){
 								var type=(typeof res.result);
 								if(type=="string"){
@@ -1517,25 +1512,25 @@ export default{
 
 								for(var i=0;i<res.result.listVO.length;i++){
 									obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-									obj.optionClassScoreQuestion.series[0].data.push(parseInt(res.result.listVO[i].divideClass));
-									obj.optionClassScoreQuestion.series[1].data.push(parseInt(res.result.listVO[i].divideSchool));
-									obj.optionClassScoreQuestion.series[2].data.push(parseInt(res.result.listVO[i].divideAera));
+									obj.optionClassScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideClass));
+									obj.optionClassScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideSchool));
+									obj.optionClassScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideAera));
 									var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
 									if(number>=0){
 										var list=[];
 										list.push(res.result.listVO[i].difficulty);
 										list.push(number);
 										list.push(res.result.listVO[i].topic);
-										list.push(parseInt(res.result.listVO[i].fractionalValue));
-										list.push(parseInt(res.result.listVO[i].qid));
+										list.push(parseFloat(res.result.listVO[i].fractionalValue));
+										list.push(parseFloat(res.result.listVO[i].qid));
 										obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
 									}else{
 										var list1=[];
 										list1.push(res.result.listVO[i].difficulty);
 										list1.push(number);
 										list1.push(res.result.listVO[i].topic);
-										list1.push(parseInt(res.result.listVO[i].fractionalValue));
-										list1.push(parseInt(res.result.listVO[i].qid));
+										list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+										list1.push(parseFloat(res.result.listVO[i].qid));
 										obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
 									}
 								}						
@@ -1605,7 +1600,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[4].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class, subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
@@ -1624,7 +1619,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[num-1].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
@@ -1643,7 +1638,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[0].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
@@ -1662,7 +1657,7 @@ export default{
 								this.studentGradeheader.name=this.gradeInterval[num-1].name;
 								this.studentGradeheader.level=this.gradeInterval[num-1].level;
 								this.basicData.rateType=this.gradeInterval[num-1].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
 									if(res.code == '10000'){
 										obj.studentGradeDistributionList=res.result.stuScoreList;
 										obj.studentGradeheader.startScore=res.result.startScore;
