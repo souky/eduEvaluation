@@ -795,1444 +795,1451 @@ export default{
 						borderColor: '#777',
 						borderWidth: 1,
 						formatter:"",
-				        },
-				        xAxis : [
-				        {
-				        	type : 'value',
-				        	scale:true,
-				        	min: 0.1,
-				        	max: 1,
-				        	interval: 0.1,
-				        }
-				        ],
-				        yAxis : [
-				        {
-				        	type : 'value',
-				        	name:'得分率差距',
-				        	show: true,
-				        	nameLocation:'middle',
-				        	nameGap:50,
-				        	min: -100,
-				        	max: 100,
-				        	interval: 20,
-				        	axisLabel: {  
-				        		show: true,  
-				        		interval: 'auto',  
-				        		formatter: '{value} %'  
-				        	},
-				        }
-				        ],
-				        series : [
-				        {
-				        	name:'sin',
-				        	type:'scatter',
-				        	symbolSize :[25,25],
-				        	large: true,
-				        	label:{normal:{show:true}},
-				        	markArea: {
-				        		silent: true,
-				        		data: [[{
-				        			xAxis: '0.1',
-				        			yAxis: '0',
-				        			itemStyle:{
-				        				normal:{color:'rgba(112,205,243,0.5)'},
-				        			}
-				        		}, {
-				        			xAxis: '0.4',
-				        			yAxis: '100',
-				        		}],[{
-				        			xAxis: '0.4',
-				        			yAxis: '0',
-				        			itemStyle:{
-				        				normal:{color:'rgba(145,218,249,0.5)'},
-				        			}
-				        		}, {
-				        			xAxis: '0.7',
-				        			yAxis: '100',
-				        		}],[{
-				        			xAxis: '0.7',
-				        			yAxis: '0',
-				        			itemStyle:{
-				        				normal:{color:'rgba(187,230,248,0.5)'},
-				        			}
-				        		}, {
-				        			xAxis: '1.0',
-				        			yAxis: '100',
-				        		}]]
-				        	},
-				        	itemStyle:{
-				        		normal:{color:'#FF8585'},
-				        	},
-				        	data:[[0.2,30,"客观题",5,1],[0.5,30,"客观题",3,2],[0.7,30,"客观题",3,3]]
-				        },
-				        {
-				        	name:'cos',
-				        	type:'scatter',
-				        	large: true,
-				        	symbolSize :[25,25],
-				        	label:{normal:{show:true}},
-				        	markArea: {
-				        		silent: true,
-				        		data: [[{
-				        			xAxis: '0.1',
-				        			yAxis: '0',
-				        			itemStyle:{
-				        				normal:{color:'rgba(255,210,68,0.5)'},
-				        			}
-				        		}, {
-				        			xAxis: '0.4',
-				        			yAxis: '-100',
-				        		}],[{
-				        			xAxis: '0.4',
-				        			yAxis: '0',
-				        			itemStyle:{
-				        				normal:{color:'rgba(255,226,133,0.5)'},
-				        			}
-				        		}, {
-				        			xAxis: '0.7',
-				        			yAxis: '-100',
-				        		}],[{
-				        			xAxis: '0.7',
-				        			yAxis: '0',
-				        			itemStyle:{
-				        				normal:{color:'rgba(253,234,175,0.5)'},
-				        			}
-				        		}, {
-				        			xAxis: '1.0',
-				        			yAxis: '-100',
-				        		}]]
-				        	},
-				        	itemStyle:{
-				        		normal:{color:'#A079D9'},
-				        	},
-				        	data:[[0.2,-30,"客观题",5,4],[0.5,-30,"客观题",3,5],[0.7,-30,"客观题",3,6]]
-				        }
-				        ]
-				    },
-				    optionclassknowledge:{
-				    	tooltip: {},
-				    	legend: {
-				    		x: 'center',
-				    		data:['班级','全校','全区县']
-				    	},
-				    	radar: [
-				    	{
-				    		indicator: [
-				    		{text: '函数', max: 100},
-				    		{text: '三角函数', max: 100},
-				    		{text: '圆锥曲线与方程', max: 100},
-				    		],
-				    		radius: 200,
-				    		center: ['50%','65%'],
-				    	}
-				    	],
-				    	series: [
-				    	{
-				    		type: 'radar',
-				    		data: [
-				    		{
-				    			name: '班级',
-				    			value: [23,43,54,65,23],
-				    			itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
-				    		},
-				    		{
-				    			name:'全校',
-				    			value:[34,54,56,76,87],
-				    			itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
-				    		},{
-				    			name:'全区县',
-				    			value:[34,34,56,76,87],
-				    			itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
-				    		}
-				    		]
-				    	}
-				    	]
-				    },
-				    optionclassabilityAnalyze:{
-				    	tooltip: {},
-				    	legend: {
-				    		x: 'center',
-				    		data:['班级','全校','全区县']
-				    	},
-				    	radar: [
-				    	{
-				    		indicator: [
-				    		{text: '空间想象能力', max: 100},
-				    		{text: '抽象概括能力', max: 100},
-				    		{text: '推理论证能力', max: 100},
-				    		{text: '运算求解能力', max: 100},
-				    		{text: '数据处理能力', max: 100},
-				    		{text: '综合应用能力', max: 100},
-				    		],
-				    		radius: 200,
-				    		center: ['50%','52%'],
-				    	}
-				    	],
-				    	series: [
-				    	{
-				    		type: 'radar',
-				    		data: [
-				    		{
-				    			name: '班级',
-				    			value: [23,43,54,65,23,43,78],
-				    			itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
-				    		},
-				    		{
-				    			name:'全校',
-				    			value:[34,54,56,76,87,53,43],
-				    			itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
-				    		},{
-				    			name:'全区县',
-				    			value:[34,34,56,76,87,42,57],
-				    			itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
-				    		}
-				    		]
-				    	}
-				    	]
-				    },
-				    optionclassLastScore:{
-				    	tooltip: {
-				    		trigger: 'axis'
-				    	},
-				    	legend: {
-				    		data:['平均分']
-				    	},
-				    	grid: {
-				    		left: '3%',
-				    		right: '4%',
-				    		bottom: '3%',
-				    		containLabel: true
-				    	},
-				    	xAxis: {
-				    		type: 'category',
-				    		data: ['2017期末考试','2017期中考试','2016期末考试','2016期中考试','2015期末考试']
-				    	},
-				    	yAxis: {
-				    		type: 'value'
-				    	},
-				    	series: [
-				    	{
-				    		name:'平均分',
-				    		type:'line',
-				    		label:{normal:{show:true,position:'top'},},
-				    		itemStyle:{
-				    			normal:{color:'#70CDF3'},
-				    		},
-				    		data:[120, 132, 101, 134, 90]
-				    	}
-				    	]
-				    },
-				    optionclassLastStudents:{
-				    	tooltip: {
-				    		trigger: 'item',
-				    		formatter: "{a} <br/>{b}: {c} ({d}%)"
-				    	},
-				    	legend: {
-				    		data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
-				    	},
-				    	series: [
-				    	{
-				    		name:'数据',
-				    		type:'pie',
-				    		radius: [0, '45%'],
-				    		label: {
-				    			normal: {
-				    				position: 'inner'
-				    			}
-				    		},
-				    		labelLine: {
-				    			normal: {
-				    				show: false
-				    			}
-				    		},
-				    		data:[
-				    		{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-				    		{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-				    		{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-				    		{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-				    		{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
-				    		]
-				    	},
-				    	{
-				    		name:'对比班级',
-				    		type:'pie',
-				    		radius: ['55%', '70%'],
-
-				    		data:[
-				    		{value:335,
-				    			label: {
-				    				normal: {
-				    					formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}}  {per|{d}%}  ',
-				    					backgroundColor: '#eee',
-				    					borderColor: '#aaa',
-				    					borderWidth: 1,
-				    					borderRadius: 4,
-				    					rich: {
-				    						a: {
-				    							color: '#999',
-				    							lineHeight: 22,
-				    							align: 'center'
-				    						},
-				    						hr: {
-				    							borderColor: '#aaa',
-				    							width: '100%',
-				    							borderWidth: 0.5,
-				    							height: 0
-				    						},
-				    						per: {
-				    							color: '#eee',
-				    							backgroundColor: '#334455',
-				    							padding: [2, 4],
-				    							borderRadius: 2
-				    						}
-				    					}
-				    				}
-				    			}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-				    			{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-				    			{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-				    			{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-				    			{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
-				    			]
-				    		}
-				    		]
-				    	}
-				    }
-				},
-				created:function(){
-					this.data();
-					var childNum=Math.ceil(this.items.length/11);
-					var childs=[];
-					for(var l=0;l<childNum;l++){
-						var id=l+1;
-						var e=11*(l+1);
-						var s=e-11;
-						childs[l] = []
-						childs[l]["childs"]=this.items.slice(s,e);
-						childs[l]["id"] = id;
+					},
+					xAxis : [
+					{
+						type : 'value',
+						scale:true,
+						min: 0.1,
+						max: 1,
+						interval: 0.1,
 					}
-					this.subjects=childs;
-					this.optionTwoDimensionalAnalysisS.tooltip.formatter=function (obj) {
-						var value = obj.value;
-						return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-						+ '</div>' + "题型" + '：' + value[2] + '<br>'
-						+ "题号" + '：' + value[4] + '<br>'
-						+ "满分值" + '：' + value[3] + '<br>'
-						+ "得分率差距" + '：' + value[1]+"%" + '<br>'
-					};
-				},
-				mounted:function(){
-					this.$refs.fristBit[0].className+=" on";
-					var olouceng = document.getElementsByClassName("louceng");
-					var oNav = document.getElementById("navInside").getElementsByTagName("li");
-					var olouceng1 = document.getElementsByClassName("louceng1");
-					var oNav1 = document.getElementById("navInside1").getElementsByTagName("li");
-					window.addEventListener('scroll',()=>{
-						var oheight = document.documentElement.clientHeight || document.body.clientHeight;
-						var otop = document.documentElement.scrollTop || document.body.scrollTop;
-						if(otop>=250){
-							for(var i=0;i<olouceng.length;i++){
-								if(oheight+otop-olouceng[i].offsetTop>oheight/1.5){
-									for(var j=0;j<oNav.length;j++){
-										oNav[j].className = '';
-
-									}
-									if(oNav[i]){
-										oNav[i].className = 'active';
-									}
-								}
-
-							}
-							for(var i=0;i<olouceng1.length;i++){
-								if(oheight+otop-olouceng1[i].offsetTop>oheight/1.5){
-									for(var j=0;j<oNav1.length;j++){
-										oNav1[j].className = '';
-
-									}
-									oNav1[i].className = 'active'
-								}
-
-							}
-						}else{
-						}
-					});
-					window.addEventListener('click',(e)=>{
-			    		if(e.target.className!='alltest'){
-			    			this.showselect =false
-			    		}
-			    	});
-				},
-				methods:{
-					data:function(){
-						this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
-							if(res.code == '10000'){
-								obj.testList=res.result.exams;
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						});
-					},
-					testChange(e){
-						var name=this.testList[e].id;
-						this.basicData.id=name;
-						var totle={createDate:1512647749000,createUser:"1",id:"0",isDelete:0,orgId:"",remark:"",schoolId:"",subjectCode:1,subjectColor:"#F37070",subjectName:"总分",updateDate:1513586055000};
-						this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
-							if(res.code == '10000'){
-								obj.testList=res.result.exams;
-								obj.items=res.result[name].subject;
-								obj.schoolList=res.result[name].classroom;
-								obj.schoolList1=res.result[name].classroom;
-								obj.schoolList2=res.result[name].classroom;
-								obj.basicData.class=res.result[name].classroom[0].id;
-								obj.basicData.subject="总分";
-								obj.items.unshift(totle);
-								var childNum=Math.ceil(obj.items.length/11);
-								var childs=[];
-								for(var l=0;l<childNum;l++){
-									var id=l+1;
-									var e=11*(l+1);
-									var s=e-11;
-									childs[l] = []
-									childs[l]["childs"]=obj.items.slice(s,e);
-									childs[l]["id"] = id;
-								}
-								obj.subjects=childs;
-								obj.headerData=[];
-								for(var p=0;p<obj.SheaderData.length;p++){
-									obj.headerData.push(obj.SheaderData[p])
-								}
-								for(var q=5;q<parseInt(res.result[name].subject.length)+4;q++){
-									var arr={
-										"name":res.result[name].subject[q-4].subjectName,
-										"dataIndex":"code"+res.result[name].subject[q-4].id,
-									}
-									obj.headerData.push(arr);
-								}
-								obj.rainbow(0,0,"总分");
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						});
-
-					}, 
-					testtest:function(e){
-						var olouceng = document.getElementsByClassName("louceng");
-						var oNav = document.getElementById("navInside").getElementsByTagName("li");
-						this.activeList = e;
-						window.scrollTo(0 ,olouceng[e].offsetTop-100);
-					},
-					testtest1:function(e){
-						var olouceng = document.getElementsByClassName("louceng1");
-						var oNav = document.getElementById("navInside1").getElementsByTagName("li");
-						this.activeList1 = e;
-						window.scrollTo(0 ,olouceng[e].offsetTop-100);
-					},
-					changetest:function(e,ename){
-						this.showselect = !this.showselect
-						this.$refs.carousel.setActiveItem(ename);
-					},
-					selectShow:function(){
-						this.showselect = !this.showselect
-					},
-					rainbow:function(index,num,name){
-						for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
-							document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
-						}
-						document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
-						if(num==0){
-							var oNav = document.getElementById("navInside1").getElementsByTagName("li");
-							for(var a = 0;a<oNav.length;a++){
-								oNav[a].className = '';
-							}
-							oNav[0].className = 'active';
-							this.displayAll.classTotalScore=true;
-							this.displayAll.gradeDistribution=true;
-							this.displayAll.ranking=true;
-							this.displayAll.ClassdisciplinesLevel=true;
-							this.displayAll.classReport=true;
-							this.displayAll.studentGradeDistribution=false;
-							this.displayAll.classTestAnalysis=false;
-							this.displayAll.classOptionScoreQuestion=false;
-							this.displayAll.classtwoDimensionalAnalysis=false;
-							this.displayAll.classknowledge=false;
-							this.displayAll.classabilityAnalyze=false;
-
-							this.basicData.subject=name;
-							this.getLevelDistribution();
-							this.getTopOrgScoresInClass();
-							this.getClassRankingReport();
-							this.geReportCards();
-							this.getClassScoreReport();
-						}else{
-							var oNav = document.getElementById("navInside").getElementsByTagName("li");
-							for(var a = 0;a<oNav.length;a++){
-								oNav[a].className = '';
-							}
-							oNav[0].className = 'active';
-							this.displayAll.classTotalScore=true;
-							this.displayAll.gradeDistribution=false;
-							this.displayAll.ranking=false;
-							this.displayAll.ClassdisciplinesLevel=false;
-							this.displayAll.classReport=false;
-							this.displayAll.studentGradeDistribution=true;
-							this.displayAll.classTestAnalysis=true;
-							this.displayAll.classOptionScoreQuestion=true;
-							this.displayAll.classtwoDimensionalAnalysis=true;
-							this.displayAll.classknowledge=true;
-							this.displayAll.classabilityAnalyze=true;
-
-							this.basicData.subject=name;
-							this.testAnalysis();
-							this.getLevelDistribution();
-							this.ablityAnalysis();
-							this.knowAnalysis();
-							this.getClassScoreReport();
-						}
-					},
-					changeClassName(value){
-						this.basicData.class=value;
-						this.rainbow(0,0,"总分");
-					},
-					changeClassName1(value){
-						this.basicData.anotherclass=value;
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,classroomId:value},'score/getLevelDistribution',function(obj,res){
-							if(res.code == '10000'){
-								obj.optiongradeDistribution.legend.data=[];
-								obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
-								if(obj.optiongradeDistribution.series.length==3){
-									var list=[];
-									list.push(res.result[1].highRate* 1000000/10000);
-									list.push(res.result[1].excellentRate* 1000000/10000);
-									list.push(res.result[1].commissionRate* 1000000/10000);
-									list.push(res.result[1].passRate* 1000000/10000);
-									list.push(res.result[1].failureRate* 1000000/10000);
-									var arr={
-										"name":"对比班级",
-										"type":'bar',
-										"barWidth": '30%',	
-										"label":"{normal:{show:true,position:'top'},}",
-										"itemStyle":"{normal:{color:'#FF8585'},}",
-										"data":list
-									}
-									obj.optiongradeDistribution.series.push(arr);
-								}else{
-									obj.optiongradeDistribution.series[3].data=[];
-									obj.optiongradeDistribution.series[3].data.push(res.result[1].highRate* 1000000/10000);
-									obj.optiongradeDistribution.series[3].data.push(res.result[1].excellentRate* 1000000/10000);
-									obj.optiongradeDistribution.series[3].data.push(res.result[1].commissionRate* 1000000/10000);
-									obj.optiongradeDistribution.series[3].data.push(res.result[1].passRate* 1000000/10000);
-									obj.optiongradeDistribution.series[3].data.push(res.result[1].failureRate* 1000000/10000);
-								}
-					}else{
-						obj.notify_jr(obj,'错误提示',res.message,'error');
+					],
+					yAxis : [
+					{
+						type : 'value',
+						name:'得分率差距',
+						show: true,
+						nameLocation:'middle',
+						nameGap:50,
+						min: -100,
+						max: 100,
+						interval: 20,
+						axisLabel: {  
+							show: true,  
+							interval: 'auto',  
+							formatter: '{value} %'  
+						},
 					}
-				})
-					},
-					changeClassName2(value){
-						this.basicData.anotherclass=value;
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',subject:this.basicData.subject,classroomId:value,rateType:''},'score/getLevelDistribution',function(obj,res){
-							if(res.code == '10000'){
-								obj.optionclassLastStudents.series[0].data[0].value=obj.optionstudentGradeDistribution.series[0].data[0].value;
-								obj.optionclassLastStudents.series[0].data[1].value=obj.optionstudentGradeDistribution.series[0].data[1].value;
-								obj.optionclassLastStudents.series[0].data[2].value=obj.optionstudentGradeDistribution.series[0].data[2].value;
-								obj.optionclassLastStudents.series[0].data[3].value=obj.optionstudentGradeDistribution.series[0].data[3].value;
-								obj.optionclassLastStudents.series[0].data[4].value=obj.optionstudentGradeDistribution.series[0].data[4].value;
-								if(res.result.scoreVOList){
-									var num=0;
-									for(var i=0;i<res.result.scoreVOList.length;i++){
-										if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-											num=i;
-										}
-									}
-									obj.optionclassLastStudents.series[1].name=res.result.classroomName;
-									obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
-									obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
-									obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
-									obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
-									obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
+					],
+					series : [
+					{
+						name:'sin',
+						type:'scatter',
+						symbolSize :[25,25],
+						large: true,
+						label:{normal:{show:true}},
+						markArea: {
+							silent: true,
+							data: [[{
+								xAxis: '0.1',
+								yAxis: '0',
+								itemStyle:{
+									normal:{color:'rgba(112,205,243,0.5)'},
 								}
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						})
-					},
-					getClassScoreReport:function(){
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassScoreReport',function(obj,res){
-							if(res.code == '10000'){
-								obj.schoolSelectBoxData=res.result;
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						})
-					},
-					geReportCards:function(){
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS',classroomId:this.basicData.class},'score/geReportCards',function(obj,res){
-							if(res.code == '10000'){
-								obj.optionClassdisciplinesLevel.xAxis[0].data=[];
-								obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
-								obj.optionClassdisciplinesLevel.series[0].data=[];
-								obj.optionClassdisciplinesLevel.series[0].data=res.result.standardScoreList;
-								obj.optionClassdisciplinesLevel.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-								obj.optionClassdisciplinesLevelRight.series[0].data[0].value=[];
-								obj.optionClassdisciplinesLevelRight.series[0].data[1].value=[];
-								obj.optionClassdisciplinesLevelRight.series[0].data[0].value=res.result.classAvgScoreList;
-								obj.optionClassdisciplinesLevelRight.series[0].data[1].value=res.result.schoolAvgScoreList;
-								obj.optionClassdisciplinesLevelRight.radar[0].indicator=[];
-								for(var i=0;i<res.result.subjectList.length;i++){
-									var arr={
-										"text":res.result.subjectList[i],
-										"max":100,
-									}
-									obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
+							}, {
+								xAxis: '0.4',
+								yAxis: '100',
+							}],[{
+								xAxis: '0.4',
+								yAxis: '0',
+								itemStyle:{
+									normal:{color:'rgba(145,218,249,0.5)'},
 								}
-								obj.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(obj.optionClassdisciplinesLevelRight);
-								obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						})
-					},
-					knowAnalysis:function(){
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/knowAnalysis',function(obj,res){
-							if(res.code == '10000'){
-								obj.truetableDatas=res.result;
-								obj.optionclassknowledge.series[0].data[0].value=[];
-								obj.optionclassknowledge.series[0].data[1].value=[];
-								obj.optionclassknowledge.series[0].data[2].value=[];
-								if(res.result){
-									document.getElementById("classknowledge1").style.display="block";
-									if(res.result.length>=3){
-										for(var i=0;i<res.result.length;i++){
-											obj.optionclassknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
-											obj.optionclassknowledge.series[0].data[0].value.push(res.result[i].divideClass);
-											obj.optionclassknowledge.series[0].data[1].value.push(res.result[i].divideSchool);
-											obj.optionclassknowledge.series[0].data[2].value.push(res.result[i].divideAera);
-										}
-										obj.echarts.init(document.getElementById("classknowledge1")).setOption(obj.optionclassknowledge);
-									}else{
-										document.getElementById("classknowledge1").style.display="none";
-									}
+							}, {
+								xAxis: '0.7',
+								yAxis: '100',
+							}],[{
+								xAxis: '0.7',
+								yAxis: '0',
+								itemStyle:{
+									normal:{color:'rgba(187,230,248,0.5)'},
 								}
-							}else{
-								document.getElementById("classknowledge1").style.display="none";
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						})
+							}, {
+								xAxis: '1.0',
+								yAxis: '100',
+							}]]
+						},
+						itemStyle:{
+							normal:{color:'#FF8585'},
+						},
+						data:[[0.2,30,"客观题",5,1],[0.5,30,"客观题",3,2],[0.7,30,"客观题",3,3]]
 					},
-					ablityAnalysis:function(){
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/ablityAnalysis',function(obj,res){
-							if(res.code == '10000'){
-								obj.scoreName=res.result;
-								obj.optionclassabilityAnalyze.series[0].data[0].value=[];
-								obj.optionclassabilityAnalyze.series[0].data[1].value=[];
-								obj.optionclassabilityAnalyze.series[0].data[2].value=[];
-								for(var i=0;i<res.result.length;i++){
-									obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result[i].divideClass)
-									obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result[i].divideSchool)
-									obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result[i].divideAera)
+					{
+						name:'cos',
+						type:'scatter',
+						large: true,
+						symbolSize :[25,25],
+						label:{normal:{show:true}},
+						markArea: {
+							silent: true,
+							data: [[{
+								xAxis: '0.1',
+								yAxis: '0',
+								itemStyle:{
+									normal:{color:'rgba(255,210,68,0.5)'},
 								}
-								obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						})
-					},
-					getLevelDistribution:function(){
-						this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
-							if(res.code == '10000'){
-								var type=(typeof res.result);
-								if(type=="string"){
-									obj.optiongradeDistribution.series[0].data=[];
-									obj.optiongradeDistribution.series[1].data=[];
-									obj.optiongradeDistribution.series[2].data=[];
-									obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
-								}else{
-									if(obj.basicData.subject=="总分"){
-										if(res.result[0].scoreLevel=="SCHOOL"){
-											obj.optiongradeDistribution.series[1].data=[];
-											obj.optiongradeDistribution.series[1].data.push(res.result[0].highRate * 1000000/10000);
-											obj.optiongradeDistribution.series[1].data.push(res.result[0].excellentRate * 1000000/10000);
-											obj.optiongradeDistribution.series[1].data.push(res.result[0].commissionRate * 1000000/10000);
-											obj.optiongradeDistribution.series[1].data.push(res.result[0].passRate * 1000000/10000);
-											obj.optiongradeDistribution.series[1].data.push(res.result[0].failureRate * 1000000/10000);
-
-											obj.optiongradeDistribution.series[2].data=[];
-											obj.optiongradeDistribution.series[2].data.push(res.result[0].highRate * 1000000/10000);
-											obj.optiongradeDistribution.series[2].data.push(res.result[0].excellentRate * 1000000/10000);
-											obj.optiongradeDistribution.series[2].data.push(res.result[0].commissionRate * 1000000/10000);
-											obj.optiongradeDistribution.series[2].data.push(res.result[0].passRate * 1000000/10000);
-											obj.optiongradeDistribution.series[2].data.push(res.result[0].failureRate * 1000000/10000);
-										}
-										if(res.result[1].scoreLevel=="CLASS"){
-											obj.optiongradeDistribution.series[0].data=[];
-											obj.optiongradeDistribution.series[0].data.push(res.result[1].highRate * 1000000/10000);
-											obj.optiongradeDistribution.series[0].data.push(res.result[1].excellentRate * 1000000/10000);
-											obj.optiongradeDistribution.series[0].data.push(res.result[1].commissionRate * 1000000/10000);
-											obj.optiongradeDistribution.series[0].data.push(res.result[1].passRate * 1000000/10000);
-											obj.optiongradeDistribution.series[0].data.push(res.result[1].failureRate * 1000000/10000);
-										}
-										obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
-									}else{
-										if(res.result.scoreVOList){
-											var num=0;
-											for(var i=0;i<res.result.scoreVOList.length;i++){
-												if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-													num=i;
-												}
-											}
-											obj.studentTotle=res.result.scoreVOList[num].fullMarks;
-											obj.studentTotleNum=res.result.stuNum;
-											obj.optionstudentGradeDistribution.series[0].data[0].value=res.result.scoreVOList[num].highRate;
-											obj.optionstudentGradeDistribution.series[0].data[1].value=res.result.scoreVOList[num].excellentRate;
-											obj.optionstudentGradeDistribution.series[0].data[2].value=res.result.scoreVOList[num].commissionRate;
-											obj.optionstudentGradeDistribution.series[0].data[3].value=res.result.scoreVOList[num].passRate;
-											obj.optionstudentGradeDistribution.series[0].data[4].value=res.result.scoreVOList[num].failureRate;
-											obj.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(obj.optionstudentGradeDistribution);
-											obj.studentGradeDistributionList=res.result.stuScoreList;
-											obj.studentGradeheader.startScore=res.result.startScore;
-											obj.studentGradeheader.endScore=res.result.endScore;
-											obj.studentGradeheader.number=res.result.stuScoreList.length;
-										}
-									}
+							}, {
+								xAxis: '0.4',
+								yAxis: '-100',
+							}],[{
+								xAxis: '0.4',
+								yAxis: '0',
+								itemStyle:{
+									normal:{color:'rgba(255,226,133,0.5)'},
 								}
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						});
+							}, {
+								xAxis: '0.7',
+								yAxis: '-100',
+							}],[{
+								xAxis: '0.7',
+								yAxis: '0',
+								itemStyle:{
+									normal:{color:'rgba(253,234,175,0.5)'},
+								}
+							}, {
+								xAxis: '1.0',
+								yAxis: '-100',
+							}]]
+						},
+						itemStyle:{
+							normal:{color:'#A079D9'},
+						},
+						data:[[0.2,-30,"客观题",5,4],[0.5,-30,"客观题",3,5],[0.7,-30,"客观题",3,6]]
+					}
+					]
+				},
+				optionclassknowledge:{
+					tooltip: {},
+					legend: {
+						x: 'center',
+						data:['班级','全校','全区县']
 					},
-					testAnalysis:function(){
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/testAnalysis',function(obj,res){
-							if(res.code == '10000'){
-								obj.testAnalysisTable=res.result.listVO;
-								obj.optionClassScoreQuestion.xAxis[0].data=[];
-								obj.optionClassScoreQuestion.series[0].data=[];
-								obj.optionClassScoreQuestion.series[1].data=[];
-								obj.optionClassScoreQuestion.series[2].data=[];
-								obj.optionTwoDimensionalAnalysisS.series[0].data=[];
-								obj.optionTwoDimensionalAnalysisS.series[1].data=[];
-
-								for(var i=0;i<res.result.listVO.length;i++){
-									obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-									obj.optionClassScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideClass));
-									obj.optionClassScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideSchool));
-									obj.optionClassScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideAera));
-									var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
-									if(number>=0){
-										var list=[];
-										list.push(res.result.listVO[i].difficulty);
-										list.push(number);
-										list.push(res.result.listVO[i].topic);
-										list.push(parseFloat(res.result.listVO[i].fractionalValue));
-										list.push(parseFloat(res.result.listVO[i].qid));
-										obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
-									}else{
-										var list1=[];
-										list1.push(res.result.listVO[i].difficulty);
-										list1.push(number);
-										list1.push(res.result.listVO[i].topic);
-										list1.push(parseFloat(res.result.listVO[i].fractionalValue));
-										list1.push(parseFloat(res.result.listVO[i].qid));
-										obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
-									}
-								}						
-								obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
-								obj.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysisS);
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						});
-					},
-					getTopOrgScoresInClass:function(){
-						this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class,topNum:this.basicData.topNum},'score/getTopOrgScoresInClass',function(obj,res){
-							if(res.code == '10000'){
-								obj.testAnalysisTable=res.result.listVO;
-								obj.optionClassScoreQuestion.xAxis[0].data=[];
-								obj.opti
-								var type=(typeof res.result);
-								if(type=="string"){
-							obj.optionranking.series[0].data=[];
-							obj.rankingData=[];
-							obj.rankingList=[];
-						}else{
-							obj.rankingList=res.result.resultScoreList;
-							obj.rankingListS.classStuNum=res.result.classStuNum;
-							obj.rankingListS.schoolStuNum=res.result.schoolStuNum;
-							obj.rankingData[0].topic10=res.result.classTopScore.classTopTenStuNum;
-							obj.rankingData[0].topic20=res.result.classTopScore.classTopTwentyStuNum;
-							obj.rankingData[0].topic50=res.result.classTopScore.classTopFiftyStuNum;
-							obj.rankingData[0].topic100=res.result.classTopScore.classTopOneHundredStuNum;
-							obj.rankingData[0].topic200=res.result.classTopScore.classTopTwoHundredStuNum;
-							obj.rankingData[0].topic500=res.result.classTopScore.classTopFiveHundredStuNum;
-							obj.rankingData[0].topic1000=res.result.classTopScore.classTopOneThousandStuNum;
-							obj.optionranking.series[0].data=[];
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTenStuNum);
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwentyStuNum);
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiftyStuNum);
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneHundredStuNum);
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwoHundredStuNum);
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiveHundredStuNum);
-							obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneThousandStuNum);
+					radar: [
+					{
+						indicator: [
+						{text: '函数', max: 100},
+						{text: '三角函数', max: 100},
+						{text: '圆锥曲线与方程', max: 100},
+						],
+						radius: 200,
+						center: ['50%','65%'],
+					}
+					],
+					series: [
+					{
+						type: 'radar',
+						data: [
+						{
+							name: '班级',
+							value: [23,43,54,65,23],
+							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
+						},
+						{
+							name:'全校',
+							value:[34,54,56,76,87],
+							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
+						},{
+							name:'全区县',
+							value:[34,34,56,76,87],
+							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
 						}
-						obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
+						]
+					}
+					]
+				},
+				optionclassabilityAnalyze:{
+					tooltip: {},
+					legend: {
+						x: 'center',
+						data:['班级','全校','全区县']
+					},
+					radar: [
+					{
+						indicator: [
+						{text: '空间想象能力', max: 100},
+						{text: '抽象概括能力', max: 100},
+						{text: '推理论证能力', max: 100},
+						{text: '运算求解能力', max: 100},
+						{text: '数据处理能力', max: 100},
+						{text: '综合应用能力', max: 100},
+						],
+						radius: 200,
+						center: ['50%','52%'],
+					}
+					],
+					series: [
+					{
+						type: 'radar',
+						data: [
+						{
+							name: '班级',
+							value: [23,43,54,65,23,43,78],
+							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
+						},
+						{
+							name:'全校',
+							value:[34,54,56,76,87,53,43],
+							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
+						},{
+							name:'全区县',
+							value:[34,34,56,76,87,42,57],
+							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
+						}
+						]
+					}
+					]
+				},
+				optionclassLastScore:{
+					tooltip: {
+						trigger: 'axis'
+					},
+					legend: {
+						data:['平均分']
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis: {
+						type: 'category',
+						data: ['2017期末考试','2017期中考试','2016期末考试','2016期中考试','2015期末考试']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [
+					{
+						name:'平均分',
+						type:'line',
+						label:{normal:{show:true,position:'top'},},
+						itemStyle:{
+							normal:{color:'#70CDF3'},
+						},
+						data:[120, 132, 101, 134, 90]
+					}
+					]
+				},
+				optionclassLastStudents:{
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
+					},
+					series: [
+					{
+						name:'数据',
+						type:'pie',
+						radius: [0, '45%'],
+						label: {
+							normal: {
+								position: 'inner'
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data:[
+						{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
+						{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+						{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
+						{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+						{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+						]
+					},
+					{
+						name:'对比班级',
+						type:'pie',
+						radius: ['55%', '70%'],
+
+						data:[
+						{value:335,
+							label: {
+								normal: {
+									formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}}  {per|{d}%}  ',
+									backgroundColor: '#eee',
+									borderColor: '#aaa',
+									borderWidth: 1,
+									borderRadius: 4,
+									rich: {
+										a: {
+											color: '#999',
+											lineHeight: 22,
+											align: 'center'
+										},
+										hr: {
+											borderColor: '#aaa',
+											width: '100%',
+											borderWidth: 0.5,
+											height: 0
+										},
+										per: {
+											color: '#eee',
+											backgroundColor: '#334455',
+											padding: [2, 4],
+											borderRadius: 2
+										}
+									}
+								}
+							}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
+							{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+							{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
+							{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+							{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+							]
+						}
+						]
+					}
+				}
+			},
+			created:function(){
+				this.data();
+				var childNum=Math.ceil(this.items.length/11);
+				var childs=[];
+				for(var l=0;l<childNum;l++){
+					var id=l+1;
+					var e=11*(l+1);
+					var s=e-11;
+					childs[l] = []
+					childs[l]["childs"]=this.items.slice(s,e);
+					childs[l]["id"] = id;
+				}
+				this.subjects=childs;
+				this.optionTwoDimensionalAnalysisS.tooltip.formatter=function (obj) {
+					var value = obj.value;
+					return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+					+ '</div>' + "题型" + '：' + value[2] + '<br>'
+					+ "题号" + '：' + value[4] + '<br>'
+					+ "满分值" + '：' + value[3] + '<br>'
+					+ "得分率差距" + '：' + value[1]+"%" + '<br>'
+				};
+			},
+			mounted:function(){
+				this.$refs.fristBit[0].className+=" on";
+				var olouceng = document.getElementsByClassName("louceng");
+				var oNav = document.getElementById("navInside").getElementsByTagName("li");
+				var olouceng1 = document.getElementsByClassName("louceng1");
+				var oNav1 = document.getElementById("navInside1").getElementsByTagName("li");
+				window.addEventListener('scroll',()=>{
+					var oheight = document.documentElement.clientHeight || document.body.clientHeight;
+					var otop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(otop>=250){
+						for(var i=0;i<olouceng.length;i++){
+							if(oheight+otop-olouceng[i].offsetTop>oheight/1.5){
+								for(var j=0;j<oNav.length;j++){
+									oNav[j].className = '';
+
+								}
+								if(oNav[i]){
+									oNav[i].className = 'active';
+								}
+							}
+
+						}
+						for(var i=0;i<olouceng1.length;i++){
+							if(oheight+otop-olouceng1[i].offsetTop>oheight/1.5){
+								for(var j=0;j<oNav1.length;j++){
+									oNav1[j].className = '';
+
+								}
+								oNav1[i].className = 'active'
+							}
+
+						}
 					}else{
-						obj.notify_jr(obj,'错误提示',res.message,'error');
 					}
 				});
-					},
-					getClassRankingReport:function(){
-						this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
-							if(res.code == '10000'){
-								for(var i=0;i<res.result.classScoreList.length;i++){
-									res.result.classScoreList[i].subject1Score=i+1;
-								}
-								obj.tableData3=res.result.classScoreList;
-							}else{
-								obj.notify_jr(obj,'错误提示',res.message,'error');
-							}
-						});
-					},
-					gradeIntervalfun:function(e){
-						var num=parseInt(e.currentTarget.getElementsByTagName("button")[0].getAttribute("data-key"));
-						if(e.currentTarget.className=="ranking-footRight"){
-							if(num==5){
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="none";
-								this.studentGradeheader.name=this.gradeInterval[num-1].name;
-								this.studentGradeheader.level=this.gradeInterval[num-1].level;
-								this.basicData.rateType=this.gradeInterval[4].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class, subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
-									if(res.code == '10000'){
-										obj.studentGradeDistributionList=res.result.stuScoreList;
-										obj.studentGradeheader.startScore=res.result.startScore;
-										obj.studentGradeheader.endScore=res.result.endScore;
-										obj.studentGradeheader.number=res.result.stuScoreList.length;
-									}else{
-										obj.notify_jr(obj,'错误提示',res.message,'error');
-									}
-								});
-							}else{
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="block";
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
-								this.studentGradeheader.name=this.gradeInterval[num-1].name;
-								this.studentGradeheader.level=this.gradeInterval[num-1].level;
-								this.basicData.rateType=this.gradeInterval[num-1].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
-									if(res.code == '10000'){
-										obj.studentGradeDistributionList=res.result.stuScoreList;
-										obj.studentGradeheader.startScore=res.result.startScore;
-										obj.studentGradeheader.endScore=res.result.endScore;
-										obj.studentGradeheader.number=res.result.stuScoreList.length;
-									}else{
-										obj.notify_jr(obj,'错误提示',res.message,'error');
-									}
-								});
-							}
-						}else{
-							if(num==1){
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="none";
-								this.studentGradeheader.name=this.gradeInterval[num-1].name;
-								this.studentGradeheader.level=this.gradeInterval[num-1].level;
-								this.basicData.rateType=this.gradeInterval[0].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
-									if(res.code == '10000'){
-										obj.studentGradeDistributionList=res.result.stuScoreList;
-										obj.studentGradeheader.startScore=res.result.startScore;
-										obj.studentGradeheader.endScore=res.result.endScore;
-										obj.studentGradeheader.number=res.result.stuScoreList.length;
-									}else{
-										obj.notify_jr(obj,'错误提示',res.message,'error');
-									}
-								});
-							}else{
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="block";
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
-								e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
-								this.studentGradeheader.name=this.gradeInterval[num-1].name;
-								this.studentGradeheader.level=this.gradeInterval[num-1].level;
-								this.basicData.rateType=this.gradeInterval[num-1].value;
-								this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
-									if(res.code == '10000'){
-										obj.studentGradeDistributionList=res.result.stuScoreList;
-										obj.studentGradeheader.startScore=res.result.startScore;
-										obj.studentGradeheader.endScore=res.result.endScore;
-										obj.studentGradeheader.number=res.result.stuScoreList.length;
-									}else{
-										obj.notify_jr(obj,'错误提示',res.message,'error');
-									}
-								});
-							}
-						}
-					},
-					classLastScoreshow(){
-						var selfs = this;
-						if(this.diaLoading){
-							setTimeout(function(){
-								selfs.diaLoading = false;
-								selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
-									if(res.code == '10000'){
-										obj.optionclassLastScore.xAxis.data=[];
-										obj.optionclassLastScore.xAxis.data=res.result.examNameList;
-										obj.optionclassLastScore.series[0].data=[];
-										obj.optionclassLastScore.series[0].data=res.result.scoreAvgList;
-
-										obj.echarts.init(document.getElementById("classLastScore")).setOption(obj.optionclassLastScore);
-									}else{
-										obj.notify_jr(obj,'错误提示',res.message,'error');
-									}
-								})
-							},1000);
-						}
-					},
-					gradeDistributionshow(){
-						this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
-					},
-					classLastStudentsshow(){
-						var selfs = this;
-						if(this.diaStudentsLoading){
-							setTimeout(function(){
-								selfs.diaStudentsLoading = false;
-
-								selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
-							},1000);
-						}
-					},
-					rankingTopic(e){
-						if(e.currentTarget.className=="ranking-footLeft"){
-							this.basicData.topNum=50;
-							this.getTopOrgScoresInClass();
-						}else{
-							this.basicData.topNum=100;
-							this.getTopOrgScoresInClass();
-						}
-					},
-					objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-						if (columnIndex === 0) {
-							if (rowIndex === 0) {
-								return {
-									rowspan: row.knowledgeNum,
-									colspan: 1
-								};
-							} else {
-								return {
-									rowspan: 0,
-									colspan: 0
-								};
-							}
-						}
-					},
+				window.addEventListener('click',(e)=>{
+					if(e.target.className!='alltest'){
+						this.showselect =false
+					}
+				});
+			},
+			watch:{
+				showselect:function(val){
+					if(val==true){
+						val=false;
+					}
 				}
-			}
-			</script>
-			<style>
-			#classLevel{
-				border-top: 1px solid #f2f2f2;
-			}
-			#classLevel .borders{
-				box-shadow: 1px 1px 14px rgba(0,0,0,.15);
-			}
-			#classLevel .header{
-				text-align: center;
-			}
-			#classLevel .header p{
-				font-size: 20px;
-				color: #707070;
-				letter-spacing: 0;
-			}
-			#classLevel .header-title-foot{
-				width: 100px;
-				height: 2px;
-				background: #44A9FF;
-				margin: auto;
-				margin-top:5px;
-			}
-			#classLevel .header-banner-bit{
-				width: 89px;
-				height: 73px;
-				float: left;
-				margin-top: 15px;
-			}
-			#classLevel .table-header{
-				background: #70CDF3;
-				color: #fff;
-			}
-			#classLevel .header-banner .el-carousel__item{
-				margin-left: 60px;
-			}
-			#classLevel .header-banner-click{
-				width: 100%;
-				height: 100%;
-				text-align: center;
-			}
-			#classLevel .header-banner-click p{
-				line-height: 73px;
-			}
-			#classLevel .header-banner-bit .on{
-				height: 105%;
-			}
-			#classLevel .schoolSelectBox{
-				width: 90px;
-				margin: auto;
-				margin-bottom: 35px;
-			}
-			#classLevel .table-header{
-				background: #70CDF3;
-				color: #fff;
-			}
-			#classLevel .body-foot{
-				margin-top:20px;
-			}
-			#classLevel .body-foot p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-				line-height: 24px;
-			}
-			#classLevel .body-foot-button{
-				width: 100px;
-				height: 40px;
-				margin: auto;
-				margin-top: 10px;
-			}
-			#classLevel .body-foot-button .el-button{
-				border: 1px solid #44A9FF;
-			}
-			#classLevel .body-foot-button span{
-				color: #44A9FF !important;
-			}
-			#classLevel .el-input__inner{
-				border: 1px solid #44A9FF;
-			}
-			#classLevel  #gradeDistribution1{
-				width: 1080px;
-				height: 460px;
-				margin: auto;
-				margin-top: 20px;
-			}
-			#classLevel .classSelectBox{
-				width: 200px;
-				margin: auto;
-				margin-bottom: 35px;
-				margin-top: 10px;
-			}
-			#classLevel .header .body-title{
-				position: absolute;
-				left: 50%;
-				margin-left: -100px;
-			} 
-			#classLevel .header .body-title p{
-				font-size: 16px;
-				color: #707070;
-				letter-spacing: 0;
-			} 
-			#classLevel #ranking .body{
-				overflow: hidden;
-			}
-			#classLevel #ranking1{
-				width: 750px;
-				height: 460px;
-				float: left;
-			}
-			#classLevel #ranking2{
-				width: 300px;
-				height: 395px;
-				float: left;
-				margin-top: 55px;
-			}
-			#classLevel .ranking-header{
-				width: 100%;
-				height: 40px;
-				background: #70CDF3;
-				text-align: center;
-				line-height: 40px;
-				border-radius: 3px 3px 0 0;
-			}
-			#classLevel .ranking-header p{
-				font-size: 16px;
-				color: #FFFFFF;
-				letter-spacing: 0;
-			}
-			#classLevel .ranking-body{
-				width: 100%;
-				height: 285px;
-				border: 1px solid #E6EBF5;
-				overflow: auto;
-			}
-			#classLevel .ranking-body p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-			}
-			#classLevel .ranking-body ul{
-				padding: 20px 80px;
-			}
-			#classLevel .ranking-foot{
-				width: 100%;
-				height: 40px;
-				background: #70CDF3;
-				line-height: 40px;
-				border-radius:0 0 3px 3px;
-			}
-			#classLevel .ranking-footLeft{
-				float: left;
-				color: #fff;
-				cursor:pointer;
-			}
-			#classLevel .ranking-footLeft i{
-				line-height: 40px;
-				float: left;
-			}
-			#classLevel .ranking-footLeft p{
-				float: left;
-			}
-			#classLevel .ranking-footRight{
-				float: right;	
-				color: #fff;
-				cursor:pointer;
-			}
-			#classLevel .ranking-footRight i{
-				line-height: 40px;
-				float: right;	
-			}
-			#classLevel .ranking-footRight p{
-				float: right;	
-			}
-			#classLevel .ranking-bodyName{
-				float: left;
-			}
-			#classLevel .ranking-bodyNum{
-				float: right;
-			}
-			#classLevel #ClassdisciplinesLevel1{
-				width: 600px;
-				height: 500px;
-				margin-top:20px;
-				float: left;
-			}
-			#classLevel #ClassdisciplinesLevel2{
-				width: 470px;
-				height: 500px;
-				float: left;
-				margin-top:20px;
-				margin-left: 20px;
-			}
-			#classLevel .subjectsDiagnosisText{
-				margin-top:20px;
-			}
-			#classLevel .subjectsDiagnosisText p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-				line-height: 24px;
-			}
-			#classLevel .body-Vtitle{
-				text-align: center;
-			}
-			#classLevel .body-Vtitle p{
-				font-size: 16px;
-				color: #707070;
-				letter-spacing: 0;
-				line-height: 26px;
-			}
-			#classLevel #studentGradeDistribution1{
-				width: 700px;
-				height: 460px;
-			}
-			#classLevel #studentGradeDistribution2{
-				width: 305px;
-				height: 460px;
-			}
-			#classLevel .studentGradeDistribution2-header{
-				width: 100%;
-				height: 49px;
-				background: #70CDF3;
-				border-radius: 3px 3px 0 0;
-				text-align: center;
-				padding-top: 5px;
-			}
-			#classLevel .studentGradeDistribution2-header p{
-				font-size: 16px;
-				color: #FFFFFF;
-				letter-spacing: 0;
-				line-height: 24px;
-			}
-			#classLevel .studentGradeDistribution2-body{
-				width: 99%;
-				height: 285px;
-				border: 1px solid #E6EBF5;
-			}
-			#classLevel .el-button span{
-				color: #fff;
-			}
-			#classLevel .studentGradeDistribution-ranking-body{
-				width: 100%;
-				height: 285px;
-				border: 1px solid #E6EBF5;
-				overflow: auto;
-			}
-			#classLevel .studentGradeDistribution-ranking-body p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-			}
-			#classLevel .studentGradeDistribution-ranking-body ul{
-				padding: 20px 80px;
-			}
-			#classLevel .classSelectBox .el-button{
-				background: #fff;
-			}
-			#classLevel .classSelectBox .el-button span{
-				color: #44A9FF !important;
-			}
-			#classLevel #classTestAnalysis .el-table--border td, .el-table--border th{
-				border:0px !important;
-			}
-			#classLevel #classTestAnalysis .el-table thead.is-group th{
-				background: #70CDF3;
-				color: #fff;
-			}
-			#classLevel #classOptionScoreQuestion1{
-				width: 1080px;
-				height: 460px;
-				margin: auto;
-				margin-top: 20px;
-				margin-bottom: 20px;
-			}
-			#classLevel #classtwoDimensionalAnalysis1{
-				width: 1080px;
-				height: 660px;
-				margin: auto;
-				margin-bottom: 20px;
-			}
-			#classLevel .twoDimensionalAnalysis-foot{
-				width: 870px;
-				height: 30px;
-				margin: auto;
-				margin-top: -45px;
-			}
-			#classLevel .twoDimensionalAnalysis-foot .difficultyLevel{
-				width: 33.33%;
-				height: 100%;
-				float:left;
-				text-align: center;
-				color: #fff;
-			}
-			#classLevel .twoDimensionalAnalysis-foot .easy{
-				background: #FF4444;
-			}
-			#classLevel .twoDimensionalAnalysis-foot .midde{
-				background: #FF8585;
-			}
-			#classLevel .twoDimensionalAnalysis-foot .difficult{
-				background: #FEB0B0;
-			}
-			#classLevel .twoDimensionalAnalysis-foot .difficultyLevel p{
-				line-height: 35px;
-				font-size: 12px;
-				letter-spacing: 0;
-			}
-			#classLevel #classtwoDimensionalAnalysis .foot-word{
-				width: 100%;
-				margin-top:20px;
-			}
-			#classLevel #classtwoDimensionalAnalysis .foot-word p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-				line-height: 24px;
-			}
-			#classLevel #classknowledge1{
-				width: 1080px;
-				height: 400px;
-				margin: auto;
-			}
-			#classLevel .el-select .el-input .el-input__icon{
-				color: #44A9FF
-			}
-			#classLevel .el-carousel__arrow{
-				background-color: white;
-				color: #44A9FF
-			}
-			#classLevel .el-carousel__arrow:hover{
-				background-color: white
-			}
-			#classLevel #classknowledge2 .el-table thead.is-group th{
-				background: #70CDF3;
-				color: #fff;
-			}
-			#classLevel #knowledge-table-header .el-table__body-wrapper{
-				display: none;
-			}
-			#classLevel #classknowledge2 .knowledge-table-true .el-table__header-wrapper{
-				display: none;
-			}
-			#classLevel .knowledge-table-trueTotle{
-				width: 100%;
-				height: 50px;
-				background: #FF8585;	
-			}
-			#classLevel .knowledge-table-trueTotle .knowledge-table-trueTotleBit{
-				line-height: 50px;
-				float: left;
-				width: 160px;
-				color: #fff;
-				text-align: center;
-			}
-			#classLevel .knowledge-foot{
-				margin-top:20px;
-			}
-			#classLevel .knowledge-foot p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-				line-height: 24px;
-			}
-			#classLevel #classabilityAnalyze1{
-				width: 1080px;
-				height: 520px;
-				margin: auto;
-				margin-top: 20px;
-			}
-			#classLevel #classabilityAnalyze2 .el-table--border td, .el-table--border th{
-				border:0px !important;
-			}
-			#classLevel #classabilityAnalyze2 .el-table thead.is-group th{
-				background: #70CDF3;
-				color: #fff;
-			}
-			#classLevel .abilityAnalyze-foot{
-				margin-top: 20px;
-			}
-			#classLevel .abilityAnalyze-foot p{
-				font-size: 14px;
-				color: #3D3D3D;
-				letter-spacing: 0;
-				line-height: 24px;
-			}
-			#classLastScore{
-				width: 800px;
-				height: 500px;
-			}
-			#classLastStudents{
-				width: 800px;
-				height: 500px;	
-			}
-			#classLevel .el-select .el-input .el-input__icon{
-				color: #70CDF3
-			}
-			#classLevel .el-carousel  {
-				overflow-x: hidden;
-				position: relative;
-				text-align: center;
-				margin: auto;
-				width: 400px;
-				height: 50px;
-				margin-top: 30px;
-				line-height: 50px;
-			}
-			#classLevel #rainbow .el-carousel{
-				width: 1100px;
-				height: 100px;
-			}
-			#classLevel .el-carousel__container {
-				position: relative;
-				height: 50px;
-				margin: auto;
-			}
-			#classLevel .myselect{
-				border:1px solid #44a9ff;
-				width: 130px;
-				border-radius: 4px;
-			}
-			#classLevel .myselectS{
-				border:1px solid #44a9ff;
-				width: 90px;
-				border-radius: 4px;
-			}
-			#classLevel .testTips{
-				color:#3d3d3d;
-				font-size: 14px;
-				margin-top: 25px
-			}
-			#classLevel .schoolSelectBox{
-				width: 200px;
-				margin: auto;
-				margin-bottom: 35px;
-			}
-			#classLevel .achievementSelectBox{
-				width: 90px;
-				margin: auto;
-				margin-bottom: 35px;
-			}
-			#classLevel .borders{
-				box-shadow: 1px 1px 14px rgba(0,0,0,.15);
-			}
-			#classLevel .el-table .tableBackground{
-				background-color: #f5fcff;text-align: center;
-			}
-			#classLevel .el-table .tableCenter{
-				text-align: center;
-			}
-			#classLevel .alltest{
-				cursor: pointer;
-			}
-			#classLevel .formatRow{
-				font-weight: normal;
-				text-align:center !important;
-				color: white;
-				border: 0px !important;
-				background-color: #70CDF3 !important;
-			}
-			#achievementTable .el-table--border td{
-				border:0px;
-			}
-			#classLevel .el-input__inner{
-				border: 0px;
-				text-align: center;
-			}
-			#classLevel .el-select .el-input .el-input__icon{
-				color: #70CDF3
-			}
-			#classLevel .el-carousel__arrow{
-				background-color: white;
-				color: #70CDF3
-			}
-			#classLevel .el-carousel__arrow:hover{
-				background-color: white
-			}
-			#classLevel .showselect{
-				list-style: none;
-				position: absolute;
-				margin: 0;
-				padding: 0;
-				border: 1px solid #f2f2f2;
-				left: 50%;
-				margin-left: -150px;
-				z-index: 999;
-				background-color: white;
-				width: 300px;
-				text-align: center;
-			}
-			#classLevel .showselect li{
-				margin: 0;padding:0;
-				border-bottom: 1px solid #f2f2f2;
-				padding:10px 20px;
-				cursor: pointer;
-			}
-			#classLevel .alltest{
-				cursor: pointer;
-			}
-			.leftAnchorPoint{
-				width: 40px;
-				height: 80px;
-			}
-			.hand{
-				cursor:pointer;
-			}
-			</style>
+			},
+			methods:{
+				data:function(){
+					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
+						if(res.code == '10000'){
+							obj.testList=res.result.exams;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					});
+				},
+				testChange(e){
+					var name=this.testList[e].id;
+					this.basicData.id=name;
+					var totle={createDate:1512647749000,createUser:"1",id:"0",isDelete:0,orgId:"",remark:"",schoolId:"",subjectCode:1,subjectColor:"#F37070",subjectName:"总分",updateDate:1513586055000};
+					this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
+						if(res.code == '10000'){
+							obj.testList=res.result.exams;
+							obj.items=res.result[name].subject;
+							obj.schoolList=res.result[name].classroom;
+							obj.schoolList1=res.result[name].classroom;
+							obj.schoolList2=res.result[name].classroom;
+							obj.basicData.class=res.result[name].classroom[0].id;
+							obj.basicData.subject="总分";
+							obj.items.unshift(totle);
+							var childNum=Math.ceil(obj.items.length/11);
+							var childs=[];
+							for(var l=0;l<childNum;l++){
+								var id=l+1;
+								var e=11*(l+1);
+								var s=e-11;
+								childs[l] = []
+								childs[l]["childs"]=obj.items.slice(s,e);
+								childs[l]["id"] = id;
+							}
+							obj.subjects=childs;
+							obj.headerData=[];
+							for(var p=0;p<obj.SheaderData.length;p++){
+								obj.headerData.push(obj.SheaderData[p])
+							}
+							for(var q=5;q<parseInt(res.result[name].subject.length)+4;q++){
+								var arr={
+									"name":res.result[name].subject[q-4].subjectName,
+									"dataIndex":"code"+res.result[name].subject[q-4].id,
+								}
+								obj.headerData.push(arr);
+							}
+							obj.rainbow(0,0,"总分");
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					});
+
+				}, 
+				testtest:function(e){
+					var olouceng = document.getElementsByClassName("louceng");
+					var oNav = document.getElementById("navInside").getElementsByTagName("li");
+					this.activeList = e;
+					window.scrollTo(0 ,olouceng[e].offsetTop-100);
+				},
+				testtest1:function(e){
+					var olouceng = document.getElementsByClassName("louceng1");
+					var oNav = document.getElementById("navInside1").getElementsByTagName("li");
+					this.activeList1 = e;
+					window.scrollTo(0 ,olouceng[e].offsetTop-100);
+				},
+				changetest:function(e,ename){
+					this.showselect = !this.showselect
+					this.$refs.carousel.setActiveItem(ename);
+				},
+				selectShow:function(){
+					this.showselect = !this.showselect
+				},
+				rainbow:function(index,num,name){
+					for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
+						document.getElementById("rainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
+					}
+					document.getElementById("rainbow").getElementsByClassName("is-active")[0].getElementsByClassName("header-banner-click")[index].className+=" on";
+					if(num==0){
+						var oNav = document.getElementById("navInside1").getElementsByTagName("li");
+						for(var a = 0;a<oNav.length;a++){
+							oNav[a].className = '';
+						}
+						oNav[0].className = 'active';
+						this.displayAll.classTotalScore=true;
+						this.displayAll.gradeDistribution=true;
+						this.displayAll.ranking=true;
+						this.displayAll.ClassdisciplinesLevel=true;
+						this.displayAll.classReport=true;
+						this.displayAll.studentGradeDistribution=false;
+						this.displayAll.classTestAnalysis=false;
+						this.displayAll.classOptionScoreQuestion=false;
+						this.displayAll.classtwoDimensionalAnalysis=false;
+						this.displayAll.classknowledge=false;
+						this.displayAll.classabilityAnalyze=false;
+
+						this.basicData.subject=name;
+						this.getLevelDistribution();
+						this.getTopOrgScoresInClass();
+						this.getClassRankingReport();
+						this.geReportCards();
+						this.getClassScoreReport();
+					}else{
+						var oNav = document.getElementById("navInside").getElementsByTagName("li");
+						for(var a = 0;a<oNav.length;a++){
+							oNav[a].className = '';
+						}
+						oNav[0].className = 'active';
+						this.displayAll.classTotalScore=true;
+						this.displayAll.gradeDistribution=false;
+						this.displayAll.ranking=false;
+						this.displayAll.ClassdisciplinesLevel=false;
+						this.displayAll.classReport=false;
+						this.displayAll.studentGradeDistribution=true;
+						this.displayAll.classTestAnalysis=true;
+						this.displayAll.classOptionScoreQuestion=true;
+						this.displayAll.classtwoDimensionalAnalysis=true;
+						this.displayAll.classknowledge=true;
+						this.displayAll.classabilityAnalyze=true;
+
+						this.basicData.subject=name;
+						this.testAnalysis();
+						this.getLevelDistribution();
+						this.ablityAnalysis();
+						this.knowAnalysis();
+						this.getClassScoreReport();
+					}
+				},
+				changeClassName(value){
+					this.basicData.class=value;
+					this.rainbow(0,0,"总分");
+				},
+				changeClassName1(value){
+					this.basicData.anotherclass=value;
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,classroomId:value},'score/getLevelDistribution',function(obj,res){
+						if(res.code == '10000'){
+							obj.optiongradeDistribution.legend.data=[];
+							obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
+							if(obj.optiongradeDistribution.series.length==3){
+								var list=[];
+								list.push(res.result[1].highRate* 1000000/10000);
+								list.push(res.result[1].excellentRate* 1000000/10000);
+								list.push(res.result[1].commissionRate* 1000000/10000);
+								list.push(res.result[1].passRate* 1000000/10000);
+								list.push(res.result[1].failureRate* 1000000/10000);
+								var arr={
+									"name":"对比班级",
+									"type":'bar',
+									"barWidth": '30%',	
+									"label":"{normal:{show:true,position:'top'},}",
+									"itemStyle":"{normal:{color:'#FF8585'},}",
+									"data":list
+								}
+								obj.optiongradeDistribution.series.push(arr);
+							}else{
+								obj.optiongradeDistribution.series[3].data=[];
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].highRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].excellentRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].commissionRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].passRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result[1].failureRate* 1000000/10000);
+							}
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				changeClassName2(value){
+					this.basicData.anotherclass=value;
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',subject:this.basicData.subject,classroomId:value,rateType:''},'score/getLevelDistribution',function(obj,res){
+						if(res.code == '10000'){
+							obj.optionclassLastStudents.series[0].data[0].value=obj.optionstudentGradeDistribution.series[0].data[0].value;
+							obj.optionclassLastStudents.series[0].data[1].value=obj.optionstudentGradeDistribution.series[0].data[1].value;
+							obj.optionclassLastStudents.series[0].data[2].value=obj.optionstudentGradeDistribution.series[0].data[2].value;
+							obj.optionclassLastStudents.series[0].data[3].value=obj.optionstudentGradeDistribution.series[0].data[3].value;
+							obj.optionclassLastStudents.series[0].data[4].value=obj.optionstudentGradeDistribution.series[0].data[4].value;
+							if(res.result.scoreVOList){
+								var num=0;
+								for(var i=0;i<res.result.scoreVOList.length;i++){
+									if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+										num=i;
+									}
+								}
+								obj.optionclassLastStudents.series[1].name=res.result.classroomName;
+								obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
+								obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
+								obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
+								obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
+								obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
+							}
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				getClassScoreReport:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassScoreReport',function(obj,res){
+						if(res.code == '10000'){
+							obj.schoolSelectBoxData=res.result;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				geReportCards:function(){
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', subject:this.basicData.subject,range:'CLASS',classroomId:this.basicData.class},'score/geReportCards',function(obj,res){
+						if(res.code == '10000'){
+							obj.optionClassdisciplinesLevel.xAxis[0].data=[];
+							obj.optionClassdisciplinesLevel.xAxis[0].data=res.result.subjectList;
+							obj.optionClassdisciplinesLevel.series[0].data=[];
+							obj.optionClassdisciplinesLevel.series[0].data=res.result.standardScoreList;
+							obj.optionClassdisciplinesLevel.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+							obj.optionClassdisciplinesLevelRight.series[0].data[0].value=[];
+							obj.optionClassdisciplinesLevelRight.series[0].data[1].value=[];
+							obj.optionClassdisciplinesLevelRight.series[0].data[0].value=res.result.classAvgScoreList;
+							obj.optionClassdisciplinesLevelRight.series[0].data[1].value=res.result.schoolAvgScoreList;
+							obj.optionClassdisciplinesLevelRight.radar[0].indicator=[];
+							for(var i=0;i<res.result.subjectList.length;i++){
+								var arr={
+									"text":res.result.subjectList[i],
+									"max":100,
+								}
+								obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
+							}
+							obj.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(obj.optionClassdisciplinesLevelRight);
+							obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				knowAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/knowAnalysis',function(obj,res){
+						if(res.code == '10000'){
+							obj.truetableDatas=res.result;
+							obj.optionclassknowledge.series[0].data[0].value=[];
+							obj.optionclassknowledge.series[0].data[1].value=[];
+							obj.optionclassknowledge.series[0].data[2].value=[];
+							if(res.result){
+								document.getElementById("classknowledge1").style.display="block";
+								if(res.result.length>=3){
+									for(var i=0;i<res.result.length;i++){
+										obj.optionclassknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
+										obj.optionclassknowledge.series[0].data[0].value.push(res.result[i].divideClass);
+										obj.optionclassknowledge.series[0].data[1].value.push(res.result[i].divideSchool);
+										obj.optionclassknowledge.series[0].data[2].value.push(res.result[i].divideAera);
+									}
+									obj.echarts.init(document.getElementById("classknowledge1")).setOption(obj.optionclassknowledge);
+								}else{
+									document.getElementById("classknowledge1").style.display="none";
+								}
+							}
+						}else{
+							document.getElementById("classknowledge1").style.display="none";
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				ablityAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/ablityAnalysis',function(obj,res){
+						if(res.code == '10000'){
+							obj.scoreName=res.result;
+							obj.optionclassabilityAnalyze.series[0].data[0].value=[];
+							obj.optionclassabilityAnalyze.series[0].data[1].value=[];
+							obj.optionclassabilityAnalyze.series[0].data[2].value=[];
+							for(var i=0;i<res.result.length;i++){
+								obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result[i].divideClass)
+								obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result[i].divideSchool)
+								obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result[i].divideAera)
+							}
+							obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				getLevelDistribution:function(){
+					this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:''},'score/getLevelDistribution',function(obj,res){
+						if(res.code == '10000'){
+							var type=(typeof res.result);
+							if(type=="string"){
+								obj.optiongradeDistribution.series[0].data=[];
+								obj.optiongradeDistribution.series[1].data=[];
+								obj.optiongradeDistribution.series[2].data=[];
+								obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
+							}else{
+								if(obj.basicData.subject=="总分"){
+									if(res.result[0].scoreLevel=="SCHOOL"){
+										obj.optiongradeDistribution.series[1].data=[];
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result[0].failureRate * 1000000/10000);
+
+										obj.optiongradeDistribution.series[2].data=[];
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result[0].failureRate * 1000000/10000);
+									}
+									if(res.result[1].scoreLevel=="CLASS"){
+										obj.optiongradeDistribution.series[0].data=[];
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result[1].failureRate * 1000000/10000);
+									}
+									obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
+								}else{
+									if(res.result.scoreVOList){
+										var num=0;
+										for(var i=0;i<res.result.scoreVOList.length;i++){
+											if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+												num=i;
+											}
+										}
+										obj.studentTotle=res.result.scoreVOList[num].fullMarks;
+										obj.studentTotleNum=res.result.stuNum;
+										obj.optionstudentGradeDistribution.series[0].data[0].value=res.result.scoreVOList[num].highRate;
+										obj.optionstudentGradeDistribution.series[0].data[1].value=res.result.scoreVOList[num].excellentRate;
+										obj.optionstudentGradeDistribution.series[0].data[2].value=res.result.scoreVOList[num].commissionRate;
+										obj.optionstudentGradeDistribution.series[0].data[3].value=res.result.scoreVOList[num].passRate;
+										obj.optionstudentGradeDistribution.series[0].data[4].value=res.result.scoreVOList[num].failureRate;
+										obj.echarts.init(document.getElementById("studentGradeDistribution1")).setOption(obj.optionstudentGradeDistribution);
+										obj.studentGradeDistributionList=res.result.stuScoreList;
+										obj.studentGradeheader.startScore=res.result.startScore;
+										obj.studentGradeheader.endScore=res.result.endScore;
+										obj.studentGradeheader.number=res.result.stuScoreList.length;
+									}
+								}
+							}
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					});
+				},
+				testAnalysis:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/testAnalysis',function(obj,res){
+						if(res.code == '10000'){
+							obj.testAnalysisTable=res.result.listVO;
+							obj.optionClassScoreQuestion.xAxis[0].data=[];
+							obj.optionClassScoreQuestion.series[0].data=[];
+							obj.optionClassScoreQuestion.series[1].data=[];
+							obj.optionClassScoreQuestion.series[2].data=[];
+							obj.optionTwoDimensionalAnalysisS.series[0].data=[];
+							obj.optionTwoDimensionalAnalysisS.series[1].data=[];
+
+							for(var i=0;i<res.result.listVO.length;i++){
+								obj.optionClassScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
+								obj.optionClassScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideClass));
+								obj.optionClassScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideSchool));
+								obj.optionClassScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideAera));
+								var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
+								if(number>=0){
+									var list=[];
+									list.push(res.result.listVO[i].difficulty);
+									list.push(number);
+									list.push(res.result.listVO[i].topic);
+									list.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list.push(parseFloat(res.result.listVO[i].qid));
+									obj.optionTwoDimensionalAnalysisS.series[0].data.push(list);
+								}else{
+									var list1=[];
+									list1.push(res.result.listVO[i].difficulty);
+									list1.push(number);
+									list1.push(res.result.listVO[i].topic);
+									list1.push(parseFloat(res.result.listVO[i].fractionalValue));
+									list1.push(parseFloat(res.result.listVO[i].qid));
+									obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
+								}
+							}						
+							obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
+							obj.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysisS);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					});
+				},
+				getTopOrgScoresInClass:function(){
+					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class,topNum:this.basicData.topNum},'score/getTopOrgScoresInClass',function(obj,res){
+						if(res.code == '10000'){
+							obj.testAnalysisTable=res.result.listVO;
+							obj.optionClassScoreQuestion.xAxis[0].data=[];
+							obj.opti
+							var type=(typeof res.result);
+							if(type=="string"){
+								obj.optionranking.series[0].data=[];
+								obj.rankingData=[];
+								obj.rankingList=[];
+							}else{
+								obj.rankingList=res.result.resultScoreList;
+								obj.rankingListS.classStuNum=res.result.classStuNum;
+								obj.rankingListS.schoolStuNum=res.result.schoolStuNum;
+								obj.rankingData[0].topic10=res.result.classTopScore.classTopTenStuNum;
+								obj.rankingData[0].topic20=res.result.classTopScore.classTopTwentyStuNum;
+								obj.rankingData[0].topic50=res.result.classTopScore.classTopFiftyStuNum;
+								obj.rankingData[0].topic100=res.result.classTopScore.classTopOneHundredStuNum;
+								obj.rankingData[0].topic200=res.result.classTopScore.classTopTwoHundredStuNum;
+								obj.rankingData[0].topic500=res.result.classTopScore.classTopFiveHundredStuNum;
+								obj.rankingData[0].topic1000=res.result.classTopScore.classTopOneThousandStuNum;
+								obj.optionranking.series[0].data=[];
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTenStuNum);
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwentyStuNum);
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiftyStuNum);
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneHundredStuNum);
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopTwoHundredStuNum);
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopFiveHundredStuNum);
+								obj.optionranking.series[0].data.push(res.result.classTopScore.classTopOneThousandStuNum);
+							}
+							obj.echarts.init(document.getElementById("ranking1")).setOption(obj.optionranking);
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					});
+				},
+				getClassRankingReport:function(){
+					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
+						if(res.code == '10000'){
+							for(var i=0;i<res.result.classScoreList.length;i++){
+								res.result.classScoreList[i].subject1Score=i+1;
+							}
+							obj.tableData3=res.result.classScoreList;
+						}else{
+							obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					});
+				},
+				gradeIntervalfun:function(e){
+					var num=parseInt(e.currentTarget.getElementsByTagName("button")[0].getAttribute("data-key"));
+					if(e.currentTarget.className=="ranking-footRight"){
+						if(num==5){
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="none";
+							this.studentGradeheader.name=this.gradeInterval[num-1].name;
+							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[4].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class, subject:this.basicData.subject,rateType:this.gradeInterval[4].value},'score/getLevelDistribution',function(obj,res){
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
+							});
+						}else{
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="block";
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
+							this.studentGradeheader.name=this.gradeInterval[num-1].name;
+							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[num-1].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
+							});
+						}
+					}else{
+						if(num==1){
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].style.display="none";
+							this.studentGradeheader.name=this.gradeInterval[num-1].name;
+							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[0].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT', classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[0].value},'score/getLevelDistribution',function(obj,res){
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
+							});
+						}else{
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].style.display="block";
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].setAttribute("data-key",num-1);
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footLeft")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num-2].name;
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].setAttribute("data-key",num+1);
+							e.currentTarget.parentNode.getElementsByClassName("ranking-footRight")[0].getElementsByTagName("button")[0].getElementsByTagName("span")[0].innerHTML=this.gradeInterval[num].name;
+							this.studentGradeheader.name=this.gradeInterval[num-1].name;
+							this.studentGradeheader.level=this.gradeInterval[num-1].level;
+							this.basicData.rateType=this.gradeInterval[num-1].value;
+							this.postHttp(this,{examId:this.basicData.id,tab:'CLASS_REPORT',classroomId:this.basicData.class,subject:this.basicData.subject,rateType:this.gradeInterval[num-1].value},'score/getLevelDistribution',function(obj,res){
+								if(res.code == '10000'){
+									obj.studentGradeDistributionList=res.result.stuScoreList;
+									obj.studentGradeheader.startScore=res.result.startScore;
+									obj.studentGradeheader.endScore=res.result.endScore;
+									obj.studentGradeheader.number=res.result.stuScoreList.length;
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
+							});
+						}
+					}
+				},
+				classLastScoreshow(){
+					var selfs = this;
+					if(this.diaLoading){
+						setTimeout(function(){
+							selfs.diaLoading = false;
+							selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+								if(res.code == '10000'){
+									obj.optionclassLastScore.xAxis.data=[];
+									obj.optionclassLastScore.xAxis.data=res.result.examNameList;
+									obj.optionclassLastScore.series[0].data=[];
+									obj.optionclassLastScore.series[0].data=res.result.scoreAvgList;
+
+									obj.echarts.init(document.getElementById("classLastScore")).setOption(obj.optionclassLastScore);
+								}else{
+									obj.notify_jr(obj,'错误提示',res.message,'error');
+								}
+							})
+						},1000);
+					}
+				},
+				gradeDistributionshow(){
+					this.echarts.init(document.getElementById("gradeDistribution1")).setOption(this.optiongradeDistribution);
+				},
+				classLastStudentsshow(){
+					var selfs = this;
+					if(this.diaStudentsLoading){
+						setTimeout(function(){
+							selfs.diaStudentsLoading = false;
+
+							selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
+						},1000);
+					}
+				},
+				rankingTopic(e){
+					if(e.currentTarget.className=="ranking-footLeft"){
+						this.basicData.topNum=50;
+						this.getTopOrgScoresInClass();
+					}else{
+						this.basicData.topNum=100;
+						this.getTopOrgScoresInClass();
+					}
+				},
+				objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+					if (columnIndex === 0) {
+						if (rowIndex === 0) {
+							return {
+								rowspan: row.knowledgeNum,
+								colspan: 1
+							};
+						} else {
+							return {
+								rowspan: 0,
+								colspan: 0
+							};
+						}
+					}
+				},
+			}
+		}
+		</script>
+		<style>
+		#classLevel{
+			border-top: 1px solid #f2f2f2;
+		}
+		#classLevel .borders{
+			box-shadow: 1px 1px 14px rgba(0,0,0,.15);
+		}
+		#classLevel .header{
+			text-align: center;
+		}
+		#classLevel .header p{
+			font-size: 20px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		#classLevel .header-title-foot{
+			width: 100px;
+			height: 2px;
+			background: #44A9FF;
+			margin: auto;
+			margin-top:5px;
+		}
+		#classLevel .header-banner-bit{
+			width: 89px;
+			height: 73px;
+			float: left;
+			margin-top: 15px;
+		}
+		#classLevel .table-header{
+			background: #70CDF3;
+			color: #fff;
+		}
+		#classLevel .header-banner .el-carousel__item{
+			margin-left: 60px;
+		}
+		#classLevel .header-banner-click{
+			width: 100%;
+			height: 100%;
+			text-align: center;
+		}
+		#classLevel .header-banner-click p{
+			line-height: 73px;
+		}
+		#classLevel .header-banner-bit .on{
+			height: 105%;
+		}
+		#classLevel .schoolSelectBox{
+			width: 90px;
+			margin: auto;
+			margin-bottom: 35px;
+		}
+		#classLevel .table-header{
+			background: #70CDF3;
+			color: #fff;
+		}
+		#classLevel .body-foot{
+			margin-top:20px;
+		}
+		#classLevel .body-foot p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+			line-height: 24px;
+		}
+		#classLevel .body-foot-button{
+			width: 100px;
+			height: 40px;
+			margin: auto;
+			margin-top: 10px;
+		}
+		#classLevel .body-foot-button .el-button{
+			border: 1px solid #44A9FF;
+		}
+		#classLevel .body-foot-button span{
+			color: #44A9FF !important;
+		}
+		#classLevel .el-input__inner{
+			border: 1px solid #44A9FF;
+		}
+		#classLevel  #gradeDistribution1{
+			width: 1080px;
+			height: 460px;
+			margin: auto;
+			margin-top: 20px;
+		}
+		#classLevel .classSelectBox{
+			width: 200px;
+			margin: auto;
+			margin-bottom: 35px;
+			margin-top: 10px;
+		}
+		#classLevel .header .body-title{
+			position: absolute;
+			left: 50%;
+			margin-left: -100px;
+		} 
+		#classLevel .header .body-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		} 
+		#classLevel #ranking .body{
+			overflow: hidden;
+		}
+		#classLevel #ranking1{
+			width: 750px;
+			height: 460px;
+			float: left;
+		}
+		#classLevel #ranking2{
+			width: 300px;
+			height: 395px;
+			float: left;
+			margin-top: 55px;
+		}
+		#classLevel .ranking-header{
+			width: 100%;
+			height: 40px;
+			background: #70CDF3;
+			text-align: center;
+			line-height: 40px;
+			border-radius: 3px 3px 0 0;
+		}
+		#classLevel .ranking-header p{
+			font-size: 16px;
+			color: #FFFFFF;
+			letter-spacing: 0;
+		}
+		#classLevel .ranking-body{
+			width: 100%;
+			height: 285px;
+			border: 1px solid #E6EBF5;
+			overflow: auto;
+		}
+		#classLevel .ranking-body p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+		}
+		#classLevel .ranking-body ul{
+			padding: 20px 80px;
+		}
+		#classLevel .ranking-foot{
+			width: 100%;
+			height: 40px;
+			background: #70CDF3;
+			line-height: 40px;
+			border-radius:0 0 3px 3px;
+		}
+		#classLevel .ranking-footLeft{
+			float: left;
+			color: #fff;
+			cursor:pointer;
+		}
+		#classLevel .ranking-footLeft i{
+			line-height: 40px;
+			float: left;
+		}
+		#classLevel .ranking-footLeft p{
+			float: left;
+		}
+		#classLevel .ranking-footRight{
+			float: right;	
+			color: #fff;
+			cursor:pointer;
+		}
+		#classLevel .ranking-footRight i{
+			line-height: 40px;
+			float: right;	
+		}
+		#classLevel .ranking-footRight p{
+			float: right;	
+		}
+		#classLevel .ranking-bodyName{
+			float: left;
+		}
+		#classLevel .ranking-bodyNum{
+			float: right;
+		}
+		#classLevel #ClassdisciplinesLevel1{
+			width: 600px;
+			height: 500px;
+			margin-top:20px;
+			float: left;
+		}
+		#classLevel #ClassdisciplinesLevel2{
+			width: 470px;
+			height: 500px;
+			float: left;
+			margin-top:20px;
+			margin-left: 20px;
+		}
+		#classLevel .subjectsDiagnosisText{
+			margin-top:20px;
+		}
+		#classLevel .subjectsDiagnosisText p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+			line-height: 24px;
+		}
+		#classLevel .body-Vtitle{
+			text-align: center;
+		}
+		#classLevel .body-Vtitle p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+			line-height: 26px;
+		}
+		#classLevel #studentGradeDistribution1{
+			width: 700px;
+			height: 460px;
+		}
+		#classLevel #studentGradeDistribution2{
+			width: 305px;
+			height: 460px;
+		}
+		#classLevel .studentGradeDistribution2-header{
+			width: 100%;
+			height: 49px;
+			background: #70CDF3;
+			border-radius: 3px 3px 0 0;
+			text-align: center;
+			padding-top: 5px;
+		}
+		#classLevel .studentGradeDistribution2-header p{
+			font-size: 16px;
+			color: #FFFFFF;
+			letter-spacing: 0;
+			line-height: 24px;
+		}
+		#classLevel .studentGradeDistribution2-body{
+			width: 99%;
+			height: 285px;
+			border: 1px solid #E6EBF5;
+		}
+		#classLevel .el-button span{
+			color: #fff;
+		}
+		#classLevel .studentGradeDistribution-ranking-body{
+			width: 100%;
+			height: 285px;
+			border: 1px solid #E6EBF5;
+			overflow: auto;
+		}
+		#classLevel .studentGradeDistribution-ranking-body p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+		}
+		#classLevel .studentGradeDistribution-ranking-body ul{
+			padding: 20px 80px;
+		}
+		#classLevel .classSelectBox .el-button{
+			background: #fff;
+		}
+		#classLevel .classSelectBox .el-button span{
+			color: #44A9FF !important;
+		}
+		#classLevel #classTestAnalysis .el-table--border td, .el-table--border th{
+			border:0px !important;
+		}
+		#classLevel #classTestAnalysis .el-table thead.is-group th{
+			background: #70CDF3;
+			color: #fff;
+		}
+		#classLevel #classOptionScoreQuestion1{
+			width: 1080px;
+			height: 460px;
+			margin: auto;
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+		#classLevel #classtwoDimensionalAnalysis1{
+			width: 1080px;
+			height: 660px;
+			margin: auto;
+			margin-bottom: 20px;
+		}
+		#classLevel .twoDimensionalAnalysis-foot{
+			width: 870px;
+			height: 30px;
+			margin: auto;
+			margin-top: -45px;
+		}
+		#classLevel .twoDimensionalAnalysis-foot .difficultyLevel{
+			width: 33.33%;
+			height: 100%;
+			float:left;
+			text-align: center;
+			color: #fff;
+		}
+		#classLevel .twoDimensionalAnalysis-foot .easy{
+			background: #FF4444;
+		}
+		#classLevel .twoDimensionalAnalysis-foot .midde{
+			background: #FF8585;
+		}
+		#classLevel .twoDimensionalAnalysis-foot .difficult{
+			background: #FEB0B0;
+		}
+		#classLevel .twoDimensionalAnalysis-foot .difficultyLevel p{
+			line-height: 35px;
+			font-size: 12px;
+			letter-spacing: 0;
+		}
+		#classLevel #classtwoDimensionalAnalysis .foot-word{
+			width: 100%;
+			margin-top:20px;
+		}
+		#classLevel #classtwoDimensionalAnalysis .foot-word p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+			line-height: 24px;
+		}
+		#classLevel #classknowledge1{
+			width: 1080px;
+			height: 400px;
+			margin: auto;
+		}
+		#classLevel .el-select .el-input .el-input__icon{
+			color: #44A9FF
+		}
+		#classLevel .el-carousel__arrow{
+			background-color: white;
+			color: #44A9FF
+		}
+		#classLevel .el-carousel__arrow:hover{
+			background-color: white
+		}
+		#classLevel #classknowledge2 .el-table thead.is-group th{
+			background: #70CDF3;
+			color: #fff;
+		}
+		#classLevel #knowledge-table-header .el-table__body-wrapper{
+			display: none;
+		}
+		#classLevel #classknowledge2 .knowledge-table-true .el-table__header-wrapper{
+			display: none;
+		}
+		#classLevel .knowledge-table-trueTotle{
+			width: 100%;
+			height: 50px;
+			background: #FF8585;	
+		}
+		#classLevel .knowledge-table-trueTotle .knowledge-table-trueTotleBit{
+			line-height: 50px;
+			float: left;
+			width: 160px;
+			color: #fff;
+			text-align: center;
+		}
+		#classLevel .knowledge-foot{
+			margin-top:20px;
+		}
+		#classLevel .knowledge-foot p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+			line-height: 24px;
+		}
+		#classLevel #classabilityAnalyze1{
+			width: 1080px;
+			height: 520px;
+			margin: auto;
+			margin-top: 20px;
+		}
+		#classLevel #classabilityAnalyze2 .el-table--border td, .el-table--border th{
+			border:0px !important;
+		}
+		#classLevel #classabilityAnalyze2 .el-table thead.is-group th{
+			background: #70CDF3;
+			color: #fff;
+		}
+		#classLevel .abilityAnalyze-foot{
+			margin-top: 20px;
+		}
+		#classLevel .abilityAnalyze-foot p{
+			font-size: 14px;
+			color: #3D3D3D;
+			letter-spacing: 0;
+			line-height: 24px;
+		}
+		#classLastScore{
+			width: 800px;
+			height: 500px;
+		}
+		#classLastStudents{
+			width: 800px;
+			height: 500px;	
+		}
+		#classLevel .el-select .el-input .el-input__icon{
+			color: #70CDF3
+		}
+		#classLevel .el-carousel  {
+			overflow-x: hidden;
+			position: relative;
+			text-align: center;
+			margin: auto;
+			width: 400px;
+			height: 50px;
+			margin-top: 30px;
+			line-height: 50px;
+		}
+		#classLevel #rainbow .el-carousel{
+			width: 1100px;
+			height: 100px;
+		}
+		#classLevel .el-carousel__container {
+			position: relative;
+			height: 50px;
+			margin: auto;
+		}
+		#classLevel .myselect{
+			border:1px solid #44a9ff;
+			width: 130px;
+			border-radius: 4px;
+		}
+		#classLevel .myselectS{
+			border:1px solid #44a9ff;
+			width: 90px;
+			border-radius: 4px;
+		}
+		#classLevel .testTips{
+			color:#3d3d3d;
+			font-size: 14px;
+			margin-top: 25px
+		}
+		#classLevel .schoolSelectBox{
+			width: 200px;
+			margin: auto;
+			margin-bottom: 35px;
+		}
+		#classLevel .achievementSelectBox{
+			width: 90px;
+			margin: auto;
+			margin-bottom: 35px;
+		}
+		#classLevel .borders{
+			box-shadow: 1px 1px 14px rgba(0,0,0,.15);
+		}
+		#classLevel .el-table .tableBackground{
+			background-color: #f5fcff;text-align: center;
+		}
+		#classLevel .el-table .tableCenter{
+			text-align: center;
+		}
+		#classLevel .alltest{
+			cursor: pointer;
+		}
+		#classLevel .formatRow{
+			font-weight: normal;
+			text-align:center !important;
+			color: white;
+			border: 0px !important;
+			background-color: #70CDF3 !important;
+		}
+		#achievementTable .el-table--border td{
+			border:0px;
+		}
+		#classLevel .el-input__inner{
+			border: 0px;
+			text-align: center;
+		}
+		#classLevel .el-select .el-input .el-input__icon{
+			color: #70CDF3
+		}
+		#classLevel .el-carousel__arrow{
+			background-color: white;
+			color: #70CDF3
+		}
+		#classLevel .el-carousel__arrow:hover{
+			background-color: white
+		}
+		#classLevel .showselect{
+			list-style: none;
+			position: absolute;
+			margin: 0;
+			padding: 0;
+			border: 1px solid #f2f2f2;
+			left: 50%;
+			margin-left: -150px;
+			z-index: 999;
+			background-color: white;
+			width: 300px;
+			text-align: center;
+		}
+		#classLevel .showselect li{
+			margin: 0;padding:0;
+			border-bottom: 1px solid #f2f2f2;
+			padding:10px 20px;
+			cursor: pointer;
+		}
+		#classLevel .alltest{
+			cursor: pointer;
+		}
+		.leftAnchorPoint{
+			width: 40px;
+			height: 80px;
+		}
+		.hand{
+			cursor:pointer;
+		}
+		</style>
