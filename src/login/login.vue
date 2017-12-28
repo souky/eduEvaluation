@@ -5,12 +5,12 @@
 		<div class="tc loginBackground">
 			<img src="../../static/img/APPImg/bg-d@1x.png" alt="">
 		</div>
-		<mt-field class="login-user" label="用户名" placeholder="用户名"></mt-field>
-		<mt-field class="login-password" label="用户名" placeholder="请输入密码"></mt-field>
+		<mt-field class="login-user" v-model="form.user" label="用户名" placeholder="用户名"></mt-field>
+		<mt-field class="login-password" v-model="form.password" label="用户名" placeholder="请输入密码"></mt-field>
 		
 	</div>
 	<div class="login-go">
-		<mt-button type="danger" @click="loginButton()">登录</mt-button>
+		<mt-button type="danger" @click="onSubmit()">登录</mt-button>
 	</div>
 </div>
 </template>
@@ -18,7 +18,10 @@
 export default {
 	data(){
 		return{
-
+			form:{
+				user:"",
+				password:"",
+			}
 		}
 	},
 	created:function(){
@@ -31,8 +34,15 @@ export default {
 		this.$refs.loginHight.getElementsByClassName("main-conment")[0].getElementsByClassName("login-password")[0].getElementsByClassName("mint-cell-text")[0].innerHTML="<img src='static/img/login/2.png' alt=''>";
 	},
 	methods:{
-		loginButton:function(){
-			this.$router.push({path:'/home'});
+		onSubmit:function(){
+			this.postHttp(this,{userName:this.form.user,psw:this.form.password},'login',function(obj,res){
+				if(res.code == '10000'){
+					obj.$router.push({path:'/home'});
+				}else{
+					//obj.notify_jr(obj,'错误提示',res.message,'error');
+				}
+
+		  	});
 		}
 	}
 }
