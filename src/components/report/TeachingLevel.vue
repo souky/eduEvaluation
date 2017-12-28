@@ -137,7 +137,7 @@
 		  <div id="averageCompare">
 		  		<div id="averageChart"></div>
 		  		<!-- <p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p> -->
-		  		<div class="allaverag"><img src="/static/img/header/Group.png" /> 全校平均分</div>
+		  		<div class="allaverag"><img src="/static/img/header/Group.png" /> 本校平均分</div>
 		  </div>
 
 		  <div class="header louceng">
