@@ -839,6 +839,7 @@ export default {
 				}
 			},
 			created:function(){
+				this.$store.commit('newTab','2');
 				this.$store.commit('newTitle','成绩报告');
 				for(var i=0;i<5;i++){
 					this.subjectLsit.push(this.subject[i]);
@@ -1065,41 +1066,41 @@ export default {
 			width: 100%;
 			height: 48px;
 		}
-		.grade-nav-bit{
+		#grade .grade-nav-bit{
 			width: 11%;
 			height: 100%;
 			margin-left: 5%;
 			float: left;
 		}
-		.grade-nav-bit1{
+		#grade .grade-nav-bit1{
 			width: 70%;
 			height: 100%;
 			margin-left: 5%;
 			float: left;
 		}
-		.grade-nav-bit p{
+		#grade .grade-nav-bit p{
 			text-align: center;
 			line-height: 45px;
 		}
-		.grade-nav-bit1 p{
+		#grade .grade-nav-bit1 p{
 			line-height: 45px;
 		}
-		.grade-navMore{
+		#grade .grade-navMore{
 			height: 100%;
 			width: 15%;
 			float: right;
 		}
-		.navOn{
+		#grade .navOn{
 			border-bottom: 2px solid #19AFFF;
 		}
-		.grade-navMore-bit{
+		#grade .grade-navMore-bit{
 			width: 100%;
 			height: 80%;
 			margin-top: 5px;
 			border-left:1px solid #C4C4C4;
 			text-align: center;
 		}
-		.grade-navMore-bit .grade-navMore-bitImg{
+		#grade .grade-navMore-bit .grade-navMore-bitImg{
 			margin-top:10px;
 			transform:rotate(-90deg);
 			-ms-transform:rotate(-90deg); 	/* IE 9 */
@@ -1107,7 +1108,7 @@ export default {
 			-webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
 			-o-transform:rotate(-90deg); 	/* Opera */
 		}
-		.grade-navMore-bit .grade-navMore-bitImg1{
+		#grade .grade-navMore-bit .grade-navMore-bitImg1{
 			margin-top:10px;
 			transform:rotate(90deg);
 			-ms-transform:rotate(90deg); 	/* IE 9 */
@@ -1115,194 +1116,194 @@ export default {
 			-webkit-transform:rotate(90deg); /* Safari 和 Chrome */
 			-o-transform:rotate(90deg); 	/* Opera */
 		}
-		.grade-nav-more{
+		#grade .grade-nav-more{
 			width: 100%;
 			height: auto;
 			position: fixed;
 			background-color: rgb(245, 245, 245);
 			z-index: 99;
 		}
-		.Gnav-moreConment{
+		#grade .Gnav-moreConment{
 			width: 85%;
 			margin: auto
 		}
-		.black-cell{
+		#grade .black-cell{
 			width: 100%;
 			position: fixed;
 			z-index: 98;
 			background-color: rgba(0,0,0,0.4);
 		}
-		.Gnav-moreConment-bit{
+		#grade .Gnav-moreConment-bit{
 			width: 20%;
 			height: 40px;
 			margin-right: 5%;
 			margin-top: 10px;
 			float: left;
 		}
-		.Gnav-moreConment-bit p{
+		#grade .Gnav-moreConment-bit p{
 			text-align: center;
 			margin-top: 10px;
 		}
-		.grade-body{
+		#grade .grade-body{
 			width: 100%;
 			margin-top: -58px;
 		}
-		.grade-body .totle{
+		#grade .grade-body .totle{
 			width: 100%;
 			background-color: #FFD600;
 			overflow: hidden;
 		}
-		.beyondRate{
+		#grade .beyondRate{
 			width: 100%;
 			background-color: #F2BB4B;
 			overflow: hidden;
 		}
-		.growth{
+		#grade .growth{
 			width: 100%;
 			background-color: #7FDC7F;
 			overflow: hidden;	
 		}
-		.Subjectsdiagnose{
+		#grade .Subjectsdiagnose{
 			width: 100%;
 			background-color: #53CDD6;
 			overflow: hidden;	
 		}
-		.myGoal{
+		#grade .myGoal{
 			width: 100%;
 			background-color: #6380DD;
 			overflow: hidden;	
 		}
-		.allItem{
+		#grade .allItem{
 			width: 100%;
 			background-color: #7FDC7F;
 			overflow: hidden;	
 		}
-		.twoAnalysis{
+		#grade .twoAnalysis{
 			width: 100%;
 			background-color: #53CDD6;
 			overflow: hidden;	
 		}
-		.knowledgeAnalysis{
+		#grade .knowledgeAnalysis{
 			width: 100%;
 			background-color: #829AE9;
 			overflow: hidden;
 		}
-		.abilityAnalyze{
+		#grade .abilityAnalyze{
 			width: 100%;
 			background-color: #E98296;
 			overflow: hidden;
 		}
-		.totle-conment{
+		#grade .totle-conment{
 			width: 94%;
 			margin: auto;
 			margin-top: 90px;
 			margin-bottom: 10px;
 			background-color: #fff;
 			border-radius: 3px;
-			overflow-y: hidden;
+			overflow: hidden;
 		}
-		.totle-conment-title{
+		#grade .totle-conment-title{
 			text-align: center;
 			margin-top: 10px;
 			margin-bottom: 10px;
 		}
-		.totle-conment-body{
+		#grade .totle-conment-body{
 			width: 90%;
 			margin: auto;
 		}
-		.totle-conment-bodyHeader{
+		#grade .totle-conment-bodyHeader{
 			height: 30px;
 			background-color: #FFD600;
 		}
-		.totle-conment-body th{
+		#grade .totle-conment-body th{
 			width: 25%;
 		}
-		table.gridtable {
+		#grade table.gridtable {
 			font-family: verdana,arial,sans-serif;
 			font-size:11px;
 			color:#333333;
 			border-collapse: collapse;
 			width: 100%;
 		}
-		table.gridtable th {
+		#grade table.gridtable th {
 			padding: 8px 19px;
 			background-color: #FFD600;
 			font-size: 0.75rem;
 			color: #3E3E3E;
 		}
-		table.gridtable td {
+		#grade table.gridtable td {
 			text-align: center;
 			padding: 5px 0;
 			border-top: 1px solid #FFD600;
 		}
-		.totle-img{
+		#grade .totle-img{
 			width: 100%;
 			position: absolute;
 			height: 90px;
 			overflow: hidden;
 		}
-		.beyondRate-title{
+		#grade .beyondRate-title{
 			text-align: center;
 		}
-		.body-icon{
+		#grade .body-icon{
 			width: 235px;
 			margin: auto;
 		}
-		.body-icon-color{
+		#grade .body-icon-color{
 			width: 15px;
 			height: 15px;
 			margin-top: 3px;
 			float: left;
 		}
-		.body-icon-bit{
+		#grade .body-icon-bit{
 			margin-left:20px;
 			float: left;
 		}
-		.body-icon-bit p{
+		#grade .body-icon-bit p{
 			margin-left: 5px;
 			float: left;
 		}
-		.color-blue{
+		#grade .color-blue{
 			background: #F3BB4B;
 		}
-		.color-green{
+		#grade .color-green{
 			background: #ACD46A;
 		}
-		.color-red{
+		#grade .color-red{
 			background: #5CC8B3;
 		}
-		.body-icon-other{
+		#grade .body-icon-other{
 			width: 235px;
 			margin: auto;
 		}
-		.body-icon-color-other{
+		#grade .body-icon-color-other{
 			width: 15px;
 			height: 15px;
 			margin-top: 3px;
 			float: left;
 			border: 1px solid #53CDD6;
 		}
-		.body-icon-bit-other{
+		#grade .body-icon-bit-other{
 			margin-left:20px;
 			float: left;
 		}
-		.body-icon-bit-other p{
+		#grade .body-icon-bit-other p{
 			margin-left: 5px;
 			float: left;
 		}
-		.color-blue-other{
+		#grade .color-blue-other{
 			background: #53CDD6;
 		}
-		.beyondRate #beyondRate1{
+		#grade .beyondRate #beyondRate1{
 			width: 100%;
 			height: 300px;
 			margin: auto;
 		}
-		.choose-area{
+		#grade .choose-area{
 			width: 185px;
 			margin: auto;
 		}
-		.choose-area-left{
+		#grade .choose-area-left{
 			width: 60px;
 			height:30px;
 			border:1px solid #7FDC7F;
@@ -1312,11 +1313,11 @@ export default {
 			color: #fff;
 			background: #7FDC7F;
 		}
-		.choose-area-left p{
+		#grade .choose-area-left p{
 			line-height:30px;
 			font-size: 0.75rem;
 		}
-		.choose-area-midle{
+		#grade .choose-area-midle{
 			width: 60px;
 			height:30px;
 			border-top:1px solid #7FDC7F;
@@ -1325,11 +1326,11 @@ export default {
 			float: left;
 			color: #7FDC7F;
 		}
-		.choose-area-midle p{
+		#grade .choose-area-midle p{
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		.choose-area-right{
+		#grade .choose-area-right{
 			width: 60px;
 			height:30px;
 			border:1px solid #7FDC7F;
@@ -1338,19 +1339,19 @@ export default {
 			border-radius: 0 100px 100px 0;
 			color: #7FDC7F;
 		}
-		.choose-area-right p{
+		#grade .choose-area-right p{
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		#growthTrend1{
+		#grade #growthTrend1{
 			width: 100%;
 			height: 300px;
 		}
-		.choose-area1{
+		#grade .choose-area1{
 			width: 185px;
 			margin: auto;
 		}
-		.choose-area-left1{
+		#grade .choose-area-left1{
 			width: 60px;
 			height:30px;
 			border:1px solid #53CDD6;
@@ -1360,11 +1361,11 @@ export default {
 			color: #fff;
 			background: #53CDD6;
 		}
-		.choose-area-left1 p{
+		#grade .choose-area-left1 p{
 			line-height:30px;
 			font-size: 0.75rem;
 		}
-		.choose-area-midle1{
+		#grade .choose-area-midle1{
 			width: 60px;
 			height:30px;
 			border-top:1px solid #53CDD6;
@@ -1373,11 +1374,11 @@ export default {
 			float: left;
 			color: #53CDD6;
 		}
-		.choose-area-midle1 p{
+		#grade .choose-area-midle1 p{
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		.choose-area-right1{
+		#grade .choose-area-right1{
 			width: 60px;
 			height:30px;
 			border:1px solid #53CDD6;
@@ -1386,15 +1387,15 @@ export default {
 			border-radius: 0 100px 100px 0;
 			color: #53CDD6;
 		}
-		.choose-area-right1 p{
+		#grade .choose-area-right1 p{
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		.choose-area1-other{
+		#grade .choose-area1-other{
 			width: 245px;
 			margin: auto;
 		}
-		.choose-area-left1-other{
+		#grade .choose-area-left1-other{
 			width: 80px;
 			height:30px;
 			border:1px solid #7FDC7F;
@@ -1404,11 +1405,11 @@ export default {
 			color: #fff;
 			background: #7FDC7F;
 		}
-		.choose-area-left1-other p{
+		#grade .choose-area-left1-other p{
 			line-height:30px;
 			font-size: 0.75rem;
 		}
-		.choose-area-midle1-other{
+		#grade .choose-area-midle1-other{
 			width: 80px;
 			height:30px;
 			border-top:1px solid #7FDC7F;
@@ -1417,11 +1418,11 @@ export default {
 			float: left;
 			color: #7FDC7F;
 		}
-		.choose-area-midle1-other p{
+		#grade .choose-area-midle1-other p{
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		.choose-area-right1-other{
+		#grade .choose-area-right1-other{
 			width: 80px;
 			height:30px;
 			border:1px solid #7FDC7F;
@@ -1430,30 +1431,30 @@ export default {
 			border-radius: 0 100px 100px 0;
 			color: #7FDC7F;
 		}
-		.choose-area-right1-other p{
+		#grade .choose-area-right1-other p{
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		.subjectsDiagnosis #subjectsDiagnosis1{
+		#grade #subjectsDiagnosis1{
 			width: 100%;
 			height: 350px;
 		}
-		.subjectsDiagnosis #subjectsDiagnosis2{
+		#grade #subjectsDiagnosis2{
 			width: 100%;
 			height: 350px;
 		}
-		.Subjectsdiagnose-foot{
+		#grade .Subjectsdiagnose-foot{
 			width: 90%;
 			margin: auto;
 		}
-		.Subjectsdiagnose-foot p{
+		#grade .Subjectsdiagnose-foot p{
 			font-size: 0.75rem;
 			color: #3D3D3D;
 			letter-spacing: 0;
 			line-height: 20px;
 			text-align:justify;
 		}
-		.myGoaltitle{
+		#grade .myGoaltitle{
 			width: 90%;
 			height: 70px;
 			margin: auto;
@@ -1461,69 +1462,69 @@ export default {
 			background-color: #6380DD;
 			margin-bottom: 10px;
 		}
-		.myGoaltitle-bit{
+		#grade .myGoaltitle-bit{
 			width: 33%;
 			height: 100%;
 			float: left;
 		}
-		.myGoaltitle-bit p{
+		#grade .myGoaltitle-bit p{
 			text-align: center;
 			margin-top: 12px;
 			font-size: 0.75rem;
 			color: #FFFFFF;
 		}
-		.myGoal #myGoal1{
+		#grade .myGoal #myGoal1{
 			width: 100%;
 			height: 300px;
 			margin-bottom: 10px;
 		}
-		.allItem #allItem1{
+		#grade .allItem #allItem1{
 			width: 100%;
 			height: 300px;
 			margin-bottom: 10px;
 		}
-		.twoAnalysis #twoAnalysis1{
+		#grade .twoAnalysis #twoAnalysis1{
 			width: 100%;
 			height: 300px;
 			margin-bottom: 10px;
 		}
-		.difficultChoose{
+		#grade .difficultChoose{
 			width: 75%;
 			margin: auto;
 		}
-		.difficultChoose-bit{
+		#grade .difficultChoose-bit{
 			width: 32%;
 			height: 30px;
 			float: left;
 		}
-		.difficultChoose-bit p{
+		#grade .difficultChoose-bit p{
 			text-align: center;
 			line-height: 30px;
 			font-size: 0.75rem;
 		}
-		.difficultChoose-left{
+		#grade .difficultChoose-left{
 			border: 1px solid #53CDD6;
 			background-color: #53CDD6;
 			color: #fff;
 		}
-		.difficultChoose-middle{
+		#grade .difficultChoose-middle{
 			border-top: 1px solid #53CDD6;
 			border-bottom: 1px solid #53CDD6;
 			color: #53CDD6;
 		}
-		.difficultChoose-right{
+		#grade .difficultChoose-right{
 			border: 1px solid #53CDD6;
 			color: #53CDD6;	
 		}
-		.mt10{
+		#grade .mt10{
 			margin-top: 10px;
 		}
-		.knowledgeAnalysis #knowledgeAnalysis1{
+		#grade .knowledgeAnalysis #knowledgeAnalysis1{
 			width: 100%;
 			height: 280px;
 			margin-bottom: 10px;
 		}
-		.knowledgeNutton{
+		#grade .knowledgeNutton{
 			width: 120px;
 			height: 30px;
 			margin: auto;
@@ -1533,16 +1534,16 @@ export default {
 			border-radius: 3px;
 			margin-bottom: 20px;
 		}
-		.knowledgeNutton p{
+		#grade .knowledgeNutton p{
 			font-size: 0.75rem;
 			color: #FFFFFF;
 		}
-		.abilityAnalyze #abilityAnalyze1{
+		#grade .abilityAnalyze #abilityAnalyze1{
 			width: 100%;
 			height: 280px;
 			margin-bottom: 10px;
 		}
-		.abilityNutton{
+		#grade .abilityNutton{
 			width: 120px;
 			height: 30px;
 			margin: auto;
@@ -1552,7 +1553,7 @@ export default {
 			border-radius: 3px;
 			margin-bottom: 20px;
 		}
-		.abilityNutton p{
+		#grade .abilityNutton p{
 			font-size: 0.75rem;
 			color: #FFFFFF;
 		}
