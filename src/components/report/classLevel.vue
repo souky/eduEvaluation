@@ -129,6 +129,8 @@
 			<div class="header-title-foot"></div>
 		</div>
 		<div class="body pt20">
+			<div class="subjectsDiagnosis1-title"><p>学科均衡性</p></div>
+			<div class="subjectsDiagnosis2-title"><p>班级与学校平均水平对比</p></div>
 			<div id="ClassdisciplinesLevel1"></div>
 			<div id="ClassdisciplinesLevel2"></div>
 			<div class="cl"></div>
@@ -192,7 +194,7 @@
 				</div>
 			</div>
 			<div class="classSelectBox">
-				<el-select v-model="changeSchoolS" @change="changeClassName2" class="myselectS" placeholder="请选择">
+				<el-select v-model="changeSchoolS" @change="changeClassName2" class="myselectS vclassSelectBox" placeholder="请选择">
 					<el-option
 					v-for="item in schoolList2"
 					:key="item.id"
@@ -392,7 +394,7 @@ export default{
 			},{
 				key:2,
 				name:"优秀",
-				level:"(85%~90%)",
+				level:"(80%~90%)",
 				endScore:0,
 				startScore:0,
 				number:0,
@@ -400,7 +402,7 @@ export default{
 			},{
 				key:3,
 				name:"良好",
-				level:"(75%~85%)",
+				level:"(70%~80%)",
 				endScore:0,
 				startScore:0,
 				number:0,
@@ -408,7 +410,7 @@ export default{
 			},{
 				key:4,
 				name:"及格",
-				level:"(60%~75%)",
+				level:"(60%~70%)",
 				endScore:0,
 				startScore:0,
 				number:0,
@@ -663,8 +665,15 @@ export default{
 					tooltip: {},
 					legend: {
 						x: 'center',
-						data:['个人','平均水平']
+						data:['班级各科目','校级']
 					},
+					 grid: {
+				    	left: '3%',
+				    	right: '3%',
+				    	bottom: '3%',
+				    	top:'3%',
+				    	containLabel: true
+				    },
 					radar: [
 					{
 						indicator: [
@@ -674,7 +683,7 @@ export default{
 						{text: '英语', max: 100},
 						{text: '综合', max: 100}
 						],
-						radius: 200,
+						radius: 180,
 						center: ['50%','55%'],
 					}
 					],
@@ -683,12 +692,12 @@ export default{
 						type: 'radar',
 						data: [
 						{
-							name: '班级',
+							name: '班级各科目',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'平均水平',
+							name:'校级',
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						}
@@ -702,7 +711,7 @@ export default{
 						formatter: "{a} <br/>{b} : {c} ({d}%)"
 					},
 					legend: {
-						data: ['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(0%~60%)']
+						data: ['高分(90%~100%)','优秀(80%~90%)','良好(70%~80%)','及格(60%~70%)','不及格(0%~60%)']
 					},
 					series : [
 					{
@@ -712,9 +721,9 @@ export default{
 						center: ['50%', '55%'],
 						data:[
 						{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-						{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-						{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-						{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
+						{value:310, name:'优秀(80%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+						{value:234, name:'良好(70%~80%)',itemStyle:{normal:{color:'#70CDF3'}}},
+						{value:135, name:'及格(60%~70%)',itemStyle:{normal:{color:'#7092F3'}}},
 						{value:1548, name:'不及格(0%~60%)',itemStyle:{normal:{color:'#70F3A9'}}}
 						],
 					}
@@ -1028,7 +1037,7 @@ export default{
 						formatter: "{a} <br/>{b}: {c} ({d}%)"
 					},
 					legend: {
-						data:['高分(90%~100%)','优秀(85%~90%)','良好(75%~85%)','及格(60%~75%)','不及格(75%~85%)']
+						data:['高分(90%~100%)','优秀(80%~90%)','良好(70%~80%)','及格(60%~70%)','不及格(0%~60%)']
 					},
 					series: [
 					{
@@ -1047,10 +1056,10 @@ export default{
 						},
 						data:[
 						{value:335, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-						{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-						{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-						{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-						{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+						{value:310, name:'优秀(80%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+						{value:234, name:'良好(70%~80%)',itemStyle:{normal:{color:'#70CDF3'}}},
+						{value:135, name:'及格(60%~70%)',itemStyle:{normal:{color:'#7092F3'}}},
+						{value:1048, name:'不及格(0%~60%)',itemStyle:{normal:{color:'#70F3A9'}}},
 						]
 					},
 					{
@@ -1088,10 +1097,10 @@ export default{
 									}
 								}
 							}, name:'高分(90%~100%)',itemStyle:{normal:{color:'#F37070'}}},
-							{value:310, name:'优秀(85%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
-							{value:234, name:'良好(75%~85%)',itemStyle:{normal:{color:'#70CDF3'}}},
-							{value:135, name:'及格(60%~75%)',itemStyle:{normal:{color:'#7092F3'}}},
-							{value:1048, name:'不及格(75%~85%)',itemStyle:{normal:{color:'#70F3A9'}}},
+							{value:310, name:'优秀(80%~90%)',itemStyle:{normal:{color:'#F3DA70'}}},
+							{value:234, name:'良好(70%~80%)',itemStyle:{normal:{color:'#70CDF3'}}},
+							{value:135, name:'及格(60%~70%)',itemStyle:{normal:{color:'#7092F3'}}},
+							{value:1048, name:'不及格(0%~60%)',itemStyle:{normal:{color:'#70F3A9'}}},
 							]
 						}
 						]
@@ -1350,12 +1359,20 @@ export default{
 										num=i;
 									}
 								}
+								obj.optionclassLastStudents.series[1].name="";
+								obj.optionclassLastStudents.series[1].data[0].value="";
+								obj.optionclassLastStudents.series[1].data[1].value="";
+								obj.optionclassLastStudents.series[1].data[2].value="";
+								obj.optionclassLastStudents.series[1].data[3].value="";
+								obj.optionclassLastStudents.series[1].data[4].value="";
 								obj.optionclassLastStudents.series[1].name=res.result.classroomName;
 								obj.optionclassLastStudents.series[1].data[0].value=res.result.scoreVOList[num].highRate;
 								obj.optionclassLastStudents.series[1].data[1].value=res.result.scoreVOList[num].excellentRate;
 								obj.optionclassLastStudents.series[1].data[2].value=res.result.scoreVOList[num].commissionRate;
 								obj.optionclassLastStudents.series[1].data[3].value=res.result.scoreVOList[num].passRate;
 								obj.optionclassLastStudents.series[1].data[4].value=res.result.scoreVOList[num].failureRate;
+								//console.log(obj.optionclassLastStudents.series[1].name)
+								//obj.echarts.init(document.getElementById("classLastStudents")).setOption(obj.optionclassLastStudents);
 							}
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -1695,6 +1712,19 @@ export default{
 								}
 							})
 						},1000);
+					}else{
+						selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionclassLastScore.xAxis.data=[];
+								obj.optionclassLastScore.xAxis.data=res.result.examNameList;
+								obj.optionclassLastScore.series[0].data=[];
+								obj.optionclassLastScore.series[0].data=res.result.scoreAvgList;
+
+								obj.echarts.init(document.getElementById("classLastScore")).setOption(obj.optionclassLastScore);
+							}else{
+								obj.notify_jr(obj,'错误提示',res.message,'error');
+							}
+						})
 					}
 				},
 				gradeDistributionshow(){
@@ -1708,6 +1738,8 @@ export default{
 
 							selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
 						},1000);
+					}else{
+						selfs.echarts.init(document.getElementById("classLastStudents")).setOption(selfs.optionclassLastStudents);
 					}
 				},
 				rankingTopic(e){
@@ -1823,10 +1855,13 @@ export default{
 			margin-top: 20px;
 		}
 		#classLevel .classSelectBox{
-			width: 200px;
+			width: 350px;
 			margin: auto;
 			margin-bottom: 35px;
 			margin-top: 10px;
+		}
+		#classLevel .vclassSelectBox{
+			width: 125px !important;
 		}
 		#classLevel .header .body-title{
 			position: absolute;
@@ -2241,5 +2276,27 @@ export default{
 		}
 		.hand{
 			cursor:pointer;
+		}
+		.subjectsDiagnosis1-title{
+			width: 600px;
+			margin-top: 20px;
+			float: left;
+			text-align: center;
+		}
+		.subjectsDiagnosis1-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		.subjectsDiagnosis2-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		.subjectsDiagnosis2-title{
+			width: 470px;
+			margin-top: 20px;
+			float: left;
+			text-align: center;
 		}
 		</style>

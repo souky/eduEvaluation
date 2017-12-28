@@ -133,7 +133,7 @@
 						      	<el-table-column prop="itemAbility[4]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="数据处理"></el-table-column>
 						      	<el-table-column prop="itemAbility[5]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="综合应用"></el-table-column>
 						      </el-table-column>
-						      <el-table-column prop="konwledgePoint" align="center" width='250' show-overflow-tooltip label="知识点"></el-table-column>
+						      <el-table-column prop="knowledgeName" align="center" width='250' show-overflow-tooltip label="知识点"></el-table-column>
 						    </el-table>
 						</div>
 					</div>
@@ -270,7 +270,7 @@ export default {
 	},
 	typeFormatter(row, column, cellValue){
 		var type = row[column.property];  
-		if(type == '0'){
+		if(type == '1'){
 	  		return '主观题';
 	  	}else{
 	  		return '客观题';
