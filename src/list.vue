@@ -223,22 +223,7 @@
           name:'理综合',
           gread:'256'   
         }],
-        testList:[{
-          id:'1',
-          name:'2017年金阳高中期末考试'
-        },{
-          id:'2',
-          name:"2016年金阳高中期末考试"
-        },{
-          id:'3',
-          name:"2015年金阳高中期末考试"
-        },{
-          id:'4',
-          name:"2014年金阳高中期末考试"
-        },{
-          id:'5',
-          name:"2013年金阳高中期末考试"
-        }],
+        testList:[],
         reportList:[{
           id:'1',
           name:'金阳一中高三年级2017年期末考试'
@@ -309,7 +294,7 @@
         this.selected='首页'
       }
       this.lunbo();this.$refs.fristBit[0].className+=" navOn";
-
+      this.initAll()
     },
     methods:{
       subjectButton:function(e){
@@ -343,6 +328,17 @@
       },
       gotoReport(){
         this.$router.push({path:'/grade'})
+      },
+      initAll(){
+        var needData = {tab:'SCHOOL_REPORT'};
+        this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
+           obj.testList=[];
+             for(var value of data.result.exams){
+                obj.testList.push(value);
+                
+             }
+            
+          });
       }
     }
   };
