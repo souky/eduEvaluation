@@ -330,6 +330,7 @@ export default {
 		           		obj.option2.series[0].data.push(0);
 		           		obj.option4.series[0].data.push(0);
 		           }
+		           obj.option2.series[0].markLine.data[0].yAxis = 0;
 		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 		           obj.tableData3 = [];
 		           obj.option4.xAxis[0].data = obj.classroom;
@@ -340,6 +341,7 @@ export default {
 		           obj.option2.series[0].data = data.result.avgList;
 		           obj.option2.series[0].data[0] = {value:data.result.avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
 				   obj.option2.xAxis[0].data = data.result.classList;
+				   obj.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgTotalScore;
 		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 		           obj.setmans = data.result.studentNum;
 		           obj.tableData3 = data.result.classSubScoreList;

@@ -242,8 +242,7 @@ export default {
         yAxis: [
             {
                 type : 'value',
-                name : '平均分/分',
-                max:750
+                name : '平均分/分'
             }
         ],
         dataZoom: [
