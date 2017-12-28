@@ -216,8 +216,8 @@
 				</el-col>
 				<el-col :span="2">
 					<el-select v-model="two_way_D_single.itemType" >
-				      <el-option label="主观题" value="0"></el-option>
-				      <el-option label="客观题" value="1"></el-option>
+				      <el-option label="主观题" value="1"></el-option>
+				      <el-option label="客观题" value="0"></el-option>
 				    </el-select>
 				</el-col>
 				<el-col :span="1">
@@ -514,7 +514,7 @@ export default {
 	},
 	typeFormatter(row, column, cellValue){
 		var type = row[column.property];  
-		if(type == '0'){
+		if(type == '1'){
 	  		return '主观题';
 	  	}else{
 	  		return '客观题';
