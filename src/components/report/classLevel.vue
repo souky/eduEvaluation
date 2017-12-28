@@ -129,6 +129,8 @@
 			<div class="header-title-foot"></div>
 		</div>
 		<div class="body pt20">
+			<div class="subjectsDiagnosis1-title"><p>学科均衡性</p></div>
+			<div class="subjectsDiagnosis2-title"><p>班级与水均水平对比</p></div>
 			<div id="ClassdisciplinesLevel1"></div>
 			<div id="ClassdisciplinesLevel2"></div>
 			<div class="cl"></div>
@@ -663,8 +665,15 @@ export default{
 					tooltip: {},
 					legend: {
 						x: 'center',
-						data:['个人','平均水平']
+						data:['班级','平均水平']
 					},
+					 grid: {
+				    	left: '3%',
+				    	right: '3%',
+				    	bottom: '3%',
+				    	top:'3%',
+				    	containLabel: true
+				    },
 					radar: [
 					{
 						indicator: [
@@ -674,7 +683,7 @@ export default{
 						{text: '英语', max: 100},
 						{text: '综合', max: 100}
 						],
-						radius: 200,
+						radius: 180,
 						center: ['50%','55%'],
 					}
 					],
@@ -2264,5 +2273,27 @@ export default{
 		}
 		.hand{
 			cursor:pointer;
+		}
+		.subjectsDiagnosis1-title{
+			width: 600px;
+			margin-top: 20px;
+			float: left;
+			text-align: center;
+		}
+		.subjectsDiagnosis1-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		.subjectsDiagnosis2-title p{
+			font-size: 16px;
+			color: #707070;
+			letter-spacing: 0;
+		}
+		.subjectsDiagnosis2-title{
+			width: 470px;
+			margin-top: 20px;
+			float: left;
+			text-align: center;
 		}
 		</style>
