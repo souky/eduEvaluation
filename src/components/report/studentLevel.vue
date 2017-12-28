@@ -87,7 +87,7 @@
 				<div id="beyondRate1"></div>
 			</div>
 		</div>
-		<div id="growthTrend" class="louceng" v-show="displayAll.growthTrend">
+		<div id="growthTrend" class="louceng louceng1" v-show="displayAll.growthTrend">
 			<div class="header ">
 				<p>成长趋势</p>
 				<div class="header-title-foot"></div>
@@ -350,8 +350,11 @@ export default {
 				name:'个人成绩报告单',
 				id:0
 			},{
-				name:'个人学科均衡水平',
+				name:'成长趋势',
 				id:1
+			},{
+				name:'个人学科均衡水平',
+				id:2
 			}],
 			displaystulList:true,
 			stulList:[{
