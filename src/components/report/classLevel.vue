@@ -130,7 +130,7 @@
 		</div>
 		<div class="body pt20">
 			<div class="subjectsDiagnosis1-title"><p>学科均衡性</p></div>
-			<div class="subjectsDiagnosis2-title"><p>班级与水均水平对比</p></div>
+			<div class="subjectsDiagnosis2-title"><p>班级与学校平均水平对比</p></div>
 			<div id="ClassdisciplinesLevel1"></div>
 			<div id="ClassdisciplinesLevel2"></div>
 			<div class="cl"></div>
@@ -194,7 +194,7 @@
 				</div>
 			</div>
 			<div class="classSelectBox">
-				<el-select v-model="changeSchoolS" @change="changeClassName2" class="myselectS" placeholder="请选择">
+				<el-select v-model="changeSchoolS" @change="changeClassName2" class="myselectS vclassSelectBox" placeholder="请选择">
 					<el-option
 					v-for="item in schoolList2"
 					:key="item.id"
@@ -665,7 +665,7 @@ export default{
 					tooltip: {},
 					legend: {
 						x: 'center',
-						data:['班级','平均水平']
+						data:['班级各科目','校级']
 					},
 					 grid: {
 				    	left: '3%',
@@ -692,12 +692,12 @@ export default{
 						type: 'radar',
 						data: [
 						{
-							name: '班级',
+							name: '班级各科目',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'平均水平',
+							name:'校级',
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						}
@@ -1855,10 +1855,13 @@ export default{
 			margin-top: 20px;
 		}
 		#classLevel .classSelectBox{
-			width: 200px;
+			width: 350px;
 			margin: auto;
 			margin-bottom: 35px;
 			margin-top: 10px;
+		}
+		#classLevel .vclassSelectBox{
+			width: 125px !important;
 		}
 		#classLevel .header .body-title{
 			position: absolute;

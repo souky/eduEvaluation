@@ -125,7 +125,7 @@
 					</div>
 				</div>
 				<div class="subjectsDiagnosis1-title"><p>学科均衡性</p></div>
-				<div class="subjectsDiagnosis2-title"><p>个人与水均水平对比</p></div>
+				<div class="subjectsDiagnosis2-title"><p>个人与平均水平对比</p></div>
 				<div id="subjectsDiagnosis1"></div>
 				<div id="subjectsDiagnosis2"></div>
 				<div class="cl"></div>
@@ -1515,102 +1515,165 @@ chooseSubject:function(e,num){
 	e.currentTarget.style.color="#fff";
 	if(num=="class"){
 		this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
-			if(res.code == '10000'){
-				var type=(typeof res.result);
-				if(type=="string"){
-				}else{
-					if(obj.basicData.subject=="总分"){
-						obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-						obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-						obj.optionSubjectsDiagnosis.series[0].data=[];
-						obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-						obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-						obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-						obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-						obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-						obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-						obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-						for(var i=0;i<res.result.subjectList.length;i++){
-							var arr={
-								"text":res.result.subjectList[i],
-								"max":1,
-							}
-							obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
-						}
-						obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-						obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
-					}else{}
-				}
+		if(res.code == '10000'){
+			var type=(typeof res.result);
+			if(type=="string"){
+				obj.tableData=[];
+				obj.anothertableData=[];
 			}else{
-				obj.notify_jr(obj,'错误提示',res.message,'error');
+				if(obj.basicData.subject=="总分"){
+					obj.tableData=res.result.scoreVOList;
+					obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+					obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+					obj.optionSubjectsDiagnosis.series[0].data=[];
+					obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+					obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+					obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+					obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+					obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+					obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+					obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+					for(var i=0;i<res.result.subjectList.length;i++){
+						var arr={
+							"text":res.result.subjectList[i],
+							"max":100,
+						}
+						obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+					}
+					obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+					obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+				}else{
+					if(res.result.scoreVOList){
+						var num=0;
+						obj.anothertableData=[];
+						for(var i=0;i<res.result.scoreVOList.length;i++){
+							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+								num=i;
+							}
+						}
+						var arr={
+							"score":res.result.scoreVOList[num].score,
+							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+							"classTopScore":res.result.scoreVOList[num].classTopScore,
+							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						}
+						obj.anothertableData.push(arr);
+					}
+				}
 			}
-		})
+		}else{
+			obj.notify_jr(obj,'错误提示',res.message,'error');
+		}
+	})
 	}
 	if(num=="school"){
 		this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'SCHOOL'},'score/geReportCards',function(obj,res){
-			if(res.code == '10000'){
-				var type=(typeof res.result);
-				if(type=="string"){
-				}else{
-					if(obj.basicData.subject=="总分"){
-						obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-						obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-						obj.optionSubjectsDiagnosis.series[0].data=[];
-						obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-						obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-						obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-						obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-						obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-						obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-						obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-						for(var i=0;i<res.result.subjectList.length;i++){
-							var arr={
-								"text":res.result.subjectList[i],
-								"max":1,
-							}
-							obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
-						}
-						obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-						obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
-					}else{}
-				}
+		if(res.code == '10000'){
+			var type=(typeof res.result);
+			if(type=="string"){
+				obj.tableData=[];
+				obj.anothertableData=[];
 			}else{
-				obj.notify_jr(obj,'错误提示',res.message,'error');
+				if(obj.basicData.subject=="总分"){
+					obj.tableData=res.result.scoreVOList;
+					obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+					obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+					obj.optionSubjectsDiagnosis.series[0].data=[];
+					obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+					obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+					obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+					obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+					obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+					obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+					obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+					for(var i=0;i<res.result.subjectList.length;i++){
+						var arr={
+							"text":res.result.subjectList[i],
+							"max":100,
+						}
+						obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+					}
+					obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+					obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+				}else{
+					if(res.result.scoreVOList){
+						var num=0;
+						obj.anothertableData=[];
+						for(var i=0;i<res.result.scoreVOList.length;i++){
+							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+								num=i;
+							}
+						}
+						var arr={
+							"score":res.result.scoreVOList[num].score,
+							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+							"classTopScore":res.result.scoreVOList[num].classTopScore,
+							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						}
+						obj.anothertableData.push(arr);
+					}
+				}
 			}
-		})
+		}else{
+			obj.notify_jr(obj,'错误提示',res.message,'error');
+		}
+	})
 	}
 	if(num=="area"){
 		this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student,tab:"STUDENT_REPORT",range:'REGION'},'score/geReportCards',function(obj,res){
-			if(res.code == '10000'){
-				var type=(typeof res.result);
-				if(type=="string"){
-				}else{
-					if(obj.basicData.subject=="总分"){
-						obj.optionSubjectsDiagnosis.xAxis[0].data=[];
-						obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
-						obj.optionSubjectsDiagnosis.series[0].data=[];
-						obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
-						obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
-						obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
-						obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
-						obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
-						obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
-						obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
-						for(var i=0;i<res.result.subjectList.length;i++){
-							var arr={
-								"text":res.result.subjectList[i],
-								"max":1,
-							}
-							obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
-						}
-						obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
-						obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
-					}else{}
-				}
+		if(res.code == '10000'){
+			var type=(typeof res.result);
+			if(type=="string"){
+				obj.tableData=[];
+				obj.anothertableData=[];
 			}else{
-				obj.notify_jr(obj,'错误提示',res.message,'error');
+				if(obj.basicData.subject=="总分"){
+					obj.tableData=res.result.scoreVOList;
+					obj.optionSubjectsDiagnosis.xAxis[0].data=[];
+					obj.optionSubjectsDiagnosis.xAxis[0].data=res.result.subjectList;
+					obj.optionSubjectsDiagnosis.series[0].data=[];
+					obj.optionSubjectsDiagnosis.series[0].data=res.result.standardScoreList;
+					obj.optionSubjectsDiagnosis.series[0].markLine.data[0].yAxis=res.result.standardScoreList[0];
+					obj.optionSubjectsDiagnosisRight.series[0].data[0].value=[];
+					obj.optionSubjectsDiagnosisRight.series[0].data[1].value=[];
+					obj.optionSubjectsDiagnosisRight.series[0].data[0].value=res.result.stuScoreList;
+					obj.optionSubjectsDiagnosisRight.series[0].data[1].value=res.result.classAvgScoreList;
+					obj.optionSubjectsDiagnosisRight.radar[0].indicator=[];
+					for(var i=0;i<res.result.subjectList.length;i++){
+						var arr={
+							"text":res.result.subjectList[i],
+							"max":100,
+						}
+						obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
+					}
+					obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
+					obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
+				}else{
+					if(res.result.scoreVOList){
+						var num=0;
+						obj.anothertableData=[];
+						for(var i=0;i<res.result.scoreVOList.length;i++){
+							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+								num=i;
+							}
+						}
+						var arr={
+							"score":res.result.scoreVOList[num].score,
+							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+							"classTopScore":res.result.scoreVOList[num].classTopScore,
+							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						}
+						obj.anothertableData.push(arr);
+					}
+				}
 			}
-		})
+		}else{
+			obj.notify_jr(obj,'错误提示',res.message,'error');
+		}
+	})
 	}
 	this.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(this.optionSubjectsDiagnosis);
 	this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);
