@@ -421,18 +421,15 @@
     color: #26a2ff 
   }
   #pageDemo .mbtn{
-      width: 38vw;
-      height: 4vh;
-      min-height: 28px;
+      padding:8px 20px;
       border: 1px solid #000;
       border-radius: 8px;
       background-color: #FF7070;
       color: white;
       font-size: 3vw;
       text-align: center;
-      line-height: 4vh;
       position: absolute;
-      bottom: -9vh;
+      bottom: -15vw;
       right: 15vw
     }
   #pageDemo .silderBox{
@@ -490,10 +487,10 @@
     }
     #pageDemo .swiper-container{
       text-align: center;
-      line-height: 5vh
+      line-height: 10vw
     }
     #pageDemo .viewReport{
-      font-size: 2vw;
+      font-size: 3vw;
       padding:1vw 3vw;
       background-color: white;
       border:1px solid #19AFFF;
@@ -509,6 +506,9 @@
       margin-bottom: 2vh;
       font-size: 4vw;
       background-size: 120% 0px
+    }
+    #pageDemo .mint-cell:last-child{
+       background-size: 100% 0px
     }
     #pageDemo .margintop .mint-cell-wrapper{
       margin-bottom: 0;

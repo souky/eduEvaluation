@@ -51,7 +51,10 @@ export default {
 #settingPage .comformBtn button{
 	font-size: 4vw
 }
+#settingPage .textCenter .mint-cell-allow-right{
+	display: none
+}
 #settingPage .textCenter{
-	text-align: center;
+	text-align: center;color:#19AFFF;
 }
 </style>
