@@ -59,7 +59,7 @@
 		      <el-table-column prop="teacherAge" align="center"  label="年龄"></el-table-column>
 		      <el-table-column prop="classroom" align="center" show-overflow-tooltip  label="班级"></el-table-column>
 		      <el-table-column prop="subject" align="center" show-overflow-tooltip  label="学科"></el-table-column>
-		      <el-table-column prop="teacherMobile" align="center"  label="电话"></el-table-column>
+		      <el-table-column prop="teacherMobile" align="center" show-overflow-tooltip label="电话"></el-table-column>
 		      <el-table-column prop="teacherDuty" align="center"  label="职责"></el-table-column>
 		      <el-table-column prop="teacherJobTitle" align="center"  label="职称"></el-table-column>
 		      <el-table-column prop="userName" show-overflow-tooltip align="center"  label="帐户名"></el-table-column>

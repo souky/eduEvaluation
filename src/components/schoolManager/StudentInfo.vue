@@ -51,13 +51,13 @@
 				</div>	
 			</div>
 			<el-table :data="tableData" style="width: 100%">
-		      <el-table-column prop="studentName" align="center" label="姓名"></el-table-column>
-		      <el-table-column prop="studentNo" align="center" label="学号"></el-table-column>
+		      <el-table-column prop="studentName" align="center" show-overflow-tooltip label="姓名"></el-table-column>
+		      <el-table-column prop="studentNo" align="center" show-overflow-tooltip label="学号"></el-table-column>
 		      <el-table-column prop="studentSex" :formatter='sexFormatter' align="center" label="性别"></el-table-column>
 		      <el-table-column prop="studentAge" align="center"  label="年龄"></el-table-column>
 		      <el-table-column prop="studentContact" align="center"  label="联系人"></el-table-column>
-		      <el-table-column prop="studentContactMobile" align="center"  label="联系方式"></el-table-column>
-		      <el-table-column prop="classroomName" align="center"  label="班级"></el-table-column>
+		      <el-table-column prop="studentContactMobile" align="center" show-overflow-tooltip label="联系方式"></el-table-column>
+		      <el-table-column prop="classroomName" align="center" show-overflow-tooltip  label="班级"></el-table-column>
 		       <el-table-column prop="userName" align="center" show-overflow-tooltip  label="用户名"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
 		      	<template slot-scope="scope">
