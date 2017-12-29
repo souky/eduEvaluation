@@ -540,7 +540,7 @@ export default{
 					min: 0,
 					max: 100,
 					interval: 20,
-					name:'得分率/%',
+					name:'百分比/%',
 				},
 				],
 				series: [
@@ -2196,7 +2196,7 @@ export default{
 		}
 		#classLevel .myselectS{
 			border:1px solid #44a9ff;
-			width: 90px;
+			width: 130px;
 			border-radius: 4px;
 		}
 		#classLevel .testTips{
