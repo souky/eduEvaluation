@@ -37,6 +37,7 @@ export default new Router({
       path:'/report',
       //name:'report',
       component:Report,
+      //meta:{requireAuth:true},
       children:[{
         path:'/',
         redirect: {
@@ -72,3 +73,25 @@ export default new Router({
     }
     ]
   })
+
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.some(res => res.meta.requireAuth)) {// 判断是否需要登录权限
+//       axios.defaults.withCredentials = true
+//       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+//       var data = {};
+//       axios.post("http://192.168.1.213:8080/balanced-education/user/getLoginUesr",querystring.stringify(data),{withCredentials : true}).then(response => {
+//         if(response.data.code == "10000"){
+//           next()
+//         }else{
+//           next({
+//             path:'/home'
+//           });
+//         }
+//       })
+//     }else{
+//       next({
+//         path:'/home'
+//       });
+//     }
+//   })
+// export default router;
