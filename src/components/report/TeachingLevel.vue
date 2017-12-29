@@ -119,11 +119,11 @@
 		      </el-table-column>
 		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 (90%以上)">
 		      </el-table-column>
-		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-89%)">
+		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 (80%-90%)">
 		      </el-table-column>
-		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-79%)">
+		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 (70%-80%)">
 		      </el-table-column>
-		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-69%)">
+		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 (60%-70%)">
 		      </el-table-column>
 		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
