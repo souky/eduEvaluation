@@ -8,20 +8,17 @@
              <div class="mainImg">
                <mt-search cancel-text='' placeholder="搜索"></mt-search>
                <div class="tesrra">
-                <div class="swiper-container" id="swiperTest">
-                  <div class="swiper-wrapper">
-                      <div class="swiper-slide" v-for="item in testList" :key="item.id">{{item.name}}</div>
-                  </div>
-                  <!-- 如果需要导航按钮 -->
-                  <div class="swiper-button-prev"></div>
-                  <div class="swiper-button-next"></div>
-                </div>
+                <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
+                  <el-carousel-item v-for="item in testList" :key="item.id" :name="item.examName"  @change="testChange($event)">
+                    <p class="alltest">{{item.examName}}</p>
+                </el-carousel-item>
+                </el-carousel>
                 <div class="showGread">
-                     <p v-for="item in personalData"><span>{{item.name}} :</span> <span>{{item.gread}}</span></p>
+                     <p v-for="item in personalData"><span>{{item.subject}} :</span> <span>{{item.score}}</span></p>
                  </div>
+                </div>
                 <div class="mbtn">
                   查看详细报告
-                </div>
                 </div>
              </div>
            </div>
@@ -210,20 +207,20 @@
         navs: [],
         selected: '首页',
         selected1:'1',
-        personalData:[{
-          name:'总成绩',
-          gread:'584'   
+        personalData:[],
+        testList:[{
+          id:'1',
+          name:'金阳一中高三年级2017年期末考试'
         },{
-          name:'语文',
-          gread:'94'   
+          id:'2',
+          name:'金阳一中高三年级2016年期末考试'
         },{
-          name:'数学',
-          gread:'129'   
+          id:'3',
+          name:'金阳一中高三年级2015年期末考试'
         },{
-          name:'理综合',
-          gread:'256'   
+          id:'4',
+          name:'金阳一中高三年级2014年期末考试'
         }],
-        testList:[],
         reportList:[{
           id:'1',
           name:'金阳一中高三年级2017年期末考试'
@@ -293,7 +290,7 @@
       if(this.$store.state.label=='1'){
         this.selected='首页'
       }
-      this.lunbo();this.$refs.fristBit[0].className+=" navOn";
+      this.$refs.fristBit[0].className+=" navOn";
       this.initAll()
     },
     methods:{
@@ -312,17 +309,6 @@
         this.display.subject=!this.display.subject;
         this.display.allSubject=!this.display.allSubject;
       },
-      lunbo(){
-        new Swiper('#swiperTest', {
-          nextButton: '.swiper-button-next',
-          prevButton: '.swiper-button-prev',
-          spaceBetween: 10,
-          grabCursor: true,
-          initialSlide: 1,
-          autoplayDisableOnInteraction: false
-        });
-
-      },
       teds(){
         this.$router.push({path:'/personal'})
       },
@@ -330,14 +316,31 @@
         this.$router.push({path:'/grade'})
       },
       initAll(){
-        var needData = {tab:'SCHOOL_REPORT'};
+        
         this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
-           obj.testList=[];
+            obj.testList = [];
              for(var value of data.result.exams){
-                obj.testList.push(value);
-                
+                 obj.testList.push(value);
              }
-            
+             var needData = {tab:'STUDENT_REPORT',examId:data.result.exams[0].id,subject:'总分'};
+             obj.postHttp(obj,needData,"score/geReportCards",function(objs,data){
+              if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
+
+              }else{
+                for(var i=0;i<data.result.scoreVOList.length;i++){
+                    if(i<3)
+                    objs.personalData.push(data.result.scoreVOList[i]);
+                }
+              }
+              
+              });
+          });
+      },
+      testChange(e){
+
+        var needData = {tab:'STUDENT_REPORT',examId:this.testList[e].id,subject:'总分'};
+        this.postHttp(this,'',"score/geReportCards",function(obj,data){
+                
           });
       }
     }
@@ -365,6 +368,9 @@
   #pageDemo .indexImg{
     width: 100%;
     
+  }
+  #pageDemo .page-wrap{
+    padding-bottom: 20px
   }
   #pageDemo .mint-tabbar{background-size: 100% 0;}
   #pageDemo .mint-tab-container-item{
@@ -425,7 +431,7 @@
       font-size: 3vw;
       text-align: center;
       position: absolute;
-      bottom: -15vw;
+      bottom: 4vw;
       right: 15vw
     }
   #pageDemo .silderBox{
@@ -471,7 +477,7 @@
       padding-top: 10px;
       background-color: #f5f5f5;
     }
-    #pageDemo .swiper-button-prev{
+    /*#pageDemo .swiper-button-prev{
       left: 5vw;
       background-image: url(../static/img/APPImg/left@1x.png);
       background-size: 100%;
@@ -480,10 +486,16 @@
       right: 5vw;
       background-image: url(../static/img/APPImg/right@1x.png);
       background-size: 100%;
-    }
-    #pageDemo .swiper-container{
+    }*/
+    #pageDemo .el-carousel__container{
       text-align: center;
-      line-height: 10vw
+      line-height: 10vw;
+      height: 10vw
+    }
+    #pageDemo .el-carousel__arrow{
+      width: 7vw;
+      height: 7vw;
+      font-size: 4vw
     }
     #pageDemo .viewReport{
       font-size: 3vw;
