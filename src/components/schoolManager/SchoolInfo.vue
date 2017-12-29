@@ -35,7 +35,7 @@
 			  </el-form-item>
 			</el-form>
 			
-			<div class="ok_btn" @click="updateSchool">
+			<div class="ok_btn" v-show="showEdit" @click="updateSchool">
 				确认修改
 			</div>
 		</div>
@@ -62,6 +62,7 @@ export default {
       schoolInfo:{},
       maxLength:11,
       subjectList:[],
+      showEdit:false,
       rules: {
           schoolName: [
             { required: true, message: '请输入考试名称', trigger: 'blur' }
@@ -90,11 +91,20 @@ export default {
   			res.result['subjectArray'] = new Array();
   		}
   		obj.schoolInfo = res.result;
+  		this.$refs['schoolInfo'].resetFields();
   	})
   	
   	this.postHttp(this,{pageNum:1,pageSize:0},'subject/querySubjects',function(obj,res){
   		obj.subjectList = res.result.list;
-  	})
+  	});
+  	
+  	this.postHttp(this,{},'user/getLoginUser',function(obj,res){
+  		if(res.result.roleId == '2'){
+  			obj.showEdit = true;
+  		}
+  	});
+  		
+  	
   },
   methods:{
 	updateSchool(){

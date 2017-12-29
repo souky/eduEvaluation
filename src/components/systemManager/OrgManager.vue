@@ -3,7 +3,8 @@
 		<div class="org_body fix">
 			<div class="left_part l">
 				<div class="title">机构树</div>
-				<el-tree :data="data" :props="defaultProps" accordion @node-click="handleNodeClick"></el-tree>
+				<el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+				<el-tree :data="data" :props="defaultProps" ref="orgTree" accordion @node-click="handleNodeClick" :filter-node-method="filterNode"></el-tree>
 			</div>
 			<div class="right_part r">
 				<div class="title">机构详细</div>
@@ -54,7 +55,7 @@
 		  </span>
 		</el-dialog>
 		
-		<el-dialog title="新增" :visible.sync="showManager" width="30%">
+		<el-dialog title="添加管理员" :visible.sync="showManager" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rulesU" ref="user" class="demo-ruleForm" :model="user">
 			  <el-form-item label="名称" prop="name">
@@ -100,6 +101,7 @@ export default {
       	p_name:'',
       	c_name:'',
       	
+      	filterText:'',
       	managerOrgId:'',
       	showManager:false,
       	user:{
@@ -124,6 +126,11 @@ export default {
       	}
     }
   },
+  watch: {
+      filterText(val) {
+        this.$refs.orgTree.filter(val);
+      }
+  },
   mounted:function(){
   	
   	this.postHttp(this,{},'organization/loadOrganizations',function(obj,res){
@@ -140,6 +147,10 @@ export default {
 	  		obj.tableData = res.result;
 	  	})
   	},
+  	filterNode(value, data) {
+        if (!value) return true;
+        return data.label.indexOf(value) !== -1;
+    },
 	handleNodeClick(data){
 		if(data.children == null || data.children == undefined){
 			this.queryInfo(data.id);
@@ -209,6 +220,9 @@ export default {
 		this.showInfo = true;
   		this.diaTitle = "新增";
   		this.org = {};
+  		this.p_name = "";
+  		this.c_name = "";
+  		
   		if(this.$refs['org']){
   			this.$refs['org'].resetFields();
   		}
@@ -303,6 +317,7 @@ export default {
 	width: 100%;
 	text-align: center;
 	cursor: default;
+	margin-bottom: 10px;
 }
 #orgManager .right_part{
 	width: 65%;

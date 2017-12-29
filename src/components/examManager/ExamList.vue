@@ -73,14 +73,14 @@
 				<div class="fix">
 					<div class="add_exam_one l">
 						<div class="item_titel">考试信息</div>
-			    		<el-form  :model="exam" label-width="100px">
-						  <el-form-item label="考试名称">
+			    		<el-form  :model="exam" label-width="100px" :rules="rules" ref="exam" class="demo-ruleForm"> 
+						  <el-form-item label="考试名称" prop="examName">
 						    <el-input v-model="exam.examName"></el-input>
 						  </el-form-item>
-						  <el-form-item label="考试开始时间">
+						  <el-form-item label="开始时间" prop="examStartDateS">
 						  	 <el-date-picker v-model="exam.examStartDateS" type="datetime" placeholder="考试开始时间"></el-date-picker>
 						  </el-form-item>
-						  <el-form-item label="考试结束时间">
+						  <el-form-item label="结束时间" prop="examEndDateS">
 						  	<el-date-picker v-model="exam.examEndDateS" type="datetime" placeholder="考试结束时间"></el-date-picker>
 						  </el-form-item>
 						  <el-form-item label="年级">
@@ -88,7 +88,7 @@
 						      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 						    </el-select>
 						  </el-form-item>
-						  <el-form-item label="学科">
+						  <el-form-item label="学科" prop="subject">
 						  	<el-checkbox-group v-model="exam.subject" @change='subjectChange'>
 						      <el-checkbox v-for="e in subjectArray" :key="e" :label="e" name="subjectArray"></el-checkbox>
 						    </el-checkbox-group>
@@ -159,13 +159,13 @@
 		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="90%">
 		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
 			  <el-col class="queryItems" :span="6" >
-			  	<div class="l">名称</div>
+			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>名称</div>
 			  	<div class="r">
 			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称"></el-input>
 			  	</div>
 			  </el-col>
 			   <el-col class="queryItems" :span="6">
-			  	<div class="l">年级</div>
+			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>年级</div>
 			  	<div class="r">
 			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
 				      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
@@ -173,7 +173,7 @@
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
-			  	<div class="l">科目</div>
+			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>科目</div>
 			  	<div class="r">
 			  		<el-select @change="subjectChanges" v-model="TwoWaySpecification.subjectCode" placeholder="请选择科目">
 					    <el-option v-for="e in subjectArray" :key="e" :label="e" :value="e">
@@ -312,6 +312,21 @@ export default {
 	      label: 'knowledgeContent',
 	      value:'id'
 	  },
+	  rules: {
+          examName: [
+            { required: true, message: '请输入考试名称', trigger: 'blur' }
+          ],
+          examStartDateS: [
+            { required: true, message: '请选择考试开始时间', trigger: 'blur' }
+          ],
+          examEndDateS: [
+            { required: true, message: '请选择考试结束时间', trigger: 'blur' }
+          ],
+          subject: [
+            { required: true, message: '请选择考试科目', trigger: 'change' }
+          ],
+       },
+	     
     }
   },
   mounted:function(){
@@ -323,15 +338,13 @@ export default {
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
   	});
-  	this.postHttp(this,{pageNum:1,pageSize:100},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+  	this.postHttp(this,{pageNum:1,pageSize:0},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
   		var s = res.result.list;
   		for(var i = 0;i<s.length;i++){
   			s[i]['spId'] = s[i]['id'];
   		}
   		obj.twList = res.result.list;
   	});
-  	
-  	//this.queryStudent();
   },
   methods:{
   	queryInfo(){
@@ -389,46 +402,52 @@ export default {
         });
   	},
   	saveEdit(){
-  		var loading = this.loading('正在处理...');
-		this.exam.examStartDate = this.timeF(this.exam.examStartDateS).format("YYYY-MM-DD HH:mm:ss");
-		this.exam.examEndDate = this.timeF(this.exam.examEndDateS).format("YYYY-MM-DD HH:mm:ss");
-  		
-  		//获取学生
-  		var s = this.student;
-  		var classroom = '';
-  		var examStudent = new Array();
-  		for(var i = 0;i<s.length;i++){
-  			var ss = s[i].list;
-  			if(i == 0){
-  				classroom += s[i].classroomName;
-  			}else{
-  				classroom += ','+s[i].classroomName;
-  			}
-  			for(var j = 0;j<ss.length;j++){
-  				if(ss[j]['checked']){
-  					examStudent.push(ss[j]);
-  				}
-  			}
-  		}
-  		
-  		
-  		var examStudent = JSON.stringify(examStudent)
-		this.exam["examStudent"] = examStudent;
-		this.exam["examSpecification"] = JSON.stringify(this.subject);
-		this.exam['classroom'] = classroom;
-		
-		this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
-	  		if(res.code == "10000"){
-	  			loading.close();
-	  			obj.notify_success();
-				obj.queryInfo();
-				obj.backList();
+  		this.$refs['exam'].validate((valid) => {
+	          if (valid) {
+	          	var loading = this.loading('正在处理...');
+				this.exam.examStartDate = this.timeF(this.exam.examStartDateS).format("YYYY-MM-DD HH:mm:ss");
+				this.exam.examEndDate = this.timeF(this.exam.examEndDateS).format("YYYY-MM-DD HH:mm:ss");
+		  		
+		  		//获取学生
+		  		var s = this.student;
+		  		var classroom = '';
+		  		var examStudent = new Array();
+		  		for(var i = 0;i<s.length;i++){
+		  			var ss = s[i].list;
+		  			if(i == 0){
+		  				classroom += s[i].classroomName;
+		  			}else{
+		  				classroom += ','+s[i].classroomName;
+		  			}
+		  			for(var j = 0;j<ss.length;j++){
+		  				if(ss[j]['checked']){
+		  					examStudent.push(ss[j]);
+		  				}
+		  			}
+		  		}
+		  		
+		  		
+		  		var examStudent = JSON.stringify(examStudent)
+				this.exam["examStudent"] = examStudent;
+				this.exam["examSpecification"] = JSON.stringify(this.subject);
+				this.exam['classroom'] = classroom;
 				
-	  		}else{
-	  			loading.close();
-	  			obj.notify_jr(obj,'操作错误',res.message,'error');
-	  		}
-	  	});
+				this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
+			  		if(res.code == "10000"){
+			  			loading.close();
+			  			obj.notify_success();
+						obj.queryInfo();
+						obj.backList();
+						
+			  		}else{
+			  			loading.close();
+			  			obj.notify_jr(obj,'操作错误',res.message,'error');
+			  		}
+			  	});
+	          } else {
+	            return false;
+	          }
+        });
   	},
 	editInfo(id){
 		
@@ -514,6 +533,7 @@ export default {
 		  		itemAbility:[]
 		  	},
 		]
+		this.$refs['exam'].resetFields();
 	},
 	backList(){
 		this.showTable = true;
@@ -544,6 +564,7 @@ export default {
 	add_two_way(){
 		this.dialogVisible = true;
 		this.TwoWaySpecification = {};
+		this.TwoWaySpecification.gradeCode = this.grade;
 		this.two_way_D = [
 		  	{
 		  		itemNo:'',
@@ -593,6 +614,14 @@ export default {
 	  			}
 	  		}
 	  		obj.student = s;
+	  }); 
+	  	
+	  	this.postHttp(this,{pageNum:1,pageSize:0,gradeCode:grade},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+	  		var s = res.result.list;
+	  		for(var i = 0;i<s.length;i++){
+	  			s[i]['spId'] = s[i]['id'];
+	  		}
+	  		obj.twList = res.result.list;
 	  	});
 	},
 	formatDate(){

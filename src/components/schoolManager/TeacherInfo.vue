@@ -18,7 +18,7 @@
 			  <el-col class="queryItems" :span="6">	
 			  		<div class="l">年级</div>
 				  	<div class="r">
-				  		<el-select v-model="grade" @change='changeGrade' placeholder="请选择">
+				  		<el-select v-model="grade" @change='changeGrades' placeholder="请选择">
 						    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 						    </el-option>
 						</el-select>
@@ -28,7 +28,7 @@
 			  		<div class="l">班级</div>
 				  	<div class="r">
 				  		<el-select v-model="queryInfos.classroom" placeholder="请选择">
-					  		<el-option v-for="e in classOption" :label="e.classroomName" :key="e.classroomName" :value="e.classroomName" name="classId"></el-option>
+					  		<el-option v-for="e in classOptions" :label="e.classroomName" :key="e.classroomName" :value="e.classroomName" name="classId"></el-option>
 						</el-select>
 				  	</div>
 			  </el-col>
@@ -189,6 +189,7 @@ export default {
 	  ],
 	  
 	  classOption:[],
+	  classOptions:[],
 	  grade:'',
 	  gradeOption:[],
 	  subjectOption:[],
@@ -367,6 +368,11 @@ export default {
 	changeGrade(val){
 		this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
 	  		obj.classOption = res.result;
+	  	});
+	},
+	changeGrades(val){
+		this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
+	  		obj.classOptions = res.result;
 	  	});
 	}
   }

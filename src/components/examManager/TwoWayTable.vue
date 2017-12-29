@@ -103,13 +103,13 @@
 		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="90%">
 		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
 			  <el-col class="queryItems" :span="6" >
-			  	<div class="l">名称</div>
+			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>名称</div>
 			  	<div class="r">
 			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称"></el-input>
 			  	</div>
 			  </el-col>
 			   <el-col class="queryItems" :span="6">
-			  	<div class="l">年级</div>
+			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>年级</div>
 			  	<div class="r">
 			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
 				      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
@@ -117,7 +117,7 @@
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
-			  	<div class="l">科目</div>
+			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>科目</div>
 			  	<div class="r">
 			  		<el-select @change="subjectChange" v-model="TwoWaySpecification.subjectCode" placeholder="请选择科目">
 					    <el-option v-for="e in subjectArray" :key="e" :label="e" :value="e">

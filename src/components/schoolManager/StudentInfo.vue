@@ -19,7 +19,7 @@
 			  		<div class="l">年级</div>
 				  	<div class="r">
 				  		<el-select v-model="grade" @change='changeGrade' placeholder="请选择">
-						    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
+						    <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
 						    </el-option>
 						</el-select>
 				  	</div>
@@ -143,6 +143,7 @@ export default {
       dialogVisible:false,
       diaTitle:'新增',
       gradeOption:[],
+      gradeOptions:[],
       maxLength:11,
       student:{classroomId:'',},
       sexOption:[
@@ -183,9 +184,15 @@ export default {
   	this.queryInfo();
   	
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
-  		obj.gradeOption = res.result;
-  		obj.gradeOption.unshift("全部");
+  		var data = res.result;
+  		obj.gradeOption = data;
   	});
+  	this.postHttp(this,{},'getLoingGrade',function(obj,res){
+  		var data = res.result;
+  		data.unshift("全部")
+  		obj.gradeOptions = data;
+  	});
+  	
   },
   methods:{
   	queryInfo(){

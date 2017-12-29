@@ -64,10 +64,10 @@
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="user" class="demo-ruleForm" label-width="80px" :model="user">
 			  <el-form-item label="名称" prop="name">
-			    <el-input v-model="user.name"></el-input>
+			    <el-input v-model="user.name" :maxlength="nameMax"></el-input>
 			  </el-form-item>
 			  <el-form-item label="用户名" prop="userName">
-			    <el-input v-model="user.userName"></el-input>
+			    <el-input v-model="user.userName" :maxlength="userNameMax" ></el-input>
 			  </el-form-item>
 			  <el-form-item label="用户类型"  prop="userType">
 			  	<el-select v-model="user.userType" placeholder="请选择">
@@ -106,6 +106,9 @@ export default {
       total:1,
       roleOptions:[],
       
+      nameMax:10,
+      userNameMax:64,
+      
       dialogVisible:false,
       diaTitle:'新增',
       user:{},
@@ -139,6 +142,10 @@ export default {
   },
   mounted:function(){
   	this.queryInfo();
+  	this.postHttp(this,{pageNum:1,pageSize:0},'role/queryRoles',function(obj,res){
+  		obj.roleOptions = res.result.list;
+  	})
+  	//权限处理
   	this.postHttp(this,{pageNum:1,pageSize:0},'role/queryRoles',function(obj,res){
   		obj.roleOptions = res.result.list;
   	})
