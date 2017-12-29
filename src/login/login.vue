@@ -6,7 +6,7 @@
 			<img src="../../static/img/APPImg/bg-d@1x.png" alt="">
 		</div>
 		<mt-field class="login-user" v-model="form.user" label="用户名" placeholder="用户名"></mt-field>
-		<mt-field class="login-password" v-model="form.password" label="用户名" placeholder="请输入密码"></mt-field>
+		<mt-field class="login-password" type="password" v-model="form.password" label="用户名" placeholder="请输入密码"></mt-field>
 		
 	</div>
 	<div class="login-go">
@@ -40,6 +40,7 @@ export default {
 					obj.$router.push({path:'/home'});
 				}else{
 					//obj.notify_jr(obj,'错误提示',res.message,'error');
+					 obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 				}
 
 		  	});
