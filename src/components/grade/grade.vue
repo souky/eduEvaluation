@@ -265,6 +265,9 @@ export default {
 	data(){
 		return{
 			titleName:'总分',
+			basicData:{
+				subject:'总分',
+			},
 			display:{
 				totle:true,
 				beyondRate:true,
@@ -335,7 +338,7 @@ export default {
 					left: '3%',
 					right: '4%',
 					bottom: '3%',
-					top:'3%',
+					top:'8%',
 					containLabel: true
 				},
 				xAxis : [
@@ -858,8 +861,10 @@ export default {
 				this.$refs.fristBit[0].className+=" navOn";
 				let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 				this.$refs.loginHight.style.height=h+"px";
-				this.echarts.init(document.getElementById("beyondRate1")).setOption(this.optionBeyondRate);
-				this.echarts.init(document.getElementById("growthTrend1")).setOption(this.optionGrowthTrend);
+				//this.echarts.init(document.getElementById("beyondRate1")).setOption(this.optionBeyondRate);
+				this.getPercentageRank();
+				//this.echarts.init(document.getElementById("growthTrend1")).setOption(this.optionGrowthTrend);
+				this.getGrowthTrends();
 				this.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(this.optionSubjectsDiagnosis);
 				this.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(this.optionSubjectsDiagnosisRight);
 				this.echarts.init(document.getElementById("myGoal1")).setOption(this.optionMyGoal);
@@ -878,6 +883,45 @@ export default {
 				this.display.abilityAnalyze=false;
 			},
 			methods:{
+				getPercentageRank:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577"},'score/getPercentageRank',function(obj,res){
+						if(res.code == '10000'){
+							obj.optionBeyondRate.series[0].data[0].value=res.result.schoolPercentageRank;
+							obj.optionBeyondRate.series[0].data[1].value=res.result.schoolPercentageRank;
+							obj.optionBeyondRate.series[0].data[2].value=res.result.classPercentageRank;
+							obj.echarts.init(document.getElementById("beyondRate1")).setOption(obj.optionBeyondRate);
+						}else{
+							//obj.notify_jr(obj,'错误提示',res.message,'error');
+						}
+					})
+				},
+				getGrowthTrends:function(){
+					this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'CLASS'},'score/getGrowthTrends',function(obj,res){
+						if(res.code == '10000'){
+							obj.optionGrowthTrend.xAxis.data=[];
+							var number=res.result.examDates.length;
+							if(res.result.examDates.length>4){
+								number=4
+							}
+							for(var i=0;i<number;i++){
+								var date = new Date();  
+								date.setTime(parseFloat(res.result.examDates[i]));  
+								var y = date.getFullYear();      
+								var m = date.getMonth() + 1;      
+								m = m < 10 ? ('0' + m) : m;      
+								var d = date.getDate();      
+								d = d < 10 ? ('0' + d) : d;          
+								var number= m + '-' + d;   
+								obj.optionGrowthTrend.xAxis.data.push(number);
+							}
+							obj.optionGrowthTrend.series[0].data=[];
+							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+						}else{
+						//obj.notify_jr(obj,'错误提示',res.message,'error');
+					}
+				})
+				},
 				colse(e){
 					document.getElementById("grade").getElementsByClassName("grade-navMore")[0].getElementsByClassName("grade-navMore-bitImg1")[0].className="grade-navMore-bitImg";
 					this.display.subject=!this.display.subject;
@@ -983,7 +1027,87 @@ export default {
 					document.getElementsByClassName("growth")[0].getElementsByClassName("choose-area-right")[0].style.color="#7FDC7F";
 					e.currentTarget.style.background="#7FDC7F";
 					e.currentTarget.style.color="#fff";
-
+					if(num=="class"){
+						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'CLASS'},'score/getGrowthTrends',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionGrowthTrend.xAxis.data=[];
+								var number=res.result.examDates.length;
+								if(res.result.examDates.length>4){
+									number=4
+								}
+								for(var i=0;i<number;i++){
+									var date = new Date();  
+									date.setTime(parseFloat(res.result.examDates[i]));  
+									var y = date.getFullYear();      
+									var m = date.getMonth() + 1;      
+									m = m < 10 ? ('0' + m) : m;      
+									var d = date.getDate();      
+									d = d < 10 ? ('0' + d) : d;          
+									var number= m + '-' + d;   
+									obj.optionGrowthTrend.xAxis.data.push(number);
+								}
+								obj.optionGrowthTrend.series[0].data=[];
+								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							}else{
+						//obj.notify_jr(obj,'错误提示',res.message,'error');
+					}
+				})
+					}
+					if(num=="school"){
+						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'SCHOOL'},'score/getGrowthTrends',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionGrowthTrend.xAxis.data=[];
+								var number=res.result.examDates.length;
+								if(res.result.examDates.length>4){
+									number=4
+								}
+								for(var i=0;i<number;i++){
+									var date = new Date();  
+									date.setTime(parseFloat(res.result.examDates[i]));  
+									var y = date.getFullYear();      
+									var m = date.getMonth() + 1;      
+									m = m < 10 ? ('0' + m) : m;      
+									var d = date.getDate();      
+									d = d < 10 ? ('0' + d) : d;          
+									var number= m + '-' + d;   
+									obj.optionGrowthTrend.xAxis.data.push(number);
+								}
+								obj.optionGrowthTrend.series[0].data=[];
+								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							}else{
+						//obj.notify_jr(obj,'错误提示',res.message,'error');
+					}
+				})
+					}
+					if(num=="area"){
+						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'AREA'},'score/getGrowthTrends',function(obj,res){
+							if(res.code == '10000'){
+								obj.optionGrowthTrend.xAxis.data=[];
+								var number=res.result.examDates.length;
+								if(res.result.examDates.length>4){
+									number=4
+								}
+								for(var i=0;i<number;i++){
+									var date = new Date();  
+									date.setTime(parseFloat(res.result.examDates[i]));  
+									var y = date.getFullYear();      
+									var m = date.getMonth() + 1;      
+									m = m < 10 ? ('0' + m) : m;      
+									var d = date.getDate();      
+									d = d < 10 ? ('0' + d) : d;          
+									var number= m + '-' + d;   
+									obj.optionGrowthTrend.xAxis.data.push(number);
+								}
+								obj.optionGrowthTrend.series[0].data=[];
+								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
+								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
+							}else{
+						//obj.notify_jr(obj,'错误提示',res.message,'error');
+					}
+				})
+					}
 				},
 				chooseSubject1:function(e,num){
 					document.getElementsByClassName("Subjectsdiagnose")[0].getElementsByClassName("choose-area-left1")[0].style.background="#fff";

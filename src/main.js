@@ -49,22 +49,18 @@ var baseUrl = "http://192.168.1.233:8080/edu-system/"
  * fn : 成功返回方法  带参数  obj,data  obj : this data : response
  * */
 Vue.prototype.postHttp = function(obj,data,address,fn){
-	obj.$axios.post(baseUrl+address,querystring.stringify(data),{withCredentials : true}).then(response => {
-  		if(response.data.code == "60000" || response.data.code == "50000"){
-  			obj.dialogFormVisible = true;
-  		}else{
-  			fn(obj,response.data);
-  		}
+var dates = new Date();
+  dates = dates.getTime();
+  obj.$axios.post(baseUrl+address+"?jy_mb_viewer&timer="+dates,querystring.stringify(data),{withCredentials : true}).then(response => {
+      if(response.data.code == "60000" || response.data.code == "50000" || response.data.code=="11111"){
+        obj.$router.push({ path: '/login' });
+      }else{
+        fn(obj,response.data);
+      }
     },response => {
-    	obj.loading = false;
-		obj.$notify({
-	      title: '网络错误',
-	      message: '网络错误',
-	      offset: 100,
-	      duration:1500,
-	      type:'error'
-	    });
-	})
+      obj.loading = false;
+     obj.$toast({message:'网络错误', position: 'bottom',duration: 5000})
+  })
 }
 
 /* 
@@ -75,7 +71,7 @@ Vue.prototype.postHttp = function(obj,data,address,fn){
  * type : 提示类型  success warning error
  * */
 Vue.prototype.notify_jr = function(obj,title,message,type){
-	obj.$notify({
+  obj.$notify({
       title: title,
       message: message,
       offset: 100,
@@ -88,7 +84,7 @@ Vue.prototype.notify_jr = function(obj,title,message,type){
  * 封装未登录提示
  * */
 Vue.prototype.notify_login = function(){
-	this.$notify({
+  this.$notify({
       title: '提示',
       message:'请先登录',
       offset: 100,
@@ -98,7 +94,7 @@ Vue.prototype.notify_login = function(){
 }
 
 Vue.prototype.getBaseUrl = function(){
-	return baseUrl;
+  return baseUrl;
 }
 
 
@@ -107,20 +103,20 @@ Vue.prototype.getBaseUrl = function(){
  * msec : 毫秒值
  * */
 Vue.prototype.formatMsec = function(msec){
-	var regNum = /^[0-9]*$/;
-	var s = '';
-	if(msec && regNum.test(msec)){
-		var second = parseInt(parseFloat(msec) / 1000);
-		var minute = Math.ceil(second / 60);
-		if(minute > 60){
-			var hours = Math.floor(minute / 60);
-			var minute_s = minute % 60;
-			s = hours + '小时' + minute_s + '分钟'
-		}else{
-			s = minute + '分钟';
-		}
-	}
-	return s;
+  var regNum = /^[0-9]*$/;
+  var s = '';
+  if(msec && regNum.test(msec)){
+    var second = parseInt(parseFloat(msec) / 1000);
+    var minute = Math.ceil(second / 60);
+    if(minute > 60){
+      var hours = Math.floor(minute / 60);
+      var minute_s = minute % 60;
+      s = hours + '小时' + minute_s + '分钟'
+    }else{
+      s = minute + '分钟';
+    }
+  }
+  return s;
 }
 const router = new VueRouter({
   base: __dirname,
