@@ -7,7 +7,8 @@ const store = new Vuex.Store({
   // 定义状态
   state: {
     title:'lkj',
-    label:'my'
+    label:'my',
+    ways:'1'
   },
   mutations:{
   	newTitle(state,msg){
@@ -15,6 +16,9 @@ const store = new Vuex.Store({
     },
     newTab(state,lab){
     	state.label=lab
+    },
+    newGread(state,way){
+      state.ways = way
     }
   }
 })

@@ -17,20 +17,20 @@
                      <p v-for="item in personalData"><span>{{item.subject}} :</span> <span>{{item.score}}</span></p>
                  </div>
                 </div>
-                <div class="mbtn">
+                <div class="mbtn" @click="goKnowlegde(0)">
                   查看详细报告
                 </div>
              </div>
            </div>
            <div class="l silderBox"><hr class="silider"><span class="l">金阳测评</span><hr class="silider"></div>
-           <div class="gotoBox">
+           <div class="gotoBox" @click="goKnowlegde(0)">
              <div class="gotoBoxs">
                   <img src="../static/img/APPImg/bg@2x.png" />
                   <p>查看报告</p>
              </div>
            </div>
            <div class="gotoBox">
-             <div class="gotoBoxs">
+             <div class="gotoBoxs" @click="goKnowlegde(1)">
                   <img src="../static/img/APPImg/zs@2x.png" />
                   <p>知识点</p>
              </div>
@@ -42,38 +42,17 @@
             <p>成绩报告</p>
           </div>
            <div id="grade">
-           <div class="grade-nav">
-              <div v-show="display.subject" ref="fristBit" v-for="item in subjectLsit" :data-id="item.id" class="grade-nav-bit" @click="subjectButton($event)">
-                <p>{{item.name}}</p>
-              </div>
-              <div v-show="display.allSubject" class="grade-nav-bit1">
-                <p>全部分类</p>
-              </div>
-              <div class="grade-navMore">
-                <div class="grade-navMore-bit">
-                  <span @click="allButton($event)"><img class="grade-navMore-bitImg" src="../static/img/APPImg/gfh@1x.png" alt=""></span>
-                </div>
-              </div>
-            </div>
-            <div v-show="display.allSubject" class="grade-nav-more">
-              <div class="Gnav-moreConment">
-                <div class="Gnav-moreConment-bit" v-for="item in subject">
-                  <p>{{item.name}}</p>
-                </div>
-                <div class="cl"></div>
-              </div>
-            </div>
-          </div>
-            <mt-cell v-for="item in reportList" :key="item.id" :title="item.name">
-              <mt-button class="viewReport" @click="gotoReport">查看报告</mt-button>
+            <mt-cell v-for="item in testList" :key="item.id" :title="item.examName">
+              <mt-button class="viewReport" @click="gotoReport(item.id)">查看报告</mt-button>
             </mt-cell>
+          </div>
         </mt-tab-container-item>  
         <mt-tab-container-item id="资源"> 
           <div class="header-nav">
-            <p>知识点</p>
+            <p>资源</p>
           </div> 
           <div id="knowPoint">
-           <div class="point">
+           <div class="point" >
              <div class="points">
                   <img src="../static/img/APPImg/yw@1x.png" />
                   <p>语文</p>
@@ -115,14 +94,12 @@
                   <p>历史</p>
              </div>
            </div>
-           <router-link to="/">
-           <div class="point">
+           <div class="point" @click="resources('语文')">
              <div class="points">
                   <img src="../static/img/APPImg/dl@1x.png" />
                   <p>地理</p>
              </div>
            </div>
-          </router-link>
            <div class="point">
              <div class="points">
                   <img src="../static/img/APPImg/zh@1x.png" />
@@ -136,9 +113,9 @@
             <div class="leftPart">
               <img src="../static/img/APPImg/tx@1x.png" />
               <p>
-                <span class="name">王二吖</span><br>
-                <span class="studentClass">高三一班</span><br>
-                <span class="schoolClass">金阳一中</span>
+                <span class="name">{{userName}}</span><br>
+                <span class="studentClass">{{userClass}}</span><br>
+                <span class="schoolClass">{{userSchool}}</span>
               </p>
               <i class="mint-cell-allow-right" @click="teds()"></i>
             </div>
@@ -207,6 +184,9 @@
         navs: [],
         selected: '首页',
         selected1:'1',
+        userName:'王二丫',
+        userSchool:'金阳一中',
+        userClass:'高三一班',
         personalData:[],
         testList:[{
           id:'1',
@@ -290,30 +270,17 @@
       if(this.$store.state.label=='1'){
         this.selected='首页'
       }
-      this.$refs.fristBit[0].className+=" navOn";
       this.initAll()
     },
     methods:{
-      subjectButton:function(e){
-        for(var i=0;i<e.currentTarget.parentNode.getElementsByClassName("grade-nav-bit").length;i++){
-          e.currentTarget.parentNode.getElementsByClassName("grade-nav-bit")[i].className="grade-nav-bit";
-        }
-        e.currentTarget.className+=" navOn";
-      },
-      allButton:function(e){
-        if(e.currentTarget.childNodes[0].className=="grade-navMore-bitImg"){
-          e.currentTarget.childNodes[0].className="grade-navMore-bitImg1"
-        }else{
-          e.currentTarget.childNodes[0].className="grade-navMore-bitImg"
-        }
-        this.display.subject=!this.display.subject;
-        this.display.allSubject=!this.display.allSubject;
-      },
       teds(){
         this.$router.push({path:'/personal'})
       },
-      gotoReport(){
-        this.$router.push({path:'/grade'})
+      gotoReport(e){
+        this.$router.push({path:'/grade',query:{examId: e}})
+      },
+      resources(e){
+        this.$router.push({path:'/resources',query:{examId:e}})
       },
       initAll(){
         
@@ -335,13 +302,31 @@
               
               });
           });
+        var pageSizes={pageNum:1,pageSize:0};
+        this.postHttp(this,pageSizes,"subject/querySubjects",function(obj,data){
+                
+        });
+        this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+              obj.userName = data.result.name;
+              obj.userSchool = data.result.orgName;
+        });
       },
       testChange(e){
 
         var needData = {tab:'STUDENT_REPORT',examId:this.testList[e].id,subject:'总分'};
         this.postHttp(this,'',"score/geReportCards",function(obj,data){
                 
-          });
+        });
+      },
+      goKnowlegde(e){
+        if(e==0){
+          this.$store.commit('newGread','2');
+          this.$router.push({path:'/grade'});
+        }
+        if(e==1){
+          
+          this.$router.push({path:'/homeknowlegde'})
+        }
       }
     }
   };

@@ -58,6 +58,8 @@
           this.$router.push({path:'/personal'})
         }else if(this.$store.state.label=='9'){
           this.$router.push({path:'/grade'})
+        }else if(this.$store.state.label=='7'){
+          this.$router.push({path:'/homeknowlegde'})
         }else{
           this.$router.push({path:'/home'})
         }

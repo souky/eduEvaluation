@@ -5,9 +5,9 @@
 	  </mt-cell>
 	  <mt-cell title="用户名" ><span>{{username}}</span>
 	  </mt-cell>
-	  <mt-cell title="用户昵称" class="hasTop" to="/fixname" is-link>
+	  <!-- <mt-cell title="用户昵称" class="hasTop" to="/fixname" is-link>
 	  	<span>{{nickname}}</span>
-	  </mt-cell>
+	  </mt-cell> -->
 	  <mt-cell title="学校"><span>{{userSchool}}</span>
 	  </mt-cell>
 	  <mt-cell title="班级"><span>{{userClass}}</span>
@@ -27,7 +27,18 @@ export default {
 	created:function(){
 		this.$store.commit('newTitle','个人资料');
 		this.$store.commit('newTab','4')
-	}
+	},
+    methods:{
+		initAll(){
+    		this.postHttp(this,'',"user/getLoginUser",function(obj,data){
+              obj.username = data.result.name;
+              obj.userSchool = data.result.orgName;
+        	});
+    	}
+    },
+    mounted(){
+    	this.initAll()
+    }
 }
 </script>
 <style>

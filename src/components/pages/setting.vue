@@ -1,7 +1,7 @@
 <template>
 	<section class="page-demo" id="settingPage">
-	  <mt-cell title="手机号" class="hasTop"><span>13856542369</span>
-	  </mt-cell>
+	  <!-- <mt-cell title="手机号" class="hasTop"><span>13856542369</span>
+	  </mt-cell> -->
 	  <mt-cell title="修改密码" to="/fixpassWord" is-link>
 	  </mt-cell>
 	  <mt-cell title="退出登录" class="hasTop textCenter" to="/" is-link>

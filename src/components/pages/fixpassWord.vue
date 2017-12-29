@@ -1,13 +1,13 @@
 <template>
 	<section class="page-demo" id="passwordPage">
 	  <mt-field class="hasTop" placeholder="输入原密码" :type="canSee1" v-model="usedpassword">
-	  	<img src="/static/img/APPImg/kf@1x.png" height="20" width="20" @click="changeSee(1)" />
+	  	<img :src="eyesclose1" height="20" width="20" @click="changeSee(1)" />
 	  </mt-field>
 	  <mt-field placeholder="输入新密码" type="password" :type="canSee2" v-model="newpassword">
-	  	<img src="/static/img/APPImg/kf@1x.png" height="20" width="20" @click="changeSee(2)" />
+	  	<img :src="eyesclose2" height="20" width="20" @click="changeSee(2)" />
 	  </mt-field>
 	  <mt-field class="hasbottom" placeholder="再次输入新密码" :type="canSee3" v-model="againpassword">
-	  	<img src="/static/img/APPImg/kf@1x.png" height="20" width="20" @click="changeSee(3)" />
+	  	<img :src="eyesclose3" height="20" width="20" @click="changeSee(3)" />
 	  </mt-field>
 	  <div class="comformBtn">
 	  	<mt-button type="primary" size="large" @click="comformfile">确认修改</mt-button>
@@ -25,7 +25,10 @@ export default {
 			canSee3:'password',
 			usedpassword:'',
 			newpassword:'',
-			againpassword:''
+			againpassword:'',
+			eyesclose1:'/static/img/APPImg/yj2@1x.png',
+			eyesclose2:'/static/img/APPImg/yj2@1x.png',
+			eyesclose3:'/static/img/APPImg/yj2@1x.png',
 		}
 	},
 	created:function(){
@@ -33,37 +36,44 @@ export default {
 		this.$store.commit('newTab','5')
 	},
 	mounted(){
-
 	},
 	methods:{
 		changeSee(e){
 			if(e==1){
-				if(this.canSee1=='password')
+				if(this.canSee1=='password'){
 					this.canSee1='text'
-				else
+					this.eyesclose1 = '/static/img/APPImg/yj1@1x.png'
+				}
+				else{
 					this.canSee1='password'
+					this.eyesclose1 = '/static/img/APPImg/yj2@1x.png'
+				}
 			}
 			if(e==2){
-				if(this.canSee2=='password')
+				if(this.canSee2=='password'){
 					this.canSee2='text'
-				else
+					this.eyesclose2 = '/static/img/APPImg/yj1@1x.png'
+				}
+				else{
 					this.canSee2='password'
+					this.eyesclose2 = '/static/img/APPImg/yj2@1x.png'
+				}
 			}
 			if(e==3){
-				if(this.canSee3=='password')
+				if(this.canSee3=='password'){
 					this.canSee3='text'
-				else
+					this.eyesclose3 = '/static/img/APPImg/yj1@1x.png'
+				}
+				else{
 					this.canSee3='password'
+					this.eyesclose3 = '/static/img/APPImg/yj2@1x.png'
+				}
 			}
 		},
 		comformfile(){
+			var needDatas = {psw:this.usedpassword,newPsw1:this.newpassword,newPsw2:this.againpassword};
 			if(this.usedpassword==''){
 				let instance = Toast('请输入原始密码');
-				setTimeout(() => {
-				  instance.close();
-				}, 2000);
-			}else if(this.usedpassword!='' && this.usedpassword!='123'){
-				let instance = Toast('原始密码错误请重新输入');
 				setTimeout(() => {
 				  instance.close();
 				}, 2000);
@@ -72,27 +82,33 @@ export default {
 				setTimeout(() => {
 				  instance.close();
 				}, 2000);
-			}else if(this.newpassword!='' && this.newpassword=='123'){
-				let instance = Toast('新旧密码不能一致');
-				setTimeout(() => {
-				  instance.close();
-				}, 2000);
 			}else if(this.againpassword==''){
 				let instance = Toast('请再次输入新密码');
 				setTimeout(() => {
 				  instance.close();
 				}, 2000);
-			}else if(this.againpassword!=''&& this.againpassword!=this.newpassword){
-				let instance = Toast('两次输入的新密码不一致');
+			}else if(this.newpassword!=this.againpassword){
+				let instance = Toast('两次输入的密码不一致');
 				setTimeout(() => {
 				  instance.close();
 				}, 2000);
 			}else{
-				let instance =Toast({message: '操作成功!'});
-				setTimeout(() => {
-				  instance.close();
-				  this.$router.push({path:'/setting'})
-				}, 2000);
+				this.postHttp(this,needDatas,'user/resetPsw',function(obj,res){
+					if(res.code=='40000'){
+						let instance =Toast({message: res.message});
+						setTimeout(() => {
+							instance.close();
+						}, 2000);
+					}else{
+						let instance =Toast({message: res.message});
+						setTimeout(() => {
+							instance.close();
+							obj.$router.push({path:'/setting'})
+						}, 2000);
+					}
+					
+	        	});
+				
 			}
 		}
 	}
