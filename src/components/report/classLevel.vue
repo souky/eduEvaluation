@@ -1539,7 +1539,9 @@ export default{
 								obj.optionClassScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideClass));
 								obj.optionClassScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideSchool));
 								obj.optionClassScoreQuestion.series[2].data.push(parseFloat(res.result.listVO[i].divideAera));
-								var number=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
+								var number2=parseFloat(res.result.listVO[i].divideClass)-parseFloat(res.result.listVO[i].divideSchool);
+								var number1=parseInt(number2*100);
+								var number=number1/100;
 								if(number>=0){
 									var list=[];
 									list.push(res.result.listVO[i].difficulty);

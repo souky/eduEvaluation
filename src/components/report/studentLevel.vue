@@ -1243,9 +1243,6 @@ export default {
 					}
 				})
 			},
-			fmtDate:function(obj){
-
-			},
 			ablityAnalysis:function(){
 				this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/ablityAnalysis',function(obj,res){
 					if(res.code == '10000'){
