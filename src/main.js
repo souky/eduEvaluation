@@ -18,6 +18,8 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
+/* IE */
+window.Promise = Promise
 
 /* axios配置 */
 axios.defaults.withCredentials = true
