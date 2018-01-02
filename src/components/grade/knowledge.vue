@@ -59,6 +59,8 @@ export default {
 	created:function(){
 		this.$store.commit('newTab','9');
 		this.$store.commit('newTitle','知识点诊断');
+		alert(this.$store.state.basisSubject)
+		alert(this.$store.state.basisExmaid)
 	}
 }
 </script>

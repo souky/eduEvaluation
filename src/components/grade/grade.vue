@@ -269,6 +269,7 @@ export default {
 				subject:'总分',
 				twoType:'class',
 				twoType1:'easy',
+				id:'',
 			},
 			display:{
 				totle:true,
@@ -862,6 +863,13 @@ export default {
 					+ "满分值" + '：' + value[3] + '<br>'
 					+ "得分率差距" + '：' + value[1]+"%" + '<br>'
 				};
+				if(window.location.hash.substring(7,8)=="?"){
+					this.basicData.id=window.location.hash.substring(15);
+					this.$store.commit('newBasisExmaid',this.basicData.id);
+				}else{
+					this.$router.push({path:'/grade',query:{examId: this.$store.state.basisExmaid}})
+					this.basicData.id=window.location.hash.substring(15);
+				}
 			},
 			mounted:function(){
 				this.$refs.fristBit[0].className+=" navOn";
@@ -891,7 +899,7 @@ export default {
 			},
 			methods:{
 				getPercentageRank:function(){
-					this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577"},'score/getPercentageRank',function(obj,res){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'score/getPercentageRank',function(obj,res){
 						if(res.code == '10000'){
 							obj.optionBeyondRate.series[0].data[0].value=res.result.schoolPercentageRank;
 							obj.optionBeyondRate.series[0].data[1].value=res.result.schoolPercentageRank;
@@ -903,7 +911,7 @@ export default {
 					})
 				},
 				getGrowthTrends:function(){
-					this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'CLASS'},'score/getGrowthTrends',function(obj,res){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,range:'CLASS'},'score/getGrowthTrends',function(obj,res){
 						if(res.code == '10000'){
 							obj.optionGrowthTrend.xAxis.data=[];
 							var number=res.result.examDates.length;
@@ -930,7 +938,7 @@ export default {
 				})
 				},
 				geReportCards:function(){
-					this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
 						if(res.code == '10000'){
 							var type=(typeof res.result);
 							if(type=="string"){
@@ -963,7 +971,7 @@ export default {
 					})
 				},
 				knowAnalysis:function(){
-					this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/knowAnalysis',function(obj,res){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/knowAnalysis',function(obj,res){
 						if(res.code == '10000'){
 							obj.truetableDatas=res.result;
 							obj.optionknowledge.series[0].data[0].value=[];
@@ -997,7 +1005,7 @@ export default {
 				})
 				},
 				ablityAnalysis:function(){
-					this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/ablityAnalysis',function(obj,res){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/ablityAnalysis',function(obj,res){
 						if(res.code == '10000'){
 							obj.scoreName=res.result;
 							obj.optionabilityAnalyze.series[0].data[0].value=[];
@@ -1017,7 +1025,7 @@ export default {
 				})
 				},
 				testAnalysis:function(){
-					this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 						if(res.code == '10000'){
 							obj.classGold=res.result.targetVO;
 							obj.optionMyGoal.series[0].data=[];
@@ -1156,6 +1164,31 @@ export default {
 						this.basicData.subject=e.currentTarget.firstChild.innerHTML;
 						this.trigger();
 					}
+					if(e.currentTarget.getElementsByTagName("p")[0].innerHTML=="总分"){
+						this.display.totle=true;
+						this.display.beyondRate=true;
+						this.display.growth=true;
+						this.display.Subjectsdiagnose=true;
+						this.display.myGoal=false;
+						this.display.allItem=false;
+						this.display.twoAnalysis=false;
+						this.display.knowledgeAnalysis=false;
+						this.display.abilityAnalyze=false;
+						this.titleName="总分";
+						this.basicData.subject=e.currentTarget.getElementsByTagName("p")[0].innerHTML;
+					}else{
+						this.display.totle=true;
+						this.display.beyondRate=true;
+						this.display.growth=false;
+						this.display.Subjectsdiagnose=false;
+						this.display.myGoal=true;
+						this.display.allItem=true;
+						this.display.twoAnalysis=true;
+						this.display.knowledgeAnalysis=true;
+						this.display.abilityAnalyze=true;
+						this.titleName="科目";
+						this.basicData.subject=e.currentTarget.getElementsByTagName("p")[0].innerHTML;
+					}
 					this.colse();
 				},
 				trigger:function(){
@@ -1174,9 +1207,13 @@ export default {
 					this.display.allSubject=!this.display.allSubject;
 				},
 				knowledgeMore:function(){
+					this.$store.commit('newBasisSubject',this.basicData.subject);
+					this.$store.commit('newBasisExmaid',this.basicData.id);
 					this.$router.push({path:'/knowledges'});
 				},
 				abilityMore:function(){
+					this.$store.commit('newBasisSubject',this.basicData.subject);
+					this.$store.commit('newBasisExmaid',this.basicData.id);
 					this.$router.push({path:'/ability'});
 				},
 				chooseSubject:function(e,num){
@@ -1189,7 +1226,7 @@ export default {
 					e.currentTarget.style.background="#7FDC7F";
 					e.currentTarget.style.color="#fff";
 					if(num=="class"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'CLASS'},'score/getGrowthTrends',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,range:'CLASS'},'score/getGrowthTrends',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionGrowthTrend.xAxis.data=[];
 								var number=res.result.examDates.length;
@@ -1216,7 +1253,7 @@ export default {
 				})
 					}
 					if(num=="school"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'SCHOOL'},'score/getGrowthTrends',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,range:'SCHOOL'},'score/getGrowthTrends',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionGrowthTrend.xAxis.data=[];
 								var number=res.result.examDates.length;
@@ -1243,7 +1280,7 @@ export default {
 				})
 					}
 					if(num=="area"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",range:'AREA'},'score/getGrowthTrends',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,range:'AREA'},'score/getGrowthTrends',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionGrowthTrend.xAxis.data=[];
 								var number=res.result.examDates.length;
@@ -1280,7 +1317,7 @@ export default {
 					e.currentTarget.style.background="#53CDD6";
 					e.currentTarget.style.color="#fff";
 					if(num=="class"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT",range:'CLASS'},'score/geReportCards',function(obj,res){
 							if(res.code == '10000'){
 								var type=(typeof res.result);
 								if(type=="string"){
@@ -1313,7 +1350,7 @@ export default {
 					})
 					}
 					if(num=="school"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",tab:"STUDENT_REPORT",range:'SCHOOL'},'score/geReportCards',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT",range:'SCHOOL'},'score/geReportCards',function(obj,res){
 							if(res.code == '10000'){
 								var type=(typeof res.result);
 								if(type=="string"){
@@ -1346,7 +1383,7 @@ export default {
 					})
 					}
 					if(num=="area"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:"04c9f5ac400b445ab99142dcc0a15577",tab:"STUDENT_REPORT",range:'AREA'},'score/geReportCards',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT",range:'AREA'},'score/geReportCards',function(obj,res){
 							if(res.code == '10000'){
 								var type=(typeof res.result);
 								if(type=="string"){
@@ -1390,7 +1427,7 @@ export default {
 					e.currentTarget.style.background="#7FDC7F";
 					e.currentTarget.style.color="#fff";
 					if(num=="class"){
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionScoreQuestion.xAxis[0].data=[];
 								obj.optionScoreQuestion.series[0].data=[];
@@ -1409,7 +1446,7 @@ export default {
 					});
 					}
 					if(num=="school"){
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionScoreQuestion.xAxis[0].data=[];
 								obj.optionScoreQuestion.series[0].data=[];
@@ -1428,7 +1465,7 @@ export default {
 					});
 					}
 					if(num=="area"){
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionScoreQuestion.xAxis[0].data=[];
 								obj.optionScoreQuestion.series[0].data=[];
@@ -1468,7 +1505,7 @@ export default {
 					}
 					if(num=="class"){
 						this.basicData.twoType="class";
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionTwoDimensionalAnalysis.xAxis[0].min=number1;
 								obj.optionTwoDimensionalAnalysis.xAxis[0].max=number2;
@@ -1503,7 +1540,7 @@ export default {
 					}
 					if(num=="school"){
 						this.basicData.twoType="school";
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionTwoDimensionalAnalysis.xAxis[0].min=number1;
 								obj.optionTwoDimensionalAnalysis.xAxis[0].max=number2;
@@ -1538,7 +1575,7 @@ export default {
 					}
 					if(num=="area"){
 						this.basicData.twoType="area";
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionTwoDimensionalAnalysis.xAxis[0].min=number1;
 								obj.optionTwoDimensionalAnalysis.xAxis[0].max=number2;
@@ -1604,7 +1641,7 @@ export default {
 					}
 					if(this.basicData.twoType=="class"){
 						this.basicData.twoType="class";
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionTwoDimensionalAnalysis.xAxis[0].min=number1;
 								obj.optionTwoDimensionalAnalysis.xAxis[0].max=number2;
@@ -1638,7 +1675,7 @@ export default {
 					});
 					}
 					if(this.basicData.twoType=="school"){
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionTwoDimensionalAnalysis.xAxis[0].min=number1;
 								obj.optionTwoDimensionalAnalysis.xAxis[0].max=number2;
@@ -1672,7 +1709,7 @@ export default {
 					});
 					}
 					if(this.basicData.twoType=="area"){
-						this.postHttp(this,{subject:"语文",examId:"04c9f5ac400b445ab99142dcc0a15577",studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/testAnalysis',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/testAnalysis',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionTwoDimensionalAnalysis.xAxis[0].min=number1;
 								obj.optionTwoDimensionalAnalysis.xAxis[0].max=number2;

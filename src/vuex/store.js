@@ -8,7 +8,9 @@ const store = new Vuex.Store({
   state: {
     title:'lkj',
     label:'my',
-    ways:'1'
+    ways:'1',
+    basisSubject:'',
+    basisExmaid:'',
   },
   mutations:{
   	newTitle(state,msg){
@@ -19,7 +21,13 @@ const store = new Vuex.Store({
     },
     newGread(state,way){
       state.ways = way
-    }
+    },
+    newBasisSubject(state,msg){
+      state.basisSubject=msg
+    },
+    newBasisExmaid(state,msg){
+      state.basisExmaid=msg
+    },
   }
 })
 
