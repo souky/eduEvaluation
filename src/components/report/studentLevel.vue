@@ -269,7 +269,7 @@
 					<div v-for="truetableData3 in truetableDatas">
 						<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.knowDetail" style="width: 100%">
 							<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
-							<el-table-column align="center" prop="knowledge" label="知识点"></el-table-column>
+							<el-table-column align="center" :show-overflow-tooltip="true" prop="knowledge" label="知识点"></el-table-column>
 							<el-table-column align="center" label="得分率%">
 								<el-table-column align="center" prop="divideClass" label="我的"></el-table-column>
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
