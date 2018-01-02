@@ -44,9 +44,9 @@
 		      <el-table-column prop="roleName" align="center"  label="角色"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
 		      	<template slot-scope="scope">
-		      		<el-button type="primary" icon="el-icon-edit" @click="initPsw(scope.row.id)">重置密码</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
+		      		<el-button type="primary" icon="el-icon-edit" @click="initPsw(scope.row.id)">重置密码</el-button>
 		      	</template>
 		      </el-table-column>
 		    </el-table>
