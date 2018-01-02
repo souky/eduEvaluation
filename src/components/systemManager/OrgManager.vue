@@ -3,7 +3,7 @@
 		<div class="org_body fix">
 			<div class="left_part l">
 				<div class="title">机构树</div>
-				<el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+				<el-input placeholder="请输入机构名称" v-model="filterText"></el-input>
 				<el-tree :data="data" :props="defaultProps" ref="orgTree" accordion @node-click="handleNodeClick" :filter-node-method="filterNode"></el-tree>
 			</div>
 			<div class="right_part r">
@@ -30,7 +30,7 @@
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="org" class="demo-ruleForm" :model="org">
 			  <el-form-item label="名称" prop="orgName">
-			    <el-input v-model="org.orgName"></el-input>
+			    <el-input v-model="org.orgName" :maxlength="64"></el-input>
 			  </el-form-item>
 			  <el-form-item label="省" v-show="showInfo" >
 			  	<el-select v-model="p_name" @change="changeP" placeholder="请选择">

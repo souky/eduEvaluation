@@ -18,9 +18,9 @@
 		
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
-		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="konw" class="demo-ruleForm" :model="konw">
+		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="konw" class="demo-ruleForm" :model="konw" >
 			  <el-form-item label="名称" prop="knowledgeContent">
-			    <el-input v-model="konw.knowledgeContent"></el-input>
+			    <el-input v-model="konw.knowledgeContent" :maxlength="20" :minlength="1"></el-input>
 			  </el-form-item>
 			</el-form>
 		  </div>

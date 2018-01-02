@@ -3,7 +3,7 @@
 		
 		<div class="info_body">
 			<el-form label-position="left" label-width="100px" :rules="rules" ref="schoolInfo" class="demo-ruleForm" :model="schoolInfo">
-			  <el-form-item label="学校名称" prop="schoolName">
+			  <el-form-item label="学校名称" prop="schoolName" :maxlength="50">
 			    <el-input v-model="schoolInfo.schoolName"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校学段" prop="periodArray">
@@ -14,16 +14,16 @@
 			    </el-checkbox-group>
 			  </el-form-item>
 			  <el-form-item label="学校地址">
-			    <el-input v-model="schoolInfo.schoolAddr"></el-input>
+			    <el-input v-model="schoolInfo.schoolAddr" :maxlength="50"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校手机" prop="schoolMobile">
 			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校唯一码">
-			    <el-input v-model="schoolInfo.schoolOnlyCode" readonly></el-input>
+			    <el-input v-model="schoolInfo.schoolOnlyCode" readonly disabled></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校联系人">
-			    <el-input v-model="schoolInfo.schoolContact"></el-input>
+			    <el-input v-model="schoolInfo.schoolContact" :maxlength="10"></el-input>
 			  </el-form-item>
 			  <el-form-item label="联系人手机"  prop="schoolContactMobile">
 			    <el-input v-model="schoolInfo.schoolContactMobile" :maxlength="maxLength"></el-input>
@@ -74,10 +74,10 @@ export default {
             { type: 'array', required: true, message: '请至少选择一个学科', trigger: 'change' }
           ],
           schoolMobile:[
-          	{validator: validatePhone, trigger: 'blur'}
+          	{required: true, validator: validatePhone, trigger: 'blur'}
           ],
           schoolContactMobile:[
-          	{validator: validatePhone, trigger: 'blur'}
+          	{required: true, validator: validatePhone, trigger: 'blur'}
           ],
       }
     }

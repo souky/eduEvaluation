@@ -67,7 +67,7 @@
 			    <el-input v-model="user.name" :maxlength="nameMax"></el-input>
 			  </el-form-item>
 			  <el-form-item label="用户名" prop="userName">
-			    <el-input v-model="user.userName" :maxlength="userNameMax" ></el-input>
+			    <el-input v-model="user.userName" :maxlength="userNameMax" :disabled="editDisabled"></el-input>
 			  </el-form-item>
 			  <el-form-item label="用户类型"  prop="userType">
 			  	<el-select v-model="user.userType" placeholder="请选择">
@@ -105,7 +105,7 @@ export default {
       pageSize:10,
       total:1,
       roleOptions:[],
-      
+      editDisabled:false,
       nameMax:10,
       userNameMax:64,
       
@@ -115,12 +115,32 @@ export default {
       showPsw:true,
       userTypeO:[
       	{
+      		id:0,
+      		value:'超级管理员'
+      	},
+      	{
       		id:1,
       		value:'管理员'
       	},
       	{
       		id:2,
-      		value:'普通用户'
+      		value:'自定义用户'
+      	},
+      	{
+      		id:3,
+      		value:'区域用户'
+      	},
+      	{
+      		id:4,
+      		value:'校级用户'
+      	},
+      	{
+      		id:5,
+      		value:'年级用户'
+      	},
+      	{
+      		id:6,
+      		value:'个人用户'
       	}
       ],
       
@@ -213,6 +233,7 @@ export default {
   		this.dialogVisible = true;
   		this.showPsw = true;
   		this.user = {};
+  		this.editDisabled=false;
   		this.diaTitle = "新增";
   		if(this.$refs['user']){
   			this.$refs['user'].resetFields();
@@ -223,6 +244,7 @@ export default {
 		if(this.$refs['user']){
   			this.$refs['user'].resetFields();
   		}
+  		this.editDisabled=true;
 		this.postHttp(this,{id:id},'user/getUserById',function(obj,res){
   			if(res.code == '10000'){
   				obj.user = res.result;
