@@ -431,6 +431,7 @@ export default {
 					itemStyle:{
 						normal:{color:'#7FDC7F'},
 					},
+					label:{normal:{show:true,position:'top'},},
 					data:[34.9, 44.8, 40.84, 48.3]
 				},
 				]
@@ -482,6 +483,7 @@ export default {
 				    	name:'标准分',
 				    	type:'bar',
 				    	barWidth: '40%',
+				    	label:{normal:{show:true,position:'top'},},
 				    	data:[70, 75, 65, 67, 42],
 				    	markLine:{
 				    		lineStyle: {
@@ -529,11 +531,13 @@ export default {
 						data: [
 						{
 							name: '个人',
+							label:{normal:{show:true,position:'top'},},
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#53CDD6 ',areaStyle: {color: 'rgba(83,205,214,0.3)'}}},
 						},
 						{
 							name:'平均水平',
+							label:{normal:{show:true,position:'top'},},
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#D06BE0',areaStyle: {color: 'rgba(208,107,224,0.3)'}}},
 						}
@@ -777,20 +781,24 @@ export default {
 				    		{
 				    			name: '我的',
 				    			value: [23,83,54,65,23],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#DE20CE',areaStyle: {color: 'rgba(222,32,206,0.3)'}}},
 				    		},
 				    		{
 				    			name: '班级',
 				    			value: [23,43,54,65,23],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 				    		},
 				    		{
 				    			name:'全校',
 				    			value:[34,54,56,76,87],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 				    		},{
 				    			name:'全区县',
 				    			value:[34,34,56,76,87],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
 				    		}
 				    		]
@@ -826,34 +834,39 @@ export default {
 				    		{
 				    			name: '我的',
 				    			value: [23,83,54,65,23,45,65],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#DE20CE',areaStyle: {color: 'rgba(255,60,98,0.3)'}}},
 				    		},
 				    		{
 				    			name: '班级',
 				    			value: [23,43,54,65,23,43,78],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(83,205,214,0.3)'}}},
 				    		},
 				    		{
 				    			name:'全校',
 				    			value:[34,54,56,76,87,53,43],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(255,222,85,0.3)'}}},
 				    		},{
 				    			name:'全区县',
 				    			value:[34,34,56,76,87,42,57],
+				    			label:{normal:{show:true,position:'top'},},
 				    			itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(116,230,114,0.3)'}}},
 				    		}
 				    		]
 				    	}
 				    	]
 				    },
+				    items:[],
 				}
 			},
 			created:function(){
 				this.$store.commit('newTab','2');
 				this.$store.commit('newTitle','成绩报告');
-				for(var i=0;i<5;i++){
-					this.subjectLsit.push(this.subject[i]);
-				}
+				// for(var i=0;i<5;i++){
+				// 	this.subjectLsit.push(this.subject[i]);
+				// }
 
 				this.optionTwoDimensionalAnalysis.tooltip.formatter=function (obj) {
 					var value = obj.value;
@@ -870,9 +883,42 @@ export default {
 					this.$router.push({path:'/grade',query:{examId: this.$store.state.basisExmaid}})
 					this.basicData.id=window.location.hash.substring(15);
 				}
+				var name=this.basicData.id;
+				var totle={createDate:1512647749000,createUser:"1",id:"0",isDelete:0,orgId:"",remark:"",schoolId:"",subjectCode:1,subjectColor:"#F37070",subjectName:"总分",updateDate:1513586055000};
+				this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
+					if(res.code == '10000'){
+						obj.items=res.result[name].subject;
+						obj.items.unshift(totle);
+						obj.subject=[];
+						for(var l=0;l<obj.items.length;l++){
+							var arr={
+								"id":parseInt(obj.items[l].id),
+								"name":obj.items[l].subjectName,
+							}
+							obj.subject.push(arr)
+						}
+						for(var q=3;q<9;q++){
+							var aqq={
+								"id":q,
+								"name":"测试"+q,
+							}
+							obj.subject.push(aqq)
+						}
+						if(parseInt(obj.subject.length)<5){
+							for(var i=0;i<parseInt(obj.subject.length);i++){
+								obj.subjectLsit.push(obj.subject[i]);
+							}
+						}else{
+							for(var i=0;i<5;i++){
+								obj.subjectLsit.push(obj.subject[i]);
+							}	
+						}
+					}else{
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
+					}
+				})
 			},
 			mounted:function(){
-				this.$refs.fristBit[0].className+=" navOn";
 				let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 				this.$refs.loginHight.style.height=h+"px";
 				//this.echarts.init(document.getElementById("beyondRate1")).setOption(this.optionBeyondRate);
@@ -906,7 +952,7 @@ export default {
 							obj.optionBeyondRate.series[0].data[2].value=res.result.classPercentageRank;
 							obj.echarts.init(document.getElementById("beyondRate1")).setOption(obj.optionBeyondRate);
 						}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					})
 				},
@@ -933,7 +979,7 @@ export default {
 							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
 							obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
 						}else{
-						//obj.notify_jr(obj,'错误提示',res.message,'error');
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
 				})
 				},
@@ -965,8 +1011,9 @@ export default {
 									obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
 								}
 							}
+							obj.$refs.fristBit[0].className+=" navOn";
 						}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					})
 				},
@@ -1000,7 +1047,7 @@ export default {
 							}
 						}else{
 							document.getElementById("knowledgeAnalysis1").style.display="none";
-						//obj.notify_jr(obj,'错误提示',res.message,'error');
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
 				})
 				},
@@ -1020,7 +1067,7 @@ export default {
 							}
 							obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
 						}else{
-						//obj.notify_jr(obj,'错误提示',res.message,'error');
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
 				})
 				},
@@ -1075,7 +1122,7 @@ export default {
 							obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							obj.echarts.init(document.getElementById("myGoal1")).setOption(obj.optionMyGoal);
 						}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 				},
@@ -1119,7 +1166,7 @@ export default {
 				},
 				subjectButton1:function(e){
 					var number=parseInt(e.currentTarget.getAttribute("data-id"));
-					if(number==1){
+					if(number==0){
 						for(var l=0;l<this.$refs.fristBit.length;l++){
 							this.$refs.fristBit[l].className="grade-nav-bit";
 						}
@@ -1127,42 +1174,56 @@ export default {
 						this.titleName="总分";
 						this.basicData.subject="总分";
 					}else{
-						if(parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number<4){
-							this.subjectLsit=[];
-							for(var i=0;i<4;i++){
-								var num=parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-4;
-								this.subjectLsit.push(this.subject[num+i])
+						if(this.subject.length>=5){
+							if(parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number<4){
+								this.subjectLsit=[];
+								for(var i=0;i<4;i++){
+									var num=parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-4;
+									this.subjectLsit.push(this.subject[num+i])
+								}
+								var arr={
+									id:1,
+									name:'总分'
+								}
+								this.subjectLsit.unshift(arr);
+								for(var l=0;l<this.$refs.fristBit.length;l++){
+									this.$refs.fristBit[l].className="grade-nav-bit";
+								}
+								var totle=parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number;
+								this.$refs.fristBit[5-totle].className+=" navOn";
+								console.log(this.$refs.fristBit[5-totle]);
+								this.titleName="科目";
+							}else{
+								this.subjectLsit=[];
+								for(var i=0;i<4;i++){
+									var num=number;
+									this.subjectLsit.push(this.subject[num+i])
+								}
+								var arr={
+									id:1,
+									name:'总分'
+								}
+								this.subjectLsit.unshift(arr);
+								for(var l=0;l<this.$refs.fristBit.length;l++){
+									this.$refs.fristBit[l].className="grade-nav-bit";
+								}
+								this.$refs.fristBit[1].className+=" navOn";
+								this.titleName="科目";
 							}
-							var arr={
-								id:1,
-								name:'总分'
-							}
-							this.subjectLsit.unshift(arr);
-							for(var l=0;l<this.$refs.fristBit.length;l++){
-								this.$refs.fristBit[l].className="grade-nav-bit";
-							}
-							var totle=parseInt(e.currentTarget.parentNode.getElementsByClassName("Gnav-moreConment-bit").length)-number;
-							this.$refs.fristBit[4-totle].className+=" navOn";
-							this.titleName="科目";
+							this.basicData.subject=e.currentTarget.firstChild.innerHTML;
+							this.trigger();
 						}else{
 							this.subjectLsit=[];
-							for(var i=0;i<4;i++){
-								var num=number-1;
-								this.subjectLsit.push(this.subject[num+i])
+							for(var i=0;i<this.subject.length;i++){
+								this.subjectLsit.push(this.subject[i])
 							}
-							var arr={
-								id:1,
-								name:'总分'
-							}
-							this.subjectLsit.unshift(arr);
 							for(var l=0;l<this.$refs.fristBit.length;l++){
 								this.$refs.fristBit[l].className="grade-nav-bit";
 							}
-							this.$refs.fristBit[1].className+=" navOn";
+							var num=parseInt(e.currentTarget.getAttribute("data-id"));
+							this.$refs.fristBit[num].className+=" navOn";
 							this.titleName="科目";
 						}
-						this.basicData.subject=e.currentTarget.firstChild.innerHTML;
-						this.trigger();
 					}
 					if(e.currentTarget.getElementsByTagName("p")[0].innerHTML=="总分"){
 						this.display.totle=true;
@@ -1248,7 +1309,7 @@ export default {
 								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
 								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
 							}else{
-						//obj.notify_jr(obj,'错误提示',res.message,'error');
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
 				})
 					}
@@ -1275,12 +1336,12 @@ export default {
 								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
 								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
 							}else{
-						//obj.notify_jr(obj,'错误提示',res.message,'error');
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
 				})
 					}
 					if(num=="area"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,range:'AREA'},'score/getGrowthTrends',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,range:'REGION'},'score/getGrowthTrends',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionGrowthTrend.xAxis.data=[];
 								var number=res.result.examDates.length;
@@ -1302,7 +1363,7 @@ export default {
 								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
 								obj.echarts.init(document.getElementById("growthTrend1")).setOption(obj.optionGrowthTrend);
 							}else{
-						//obj.notify_jr(obj,'错误提示',res.message,'error');
+						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
 				})
 					}
@@ -1345,7 +1406,7 @@ export default {
 									}
 								}
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					})
 					}
@@ -1378,12 +1439,12 @@ export default {
 									}
 								}
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					})
 					}
 					if(num=="area"){
-						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT",range:'AREA'},'score/geReportCards',function(obj,res){
+						this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,tab:"STUDENT_REPORT",range:'REGION'},'score/geReportCards',function(obj,res){
 							if(res.code == '10000'){
 								var type=(typeof res.result);
 								if(type=="string"){
@@ -1411,7 +1472,7 @@ export default {
 									}
 								}
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					})
 					}
@@ -1441,7 +1502,7 @@ export default {
 								obj.optionScoreQuestion.series[1].name="班级得分率";
 								obj.echarts.init(document.getElementById("allItem1")).setOption(obj.optionScoreQuestion);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1460,7 +1521,7 @@ export default {
 								obj.optionScoreQuestion.series[1].name="校级得分率";
 								obj.echarts.init(document.getElementById("allItem1")).setOption(obj.optionScoreQuestion);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1479,7 +1540,7 @@ export default {
 								obj.optionScoreQuestion.series[1].name="地区级得分率";
 								obj.echarts.init(document.getElementById("allItem1")).setOption(obj.optionScoreQuestion);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1534,7 +1595,7 @@ export default {
 								}
 								obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1569,7 +1630,7 @@ export default {
 								}
 								obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1604,7 +1665,7 @@ export default {
 								}
 								obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1670,7 +1731,7 @@ export default {
 								}
 								obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1704,7 +1765,7 @@ export default {
 								}
 								obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}
@@ -1738,7 +1799,7 @@ export default {
 								}
 								obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 							}else{
-							//obj.notify_jr(obj,'错误提示',res.message,'error');
+							obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 						}
 					});
 					}

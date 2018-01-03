@@ -37,7 +37,7 @@
 export default {
 	data(){
 		return{
-			baseData:[{
+			baseData:[/*{
 				title:'能力点一',
 				sroce:0,
 				total:10,
@@ -53,14 +53,42 @@ export default {
 				class:23,
 				school:54,
 				titleQid:'1,2,3,4,5'
-			}]
+			}*/],
+			titleQid:"",
 		}
 	},
 	created:function(){
 		this.$store.commit('newTab','9');
 		this.$store.commit('newTitle','知识点诊断');
-		alert(this.$store.state.basisSubject)
-		alert(this.$store.state.basisExmaid)
+		//alert(this.$store.state.basisSubject)
+		//alert(this.$store.state.basisExmaid)
+		this.knowAnalysis();
+	},
+	methods:{
+		knowAnalysis:function(){
+			this.postHttp(this,{subject:this.$store.state.basisSubject,examId:this.$store.state.basisExmaid,studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/knowAnalysis',function(obj,res){
+				for(var i=0;i<res.result.length;i++){
+					obj.titleQid="";
+					for(var l=0;l<res.result[i].knowDetail.length;l++){
+						obj.titleQid+=res.result[i].knowDetail[l].qid;
+						if(l==res.result[i].knowDetail.length-1){
+						}else{
+							obj.titleQid+=",";
+						}
+					}
+					var arr={
+						"title":res.result[i].knowDetail[0].knowledgemodule,
+						"sroce":res.result[i].score,
+						"total":res.result[i].totle,
+						"student":res.result[i].divideStudent,
+						"class":res.result[i].divideClass,
+						"school":res.result[i].divideSchool,
+						"titleQid":obj.titleQid
+					}
+					obj.baseData.push(arr);
+				}
+			})
+		}
 	}
 }
 </script>
@@ -154,7 +182,7 @@ export default {
 	width: 100%;
 	height: auto;
 	word-wrap:break-word;  
-    word-break:break-all;  
-    overflow: hidden;
+	word-break:break-all;  
+	overflow: hidden;
 }
 </style>

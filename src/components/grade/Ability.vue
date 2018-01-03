@@ -3,7 +3,7 @@
 		<div class="knowledge-bit" v-for="item in baseData">
 			<div class="knowledge-title">
 				<p class="knowledge-title-left">{{item.title}}</p>
-				<p class="knowledge-title-right">{{item.sroce}}/{{item.total}}分</p>
+				<!--<p class="knowledge-title-right">{{item.sroce}}/{{item.total}}分</p>-->
 			</div>
 			<div class="knowledge-score">
 				<div class="knowledge-score-conment">
@@ -37,7 +37,7 @@
 export default {
 	data(){
 		return{
-			baseData:[{
+			baseData:[/*{
 				title:'能力点一',
 				sroce:0,
 				total:10,
@@ -53,12 +53,31 @@ export default {
 				class:23,
 				school:54,
 				titleQid:'1,2,3,4,5'
-			}]
+			}*/]
 		}
 	},
 	created:function(){
 		this.$store.commit('newTab','9');
-		this.$store.commit('newTitle','能力点诊断')
+		this.$store.commit('newTitle','能力点诊断');
+		this.knowAnalysis();
+	},
+	methods:{
+		knowAnalysis:function(){
+			this.postHttp(this,{subject:this.$store.state.basisSubject,examId:this.$store.state.basisExmaid,studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/ablityAnalysis',function(obj,res){
+				for(var i=0;i<res.result.length;i++){
+					var arr={
+						"title":res.result[i].ablityName,
+						//"sroce":res.result[i].score,
+						//"total":res.result[i].totle,
+						"student":res.result[i].divideStudent,
+						"class":res.result[i].divideClass,
+						"school":res.result[i].divideSchool,
+						"titleQid":res.result[i].numbers,
+					}
+					obj.baseData.push(arr);
+				}
+			})
+		}
 	}
 }
 </script>
