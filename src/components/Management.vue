@@ -34,76 +34,50 @@ export default {
 				id:'id'
 			},
 			subjects:[],
-			items:[{
-				id:2,
-				name:'语文',
-				color:'#F3AF70',
-			},{
-				id:3,
-				name:'数学',
-				color:'#F3E370',
-			},{
-				id:4,
-				name:'英语',
-				color:'#B7EA81',
-			},{
-				id:5,
-				name:'物理',
-				color:'#9EE880',
-			},{
-				id:6,
-				name:'化学',
-				color:'#8EE9BB',
-			},{
-				id:7,
-				name:'生物',
-				color:'#70CDF3',
-			},{
-				id:8,
-				name:'政治',
-				color:'#7093F3',
-			},{
-				id:9,
-				name:'地理',
-				color:'#8570F3',
-			},{
-				id:10,
-				name:'美术',
-				color:'#A270F3',
-			},{
-				id:11,
-				name:'音乐',
-				color:'#D070F3',
-			}],
-			queryName:'语文',
+			items:[],
+			queryName:'',
 		}
 	},
 	created:function(){
-		var childNum=Math.ceil(this.items.length/11);
-		var childs=[];
-		for(var l=0;l<childNum;l++){
-			var id=l+1;
-			var e=11*(l+1);
-			var s=e-11;
-			childs[l] = []
-			childs[l]["childs"]=this.items.slice(s,e);
-			childs[l]["id"] = id;
-		}
-		this.subjects=childs;
-
-		this.$emit('refreshbizlines','other');
+		this.baseData();
+		
 	},
 	mounted:function(){
-		this.$refs.fristBit[0].className+=" on";
 		this.loadKonwP();
 	},
 	methods:{
 		handleNodeClick(data) {
-			console.log(data);
+		},
+		baseData(){
+			this.postHttp(this,{},'subject/getSubjectByLogin',function(obj,res){
+				obj.items=[];
+				for(var i=0;i<res.result.length;i++){
+					var arr={
+						"id":res.result[i].id,
+						"name":res.result[i].subjectName,
+						"color":res.result[i].subjectColor,
+					}
+					obj.items.push(arr);
+				}
+				obj.queryName=res.result[0].subjectName;
+				var childNum=Math.ceil(obj.items.length/11);
+				var childs=[];
+				for(var l=0;l<childNum;l++){
+					var id=l+1;
+					var e=11*(l+1);
+					var s=e-11;
+					childs[l] = []
+					childs[l]["childs"]=obj.items.slice(s,e);
+					childs[l]["id"] = id;
+				}
+				obj.subjects=childs;
+				obj.$emit('refreshbizlines','other');
+			});
 		},
 		loadKonwP(){
 			this.postHttp(this,{subjectName:this.queryName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 				obj.data = res.result;
+				obj.$refs.fristBit[0].className+=" on";
 			});
 		},
 		rainbow:function(index,num){
