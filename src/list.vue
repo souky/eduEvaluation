@@ -52,58 +52,10 @@
             <p>资源</p>
           </div> 
           <div id="knowPoint">
-           <div class="point" >
+           <div class="point" v-for="item in subList" :key="item.id" @click="resources(item.subjectName)">
              <div class="points">
-                  <img src="../static/img/APPImg/yw@1x.png" />
-                  <p>语文</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/sx@1x.png" />
-                  <p>数学</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/yy@1x.png" />
-                  <p>英语</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/wl@1x.png" />
-                  <p>物理</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/hy@1x.png" />
-                  <p>化学</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/sw@1x.png" />
-                  <p>生物</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/ls@1x.png" />
-                  <p>历史</p>
-             </div>
-           </div>
-           <div class="point" @click="resources('语文')">
-             <div class="points">
-                  <img src="../static/img/APPImg/dl@1x.png" />
-                  <p>地理</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="../static/img/APPImg/zh@1x.png" />
-                  <p>政治</p>
+                  <img :src="item.imgName" />
+                  <p>{{item.subjectName}}</p>
              </div>
            </div>
          </div>
@@ -215,45 +167,12 @@
           name:'金阳一中高三年级2014年期末考试'
         }],
         subjectLsit:[],
-      subject:[{
-        id:1,
-        name:'总分',
-      },{
-        id:2,
-        name:'数学',
-      },{
-        id:3,
-        name:'英语',
-      },{
-        id:4,
-        name:'物理',
-      },{
-        id:5,
-        name:'化学',
-      },{
-        id:6,
-        name:'语文',
-      },{
-        id:7,
-        name:'生物',
-      },{
-        id:8,
-        name:'历史',
-      },{
-        id:9,
-        name:'地理',
-      },{
-        id:10,
-        name:'政治',
-      }]
+      subList:[]
       };
     },
 
     created() {
-      this.navs = navs;
-      for(var i=0;i<5;i++){
-        this.subjectLsit.push(this.subject[i]);
-      }
+      
     },
     computed:{
     },
@@ -283,7 +202,6 @@
         this.$router.push({path:'/resources',query:{examId:e}})
       },
       initAll(){
-        
         this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
             obj.testList = [];
              for(var value of data.result.exams){
@@ -303,8 +221,11 @@
               });
           });
         var pageSizes={pageNum:1,pageSize:0};
-        this.postHttp(this,pageSizes,"subject/querySubjects",function(obj,data){
-                
+        this.postHttp(this,'',"subject/getSubjectByLogin",function(obj,data){
+                for(var a of data.result){
+                  a.imgName = "../static/img/APPImg/"+a.subjectCode+".png"
+                }
+                obj.subList = data.result;
         });
         this.postHttp(this,'',"user/getLoginUser",function(obj,data){
               obj.userName = data.result.name;
@@ -312,7 +233,6 @@
         });
       },
       testChange(e){
-
         var needData = {tab:'STUDENT_REPORT',examId:this.testList[e].id,subject:'总分'};
         this.postHttp(this,'',"score/geReportCards",function(obj,data){
                 
@@ -554,6 +474,7 @@
     #knowPoint{
       float: left;
       margin-top: 7vh;
+      width: 100%
     }
     #grade{
       overflow: hidden;

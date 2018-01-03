@@ -21,6 +21,8 @@
 		this.$store.commit('newTitle','资源');
     this.loadKonwP();
 	},
+  mounted:function(){
+  },
     methods: {
       handleNodeClick(data) {
       },
@@ -36,6 +38,7 @@
 <style>
 #resources{
 	width: 100%;
-	margin-top: 50px;
+  background-color: white;
+	padding-top: 8vh;
 }
 </style>

@@ -94,16 +94,16 @@ export default {
 				}, 2000);
 			}else{
 				this.postHttp(this,needDatas,'user/resetPsw',function(obj,res){
-					if(res.code=='40000'){
-						let instance =Toast({message: res.message});
+					if(res.code=='10000'){
+						let instance =Toast({message: '修改成功'});
 						setTimeout(() => {
 							instance.close();
+							obj.$router.push({path:'/setting'})
 						}, 2000);
 					}else{
 						let instance =Toast({message: res.message});
 						setTimeout(() => {
 							instance.close();
-							obj.$router.push({path:'/setting'})
 						}, 2000);
 					}
 					

@@ -16,12 +16,14 @@
         queryName:''
       };
     },
-    created:function(){
+  created:function(){
 		this.$store.commit('newTab','7');
 		this.$store.commit('newTitle','知识点');
     this.loadKonwP();
 	},
-    methods: {
+  mounted:function(){
+  },
+  methods: {
       handleNodeClick(data) {
       },
       loadKonwP(){
@@ -36,6 +38,10 @@
 <style>
 #resourcesMy{
 	width: 100%;
+  background-color:white;
 	margin-top: 50px;
+}
+#resourcesMy .el-tree-node__label{
+  font-size: 4vw
 }
 </style>
