@@ -105,7 +105,7 @@
 			  <el-col class="queryItems" :span="6" >
 			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>名称</div>
 			  	<div class="r">
-			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称"></el-input>
+			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称" :maxlength="30"></el-input>
 			  	</div>
 			  </el-col>
 			   <el-col class="queryItems" :span="6">

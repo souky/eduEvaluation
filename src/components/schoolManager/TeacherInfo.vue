@@ -65,7 +65,7 @@
 		      <el-table-column prop="userName" show-overflow-tooltip align="center"  label="帐户名"></el-table-column>
 		      <el-table-column align="center" label="操作" width="300">
 		      	<template slot-scope="scope">
-		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
+		      		<el-button type="primary" v-show="userType == 1 || userType == 0" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
 		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
 		      		<el-button type="primary forbid" v-else icon="el-icon-upload">开通账号</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
@@ -225,6 +225,12 @@ export default {
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
   	});
+
+	this.postHttp(this,{},'user/getLoginUser',function(obj,res){
+  		console.log(res.result);
+  		obj.userType = res.result.userType;
+  	});
+
   	this.queryInfo();
   	
   	this.postHttp(this,{},'school/querySchools',function(obj,res){

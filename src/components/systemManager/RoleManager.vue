@@ -60,7 +60,7 @@
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="role" class="demo-ruleForm" label-width="80px" :model="role">
 			  <el-form-item label="名称" prop="roleName">
-			    <el-input v-model="role.roleName"></el-input>
+			    <el-input v-model="role.roleName" :maxlength="20"></el-input>
 			  </el-form-item>
 			</el-form>
 		  </div>
