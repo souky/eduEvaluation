@@ -1,14 +1,14 @@
 <template>
 	<div id="menu">
 		<el-menu :default-active="defaultActive()" background-color="#282828" text-color="#ffffff" active-text-color="#FFD100"  router unique-opened @open="handleOpen" class="el-menu-vertical-demo">
-			<el-menu-item v-for="(e,index) in menuData" :key="e.path" v-if="e.path != null && e.path != ''"  :index="e.path">
+			<el-menu-item v-for="(e,index) in menuData" :key="e.id" v-if="e.path != null && e.path != ''"  :index="e.path">
 				<i :class="e.icon"></i>{{e.menuName}}
 			</el-menu-item>
-			<el-submenu v-for="(e,index) in menuData" :key="e.path" v-if="e.path == '' || e.path == null" :index="''+index">
+			<el-submenu v-for="(e,index) in menuData" :key="e.id" v-if="e.path == '' || e.path == null" :index="''+index">
 				<template slot="title">
 	        		<i :class="e.icon"></i>{{e.menuName}}
 	        	</template>
-	        	<el-menu-item v-for="ee in e.children" :index="ee.path" :key="ee.path">
+	        	<el-menu-item v-for="ee in e.children" :index="ee.path" :key="ee.id">
 	        		<i :class="ee.icon"></i>{{ee.menuName}}
 	        	</el-menu-item>
 			</el-submenu>
