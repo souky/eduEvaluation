@@ -1,6 +1,11 @@
 <template>
 	<div id="knowledgePoint" class="main_body">
 		<div class="knowledge_body">
+			<div class="title">选择年级</div>
+			<div class="select_subject fix">
+				<div v-for="(e,index) in gradeArray" v-if="index == 0" class="itemsG l active" @click="changeCode($event)">{{e}}</div>
+				<div v-for="(e,index) in gradeArray" v-if="index != 0" class="itemsG l" @click="changeCode($event)">{{e}}</div>
+			</div>
 			<div class="title">选择科目</div>
 			<div class="select_subject fix">
 				<div v-for="(e,index) in subjectArray" v-if="index == 0" class="items l active" @click="changeSubject($event)">{{e}}</div>
@@ -40,6 +45,7 @@ export default {
     return {
       msg: 'knowledgePoint',
       subjectArray:[],
+      gradeArray:[],
       defaultProps: {
 	        children: 'kpVOChildList',
 	        label: 'knowledgeContent',
@@ -57,7 +63,8 @@ export default {
             { required: true, message: '请输入知识点名称', trigger: 'blur' }
           ],
      },
-     queryName:'语文',
+     queryName:'',
+     queryCode:'',
      text_id:'',
      
      diaTitle:'新增'
@@ -67,7 +74,11 @@ export default {
   	this.postHttp(this,{},"school/querySchools",function(obj,res){
   		obj.subjectArray = res.result.subjectArray;
   		obj.queryName = obj.subjectArray[0];
-  		obj.loadKonwP();
+  		obj.postHttp(obj,{},"getLoingGrade",function(obj,res){
+  			obj.gradeArray = res.result;
+  			obj.queryCode = obj.gradeArray[0];
+  			obj.loadKonwP();
+  		});
   	})
   	
   },
@@ -81,8 +92,17 @@ export default {
 		this.queryName = event.currentTarget.innerHTML;
 		this.loadKonwP();
 	},
+	changeCode(event){
+		var list = document.getElementsByClassName("itemsG");
+		for(var i = 0;i < list.length;i++){
+			list[i].className = 'l itemsG';
+		}
+		event.currentTarget.className = 'itemsG l active';
+		this.queryCode = event.currentTarget.innerHTML;
+		this.loadKonwP();
+	},
 	loadKonwP(){
-		this.postHttp(this,{subjectName:this.queryName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+		this.postHttp(this,{subjectName:this.queryName,gradeCode:this.queryCode},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.data = res.result;
 	  	});
 	},
@@ -96,6 +116,7 @@ export default {
   		this.konw = {};
   		this.konw["parentId"] = "";
   		this.konw["subjectId"] = this.queryName;
+  		this.konw["gradeCode"] = this.queryCode;
   		if(this.$refs['konw']){
   			this.$refs['konw'].resetFields();
   		}
@@ -148,6 +169,7 @@ export default {
 	                click:function() {  
 	                	self.konw.parentId = data.id;
 	                	self.konw.subjectId = self.queryName;
+	                	self.konw.gradeCode = self.queryCode;
 	                	self.dialogVisible = true;
 	                	self.$refs['konw'].resetFields();
 	                	self.konw.knowledgeContent = "";
@@ -204,6 +226,24 @@ export default {
 	margin-top:20px;
 }
 #knowledgePoint .knowledge_body .select_subject .items.active{
+	border-color: #FFD100;
+	background: #FFD100;
+	color:#fff;
+}
+#knowledgePoint .knowledge_body .select_subject .itemsG{
+	width:18%;
+	height: 40px;
+	line-height: 40px;
+	color:#7b7b7b;
+	border:1px solid #e4e4e4;
+	border-radius: 3px;
+	text-align: center;
+	cursor: pointer;
+	font-size:18px;
+	margin-right:1%;
+	margin-top:20px;
+}
+#knowledgePoint .knowledge_body .select_subject .itemsG.active{
 	border-color: #FFD100;
 	background: #FFD100;
 	color:#fff;
