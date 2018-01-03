@@ -533,6 +533,7 @@ export default {
 						objs.tableData1 = [];objs.tableData2 = [];
 						objs.option2.xAxis[0].data = objs.classroom;
 		           		objs.option2.series[0].data = [];
+		           		objs.option2.series[0].markLine.data[0].yAxis = 0;
 		           		for(var a of obj.classroom){
 			           		objs.option2.series[0].data.push(0);
 			           		objs.option4.series[0].data.push(0);
@@ -549,6 +550,7 @@ export default {
 						objs.option2.series[0].data = avgList;
 						objs.option2.series[0].data[0] = {value:avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
 						objs.option2.xAxis[0].data = avgXAxis;
+						objs.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgSubjectScore;
 						objs.echarts.init(document.getElementById("averageChart")).setOption(objs.option2);
 				}
 			});
