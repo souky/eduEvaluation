@@ -1033,13 +1033,13 @@ export default {
 				return data2;
 			},
 			dateFormat1:function(row,column){
-				var data=this.accDiv(parseFloat(row.divideClass),parseFloat(100));
+				var data=this.accDiv(parseFloat(row.divideSchool),parseFloat(100));
 				var data1=parseInt(this.accMul(row.fractionalValue,data)*100);
 				var data2=parseFloat(data1)/100;
 				return data2;
 			},
 			dateFormat2:function(row,column){
-				var data=this.accDiv(parseFloat(row.divideClass),parseFloat(100));
+				var data=this.accDiv(parseFloat(row.divideAera),parseFloat(100));
 				var data1=parseInt(this.accMul(row.fractionalValue,data)*100);
 				var data2=parseFloat(data1)/100;
 				return data2;

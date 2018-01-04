@@ -1314,6 +1314,7 @@ export default{
 						if(res.code == '10000'){
 							obj.optiongradeDistribution.legend.data=[];
 							obj.optiongradeDistribution.legend.data=['班级','全校','全区县','对比班级'];
+							var arrList={normal:{show:true,position:'top'},};
 							if(obj.optiongradeDistribution.series.length==3){
 								var list=[];
 								list.push(res.result[1].highRate* 1000000/10000);
@@ -1325,7 +1326,7 @@ export default{
 									"name":"对比班级",
 									"type":'bar',
 									"barWidth": '30%',	
-									"label":"{normal:{show:true,position:'top'},}",
+									"label":arrList,
 									"itemStyle":"{normal:{color:'#FF8585'},}",
 									"data":list
 								}
