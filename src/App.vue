@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="header-nav" v-if="visible">
-      <span @click="header"><img src="../static/img/header/fh@1x.png" alt=""></span>
+      <span @click="header"><img src="../static/img/header/fh@2x.png" width="20px" alt=""></span>
       <p>{{$store.state.title}}</p>
     </div>
     <router-view></router-view>
