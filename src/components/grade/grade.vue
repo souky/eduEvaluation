@@ -862,8 +862,14 @@ export default {
 				}
 			},
 			created:function(){
-				this.$store.commit('newTab','2');
-				this.$store.commit('newTitle','成绩报告');
+				if(this.$store.state.ways=='2'){
+					this.$store.commit('newTab','1');
+					this.$store.commit('newTitle','成绩报告');
+				}else if(this.$store.state.ways=='1'){
+					this.$store.commit('newTab','2');
+					this.$store.commit('newTitle','成绩报告');
+				}
+				
 				// for(var i=0;i<5;i++){
 				// 	this.subjectLsit.push(this.subject[i]);
 				// }

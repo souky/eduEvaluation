@@ -1,62 +1,14 @@
 <template>
   <section class="page-demo" id="pageDemo">
-<div id="knowPoint">
-           <div class="point" >
+    <div id="knowPoint">
+          <div class="point" v-for="item in subList" :key="item.id" @click="resources(item.subjectName)">
              <div class="points">
-                  <img src="static/img/APPImg/yw@1x.png" />
-                  <p>语文</p>
+                  <img :src="item.imgName" />
+                  <p>{{item.subjectName}}</p>
              </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/sx@1x.png" />
-                  <p>数学</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/yy@1x.png" />
-                  <p>英语</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/wl@1x.png" />
-                  <p>物理</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/hy@1x.png" />
-                  <p>化学</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/sw@1x.png" />
-                  <p>生物</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/ls@1x.png" />
-                  <p>历史</p>
-             </div>
-           </div>
-           <div class="point" @click="resources('语文')">
-             <div class="points">
-                  <img src="static/img/APPImg/dl@1x.png" />
-                  <p>地理</p>
-             </div>
-           </div>
-           <div class="point">
-             <div class="points">
-                  <img src="static/img/APPImg/zh@1x.png" />
-                  <p>政治</p>
-             </div>
-           </div>
-         </div>
-       </section>
+           </div> 
+    </div>
+  </section>
 </template>
 <script>
   export default {
@@ -68,18 +20,30 @@
           label: 'knowledgeContent',
           id:'id'
         },
-        queryName:''
+        queryName:'',
+         subList:[]
       };
     },
     created:function(){
 		this.$store.commit('newTab','1');
 		this.$store.commit('newTitle','知识点');
 	},
+  mounted(){
+    this.initall()
+  },
     methods: {
       handleNodeClick(data) {
       },
       resources(e){
         this.$router.push({path:'/knowlegdeDetail',query:{examId:e}})
+      },
+      initall(){
+        this.postHttp(this,'',"subject/getSubjectByLogin",function(obj,data){
+                for(var a of data.result){
+                  a.imgName = "../static/img/APPImg/"+a.subjectCode+".png"
+                }
+                obj.subList = data.result;
+        });
       }
     }
   };

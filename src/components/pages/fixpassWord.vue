@@ -26,9 +26,9 @@ export default {
 			usedpassword:'',
 			newpassword:'',
 			againpassword:'',
-			eyesclose1:'/static/img/APPImg/yj2@1x.png',
-			eyesclose2:'/static/img/APPImg/yj2@1x.png',
-			eyesclose3:'/static/img/APPImg/yj2@1x.png',
+			eyesclose1:'../static/img/APPImg/yj2@1x.png',
+			eyesclose2:'../static/img/APPImg/yj2@1x.png',
+			eyesclose3:'../static/img/APPImg/yj2@1x.png',
 		}
 	},
 	created:function(){

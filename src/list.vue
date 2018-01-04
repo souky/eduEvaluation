@@ -1,15 +1,16 @@
 <template>
   <section class="page-demo" id="pageDemo">
-    <div class="page-tabbar">  
+    <div class="page-tabbar" v-if="display.allInit">  
     <div class="page-wrap"> 
       <mt-tab-container class="page-tabbar-container" v-model="selected">  
         <mt-tab-container-item id="首页">  
            <div class="indexImg">
              <div class="mainImg">
+              <div class="selceeds"></div>
                <mt-search cancel-text='' placeholder="搜索"></mt-search>
                <div class="tesrra">
-                <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false">
-                  <el-carousel-item v-for="item in testList" :key="item.id" :name="item.examName"  @change="testChange($event)">
+                <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false" @change="testChange($event)">
+                  <el-carousel-item v-for="item in testList" :key="item.id" :name="item.examName"  >
                     <p class="alltest">{{item.examName}}</p>
                 </el-carousel-item>
                 </el-carousel>
@@ -88,27 +89,28 @@
         </mt-tab-container-item>  
       </mt-tab-container>  
     </div>  
-  
     <mt-tabbar v-model="selected" fixed>  
       <mt-tab-item id="首页">  
-        <img slot="icon" :src="selected=='首页'? '../static/img/APPImg/sy@1x.png':'../static/img/APPImg/sy-o@1x.png'">  
+        <img slot="icon" :src="selected=='首页'? 'static/img/APPImg/sy@1x.png':'static/img/APPImg/sy-o@1x.png'">  
         首页  
       </mt-tab-item>  
       <mt-tab-item id="成绩">  
-        <img slot="icon" :src="selected=='成绩'? '../static/img/APPImg/cj@1x.png':'../static/img/APPImg/cj-o@1x.png'">  
+        <img slot="icon" :src="selected=='成绩'? 'static/img/APPImg/cj@1x.png':'static/img/APPImg/cj-o@1x.png'">  
         成绩  
       </mt-tab-item>  
       <mt-tab-item id="资源">  
-        <img slot="icon" :src="selected=='资源'? '../static/img/APPImg/zy@1x.png':'../static/img/APPImg/zy-o@1x.png'">  
+        <img slot="icon" :src="selected=='资源'? 'static/img/APPImg/zy@1x.png':'static/img/APPImg/zy-o@1x.png'">  
         资源  
       </mt-tab-item>  
       <mt-tab-item id="我的">  
-        <img slot="icon" :src="selected=='我的'? '../static/img/APPImg/my@1x.png':'../static/img/APPImg/my-o@1x.png'">  
+        <img slot="icon" :src="selected=='我的'? 'static/img/APPImg/my@1x.png':'static/img/APPImg/my-o@1x.png'">  
         我的  
       </mt-tab-item>  
     </mt-tabbar>  
     </div>  
-
+    <div class="page-select" v-if="!display.allInit">
+      <p>asdfasdfasdfasdfasdfsdfasdf</p>
+    </div>
     <!-- <div v-for="group in navs">
       <div class="page-title" v-text="group.title"></div>
       <mt-cell
@@ -132,8 +134,10 @@
         display:{
           subject:true,
           allSubject:false,
+          allInit:true
         },
         navs: [],
+        examId:'',
         selected: '首页',
         selected1:'1',
         userName:'王二丫',
@@ -174,8 +178,6 @@
     created() {
       
     },
-    computed:{
-    },
     mounted(){
       if(this.$store.state.label=='4'){
         this.selected='我的'
@@ -196,6 +198,7 @@
         this.$router.push({path:'/personal'})
       },
       gotoReport(e){
+        this.$store.commit('newGread','1');
         this.$router.push({path:'/grade',query:{examId: e}})
       },
       resources(e){
@@ -207,11 +210,13 @@
              for(var value of data.result.exams){
                  obj.testList.push(value);
              }
+             obj.examId = obj.testList[0].id;
              var needData = {tab:'STUDENT_REPORT',examId:data.result.exams[0].id,subject:'总分'};
              obj.postHttp(obj,needData,"score/geReportCards",function(objs,data){
               if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
 
               }else{
+                objs.personalData
                 for(var i=0;i<data.result.scoreVOList.length;i++){
                     if(i<3)
                     objs.personalData.push(data.result.scoreVOList[i]);
@@ -233,15 +238,33 @@
         });
       },
       testChange(e){
+        this.examId = this.testList[e].id;
         var needData = {tab:'STUDENT_REPORT',examId:this.testList[e].id,subject:'总分'};
-        this.postHttp(this,'',"score/geReportCards",function(obj,data){
-                
+        this.postHttp(this,needData,"score/geReportCards",function(objs,data){
+              if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
+
+              }else{
+                objs.personalData=[]
+                for(var i=0;i<data.result.scoreVOList.length;i++){
+                    if(i<3)
+                    objs.personalData.push(data.result.scoreVOList[i]);
+                }
+              }
+              
+              });
+        var pageSizes={pageNum:1,pageSize:0};
+        this.postHttp(this,'',"subject/getSubjectByLogin",function(obj,data){
+                for(var a of data.result){
+                  a.imgName = "../static/img/APPImg/"+a.subjectCode+".png"
+                }
+                obj.subList = data.result;
         });
       },
       goKnowlegde(e){
         if(e==0){
+          var s = this.examId;
           this.$store.commit('newGread','2');
-          this.$router.push({path:'/grade'});
+          this.$router.push({path:'/grade',query:{examId: s}});
         }
         if(e==1){
           
@@ -273,6 +296,13 @@
   #pageDemo .indexImg{
     width: 100%;
     
+  }
+  #pageDemo .selceeds{
+    height: 11vw;
+    position: absolute;
+    top: 5px;
+    width: 100%;
+    z-index: 999;
   }
   #pageDemo .page-wrap{
     padding-bottom: 20px
