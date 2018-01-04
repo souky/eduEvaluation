@@ -1,7 +1,7 @@
 <template>
 	<div id="studentInfo" class="main_body">
 		<div class="student_info_search">
-			
+
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">姓名</div>
@@ -15,7 +15,7 @@
 				  		<el-input v-model="queryInfos.studentNo" placeholder="学号"></el-input>
 				  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6">	
+			  <el-col class="queryItems" :span="6">
 			  		<div class="l">年级</div>
 				  	<div class="r">
 				  		<el-select v-model="grade" @change='changeGrade' placeholder="请选择">
@@ -24,15 +24,15 @@
 						</el-select>
 				  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6">	
+			  <el-col class="queryItems" :span="6">
 			  		<div class="l">班级</div>
 				  	<div class="r">
 				  		<el-select v-model="queryInfos.classroomId" placeholder="请选择">
 					  		<el-option v-for="e in classOption" :label="e.classroomName" :key="e.id" :value="e.id" name="classId"></el-option>
-						</el-select>
+							</el-select>
 				  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6"></el-col>	
+			  <el-col class="queryItems" :span="6"></el-col>
 			  <el-col class="queryItems" :span="6"></el-col>
 			  <el-col class="queryItems" :span="6"></el-col>
 			  <el-col :span="6">
@@ -41,14 +41,20 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-			
+
 		</div>
-		
+
 		<div class="student_info_table">
 			<div class="tools fix">
 				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline">新增</i>
-				</div>	
+				</div>
+				<div class="items_tools l" @click="downloadTemp">
+					<i class="el-icon-download">下载模板</i>
+				</div>
+				<div class="items_tools l" @click="addNews">
+					<i class="el-icon-circle-plus-outline">批量新增</i>
+				</div>
 			</div>
 			<el-table :data="tableData" style="width: 100%">
 		      <el-table-column prop="studentName" align="center" show-overflow-tooltip label="姓名"></el-table-column>
@@ -61,7 +67,7 @@
 		       <el-table-column prop="userName" align="center" show-overflow-tooltip  label="用户名"></el-table-column>
 		      <el-table-column align="center" label="操作" width='300'>
 		      	<template slot-scope="scope">
-		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
+		      		<el-button type="primary" v-if="scope.row.userName == '' || scope.row.userName == undefined "
 		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
 		      		<el-button type="primary forbid" v-else icon="el-icon-upload">开通账号</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
@@ -69,7 +75,7 @@
 		      	</template>
 		      </el-table-column>
 		    </el-table>
-		    
+
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
@@ -78,7 +84,15 @@
 		      >
 		    </el-pagination>
 		</div>
-		
+		<el-dialog title="批量新增" :visible.sync="showAddAll" width="30%">
+			<div class="fix" v-loading="loading">
+				<el-upload class="upload-demo" ref="upload" :action="addsAction" :limit="limit" :auto-upload="false" :on-success="handleSuccess" :on-error="handleError">
+				  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+				</el-upload>
+				<el-button style="margin-top: 20px;float:right" size="small" type="primary" @click="submitUpload">批量添加</el-button>
+			</div>
+		</el-dialog>
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="student" class="demo-ruleForm"  :model="student">
@@ -122,7 +136,7 @@
 		  </span>
 		</el-dialog>
 	</div>
-	
+
 </template>
 
 <script>
@@ -135,11 +149,11 @@ export default {
 	  queryInfos:{
 	  	classroomId:'',
 	  },
-	  
+
 	  pageNum:1,
       pageSize:10,
       total:1,
-      
+
       dialogVisible:false,
       diaTitle:'新增',
       gradeOption:[],
@@ -159,7 +173,11 @@ export default {
 	  classOption:[],
 	  grade:'',
 	  showInfo:true,
-	  
+		showAddAll:false,
+		addsAction:'',
+		loading:false,
+		limit:1,
+
 	  rules: {
           studentName: [
             { required: true, message: '请输入学生名字', trigger: 'blur' }
@@ -176,13 +194,13 @@ export default {
           studentNo:[
             { required: true, message: '请输入学号', trigger: 'blur' }
           ],
-          
+
      },
     }
   },
   mounted:function(){
   	this.queryInfo();
-  	
+
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		var data = res.result;
   		obj.gradeOption = data;
@@ -192,7 +210,8 @@ export default {
   		data.unshift("全部")
   		obj.gradeOptions = data;
   	});
-  	
+		this.addsAction = this.getBaseUrl() + 'student/importStudent';
+
   },
   methods:{
   	queryInfo(){
@@ -223,7 +242,7 @@ export default {
   			address = 'student/updateStudent';
   			this.student.grade = '1';
   			this.student.classroomId = '1';
-  			
+
   			this.$refs['student'].validate((valid) => {
 	          if (valid) {
 	          	delete dataS['grade'];
@@ -260,9 +279,6 @@ export default {
 	          }
 	        });
   		}
-  		
-  		
-  		
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -274,88 +290,113 @@ export default {
   			this.$refs['student'].resetFields();
   		}
   	},
-	editInfo(id){
-		this.showInfo = false;
-		this.dialogVisible = true;
-		this.diaTitle = "编辑";
-		if(this.$refs['student']){
-  			this.$refs['student'].resetFields();
-  		}
-		this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
-  			if(res.code == '10000'){
-  				obj.student = res.result;
-  			}else{
-  				obj.notify_jr(obj,'操作错误',res.message,'error');
-  			}
-  		})
-	},
-	deleteInfo(id){
-		this.$confirm('此操作将删除该学生信息,是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-        	this.postHttp(this,{id:id},'student/deleteStudent',function(obj,res){
-		  		if(res.code == "10000"){
-		  			obj.notify_success();
-		  			obj.queryInfo();
-		  		}else{
-		  			obj.notify_jr(obj,'操作错误',res.message,'error');
-		  		}
-		  	});
-        }).catch(() => {
-        	
-        });
-	},
-	allotAuth(id){
-		var loading = this.loading('正在开通...');
-		this.postHttp(this,{id:id},"user/saveStudentUser",function(o,res){
-			loading.close();
-			if(res.code == "10000"){
-				o.notify_success();
-				o.queryInfo();
-				o.$alert('开通账户成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+		downloadTemp(){
+			var dates = new Date();
+			dates = dates.getTime();
+			var url = this.getBaseUrl() + 'student/downloadStudentTemplate'+"?jy_pc_manager&timer="+dates;
+			window.open(url)
+		},
+		addNews(){
+			this.showAddAll = true;
+		},
+		submitUpload(){
+			this.loading = true;
+			this.$refs.upload.submit();
+		},
+		handleError(){
+			this.loading = false;
+			this.notify_jr(this,'添加失败','网络错误','error');
+		},
+		handleSuccess(res, file, fileList){
+			this.loading = false;
+			if(res.code == '10000'){
+				this.notify_jr(this,'添加成功','添加成功','success');
 			}else{
-				o.notify_jr(o,'操作错误',res.message,'error');
+				this.notify_jr(this,'添加失败',res.message,'error');
 			}
-		})
-	},
-	handleSizeChange(val) {
-	  	this.pageNum = 1;
-		this.pageSize = val;
-		this.queryInfo();
-	},
-	handleCurrentChange(val) {
-	  	this.pageNum = val;
-		this.queryInfo();
-	},
-	sexFormatter(row, column, cellValue){
-		var age = row[column.property];  
-	  	if (age == undefined) {  
-	     return "";
-	  	}
-	  	if(age == '1'){
-	  		return '男';
-	  	}else{
-	  		return '女';
-	  	}
-	},
-	ajaxData(){
-		var data = new Object();
-		data["pageSize"] = this.pageSize;
-		data["pageNum"] = this.pageNum;
-		data["studentName"] = this.queryInfos.studentName;
-		data["studentNo"] = this.queryInfos.studentNo;
-		data["classroomId"] = this.queryInfos.classroomId;
-		return data;
-	},
-	changeGrade(val){
-		this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
-	  		obj.classOption = res.result;
-	  		obj.queryInfos["classroomId"] = "";
-	  		obj.student["classroomId"] = "";
-	  	});
-	}
+		},
+		editInfo(id){
+			this.showInfo = false;
+			this.dialogVisible = true;
+			this.diaTitle = "编辑";
+			if(this.$refs['student']){
+	  			this.$refs['student'].resetFields();
+	  		}
+			this.postHttp(this,{id:id},"student/getStudentById",function(obj,res){
+	  			if(res.code == '10000'){
+	  				obj.student = res.result;
+	  			}else{
+	  				obj.notify_jr(obj,'操作错误',res.message,'error');
+	  			}
+	  		})
+		},
+		deleteInfo(id){
+			this.$confirm('此操作将删除该学生信息,是否继续?', '提示', {
+	          confirmButtonText: '确定',
+	          cancelButtonText: '取消',
+	          type: 'warning'
+	        }).then(() => {
+	        	this.postHttp(this,{id:id},'student/deleteStudent',function(obj,res){
+			  		if(res.code == "10000"){
+			  			obj.notify_success();
+			  			obj.queryInfo();
+			  		}else{
+			  			obj.notify_jr(obj,'操作错误',res.message,'error');
+			  		}
+			  	});
+	        }).catch(() => {
+
+	        });
+		},
+		allotAuth(id){
+			var loading = this.loading('正在开通...');
+			this.postHttp(this,{id:id},"user/saveStudentUser",function(o,res){
+				loading.close();
+				if(res.code == "10000"){
+					o.notify_success();
+					o.queryInfo();
+					o.$alert('开通账户成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+				}else{
+					o.notify_jr(o,'操作错误',res.message,'error');
+				}
+			})
+		},
+		handleSizeChange(val) {
+		  	this.pageNum = 1;
+			this.pageSize = val;
+			this.queryInfo();
+		},
+		handleCurrentChange(val) {
+		  	this.pageNum = val;
+			this.queryInfo();
+		},
+		sexFormatter(row, column, cellValue){
+			var age = row[column.property];
+		  	if (age == undefined) {
+		     return "";
+		  	}
+		  	if(age == '1'){
+		  		return '男';
+		  	}else{
+		  		return '女';
+		  	}
+		},
+		ajaxData(){
+			var data = new Object();
+			data["pageSize"] = this.pageSize;
+			data["pageNum"] = this.pageNum;
+			data["studentName"] = this.queryInfos.studentName;
+			data["studentNo"] = this.queryInfos.studentNo;
+			data["classroomId"] = this.queryInfos.classroomId;
+			return data;
+		},
+		changeGrade(val){
+			this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
+		  		obj.classOption = res.result;
+		  		obj.queryInfos["classroomId"] = "";
+		  		obj.student["classroomId"] = "";
+		  	});
+		}
   }
 }
 </script>

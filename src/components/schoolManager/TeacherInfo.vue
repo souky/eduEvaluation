@@ -1,7 +1,7 @@
 <template>
 	<div id="teacherInfo" class="main_body">
 		<div class="teacher_info_search">
-			
+
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">姓名</div>
@@ -15,7 +15,7 @@
 			  		<el-input v-model="queryInfos.teacherDuty" placeholder="职责"></el-input>
 			  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6">	
+			  <el-col class="queryItems" :span="6">
 			  		<div class="l">年级</div>
 				  	<div class="r">
 				  		<el-select v-model="grade" @change='changeGrades' placeholder="请选择">
@@ -24,7 +24,7 @@
 						</el-select>
 				  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6">	
+			  <el-col class="queryItems" :span="6">
 			  		<div class="l">班级</div>
 				  	<div class="r">
 				  		<el-select v-model="queryInfos.classroom" placeholder="请选择">
@@ -44,14 +44,20 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-			
+
 		</div>
-		
+
 		<div class="teacher_info_table">
 			<div class="tools fix">
 				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline">新增</i>
-				</div>	
+				</div>
+				<div class="items_tools l" @click="downloadTemp">
+					<i class="el-icon-download">下载模板</i>
+				</div>
+				<div class="items_tools l" @click="addNews">
+					<i class="el-icon-circle-plus-outline">批量新增</i>
+				</div>
 			</div>
 			<el-table :data="tableData" style="width: 100%">
 		      <el-table-column prop="teacherName" align="center" label="姓名"></el-table-column>
@@ -65,7 +71,7 @@
 		      <el-table-column prop="userName" show-overflow-tooltip align="center"  label="帐户名"></el-table-column>
 		      <el-table-column align="center" label="操作" width="300">
 		      	<template slot-scope="scope">
-		      		<el-button type="primary" v-show="userType == 1 || userType == 0" v-if="scope.row.userName == '' || scope.row.userName == undefined " 
+		      		<el-button type="primary" v-show="userType == 1 || userType == 0" v-if="scope.row.userName == '' || scope.row.userName == undefined "
 		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
 		      		<el-button type="primary forbid" v-show="userType == 1 || userType == 0" v-else icon="el-icon-upload">开通账号</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
@@ -73,7 +79,7 @@
 		      	</template>
 		      </el-table-column>
 		    </el-table>
-		    
+
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
@@ -82,7 +88,16 @@
 		      >
 		    </el-pagination>
 		</div>
-		
+
+		<el-dialog title="批量新增" :visible.sync="showAddAll" width="30%">
+			<div class="fix" v-loading="loading">
+				<el-upload class="upload-demo" ref="upload" :action="addsAction" :limit='limit' :auto-upload="false" :on-success="handleSuccess" :on-error="handleError">
+				  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+				</el-upload>
+				<el-button style="margin-top: 20px;float:right" size="small" type="primary" @click="submitUpload">批量添加</el-button>
+			</div>
+		</el-dialog>
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="teacher" class="demo-ruleForm" label-width="80px" :model="teacher">
@@ -134,7 +149,7 @@
 		  </span>
 		</el-dialog>
 	</div>
-	
+
 </template>
 
 <script>
@@ -146,7 +161,7 @@ export default {
 		if(!reg.test(value)){
           callback(new Error('电话格式不正确'));
         }else if(value.length != 11){
-          callback(new Error('电话格式不正确'));	
+          callback(new Error('电话格式不正确'));
         }else{
         	callback();
         }
@@ -158,11 +173,11 @@ export default {
 	  	teacherName:'',
 	  	teacherDuty:'',
 	  },
-	  
+
 	  pageNum:1,
       pageSize:10,
       total:1,
-      
+
       dialogVisible:false,
       diaTitle:'新增',
       teacher:{
@@ -187,14 +202,19 @@ export default {
 	  		id:'班主任'
 	  	}
 	  ],
-	  
+
 	  classOption:[],
 	  classOptions:[],
 	  grade:'',
 	  gradeOption:[],
 	  subjectOption:[],
 	  classOption:[],
-	  
+
+		showAddAll:false,
+		addsAction:'',
+		loading:false,
+		limit:1,
+
 	  maxLength:11,
 	  rules: {
           teacherName: [
@@ -226,17 +246,17 @@ export default {
   		obj.gradeOption = res.result;
   	});
 
-	this.postHttp(this,{},'user/getLoginUser',function(obj,res){
+		this.postHttp(this,{},'user/getLoginUser',function(obj,res){
   		console.log(res.result);
   		obj.userType = res.result.userType;
   	});
 
   	this.queryInfo();
-  	
+
   	this.postHttp(this,{},'school/querySchools',function(obj,res){
   		obj.subjectOption = res.result.subjectArray;
   	});
-  	
+  	this.addsAction = this.getBaseUrl() + 'student/importTeacherList';
   },
   methods:{
   	queryInfo(){
@@ -248,6 +268,31 @@ export default {
 	  		obj.tableData = res.result.list;
 	  	});
   	},
+		downloadTemp(){
+			var dates = new Date();
+			dates = dates.getTime();
+			var url = this.getBaseUrl() + 'student/dowmloadTeacherListTemplate'+"?jy_pc_manager&timer="+dates;
+			window.open(url)
+		},
+		addNews(){
+			this.showAddAll = true;
+		},
+		submitUpload(){
+			this.loading = true;
+			this.$refs.upload.submit();
+		},
+		handleError(){
+			this.loading = false;
+			this.notify_jr(this,'添加失败','网络错误','error');
+		},
+		handleSuccess(res, file, fileList){
+			this.loading = false;
+			if(res.code == '10000'){
+				this.notify_jr(this,'添加成功','添加成功','success');
+			}else{
+				this.notify_jr(this,'添加失败',res.message,'error');
+			}
+		},
   	colseDia(){
   		this.dialogVisible = false;
   		this.teacher = {};
@@ -261,7 +306,7 @@ export default {
   		if(id){
   			address = 'teacher/updateTeacher';
   		}
-  		
+
   		this.$refs['teacher'].validate((valid) => {
           if (valid) {
           	this.postHttp(this,dataS,address,function(obj,res){
@@ -277,7 +322,7 @@ export default {
             return false;
           }
         });
-		
+
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -291,7 +336,7 @@ export default {
   		if(this.$refs['teacher']){
   			this.$refs['teacher'].resetFields();
   		}
-  		
+
   	},
 	editInfo(id){
 		this.dialogVisible = true;
@@ -326,7 +371,7 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	allotAuth(id){
@@ -352,8 +397,8 @@ export default {
 		this.queryInfo();
 	},
 	sexFormatter(row, column, cellValue){
-		var age = row[column.property];  
-	  	if (age == undefined) {  
+		var age = row[column.property];
+	  	if (age == undefined) {
 	     return "";
 	  	}
 	  	if(age == '1'){
