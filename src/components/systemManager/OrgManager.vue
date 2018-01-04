@@ -15,6 +15,7 @@
 				</div>
 				<el-table :data="tableData" style="width: 100%">
 			      <el-table-column prop="orgName" align="center" label="名称"></el-table-column>
+			      <el-table-column prop="managerCount" align="center" label="管理员数量"></el-table-column>
 			      <el-table-column align="center" label="操作" width='400'>
 			      	<template slot-scope="scope">
 			      		<el-button type="primary" icon="el-icon-plus" @click="addManager(scope.row.id)">添加管理员</el-button>
