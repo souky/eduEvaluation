@@ -9,7 +9,7 @@
 			</div>
 			<div class="grade-navMore">
 				<div class="grade-navMore-bit">
-					<span @click="allButton($event)"><img class="grade-navMore-bitImg" src="../../../static/img/APPImg/gfh@1x.png" alt=""></span>
+					<span @click="allButton($event)"><img class="grade-navMore-bitImg" src="../../../static/img/APPImg/gfh@2x.png" width="20px" alt=""></span>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 		<div class="grade-body">
 			<div class="totle" v-show="display.totle">
 				<div class="totle-img">
-					<img src="../../../static/img/z1-1@1x.png">
+					<img src="../../../static/img/z1-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -51,7 +51,7 @@
 			</div>
 			<div class="beyondRate" v-show="display.beyondRate">
 				<div class="totle-img">
-					<img src="../../../static/img/z2-1@1x.png">
+					<img src="../../../static/img/z2-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -79,7 +79,7 @@
 			</div>
 			<div class="growth" v-show="display.growth">
 				<div class="totle-img">
-					<img src="../../../static/img/z3-1@1x.png">
+					<img src="../../../static/img/z3-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -102,7 +102,7 @@
 			</div>
 			<div class="Subjectsdiagnose" v-show="display.Subjectsdiagnose">
 				<div class="totle-img">
-					<img src="../../../static/img/z4-1@1x.png">
+					<img src="../../../static/img/z4-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -132,7 +132,7 @@
 			</div>
 			<div class="myGoal" v-show="display.myGoal">
 				<div class="totle-img">
-					<img src="../../../static/img/z5-1@1x.png">
+					<img src="../../../static/img/z5-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -164,7 +164,7 @@
 			</div>
 			<div class="allItem" v-show="display.allItem">
 				<div class="totle-img">
-					<img src="../../../static/img/z6-1@1x.png">
+					<img src="../../../static/img/z6-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -190,7 +190,7 @@
 			</div>
 			<div class="twoAnalysis" v-show="display.twoAnalysis">
 				<div class="totle-img">
-					<img src="../../../static/img/z7-1@1x.png">
+					<img src="../../../static/img/z7-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -231,7 +231,7 @@
 			</div>
 			<div class="knowledgeAnalysis" v-show="display.knowledgeAnalysis">
 				<div class="totle-img">
-					<img src="../../../static/img/z8-1@1x.png">
+					<img src="../../../static/img/z8-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -245,7 +245,7 @@
 			</div>
 			<div class="abilityAnalyze" v-show="display.abilityAnalyze">
 				<div class="totle-img">
-					<img src="../../../static/img/z9-1@1x.png">
+					<img src="../../../static/img/z9-1@2x.png" width="100%">
 				</div>
 				<div class="totle-conment">
 					<div class="totle-conment-title">
@@ -972,8 +972,8 @@ export default {
 								m = m < 10 ? ('0' + m) : m;      
 								var d = date.getDate();      
 								d = d < 10 ? ('0' + d) : d;          
-								var number= m + '-' + d;   
-								obj.optionGrowthTrend.xAxis.data.push(number);
+								var number1= m + '-' + d;   
+								obj.optionGrowthTrend.xAxis.data.push(number1);
 							}
 							obj.optionGrowthTrend.series[0].data=[];
 							obj.optionGrowthTrend.series[0].data=res.result.standardScores;
@@ -1302,8 +1302,8 @@ export default {
 									m = m < 10 ? ('0' + m) : m;      
 									var d = date.getDate();      
 									d = d < 10 ? ('0' + d) : d;          
-									var number= m + '-' + d;   
-									obj.optionGrowthTrend.xAxis.data.push(number);
+									var number1= m + '-' + d;   
+									obj.optionGrowthTrend.xAxis.data.push(number1);
 								}
 								obj.optionGrowthTrend.series[0].data=[];
 								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
@@ -1329,8 +1329,8 @@ export default {
 									m = m < 10 ? ('0' + m) : m;      
 									var d = date.getDate();      
 									d = d < 10 ? ('0' + d) : d;          
-									var number= m + '-' + d;   
-									obj.optionGrowthTrend.xAxis.data.push(number);
+									var number1= m + '-' + d;   
+									obj.optionGrowthTrend.xAxis.data.push(number1);
 								}
 								obj.optionGrowthTrend.series[0].data=[];
 								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
@@ -1356,8 +1356,8 @@ export default {
 									m = m < 10 ? ('0' + m) : m;      
 									var d = date.getDate();      
 									d = d < 10 ? ('0' + d) : d;          
-									var number= m + '-' + d;   
-									obj.optionGrowthTrend.xAxis.data.push(number);
+									var number1= m + '-' + d;   
+									obj.optionGrowthTrend.xAxis.data.push(number1);
 								}
 								obj.optionGrowthTrend.series[0].data=[];
 								obj.optionGrowthTrend.series[0].data=res.result.standardScores;
