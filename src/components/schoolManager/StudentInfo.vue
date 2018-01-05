@@ -85,7 +85,7 @@
 		    </el-pagination>
 		</div>
 		<el-dialog title="批量新增" :visible.sync="showAddAll" width="30%">
-			<div class="fix" v-loading="loading">
+			<div class="fix" v-loading="loadings">
 				<el-upload class="upload-demo" ref="upload" :action="addsAction" :limit="limit" :auto-upload="false" :on-success="handleSuccess" :on-error="handleError">
 				  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
 				</el-upload>
@@ -175,7 +175,7 @@ export default {
 	  showInfo:true,
 		showAddAll:false,
 		addsAction:'',
-		loading:false,
+		loadings:false,
 		limit:1,
 
 	  rules: {
@@ -211,7 +211,7 @@ export default {
   		obj.gradeOptions = data;
   	});
 		this.addsAction = this.getBaseUrl() + 'student/importStudent';
-
+		console.log(this);
   },
   methods:{
   	queryInfo(){
@@ -300,15 +300,15 @@ export default {
 			this.showAddAll = true;
 		},
 		submitUpload(){
-			this.loading = true;
+			this.loadings = true;
 			this.$refs.upload.submit();
 		},
 		handleError(){
-			this.loading = false;
+			this.loadings = false;
 			this.notify_jr(this,'添加失败','网络错误','error');
 		},
 		handleSuccess(res, file, fileList){
-			this.loading = false;
+			this.loadings = false;
 			if(res.code == '10000'){
 				this.notify_jr(this,'添加成功','添加成功','success');
 			}else{
