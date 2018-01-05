@@ -708,7 +708,7 @@ export default{
 				optionstudentGradeDistribution:{
 					tooltip : {
 						trigger: 'item',
-						formatter: "{a} <br/>{b} : {c} ({d}%)"
+						formatter: "{a} <br/>{b} :{d}%"
 					},
 					legend: {
 						data: ['高分(90%~100%)','优秀(80%~90%)','良好(70%~80%)','及格(60%~70%)','不及格(0%~60%)']
@@ -1034,7 +1034,7 @@ export default{
 				optionclassLastStudents:{
 					tooltip: {
 						trigger: 'item',
-						formatter: "{a} <br/>{b}: {c} ({d}%)"
+						formatter: "{a} <br/>{b}: {d}%"
 					},
 					legend: {
 						data:['高分(90%~100%)','优秀(80%~90%)','良好(70%~80%)','及格(60%~70%)','不及格(0%~60%)']
@@ -1169,13 +1169,6 @@ export default{
 						this.showselect =false
 					}
 				});
-			},
-			watch:{
-				showselect:function(val){
-					if(val==true){
-						val=false;
-					}
-				}
 			},
 			methods:{
 				data:function(){

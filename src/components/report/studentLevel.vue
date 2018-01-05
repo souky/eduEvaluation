@@ -1009,13 +1009,6 @@ export default {
 				}
 			});
 		},
-		watch:{
-			showselect:function(val){
-				if(val==true){
-					val=false;
-				}
-			}
-		},
 		methods:{
 			data:function(){
 				this.postHttp(this,{},'exam/getExamListForTab',function(obj,res){
