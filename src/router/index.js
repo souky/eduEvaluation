@@ -68,6 +68,9 @@ route.route.push({
 },{
   path: '/knowlegdeDetail',
   component: require('../components/pages/knowlegdeDetail.vue')
+},{
+  path: '/gread',
+  component: require('../components/pages/gread.vue')
 });
 
 export const navs = route.navs;

@@ -1,7 +1,7 @@
 <template>
 	<section class="page-demo" id="personPage">
 	  <mt-cell title="头像" class="hasTop">
-	  	<span><img src="static/img/APPImg/tx@1x.png" height="60" width="60" /></span>
+	  	<span><img src="static/img/APPImg/tx@2x.png" height="60" width="60" /></span>
 	  </mt-cell>
 	  <mt-cell title="用户名" ><span>{{username}}</span>
 	  </mt-cell>

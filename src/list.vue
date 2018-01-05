@@ -6,7 +6,7 @@
         <mt-tab-container-item id="首页">  
            <div class="indexImg">
              <div class="mainImg">
-              <div class="selceeds"></div>
+              <div class="selceeds" @click="gotoselected()"></div>
                <mt-search cancel-text='' placeholder="搜索"></mt-search>
                <div class="tesrra">
                 <el-carousel :interval="5000" indicator-position="none" arrow="always" :autoplay="false" @change="testChange($event)">
@@ -43,7 +43,7 @@
             <p>成绩报告</p>
           </div>
            <div id="grade">
-            <mt-cell v-for="item in testList" :key="item.id" :title="item.examName">
+            <mt-cell v-for="item in reportList" :key="item.id" :title="item.examName">
               <mt-button class="viewReport" @click="gotoReport(item.id)">查看报告</mt-button>
             </mt-cell>
           </div>
@@ -64,7 +64,7 @@
         <mt-tab-container-item id="我的">
           <div class="myCenter">
             <div class="leftPart">
-              <img src="../static/img/APPImg/tx@1x.png" />
+              <img src="../static/img/APPImg/tx@2x.png" />
               <p>
                 <span class="name">{{userName}}</span><br>
                 <span class="studentClass">{{userClass}}</span><br>
@@ -78,38 +78,50 @@
           </div>
           <mt-cell title="客服电话" class="nomargin">
             <a href="tel:400-820-8856" class="kfcall"><span>400-820-8856</span></a>
-            <img slot="icon" src="../static/img/APPImg/kf@1x.png" width="24" height="24">
+            <img slot="icon" src="../static/img/APPImg/kf@2x.png" width="24" height="24">
           </mt-cell>     
           <mt-cell title="帮助中心" to="/helping" is-link>
-            <img slot="icon" src="../static/img/APPImg/bz@1x.png" width="24" height="24">
+            <img slot="icon" src="../static/img/APPImg/bz@2x.png" width="24" height="24">
           </mt-cell>
            <mt-cell title="设置" to="/setting" is-link>
-            <img slot="icon" src="../static/img/APPImg/sz@1x.png" width="24" height="24">
+            <img slot="icon" src="../static/img/APPImg/sz@2x.png" width="24" height="24">
           </mt-cell>
         </mt-tab-container-item>  
       </mt-tab-container>  
     </div>  
     <mt-tabbar v-model="selected" fixed>  
       <mt-tab-item id="首页">  
-        <img slot="icon" :src="selected=='首页'? 'static/img/APPImg/sy@1x.png':'static/img/APPImg/sy-o@1x.png'">  
+        <img slot="icon" :src="selected=='首页'? 'static/img/APPImg/sy@2x.png':'static/img/APPImg/sy-o@2x.png'">  
         首页  
       </mt-tab-item>  
       <mt-tab-item id="成绩">  
-        <img slot="icon" :src="selected=='成绩'? 'static/img/APPImg/cj@1x.png':'static/img/APPImg/cj-o@1x.png'">  
+        <img slot="icon" :src="selected=='成绩'? 'static/img/APPImg/cj@2x.png':'static/img/APPImg/cj-o@2x.png'">  
         成绩  
       </mt-tab-item>  
       <mt-tab-item id="资源">  
-        <img slot="icon" :src="selected=='资源'? 'static/img/APPImg/zy@1x.png':'static/img/APPImg/zy-o@1x.png'">  
+        <img slot="icon" :src="selected=='资源'? 'static/img/APPImg/zy@2x.png':'static/img/APPImg/zy-o@2x.png'">  
         资源  
       </mt-tab-item>  
       <mt-tab-item id="我的">  
-        <img slot="icon" :src="selected=='我的'? 'static/img/APPImg/my@1x.png':'static/img/APPImg/my-o@1x.png'">  
+        <img slot="icon" :src="selected=='我的'? 'static/img/APPImg/my@2x.png':'static/img/APPImg/my-o@2x.png'">  
         我的  
       </mt-tab-item>  
     </mt-tabbar>  
     </div>  
     <div class="page-select" v-if="!display.allInit">
-      <p>asdfasdfasdfasdfasdfsdfasdf</p>
+      <div class="selectHead">
+        <img src="/static/img/APPImg/rightfh@2x.png" @click="gotoselected()" />
+        <input type="" name="" placeholder="科目" v-model="subselect" />
+        <span @click="touchselect()">搜索</span>
+      </div>
+      <div class="selectBody">
+        <div class="selectItem" @click="selectSub('语文')">语文</div>
+        <div class="selectItem" @click="selectSub('数学')">数学</div>
+        <div class="selectItem" @click="selectSub('英语')">英语</div>
+        <div class="selectItem" @click="selectSub('物理')">物理</div>
+        <div class="selectItem" @click="selectSub('化学')">化学</div>
+        <div class="selectItem" @click="selectSub('生物')">生物</div>
+      </div>
     </div>
     <!-- <div v-for="group in navs">
       <div class="page-title" v-text="group.title"></div>
@@ -136,6 +148,7 @@
           allSubject:false,
           allInit:true
         },
+        loading:false,
         navs: [],
         examId:'',
         selected: '首页',
@@ -144,6 +157,7 @@
         userSchool:'金阳一中',
         userClass:'高三一班',
         personalData:[],
+        subselect:'',
         testList:[{
           id:'1',
           name:'金阳一中高三年级2017年期末考试'
@@ -206,9 +220,10 @@
       },
       initAll(){
         this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
-            obj.testList = [];
+            obj.testList = [];obj.reportList=[];
              for(var value of data.result.exams){
                  obj.testList.push(value);
+                 obj.reportList.push(value)
              }
              obj.examId = obj.testList[0].id;
              var needData = {tab:'STUDENT_REPORT',examId:data.result.exams[0].id,subject:'总分'};
@@ -270,6 +285,19 @@
           
           this.$router.push({path:'/homeknowlegde'})
         }
+      },
+      gotoselected(){
+        this.display.allInit=!this.display.allInit;
+        this.subselect = ''
+      },
+      selectSub(e){
+        this.display.allInit=true;
+        this.$router.push({path:'/gread',query:{examsub: e}});
+      },
+      touchselect(){
+        this.display.allInit=true;
+        var s = this.subselect;
+        this.$router.push({path:'/gread',query:{examsub: s}});
       }
     }
   };
@@ -317,7 +345,7 @@
   }
   #pageDemo .mainImg{
       width: 100%;height: 0;padding-bottom: 82%;
-      background-image: url(../static/img/APPImg/bg-s@1x.png);
+      background-image: url(../static/img/APPImg/bg-s@2x.png);
       background-size: 100%;
       position: relative;
     }
@@ -585,5 +613,45 @@
     .Gnav-moreConment-bit p{
       text-align: center;
       margin-top: 10px;
+    }
+    .selectHead{
+      height: 11vw;
+      background-color: white;
+      line-height: 11vw;
+      padding-top: 5px
+    }
+    .selectHead img{
+      height: 7vw;
+      vertical-align: middle;
+      padding:0 1vw;
+    }
+    .selectHead input{
+      height: 8vw;
+      border:1px solid #eee;
+      border-radius: 8px;
+      width: 72%;
+      padding-left: 10px;
+      outline: 0;
+      font-size: 4vw
+    }
+    .selectHead span{
+      display: inline-block;
+      text-align: center;
+      color:#19AFFF;
+    }
+    .selectItem{
+      border:1px solid #19Afff;
+      border-radius: 5px;
+      padding: 5px 15px;
+      display: inline-block;
+      color: #19Afff;
+      background-color: white;
+      margin: 10px 10px 5px 10px
+    }
+    .selectBody{
+      width: 100%;
+      float: left;
+      padding: 10px;
+      background-color: white
     }
 </style>

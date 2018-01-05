@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     ways:'1',
     basisSubject:'',
     basisExmaid:'',
+    subs:''
   },
   mutations:{
   	newTitle(state,msg){
@@ -21,6 +22,9 @@ const store = new Vuex.Store({
     },
     newGread(state,way){
       state.ways = way
+    },
+    selectGread(state,sub){
+      state.subs = sub
     },
     newBasisSubject(state,msg){
       state.basisSubject=msg
