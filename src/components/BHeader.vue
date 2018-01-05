@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="logoImg">
-			金瑞阳测评系统
+			金阳测评系统
 		</div>
 	</div>
 	

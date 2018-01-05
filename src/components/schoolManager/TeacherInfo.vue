@@ -18,7 +18,7 @@
 			  <el-col class="queryItems" :span="6">
 			  		<div class="l">年级</div>
 				  	<div class="r">
-				  		<el-select v-model="grade" @change='changeGrades' placeholder="请选择">
+				  		<el-select v-model="grade" clearable @change='changeGrades' placeholder="请选择">
 						    <el-option v-for="item in gradeOption" :key="item" :label="item" :value="item">
 						    </el-option>
 						</el-select>
@@ -27,7 +27,7 @@
 			  <el-col class="queryItems" :span="6">
 			  		<div class="l">班级</div>
 				  	<div class="r">
-				  		<el-select v-model="queryInfos.classroom" placeholder="请选择">
+				  		<el-select v-model="queryInfos.classroom" clearable placeholder="请选择">
 					  		<el-option v-for="e in classOptions" :label="e.classroomName" :key="e.classroomName" :value="e.classroomName" name="classId"></el-option>
 						</el-select>
 				  	</div>
@@ -172,6 +172,7 @@ export default {
 	  queryInfos:{
 	  	teacherName:'',
 	  	teacherDuty:'',
+	  	classroom:'',
 	  },
 
 	  pageNum:1,
@@ -246,8 +247,8 @@ export default {
   		obj.gradeOption = res.result;
   	});
 
-		this.postHttp(this,{},'user/getLoginUser',function(obj,res){
-  		console.log(res.result);
+	this.postHttp(this,{},'user/getLoginUser',function(obj,res){
+  		
   		obj.userType = res.result.userType;
   	});
 
@@ -423,6 +424,7 @@ export default {
 	},
 	changeGrades(val){
 		this.postHttp(this,{grade:val},'classroom/queryClassroomsByGrade',function(obj,res){
+			obj.queryInfos["classroom"] = "";
 	  		obj.classOptions = res.result;
 	  	});
 	}

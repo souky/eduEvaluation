@@ -78,10 +78,10 @@
 						    <el-input v-model="exam.examName"></el-input>
 						  </el-form-item>
 						  <el-form-item label="开始时间" prop="examStartDateS">
-						  	 <el-date-picker v-model="exam.examStartDateS" type="datetime" placeholder="考试开始时间"></el-date-picker>
+						  	 <el-date-picker v-model="exam.examStartDateS" type="datetime" :picker-options="pickerBeginDateBefore" placeholder="考试开始时间"></el-date-picker>
 						  </el-form-item>
 						  <el-form-item label="结束时间" prop="examEndDateS">
-						  	<el-date-picker v-model="exam.examEndDateS" type="datetime" placeholder="考试结束时间"></el-date-picker>
+						  	<el-date-picker v-model="exam.examEndDateS" type="datetime" :picker-options="pickerEndDateBefore" placeholder="考试结束时间"></el-date-picker>
 						  </el-form-item>
 						  <el-form-item label="年级">
 						  	<el-select v-model="grade" placeholder="请选择年级" @change="queryStudent">
@@ -261,11 +261,18 @@
 </template>
 
 <script>
-import ExamList from '../../assets/examManager/ExamList'
+
 export default {
   data () {
-
+  	var timeVilidate = (rule, value, callback) => {
+  		var date = this.exam.examStartDateS;
+  		if (value.getTime() < date.getTime()) {
+  			callback("开始时间大于结束时间");
+  		}
+  	};
     return {
+      pickerBeginDateBefore:null,
+      pickerEndDateBefore:null,
 	  msg: 'examList',
 	  tableData:[],
 	  queryInfos:{
@@ -320,7 +327,8 @@ export default {
             { required: true, message: '请选择考试开始时间', trigger: 'blur' }
           ],
           examEndDateS: [
-            { required: true, message: '请选择考试结束时间', trigger: 'blur' }
+            { required: true, message: '请选择考试结束时间', trigger: 'blur' },
+            { validator : timeVilidate, trigger : 'blur'}
           ],
           subject: [
             { required: true, message: '请选择考试科目', trigger: 'change' }
@@ -330,6 +338,18 @@ export default {
     }
   },
   mounted:function(){
+  	this.pickerBeginDateBefore = {
+	  	disabledDate(time) {
+	  		return time.getTime() < Date.now() - (24 * 60 * 60 * 1000);
+	  	}
+	  };
+	
+	this.pickerEndDateBefore = {
+      	disabledDate:(time) =>{
+      		var date = this.exam.examStartDateS;
+			return time.getTime() < date.getTime() - (24 * 60 * 60 * 1000);
+      	}
+      };
   	this.queryInfo();
   	
   	this.postHttp(this,{},"school/querySchools",function(obj,res){
@@ -347,6 +367,7 @@ export default {
   	});
   },
   methods:{
+	
   	queryInfo(){
   		var datas = this.ajaxData();
   		this.postHttp(this,datas,'exam/queryExams',function(obj,res){
@@ -671,6 +692,7 @@ export default {
 	}
   }
 }
+
 </script>
 
 <style>
