@@ -62,6 +62,9 @@
 			  <el-form-item label="名称" prop="roleName">
 			    <el-input v-model="role.roleName" :maxlength="20"></el-input>
 			  </el-form-item>
+			  <el-form-item label="备注" prop="remark">
+			    <el-input type="textarea" v-model="role.remark" :maxlength="200"></el-input>
+			  </el-form-item>
 			</el-form>
 		  </div>
 		  <span slot="footer" class="dialog-footer">

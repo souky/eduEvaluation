@@ -79,6 +79,9 @@
 				    <el-option  v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
 				</el-select>
 			  </el-form-item>
+			  <el-form-item label="备注" prop="remark">
+			    <el-input type="textarea" v-model="user.remark" :maxlength="200"></el-input>
+			  </el-form-item>
 			</el-form>
 		  </div>
 		  <span slot="footer" class="dialog-footer">
