@@ -26,13 +26,13 @@
            <div class="l silderBox"><hr class="silider"><span class="l">金阳测评</span><hr class="silider"></div>
            <div class="gotoBox" @click="goKnowlegde(0)">
              <div class="gotoBoxs">
-                  <img src="../static/img/APPImg/bg@2x.png" />
+                  <img src="static/img/APPImg/bg@2x.png" />
                   <p>查看报告</p>
              </div>
            </div>
            <div class="gotoBox">
              <div class="gotoBoxs" @click="goKnowlegde(1)">
-                  <img src="../static/img/APPImg/zs@2x.png" />
+                  <img src="static/img/APPImg/zs@2x.png" />
                   <p>知识点</p>
              </div>
            </div>
@@ -64,7 +64,7 @@
         <mt-tab-container-item id="我的">
           <div class="myCenter">
             <div class="leftPart">
-              <img src="../static/img/APPImg/tx@2x.png" />
+              <img src="static/img/APPImg/tx@2x.png" />
               <p>
                 <span class="name">{{userName}}</span><br>
                 <span class="studentClass">{{userClass}}</span><br>
@@ -78,13 +78,13 @@
           </div>
           <mt-cell title="客服电话" class="nomargin">
             <a href="tel:400-820-8856" class="kfcall"><span>400-820-8856</span></a>
-            <img slot="icon" src="../static/img/APPImg/kf@2x.png" width="24" height="24">
+            <img slot="icon" src="static/img/APPImg/kf@2x.png" width="24" height="24">
           </mt-cell>     
           <mt-cell title="帮助中心" to="/helping" is-link>
-            <img slot="icon" src="../static/img/APPImg/bz@2x.png" width="24" height="24">
+            <img slot="icon" src="static/img/APPImg/bz@2x.png" width="24" height="24">
           </mt-cell>
            <mt-cell title="设置" to="/setting" is-link>
-            <img slot="icon" src="../static/img/APPImg/sz@2x.png" width="24" height="24">
+            <img slot="icon" src="static/img/APPImg/sz@2x.png" width="24" height="24">
           </mt-cell>
         </mt-tab-container-item>  
       </mt-tab-container>  
@@ -243,7 +243,7 @@
         var pageSizes={pageNum:1,pageSize:0};
         this.postHttp(this,'',"subject/getSubjectByLogin",function(obj,data){
                 for(var a of data.result){
-                  a.imgName = "../static/img/APPImg/"+a.subjectCode+".png"
+                  a.imgName = "static/img/APPImg/"+a.subjectCode+".png"
                 }
                 obj.subList = data.result;
         });
@@ -270,7 +270,7 @@
         var pageSizes={pageNum:1,pageSize:0};
         this.postHttp(this,'',"subject/getSubjectByLogin",function(obj,data){
                 for(var a of data.result){
-                  a.imgName = "../static/img/APPImg/"+a.subjectCode+".png"
+                  a.imgName = "static/img/APPImg/"+a.subjectCode+".png"
                 }
                 obj.subList = data.result;
         });
@@ -345,7 +345,7 @@
   }
   #pageDemo .mainImg{
       width: 100%;height: 0;padding-bottom: 82%;
-      background-image: url(../static/img/APPImg/bg-s@2x.png);
+      background-image: url(static/img/APPImg/bg-s@2x.png);
       background-size: 100%;
       position: relative;
     }

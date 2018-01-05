@@ -26,9 +26,11 @@ export default {
 			usedpassword:'',
 			newpassword:'',
 			againpassword:'',
+
 			eyesclose1:'/static/img/APPImg/yj2@2x.png',
 			eyesclose2:'/static/img/APPImg/yj2@2x.png',
 			eyesclose3:'/static/img/APPImg/yj2@2x.png',
+
 		}
 	},
 	created:function(){
