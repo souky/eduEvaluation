@@ -40,7 +40,7 @@
       initall(){
         this.postHttp(this,'',"subject/getSubjectByLogin",function(obj,data){
                 for(var a of data.result){
-                  a.imgName = "../static/img/APPImg/"+a.subjectCode+".png"
+                  a.imgName = "static/img/APPImg/"+a.subjectCode+".png"
                 }
                 obj.subList = data.result;
         });

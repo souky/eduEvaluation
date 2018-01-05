@@ -1,18 +1,18 @@
 <template>
-<div id="login" ref="loginHight">
-	
-	<div class="main-conment">
-		<div class="tc loginBackground">
-			<img src="../../static/img/APPImg/bg-d@1x.png" alt="">
+	<div id="login" ref="loginHight">
+
+		<div class="main-conment">
+			<div class="tc loginBackground">
+				<img src="../../static/img/APPImg/bg-d@2x.png" width="80%" alt="">
+			</div>
+			<mt-field class="login-user" v-model="form.user" label="用户名" placeholder="用户名"></mt-field>
+			<mt-field class="login-password" type="password" v-model="form.password" label="用户名" placeholder="请输入密码"></mt-field>
+
 		</div>
-		<mt-field class="login-user" v-model="form.user" label="用户名" placeholder="用户名"></mt-field>
-		<mt-field class="login-password" type="password" v-model="form.password" label="用户名" placeholder="请输入密码"></mt-field>
-		
+		<div class="login-go">
+			<mt-button type="danger" @click="onSubmit()">登录</mt-button>
+		</div>
 	</div>
-	<div class="login-go">
-		<mt-button type="danger" @click="onSubmit()">登录</mt-button>
-	</div>
-</div>
 </template>
 <script>
 export default {
@@ -37,13 +37,16 @@ export default {
 		onSubmit:function(){
 			this.postHttp(this,{userName:this.form.user,psw:this.form.password},'login',function(obj,res){
 				if(res.code == '10000'){
-					obj.$router.push({path:'/home'});
+					if(res.result.roleName=="学生"){
+						obj.$router.push({path:'/home'});
+					}else{
+						obj.$toast({message:"账号或密码错误！", position: 'bottom',duration: 5000});
+					}
 				}else{
-					//obj.notify_jr(obj,'错误提示',res.message,'error');
-					 obj.$toast({message:res.message, position: 'bottom',duration: 5000})
+					obj.$toast({message:res.message, position: 'bottom',duration: 5000});
 				}
 
-		  	});
+			});
 		}
 	}
 }
