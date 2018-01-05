@@ -345,7 +345,7 @@
   }
   #pageDemo .mainImg{
       width: 100%;height: 0;padding-bottom: 82%;
-      background-image: url(static/img/APPImg/bg-s@2x.png);
+      background-image: url(../static/img/APPImg/bg-s@2x.png);
       background-size: 100%;
       position: relative;
     }
