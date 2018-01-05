@@ -187,11 +187,11 @@ export default {
       },
 	  sexOption:[
 	  	{
-	  		id:'1',
+	  		id:1,
 	  		value:'男'
 	  	},
 	  	{
-	  		id:'0',
+	  		id:0,
 	  		value:'女'
 	  	}
 	  ],
@@ -248,7 +248,7 @@ export default {
   	});
 
 	this.postHttp(this,{},'user/getLoginUser',function(obj,res){
-  		
+
   		obj.userType = res.result.userType;
   	});
 
