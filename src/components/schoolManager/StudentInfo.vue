@@ -49,9 +49,6 @@
 				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline">新增</i>
 				</div>
-				<div class="items_tools l" @click="downloadTemp">
-					<i class="el-icon-download">下载模板</i>
-				</div>
 				<div class="items_tools l" @click="addNews">
 					<i class="el-icon-circle-plus-outline">批量新增</i>
 				</div>
@@ -85,12 +82,19 @@
 		    </el-pagination>
 		</div>
 		<el-dialog title="批量新增" :visible.sync="showAddAll" width="30%">
-			<div class="fix" v-loading="loadings">
-				<el-upload class="upload-demo" ref="upload" :action="addsAction" :limit="limit" :auto-upload="false" :on-success="handleSuccess" :on-error="handleError">
-				  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-				</el-upload>
-				<el-button style="margin-top: 20px;float:right" size="small" type="primary" @click="submitUpload">批量添加</el-button>
+			<div class="typeFile fix" v-loading="loadings">
+				<div class="l files">
+					<form id="uploadForm">
+						<input type="file" name="file" id="fileUpload" @change="fileChange"/>
+					</form>
+					<div id="fileUploadRead">点击这里上传文件</div>
+				</div>
+				<div class="l buttons">
+					<el-button type="primary" @click="submitUpload">批量添加</el-button>
+					<el-button type="primary" @click="downloadTemp">下载模板</el-button>
+				</div>
 			</div>
+			<div id="fileUploadTip"></div>
 		</el-dialog>
 
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
@@ -290,6 +294,14 @@ export default {
   			this.$refs['student'].resetFields();
   		}
   	},
+		fileChange(){
+			var path = document.getElementById("fileUpload").value;
+			var arr = path.split("\\");
+			path = arr[(arr.length - 1)];
+			if(path != ''){
+				document.getElementById("fileUploadRead").innerHTML = path;
+			}
+		},
 		downloadTemp(){
 			var dates = new Date();
 			dates = dates.getTime();
@@ -298,22 +310,32 @@ export default {
 		},
 		addNews(){
 			this.showAddAll = true;
+			if(document.getElementById("fileUpload") != undefined){
+				document.getElementById("fileUpload").value = '';
+			}
 		},
 		submitUpload(){
 			this.loadings = true;
-			this.$refs.upload.submit();
-		},
-		handleError(){
-			this.loadings = false;
-			this.notify_jr(this,'添加失败','网络错误','error');
-		},
-		handleSuccess(res, file, fileList){
-			this.loadings = false;
-			if(res.code == '10000'){
-				this.notify_jr(this,'添加成功','添加成功','success');
-			}else{
-				this.notify_jr(this,'添加失败',res.message,'error');
-			}
+			var form = document.getElementById("fileUpload").files[0];
+			var formData = new FormData(document.getElementById("uploadForm"))
+			let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+				withCredentials : true
+      }
+			var dates = new Date();
+			dates = dates.getTime();
+			var s = this.getBaseUrl()
+      this.$axios.post(s+'student/importStudent'+"?jy_pc_manager&timer="+dates, formData, config).then(response =>  {
+				this.loadings = false;
+				if (response.data.code == '10000') {
+					this.showAddAll = false;
+					this.notify_jr(this,'添加成功','添加成功','success');
+        }else{
+					document.getElementById("fileUploadTip").innerHTML = response.data.message;
+				}
+      })
 		},
 		editInfo(id){
 			this.showInfo = false;
