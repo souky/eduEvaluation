@@ -662,18 +662,20 @@ export default{
 				    ]
 				},
 				optionClassdisciplinesLevelRight:{
-					tooltip: {},
+					tooltip : {
+						trigger: 'item',
+					},
 					legend: {
 						x: 'center',
 						data:['班级各科目','校级']
 					},
-					 grid: {
-				    	left: '3%',
-				    	right: '3%',
-				    	bottom: '3%',
-				    	top:'3%',
-				    	containLabel: true
-				    },
+					grid: {
+						left: '3%',
+						right: '3%',
+						bottom: '3%',
+						top:'3%',
+						containLabel: true
+					},
 					radar: [
 					{
 						indicator: [
@@ -692,12 +694,12 @@ export default{
 						type: 'radar',
 						data: [
 						{
-							name: '班级各科目',
+							name: '班级各科目-（单位：%）',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'校级',
+							name:'校级-（单位：%）',
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						}
@@ -940,16 +942,16 @@ export default{
 						type: 'radar',
 						data: [
 						{
-							name: '班级',
+							name: '班级-（单位：%）',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'全校',
+							name:'全校-（单位：%）',
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						},{
-							name:'全区县',
+							name:'全区县-（单位：%）',
 							value:[34,34,56,76,87],
 							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
 						}
@@ -982,16 +984,16 @@ export default{
 						type: 'radar',
 						data: [
 						{
-							name: '班级',
+							name: '班级-（单位：%）',
 							value: [23,43,54,65,23,43,78],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'全校',
+							name:'全校-（单位：%）',
 							value:[34,54,56,76,87,53,43],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						},{
-							name:'全区县',
+							name:'全区县-（单位：%）',
 							value:[34,34,56,76,87,42,57],
 							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
 						}
