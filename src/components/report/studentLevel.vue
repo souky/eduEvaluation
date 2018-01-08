@@ -555,7 +555,7 @@ export default {
 					tooltip: {},
 					legend: {
 						x: 'center',
-						data:['个人','平均水平']
+						data:['个人-（单位：%）','平均水平-（单位：%）']
 					},
 					grid: {
 						left: '4%',

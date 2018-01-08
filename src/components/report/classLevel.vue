@@ -667,7 +667,7 @@ export default{
 					},
 					legend: {
 						x: 'center',
-						data:['班级各科目','校级']
+						data:['班级各科目-（单位：%）','校级-（单位：%）']
 					},
 					grid: {
 						left: '3%',
