@@ -877,21 +877,21 @@ export default {
 						type: 'radar',
 						data: [
 						{
-							name: '我的-（单位：%）',
+							name: '我的',
 							value: [23,83,54,65,23],
 							itemStyle: {normal: {color: '#DE20CE',areaStyle: {color: 'rgba(222,32,206,0.3)'}}},
 						},
 						{
-							name: '班级-（单位：%）',
+							name: '班级',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'全校-（单位：%）',
+							name:'全校',
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						},{
-							name:'全区县-（单位：%）',
+							name:'全区县',
 							value:[34,34,56,76,87],
 							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
 						}
@@ -924,21 +924,21 @@ export default {
 						type: 'radar',
 						data: [
 						{
-							name: '我的-（单位：%）',
+							name: '我的',
 							value: [23,83,54,65,23,45,65],
 							itemStyle: {normal: {color: '#DE20CE',areaStyle: {color: 'rgba(222,32,206,0.3)'}}},
 						},
 						{
-							name: '班级-（单位：%）',
+							name: '班级',
 							value: [23,43,54,65,23,43,78],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'全校-（单位：%）',
+							name:'全校',
 							value:[34,54,56,76,87,53,43],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						},{
-							name:'全区县-（单位：%）',
+							name:'全区县',
 							value:[34,34,56,76,87,42,57],
 							itemStyle: {normal: {color: '#70F390',areaStyle: {color: 'rgba(112,243,144,0.3)'}}},
 						}
