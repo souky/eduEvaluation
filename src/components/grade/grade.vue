@@ -953,6 +953,10 @@ export default {
 			},
 			handleOpen:function(){ 
 				this.indicator.open('加载中...'); 
+				var that=this;
+				setTimeout(function(){
+					that.handleClose();
+				},60000)
 			},
 			handleClose:function(){ 
 				this.indicator.close();	
