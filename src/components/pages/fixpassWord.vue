@@ -27,9 +27,9 @@ export default {
 			newpassword:'',
 			againpassword:'',
 
-			eyesclose1:'/static/img/APPImg/yj2@2x.png',
-			eyesclose2:'/static/img/APPImg/yj2@2x.png',
-			eyesclose3:'/static/img/APPImg/yj2@2x.png',
+			eyesclose1:'static/img/APPImg/yj2@2x.png',
+			eyesclose2:'static/img/APPImg/yj2@2x.png',
+			eyesclose3:'static/img/APPImg/yj2@2x.png',
 
 		}
 	},
@@ -44,31 +44,31 @@ export default {
 			if(e==1){
 				if(this.canSee1=='password'){
 					this.canSee1='text'
-					this.eyesclose1 = '/static/img/APPImg/yj1@2x.png'
+					this.eyesclose1 = 'static/img/APPImg/yj1@2x.png'
 				}
 				else{
 					this.canSee1='password'
-					this.eyesclose1 = '/static/img/APPImg/yj2@2x.png'
+					this.eyesclose1 = 'static/img/APPImg/yj2@2x.png'
 				}
 			}
 			if(e==2){
 				if(this.canSee2=='password'){
 					this.canSee2='text'
-					this.eyesclose2 = '/static/img/APPImg/yj1@2x.png'
+					this.eyesclose2 = 'static/img/APPImg/yj1@2x.png'
 				}
 				else{
 					this.canSee2='password'
-					this.eyesclose2 = '/static/img/APPImg/yj2@2x.png'
+					this.eyesclose2 = 'static/img/APPImg/yj2@2x.png'
 				}
 			}
 			if(e==3){
 				if(this.canSee3=='password'){
 					this.canSee3='text'
-					this.eyesclose3 = '/static/img/APPImg/yj1@2x.png'
+					this.eyesclose3 = 'static/img/APPImg/yj1@2x.png'
 				}
 				else{
 					this.canSee3='password'
-					this.eyesclose3 = '/static/img/APPImg/yj2@2x.png'
+					this.eyesclose3 = 'static/img/APPImg/yj2@2x.png'
 				}
 			}
 		},

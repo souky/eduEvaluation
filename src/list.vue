@@ -110,9 +110,9 @@
     </div>  
     <div class="page-select" v-if="!display.allInit">
       <div class="selectHead">
-        <img src="/static/img/APPImg/rightfh@2x.png" @click="gotoselected()" />
+        <img src="../static/img/APPImg/rightfh@2x.png" @click="gotoselected()" />
         <input type="" name="" placeholder="科目" v-model="subselect" />
-        <span @click="touchselect()">搜索</span>
+        <span id="touchSwitch" @click="touchselect()">搜索</span>
       </div>
       <div class="selectBody">
         <div class="selectItem" @click="selectSub('语文')">语文</div>
@@ -205,7 +205,13 @@
       if(this.$store.state.label=='1'){
         this.selected='首页'
       }
-      this.initAll()
+      this.initAll();
+      document.onkeydown=function(e){    //对整个页面文档监听  
+        var keyNum=window.event ? e.keyCode :e.which; 
+        if(keyNum==13){  
+          document.getElementById("touchSwitch").click();  
+        }
+      }
     },
     methods:{
       teds(){
@@ -502,7 +508,7 @@
       text-align: center;
     }
     #pageDemo .points img{
-      padding-top:5vw;
+      padding-top:5vw;width: 18vw
     }
     #pageDemo .mint-cell-allow-right::after{
       top:inherit;width: 1.5vh;height: 1.5vh
@@ -520,7 +526,8 @@
       background-color: #19AFFF;
     }
     #pageDemo .myCenter img{
-      margin-right: 2vw
+      margin-right: 2vw;
+      width: 20vw
     }
     #pageDemo .myCenter p{
       display:inline-block;color:white;vertical-align: top;

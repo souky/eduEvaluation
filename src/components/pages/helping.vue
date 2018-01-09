@@ -1,6 +1,6 @@
 <template>
 	<section class="page-demo" id="helpingPage">
-	  <img src="/static/img/APPImg/helping.png" style="width:100%">
+	  <img src="static/img/APPImg/helping.png" style="width:100%">
 	</section>
 </template>
 <script>
