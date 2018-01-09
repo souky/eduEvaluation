@@ -604,7 +604,7 @@ export default {
 	background-color: white;
 	width: 300px;
 	text-align: center;
-	height: 125px;
+	max-height: 125px;
 	overflow: auto;
 }
 #schoolLevel .showselect li{
