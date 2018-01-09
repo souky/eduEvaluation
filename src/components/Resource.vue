@@ -50,7 +50,7 @@
 					    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 					      :page-sizes="[10, 20, 50]"
 					      :page-size="pageSize"
-					      layout="sizes, prev, pager, next, jumper"
+					      layout="total,sizes, prev, pager, next, jumper"
 					      :total="total" class="tc mt20"
 					      >
 					    </el-pagination>
@@ -104,7 +104,7 @@
 						    <el-pagination @size-change="handleSizeChange1" @current-change="handleCurrentChange1" :current-page.sync="pageNum1"
 						      :page-sizes="[10, 20, 50]"
 						      :page-size="pageSize1"
-						      layout="sizes, prev, pager, next, jumper"
+						      layout="total,sizes, prev, pager, next, jumper"
 						      :total="total1" class="tc mt20"
 						      >
 						    </el-pagination>

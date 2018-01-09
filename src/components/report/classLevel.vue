@@ -2258,6 +2258,8 @@ export default{
 			background-color: white;
 			width: 300px;
 			text-align: center;
+			height: 125px;
+			overflow: auto;
 		}
 		#classLevel .showselect li{
 			margin: 0;padding:0;
