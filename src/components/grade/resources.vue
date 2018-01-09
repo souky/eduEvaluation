@@ -39,6 +39,6 @@
 #resources{
 	width: 100%;
   background-color: white;
-	padding-top: 8vh;
+	padding-top: 0px;
 }
 </style>

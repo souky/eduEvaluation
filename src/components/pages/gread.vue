@@ -91,4 +91,7 @@ export default {
 #greadPage .textCenter{
 	text-align: center;color:#19AFFF;
 }
+#greadPage .mint-cell:last-child{
+	background-size:100% 0px !important;
+}
 </style>

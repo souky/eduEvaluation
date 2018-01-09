@@ -1,9 +1,13 @@
 <template>
 	<div id="grade">
 		<div class="grade-nav">
-			<div v-show="display.subject" ref="fristBit" v-for="item in subjectLsit" :data-id="item.id" class="grade-nav-bit" @click="subjectButton($event)">
+			<div v-show="display.subject" v-for="(item,index) in subjectLsit" v-if="index == 0" ref="fristBit"  :data-id="item.id" class="grade-nav-bit navOn" @click="subjectButton($event)">
 				<p>{{item.name}}</p>
 			</div>
+			<div v-show="display.subject" v-for="(item,index) in subjectLsit" v-if="index != 0" ref="fristBit" :data-id="item.id" class="grade-nav-bit" @click="subjectButton($event)">
+				<p>{{item.name}}</p>
+			</div>
+			
 			<div v-show="display.allSubject" class="grade-nav-bit1">
 				<p>全部分类</p>
 			</div>
@@ -898,13 +902,13 @@ export default {
 						}
 						obj.subject.push(arr)
 					}
-					for(var q=3;q<9;q++){
-						var aqq={
-							"id":q,
-							"name":"测试"+q,
-						}
-						obj.subject.push(aqq)
-					}
+					// for(var q=3;q<9;q++){
+					// 	var aqq={
+					// 		"id":q,
+					// 		"name":"测试"+q,
+					// 	}
+					// 	obj.subject.push(aqq)
+					// }
 					if(parseInt(obj.subject.length)<5){
 						for(var i=0;i<parseInt(obj.subject.length);i++){
 							obj.subjectLsit.push(obj.subject[i]);
@@ -940,23 +944,24 @@ export default {
 			this.display.twoAnalysis=false;
 			this.display.knowledgeAnalysis=false;
 			this.display.abilityAnalyze=false;
-
 		},
 		methods:{
 			demo:function(){
 				var i=parseInt(this.falseList.length)
 				var that=this;
 				setTimeout(function(){
-						console.log(that.falseList[i-1])
-					 	that.$toast({message:that.falseList[i-1], position: 'bottom',duration: 5000})
-					 },i*5000)
+					console.log(that.falseList[i-1])
+					that.$toast({message:that.falseList[i-1], position: 'bottom',duration: 5000})
+				},i*5000)
 			},
 			handleOpen:function(){ 
 				this.indicator.open('加载中...'); 
 				var that=this;
 				setTimeout(function(){
 					that.handleClose();
+					that.$toast({message:"网络错误", position: 'bottom',duration: 5000})
 				},60000)
+
 			},
 			handleClose:function(){ 
 				this.indicator.close();	
@@ -1052,7 +1057,6 @@ export default {
 								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
 							}
 						}
-						obj.$refs.fristBit[0].className+=" navOn";
 						obj.handleClose();
 					}else{
 						obj.$toast({message:res.message, position: 'bottom',duration: 5000});
