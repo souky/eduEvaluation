@@ -268,6 +268,8 @@ export default {
   		var date = this.exam.examStartDateS;
   		if (value.getTime() < date.getTime()) {
   			callback("开始时间大于结束时间");
+  		} else {
+  			callback();
   		}
   	};
     return {
