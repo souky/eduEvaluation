@@ -24,7 +24,7 @@
 				</div>
 				<div class="cl"></div>
 			</div>
-			<div class="black-cell" ref="loginHight" @touchend="colse($event)"></div>
+			<div class="black-cell" ref="loginHight" @touchstart="colse($event)"></div>
 		</div>
 		<div class="grade-body">
 			<div class="totle" v-show="display.totle">
