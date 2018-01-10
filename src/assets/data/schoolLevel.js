@@ -416,6 +416,7 @@ export default {
     option4:{
         tooltip : {
             trigger: 'axis',
+            formatter: "{b} <br/>{a}: {c}%",
             axisPointer: {
                 type: 'shadow',
                 label: {
@@ -423,7 +424,7 @@ export default {
                 }
             }
         },
-        
+
         calculable : true,
         xAxis: [
             {
@@ -444,7 +445,7 @@ export default {
         ],
         series : [
             {
-                name: '班级平均分',
+                name: '科目贡献率',
                 type: 'line',
                 itemStyle:{
                     normal:{color:'#70CDF3'}
