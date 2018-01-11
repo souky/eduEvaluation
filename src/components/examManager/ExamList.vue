@@ -348,8 +348,15 @@ export default {
 	
 	this.pickerEndDateBefore = {
       	disabledDate:(time) =>{
-      		var date = this.exam.examStartDateS;
-			return time.getTime() < date.getTime() - (24 * 60 * 60 * 1000);
+      		var now = time.getTime();
+      		var b = false;
+      		if (this.exam.examStartDateS) {
+      			var date = this.exam.examStartDateS;
+      			b = now < date.getTime() - (24 * 60 * 60 * 1000);
+
+      		}
+      		
+			return now < Date.now() - (24 * 60 * 60 * 1000) || b;
       	}
       };
   	this.queryInfo();
