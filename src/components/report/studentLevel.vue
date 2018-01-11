@@ -130,8 +130,8 @@
 				<div id="subjectsDiagnosis2"></div>
 				<div class="cl"></div>
 				<div class="subjectsDiagnosisText">
-					<p>在本次考试中，本班范围内，语文的标准分较高，并且高于总分标准分，是你的优势科目，请继续保持；数学、英语的标准分较低，并且低于总分标准分，是你的相对弱势科目，需要多关注。</p>
-					<p>在本次考试中，本班范围内，你的语文、数学、英语总分的得分率都高于平均得分率，请继续保持。</p>
+					<p>{{optionSubjectsDiagnosisWord}}</p>
+					<p>{{optionSubjectsDiagnosisRightWord}}</p>
 				</div>
 			</div>
 		</div>
@@ -495,6 +495,7 @@ export default {
 				},
 				]
 			},
+			optionSubjectsDiagnosisWord:"",
 			optionSubjectsDiagnosis:{
 				color: ['#70CDF3'],
 				tooltip : {
@@ -551,6 +552,7 @@ export default {
 				    },
 				    ]
 				},
+				optionSubjectsDiagnosisRightWord:"",
 				optionSubjectsDiagnosisRight:{
 					tooltip: {},
 					legend: {
@@ -1369,6 +1371,8 @@ geReportCards:function(){
 						}
 						obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
 					}
+					obj.optionSubjectsDiagnosisWord=res.result.summaryVO.stuSubjBalanceST;
+					obj.optionSubjectsDiagnosisRightWord=res.result.summaryVO.stuSubjBalancePR;
 					obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
 					obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
 				}else{

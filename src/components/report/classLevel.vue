@@ -45,8 +45,7 @@
 					<el-table-column align="center" prop="regionScore" label="地区"></el-table-column>
 				</el-table>
 				<div class="body-foot">
-					<p>在本次考试中，本班级总分平均分高于校级平均分，高于区级平均分，表明本班级学生的整体水平要高于学校平均水平，高于区级水平，请继续保持。
-					本班级分化程度高于校级分化程度，高于区级分化程度，表明本班级的分化水平高于校级水平，高于区级水平，需要特别注意</p>
+					<p>{{schoolSelectBoxDataWord}}</p>
 					<div class="body-foot-button">
 						<el-button @click="contrastTest =true">考试对比</el-button>
 					</div>
@@ -65,7 +64,7 @@
 			<div class="body pt20">
 				<div id="gradeDistribution1"></div>
 				<div class="body-foot">
-					<p>在本次考试中，本班级高分率、优秀率和良好率低于学校水平，合格率高于学校水平，请继续保持。本班不及格率高于学校水平，需要特别注意</p>
+					<p>{{optiongradeDistributionWord}}</p>
 				</div>
 				<div class="classSelectBox">
 					<el-select v-model="changeSchool" @change="changeClassName1" class="myselectS" placeholder="请选择">
@@ -498,6 +497,7 @@ export default{
 			schoolList1:[],
 			schoolList2:[],
 			schoolSelectBoxData:[],
+			schoolSelectBoxDataWord:"",
 			rankingList:[],
 			rankingListS:{
 				classStuNum:0,
@@ -517,6 +517,7 @@ export default{
 				topic1000:0,
 			}],
 			classReportTable:[{}],
+			optiongradeDistributionWord:"",
 			optiongradeDistribution:{
 				tooltip: {
 					trigger: 'axis',
@@ -1312,11 +1313,11 @@ export default{
 							var arrList={normal:{show:true,position:'top'},};
 							if(obj.optiongradeDistribution.series.length==3){
 								var list=[];
-								list.push(res.result[1].highRate* 1000000/10000);
-								list.push(res.result[1].excellentRate* 1000000/10000);
-								list.push(res.result[1].commissionRate* 1000000/10000);
-								list.push(res.result[1].passRate* 1000000/10000);
-								list.push(res.result[1].failureRate* 1000000/10000);
+								list.push(res.result.scoreVOList[1].highRate* 1000000/10000);
+								list.push(res.result.scoreVOList[1].excellentRate* 1000000/10000);
+								list.push(res.result.scoreVOList[1].commissionRate* 1000000/10000);
+								list.push(res.result.scoreVOList[1].passRate* 1000000/10000);
+								list.push(res.result.scoreVOList[1].failureRate* 1000000/10000);
 								var arr={
 									"name":"对比班级",
 									"type":'bar',
@@ -1328,11 +1329,11 @@ export default{
 								obj.optiongradeDistribution.series.push(arr);
 							}else{
 								obj.optiongradeDistribution.series[3].data=[];
-								obj.optiongradeDistribution.series[3].data.push(res.result[1].highRate* 1000000/10000);
-								obj.optiongradeDistribution.series[3].data.push(res.result[1].excellentRate* 1000000/10000);
-								obj.optiongradeDistribution.series[3].data.push(res.result[1].commissionRate* 1000000/10000);
-								obj.optiongradeDistribution.series[3].data.push(res.result[1].passRate* 1000000/10000);
-								obj.optiongradeDistribution.series[3].data.push(res.result[1].failureRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result.scoreVOList[1].highRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result.scoreVOList[1].excellentRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result.scoreVOList[1].commissionRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result.scoreVOList[1].passRate* 1000000/10000);
+								obj.optiongradeDistribution.series[3].data.push(res.result.scoreVOList[1].failureRate* 1000000/10000);
 							}
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -1378,7 +1379,8 @@ export default{
 				getClassScoreReport:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassScoreReport',function(obj,res){
 						if(res.code == '10000'){
-							obj.schoolSelectBoxData=res.result;
+							obj.schoolSelectBoxData=res.result.classReports;
+							obj.schoolSelectBoxDataWord=res.result.summaryVO.classTotalScore;
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
 						}
@@ -1467,28 +1469,30 @@ export default{
 								obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
 							}else{
 								if(obj.basicData.subject=="总分"){
-									if(res.result[0].scoreLevel=="SCHOOL"){
+									if(res.result.scoreVOList[0].scoreLevel=="SCHOOL"){
 										obj.optiongradeDistribution.series[1].data=[];
-										obj.optiongradeDistribution.series[1].data.push(res.result[0].highRate * 1000000/10000);
-										obj.optiongradeDistribution.series[1].data.push(res.result[0].excellentRate * 1000000/10000);
-										obj.optiongradeDistribution.series[1].data.push(res.result[0].commissionRate * 1000000/10000);
-										obj.optiongradeDistribution.series[1].data.push(res.result[0].passRate * 1000000/10000);
-										obj.optiongradeDistribution.series[1].data.push(res.result[0].failureRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result.scoreVOList[0].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result.scoreVOList[0].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result.scoreVOList[0].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result.scoreVOList[0].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[1].data.push(res.result.scoreVOList[0].failureRate * 1000000/10000);
 
 										obj.optiongradeDistribution.series[2].data=[];
-										obj.optiongradeDistribution.series[2].data.push(res.result[0].highRate * 1000000/10000);
-										obj.optiongradeDistribution.series[2].data.push(res.result[0].excellentRate * 1000000/10000);
-										obj.optiongradeDistribution.series[2].data.push(res.result[0].commissionRate * 1000000/10000);
-										obj.optiongradeDistribution.series[2].data.push(res.result[0].passRate * 1000000/10000);
-										obj.optiongradeDistribution.series[2].data.push(res.result[0].failureRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result.scoreVOList[0].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result.scoreVOList[0].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result.scoreVOList[0].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result.scoreVOList[0].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[2].data.push(res.result.scoreVOList[0].failureRate * 1000000/10000);
+
+										obj.optiongradeDistributionWord=res.result.summaryVO.scoreLevelDistr;
 									}
-									if(res.result[1].scoreLevel=="CLASS"){
+									if(res.result.scoreVOList[1].scoreLevel=="CLASS"){
 										obj.optiongradeDistribution.series[0].data=[];
-										obj.optiongradeDistribution.series[0].data.push(res.result[1].highRate * 1000000/10000);
-										obj.optiongradeDistribution.series[0].data.push(res.result[1].excellentRate * 1000000/10000);
-										obj.optiongradeDistribution.series[0].data.push(res.result[1].commissionRate * 1000000/10000);
-										obj.optiongradeDistribution.series[0].data.push(res.result[1].passRate * 1000000/10000);
-										obj.optiongradeDistribution.series[0].data.push(res.result[1].failureRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result.scoreVOList[1].highRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result.scoreVOList[1].excellentRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result.scoreVOList[1].commissionRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result.scoreVOList[1].passRate * 1000000/10000);
+										obj.optiongradeDistribution.series[0].data.push(res.result.scoreVOList[1].failureRate * 1000000/10000);
 									}
 									obj.echarts.init(document.getElementById("gradeDistribution1")).setOption(obj.optiongradeDistribution);
 								}else{
