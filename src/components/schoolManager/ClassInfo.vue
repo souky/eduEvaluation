@@ -1,7 +1,7 @@
 <template>
 	<div id="classInfo" class="main_body">
 		<div class="class_info_search">
-			
+
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">班级</div>
@@ -12,7 +12,7 @@
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">班主任名称</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.teacherName" placeholder="班主任名称"></el-input>
+			  		<el-input v-model="queryInfos.classTeather" placeholder="班主任名称"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
@@ -23,14 +23,14 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-			
+
 		</div>
-		
+
 		<div class="class_info_table">
 			<div class="tools fix">
 				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline">新增</i>
-				</div>	
+				</div>
 			</div>
 			<el-table :data="tableData" style="width: 100%">
 		      <el-table-column prop="classroomName" align="center" label="班级"></el-table-column>
@@ -45,7 +45,7 @@
 		      	</template>
 		      </el-table-column>
 		    </el-table>
-		    
+
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
@@ -54,8 +54,8 @@
 		      >
 		    </el-pagination>
 		</div>
-		
-		
+
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="classroom" class="demo-ruleForm" label-width="80px" :model="classroom">
@@ -76,10 +76,10 @@
 				</el-select>
 			  </el-form-item>
 			  <el-form-item label="地理位置" >
-			  	<el-input v-model.number="classroom.position" placeholder="地理位置"></el-input>
+			  	<el-input v-model="classroom.position" placeholder="地理位置"></el-input>
 			  </el-form-item>
 			  <el-form-item label="备注" >
-			  	<el-input v-model.number="classroom.remark" placeholder="备注"></el-input>
+			  	<el-input v-model="classroom.remark" placeholder="备注"></el-input>
 			  </el-form-item>
 			</el-form>
 		  </div>
@@ -89,7 +89,7 @@
 		  </span>
 		</el-dialog>
 	</div>
-	
+
 </template>
 
 <script>
@@ -111,18 +111,18 @@ export default {
 	  	classroomName:'',
 	  	teacherName:''
 	  },
-	  
+
 	  pageNum:1,
       pageSize:10,
       total:1,
-      
+
       dialogVisible:false,
       diaTitle:'新增',
       showInfo:true,
       classroom:{},
       gradeOption:[],
       teacherOption:[],
-      
+
 	   rules: {
 	      gradeCodes: [
 	        { required: true, message: '请选择年级', trigger: 'change' }
@@ -137,11 +137,11 @@ export default {
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
   	});
-  	
+
   	this.postHttp(this,{pageNum:1,pageSize:400},'teacher/queryTeachers',function(obj,res){
   		obj.teacherOption = res.result.list;
   	});
-  	
+
   	this.queryInfo();
   },
   methods:{
@@ -159,7 +159,7 @@ export default {
   		this.classroom = {};
   	},
   	saveEdit(){
-  		
+
 	  		var id = this.classroom.id;
 	  		var address = 'classroom/saveClassroom';
 	  		delete this.classroom["createDate"];
@@ -202,9 +202,9 @@ export default {
 			        }
 				});
 		  	}
-	  	
-          	
-  		
+
+
+
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -216,7 +216,7 @@ export default {
   		}
   	},
 	editInfo(id){
-		
+
 		this.showInfo = false;
 		this.dialogVisible = true;
 		this.diaTitle = "编辑";
@@ -247,16 +247,16 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	handleSizeChange(val) {
-	  	this.pageNum = 1;
+  	this.pageNum = 1;
 		this.pageSize = val;
 		this.queryInfo();
 	},
 	handleCurrentChange(val) {
-	  	this.pageNum = val;
+  	this.pageNum = val;
 		this.queryInfo();
 	},
 	ajaxData(){
