@@ -130,7 +130,8 @@
 					</div>
 					<div id="subjectsDiagnosis2"></div>
 					<div class="Subjectsdiagnose-foot">
-						<p>在本次考试中，语文的标准分较高，并且高于总分标准分，是本班级的优势科目，请继续保持；数学、英语和综合的标准分较低，并且低于总分标准分，是本班级的弱势科目，需要多关注。在本次考试中，本班级的语文、数学、英语、综合以及总分的得分率都高于学校平均得分率，请继续保持</p>
+						<p>{{optionSubjectsDiagnosisWord}}</p>
+						<p>{{optionSubjectsDiagnosisRightWord}}</p>
 					</div>
 				</div>
 			</div>
@@ -444,6 +445,7 @@ export default {
 				},
 				]
 			},
+			optionSubjectsDiagnosisWord:"",
 			optionSubjectsDiagnosis:{
 				color: ['#53CDD6'],
 				tooltip : {
@@ -512,6 +514,7 @@ export default {
 				    },
 				    ]
 				},
+				optionSubjectsDiagnosisRightWord:"",
 				optionSubjectsDiagnosisRight:{
 					tooltip: {
 					},
@@ -959,7 +962,7 @@ export default {
 				var that=this;
 				setTimeout(function(){
 					that.handleClose();
-					that.$toast({message:"网络错误", position: 'bottom',duration: 5000})
+					//that.$toast({message:"网络错误", position: 'bottom',duration: 5000})
 				},60000)
 
 			},
@@ -1053,6 +1056,8 @@ export default {
 									}
 									obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
 								}
+								obj.optionSubjectsDiagnosisWord=res.result.summaryVO.stuSubjBalanceST;
+								obj.optionSubjectsDiagnosisRightWord=res.result.summaryVO.stuSubjBalancePR;
 								obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
 								obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
 							}

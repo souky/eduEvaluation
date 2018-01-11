@@ -27,9 +27,10 @@
     width: 100%;
     background-color: #19AFFF;
     text-align: center;
-    position: absolute;
+    position: fixed;
     padding-top: 2vh;
     padding-bottom: 2vh;
+    z-index: 99999999999999999999;
   }
   .header-nav p{
     font-size: 1.125rem;
