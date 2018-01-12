@@ -73,7 +73,7 @@
 		  </div>
 		  <div id="reportClass">
 		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-		      <el-table-column width="50" type="index" label="排名">
+		      <el-table-column width="50" prop="schoolRanking" label="排名">
 		      </el-table-column>
 		      <el-table-column  prop="classroomName" label="班级">
 		      </el-table-column>
@@ -108,7 +108,7 @@
 		  </div>
 		  <div id="averageCompare">
 		  		<div id="averageChart"></div>
-		  		<!-- <p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p> -->
+		  		<p class="testTips">{{subjAvgComparation}}</p>
 		  		<div class="allaverag"><img src="/static/img/header/Group.png" /> 本校平均分</div>
 		  </div>
 
@@ -120,7 +120,7 @@
 		  	<div id="contrastiveChart">
 		  	
 		  	</div>
-		  	<!-- <p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p> -->
+		  <p class="testTips">{{classesLevelDistri}}</p>
 		  </div>
 
 		  <div class="header">
@@ -150,7 +150,7 @@
 		  	</div>
 		  	<div id="achievementTable">
 			  	<el-table :data="tableData3" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-			      <el-table-column width="50" type="index" label="排名">
+			      <el-table-column width="50" prop="schoolRanking" label="排名">
 			      </el-table-column>
 			      <el-table-column prop="classroomName" label="班级">
 			      </el-table-column>
@@ -167,6 +167,7 @@
 			      <el-table-column prop="contribution" label="科目贡献率(班级课目标准分/班级总分标准分*100)">
 			      </el-table-column>
 			    </el-table>
+			    <p class="testTips">{{mycontribution}}</p>
 		  	</div>
 		  	<div class="header">
 				<p>贡献率折线图</p>
@@ -219,7 +220,8 @@ export default {
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
 			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
-			tableData3:[],option4:{},option5:{}
+			tableData3:[],option4:{},option5:{},subjAvgComparation:'',mycontribution:'',
+			classesLevelDistri:''
 		}
 	},
     methods: {
@@ -227,13 +229,10 @@ export default {
     		
     		var needData = {tab:'SCHOOL_REPORT'};
 	    	this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
-	    	   obj.testList=[];
+	    	   obj.testList=[];obj.changeSchool='';
 	           for(var value of data.result.exams){
 	           		obj.testList.push(value);
-	           		obj.classList = [];
-	           		obj.classroom = value.classroom.split(",");
-	           		obj.classList = value.subject.split(",");
-	           		obj.changeSchool = obj.classList[0];
+	           		
 	           		
 	           }
 	          
@@ -269,6 +268,12 @@ export default {
     	testChange(e){
     		var needData = {tab:'SCHOOL_REPORT',examId:this.testList[e].id};
     		this.ides = this.testList[e].id;
+    		this.postHttp(this,'',"exam/getExamListForTab",function(obj,data){
+    			    obj.classList = [];
+	           		obj.classroom = data.result.exams[e].classroom.split(",");
+	           		obj.classList = data.result.exams[e].subject.split(",");
+	           		obj.changeSchool = obj.classList[0];
+	        });
     		this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
 	    	   	if(data.result == undefined){
 	    	   		var data1 = [0,0,0,0,0]
@@ -290,7 +295,7 @@ export default {
 	    		if(data.result == "没有最近一次考试的相关数据"){
 	    			datax = [];data10 = [];data20 = [];data50 = [];
 	    			data100 = [];data200 = [];data500 = [];data1000 = [];
-	    			console.log(obj.classroom);
+	    			
 					datax = obj.classroom;
 					for(var a of obj.classroom){
 		           		data10.push(0);
@@ -332,6 +337,8 @@ export default {
 		           		obj.option2.series[0].data.push(0);
 		           		obj.option4.series[0].data.push(0);
 		           }
+		           obj.mycontribution = '';
+		           obj.subjAvgComparation ='';
 		           obj.option2.series[0].markLine.data[0].yAxis = 0;
 		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 		           obj.tableData3 = [];
@@ -354,6 +361,8 @@ export default {
 		           obj.option4.series[0].data = comtribution;
 		           obj.option4.xAxis[0].data = data.result.classList;
 		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+		           obj.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
+		           obj.mycontribution = data.result.summaryVO.contribution;
 	    		}
 	        });
 			this.postHttp(this,needData,"score/getEachClassLevelDistribution",function(obj,data){
@@ -373,12 +382,13 @@ export default {
 	    	   		obj.option5.series[3].data = xAxisD;
 	    	   		obj.option5.series[4].data = xAxisD;
 					obj.echarts.init(document.getElementById("contrastiveChart")).setOption(obj.option5);
+					obj.classesLevelDistri = '';
 	    	   	}else{
 	    	   		highRates=[];excellentRates=[];
 	    	   		commissionRates=[];passRates=[];
 	    	   		failureRates=[];obj.option5.xAxis.data =[];
 	    	   		xdatas=[];
-	    	   		for(var a of data.result){
+	    	   		for(var a of data.result.scoreVOList){
 	    	   			highRates.push(obj.initPrate(a.highRate));
 	    	   			excellentRates.push(obj.initPrate(a.excellentRate));
 	    	   			commissionRates.push(obj.initPrate(a.commissionRate));
@@ -393,6 +403,7 @@ export default {
 	    	   		obj.option5.series[3].data = passRates;
 	    	   		obj.option5.series[4].data = failureRates;
 					obj.echarts.init(document.getElementById("contrastiveChart")).setOption(obj.option5);
+					obj.classesLevelDistri = data.result.summaryVO.classesLevelDistri;
 	    	   	}
 	        });
     	},    
@@ -439,6 +450,7 @@ export default {
 					obj.option4.series[0].data = [];
 					obj.option4.xAxis[0].data = obj.classroom;
 					obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+					obj.mycontribution = '';
 				}else{
 					obj.tableData3 = [];obj.option4.series[0].data = [];
 					obj.option4.xAxis[0].data = [];
@@ -450,6 +462,7 @@ export default {
 		           obj.option4.series[0].data = comtribution;
 		           obj.option4.xAxis[0].data = data.result.classList;
 		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+		           obj.mycontribution = data.result.summaryVO.contribution;
 				}
 	           
 	        });
@@ -483,17 +496,12 @@ export default {
 		//接js模拟数据
     	this.tableData1 = this.IndexData.tableData1;this.countP = this.IndexData.countP;
     	this.totalCount = this.IndexData.totalCount;this.hightCount = this.IndexData.hightCount;
-    	this.ranking = this.IndexData.ranking;this.goodsuject = this.eachWork(this.IndexData.goodsuject,'、');
-    	this.hightavarge = this.eachWork(this.IndexData.hightavarge,'分、');this.allNumber = this.eachWork(this.IndexData.allNumber,'、');
-    	this.lowSuject = this.eachWork(this.IndexData.lowSuject,'、');this.lowavarge = this.eachWork(this.IndexData.lowavarge,'分、');
-    	this.allRanking = this.eachWork(this.IndexData.allRanking,'、');
+    	this.ranking = this.IndexData.ranking;
     	this.option1 = this.IndexData.option1;
     	this.option2 = this.IndexData.option2;
     	this.classNumble = this.IndexData.classNumble;
-    	this.classS = this.eachWork(this.IndexData.classS,'班、');
     	this.classH = this.IndexData.classH;
     	this.missdistance = this.IndexData.missdistance;
-    	this.classL = this.eachWork(this.IndexData.classL,'班、');
     	this.classLs = this.IndexData.classLs;
     	this.option3 = this.IndexData.option3;
     	this.tableData3 = this.IndexData.tableData3;

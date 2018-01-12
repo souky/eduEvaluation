@@ -99,7 +99,7 @@
 		  </div>
 		  <div id="reportClass">
 		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-		      <el-table-column width="50" type="index" label="排名">
+		      <el-table-column width="50" prop="schoolRanking" label="排名">
 		      </el-table-column>
 		      <el-table-column  prop="classroomName" label="班级">
 		      </el-table-column>
@@ -113,9 +113,9 @@
 		      </el-table-column>
 		      <el-table-column width="60" prop="classMinScore" label="最低分">
 		      </el-table-column>
-		      <el-table-column prop="classTotalStandardDeviation" label="标准差">
+		      <el-table-column prop="classSubjectStandardDeviation" label="标准差">
 		      </el-table-column>
-		      <el-table-column prop="classTotalDiffCoefficient" label="分化程度(前三名提醒)">
+		      <el-table-column prop="classSubjectDiffCoefficient" label="分化程度(前三名提醒)">
 		      </el-table-column>
 		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 [90%-100%]">
 		      </el-table-column>
@@ -128,6 +128,7 @@
 		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
 		      </el-table-column>
 		    </el-table>
+		    <p class="testTips">{{eachClassSubjScore}}</p>
 		  </div>
 
 		  <div class="header">
@@ -136,7 +137,7 @@
 		  </div>
 		  <div id="averageCompare">
 		  		<div id="averageChart"></div>
-		  		<!-- <p class="testTips">本次考试中，有{{classNumble}}个班级超过本校平均分，分别为{{classS}}班。其中{{classH}}班的平均分最高，与地区排名第一的班级还有{{missdistance}}分差距。{{classL}}班的平均分低于学校平均水平，其中{{classLs}}班的平均分最低，需要特别注意。</p> -->
+		  		<p class="testTips">{{subjAvgComparation}}</p>
 		  		<div class="allaverag"><img src="/static/img/header/Group.png" /> 本校平均分</div>
 		  </div>
 
@@ -148,8 +149,7 @@
 		  	<div id="contrastiveChart">
 		  	
 		  	</div>
-		  	<!-- <p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。与区县第一名的班级持平。与地区排名第一的班级持平。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。
-		  	</p> -->
+		  	<p class="testTips">{{classesLevelDistri}}</p> 
 		  </div>
 
 		  <div class="header">
@@ -259,6 +259,8 @@ export default {
 			showselect:false,
 			schoolTest:'',
 			changeSchool:'',
+			eachClassSubjScore:'',
+			classesLevelDistri:'',
 			schoolList:[{
 				id:'001',
 				name:'一中'
@@ -270,9 +272,9 @@ export default {
 			countP:'',totalCount:'',hightCount:'',ranking:'',
 			goodsuject:[],hightavarge:[],allNumber:[],lowSuject:[],lowavarge:[],
 			allRanking:[],option1:{},tableData2:[],option2:{},option3:{},
-			classNumble:'',classS:[],classH:'',missdistance:'',classL:[],classLs:'',
+			classNumble:'',classS:'',classH:'',missdistance:'',classL:[],classLs:'',
 			tableData3:[],option4:{},dialogVisible:false,option5:{},option6:{},
-			subjects:[],
+			subjects:[],subjAvgComparation:'',
 			items:[],classroom:[],
 			optionTwoDimensionalAnalysis:{},
 			examination:[],
@@ -288,7 +290,7 @@ export default {
     		var needData = {tab:'TEACHING_REPORT'};
     		this.postHttp(this,needData,"exam/getExamListForTab",function(obj,data){
 	           for(var value of data.result.exams){
-	           		obj.testList.push(value);obj.classroom = value.classroom.split(",");
+	           		obj.testList.push(value);
 	           }
 	        });
 		},
@@ -320,7 +322,9 @@ export default {
     		var needData = {tab:'TEACHING_REPORT',examId:this.testList[e].id};
     		this.testid = this.testList[e].id;
     		var ids = this.testList[e].id;
+    		var es = e;
 	    	this.postHttp(this,needData,"exam/getExamListForTab",function(obj,data){
+	    		obj.classroom = data.result.exams[es].classroom.split(",");
 	    		obj.items = [];
 	    		obj.subjects = [];
 	    		obj.indes = 0;
@@ -347,9 +351,13 @@ export default {
 					           		objs.option2.series[0].data.push(0);
 					           		objs.option4.series[0].data.push(0);
 					           }
+					           obj.subjAvgComparation ='';
+					           obj.eachClassSubjScore = '';
 					           obj.option2.series[0].markLine.data[0].yAxis = 0;
 					           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 							}else{
+									obj.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
+									obj.eachClassSubjScore = data.result.summaryVO.eachClassSubjScore;
 									avgList  =[];avgXAxis = [];
 									objs.tableData1.push(data.result.scoreVO);
 									objs.tableData2=data.result.classScoreVOList;
@@ -434,13 +442,16 @@ export default {
 		    	   		for(var a of objs.classroom){
 		    	   			xAxisD.push(0)
 		    	   		}
+		    	   		objs.classesLevelDistri = '';
 		    	   		objs.option6.series[0].data = xAxisD;
 		    	   		objs.option6.series[1].data = xAxisD;
 		    	   		objs.option6.series[2].data = xAxisD;
 		    	   		objs.option6.series[3].data = xAxisD;
 		    	   		objs.option6.series[4].data = xAxisD;
+		    	   		console.log(objs.option6);
 						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
 		    	   	}else{
+
 						highRates=[];excellentRates=[];
 		    	   		commissionRates=[];passRates=[];
 		    	   		failureRates=[];objs.option6.xAxis.data =[];
@@ -453,6 +464,7 @@ export default {
 		    	   			failureRates.push(objs.initPrate(a.failureRate));
 		    	   			xDatas.push(a.classroomName);
 						}
+						objs.classesLevelDistri = data.result.summaryVO.classesLevelDistri;
 						objs.option6.xAxis.data=xDatas;
 						objs.option6.series[0].data = highRates;
 		    	   		objs.option6.series[1].data = excellentRates;
@@ -622,6 +634,7 @@ export default {
 		    	   		for(var a of objs.classroom){
 		    	   			xAxisD.push(0)
 		    	   		}
+		    	   		objs.classesLevelDistri = '';
 		    	   		objs.option6.series[0].data = xAxisD;
 		    	   		objs.option6.series[1].data = xAxisD;
 		    	   		objs.option6.series[2].data = xAxisD;
@@ -629,6 +642,7 @@ export default {
 		    	   		objs.option6.series[4].data = xAxisD;
 						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
 		    	   	}else{
+		    	   		objs.classesLevelDistri = data.result.summaryVO.classesLevelDistri;
 						highRates=[];excellentRates=[];
 		    	   		commissionRates=[];passRates=[];
 		    	   		failureRates=[];objs.option6.xAxis.data =[];xDaras = [];
@@ -640,7 +654,6 @@ export default {
 		    	   			failureRates.push(objs.initPrate(a.failureRate));
 		    	   			xDaras.push(a.classroomName);
 						}
-						
 						objs.option6.xAxis.data = xDaras;
 						objs.option6.series[0].data = highRates;
 		    	   		objs.option6.series[1].data = excellentRates;
@@ -674,7 +687,7 @@ export default {
     	this.tableData2 = this.IndexData.tableData2;
     	this.option2 = this.IndexData.option2;
     	this.classNumble = this.IndexData.classNumble;
-    	this.classS = this.eachWork(this.IndexData.classS,'班、');
+    	
     	this.classH = this.IndexData.classH;
     	this.missdistance = this.IndexData.missdistance;
     	this.classL = this.eachWork(this.IndexData.classL,'班、');
