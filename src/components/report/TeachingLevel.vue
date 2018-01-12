@@ -634,7 +634,6 @@ export default {
 		    	   		for(var a of objs.classroom){
 		    	   			xAxisD.push(0)
 		    	   		}
-		    	   		objs.classesLevelDistri = '';
 		    	   		objs.option6.series[0].data = xAxisD;
 		    	   		objs.option6.series[1].data = xAxisD;
 		    	   		objs.option6.series[2].data = xAxisD;
@@ -642,7 +641,6 @@ export default {
 		    	   		objs.option6.series[4].data = xAxisD;
 						objs.echarts.init(document.getElementById("contrastiveChart")).setOption(objs.option6);
 		    	   	}else{
-		    	   		objs.classesLevelDistri = data.result.summaryVO.classesLevelDistri;
 						highRates=[];excellentRates=[];
 		    	   		commissionRates=[];passRates=[];
 		    	   		failureRates=[];objs.option6.xAxis.data =[];xDaras = [];

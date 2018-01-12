@@ -50,7 +50,7 @@
 					    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 					      :page-sizes="[10, 20, 50]"
 					      :page-size="pageSize"
-					      layout="sizes, prev, pager, next, jumper"
+					      layout="sizes, prev, pager, next, jumper,total"
 					      :total="total" class="tc mt20"
 					      >
 					    </el-pagination>
@@ -104,7 +104,7 @@
 						    <el-pagination @size-change="handleSizeChange1" @current-change="handleCurrentChange1" :current-page.sync="pageNum1"
 						      :page-sizes="[10, 20, 50]"
 						      :page-size="pageSize1"
-						      layout="sizes, prev, pager, next, jumper"
+						      layout="sizes, prev, pager, next, jumper,total"
 						      :total="total1" class="tc mt20"
 						      >
 						    </el-pagination>
@@ -194,18 +194,18 @@ export default {
   	queryInfo(){
   		var datas = this.ajaxData();
   		this.postHttp(this,datas,'exam/queryExams',function(obj,res){
-	  		obj.pageNum = res.result.pageNum;
-	  		obj.pageSize = res.result.pageSize;
-	  		obj.total = res.result.total;
+	  		 obj.pageNum = res.result.pageNum;
+	  		 obj.pageSize = res.result.pageSize;
+	  		 obj.total = res.result.total;
 	  		obj.tableData = res.result.list;
 	  	})
   	},
   	queryInfo1(){
   		var datas = this.ajaxData1();
 	  	this.postHttp(this,datas,'twowayspecification/queryTwoWaySpecifications',function(obj,res){
-	  		obj.pageNum1 = res.result.pageNum;
-	  		obj.pageSize1 = res.result.pageSize;
-	  		obj.total1 = res.result.total;
+	  		 obj.pageNum1 = res.result.pageNum;
+	  		 obj.pageSize1 = res.result.pageSize;
+	  		 obj.total1 = res.result.total;
 
 	  		obj.tableData1 = res.result.list;
 	  	})
@@ -245,7 +245,7 @@ export default {
 	},
 	handleSizeChange1(val) {
 	  	this.pageNum1 = 1;
-		this.pageSzie1 = val;
+		this.pageSize1 = val;
 		this.queryInfo1();
 	},
 	handleCurrentChange1(val) {
@@ -254,11 +254,12 @@ export default {
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
-		this.pageSzie = val;
+		this.pageSize = val;
 		this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
+	  	console.log(this.pageNum)
 		this.queryInfo();
 	},
 	timeFormatter(row, column, cellValue){
@@ -297,8 +298,8 @@ export default {
 	},
 	ajaxData1(){
 		var data = new Object();
-		data["pageSize"] = this.pageSize;
-		data["pageNum"] = this.pageNum;
+		data["pageSize"] = this.pageSize1;
+		data["pageNum"] = this.pageNum1;
 		data["specificationName"] = this.queryInfos1.specificationName;
 		data["gradeCode"] = this.queryInfos1.gradeName;
 		data["subjectCode"] = this.queryInfos1.subjectName;
@@ -350,7 +351,10 @@ export default {
 #resource .twoWay_info_search,#resource .exam_info_search{
 	margin-bottom: 20px
 }
-.el-tabs__item{
+#resource .el-tabs__item{
 	font-size: 16px
+}
+#resource .el-pagination__total{
+	margin-left: 20px;
 }
 </style>

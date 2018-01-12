@@ -130,8 +130,8 @@
 				<div id="subjectsDiagnosis2"></div>
 				<div class="cl"></div>
 				<div class="subjectsDiagnosisText">
-					<p>在本次考试中，本班范围内，语文的标准分较高，并且高于总分标准分，是你的优势科目，请继续保持；数学、英语的标准分较低，并且低于总分标准分，是你的相对弱势科目，需要多关注。</p>
-					<p>在本次考试中，本班范围内，你的语文、数学、英语总分的得分率都高于平均得分率，请继续保持。</p>
+					<p>{{optionSubjectsDiagnosisWord}}</p>
+					<p>{{optionSubjectsDiagnosisRightWord}}</p>
 				</div>
 			</div>
 		</div>
@@ -270,7 +270,7 @@
 						<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.knowDetail" style="width: 100%">
 							<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
 							<el-table-column align="center" :show-overflow-tooltip="true" prop="knowledge" label="知识点"></el-table-column>
-							<el-table-column align="center" label="得分率%">
+							<el-table-column align="center" label="得分率(单位：%)">
 								<el-table-column align="center" prop="divideClass" label="我的"></el-table-column>
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
@@ -304,7 +304,8 @@
 				<div id="abilityAnalyze2">
 					<el-table class="borders" :data="scoreName" style="width: 100%">
 						<el-table-column align="center" prop="ablityName" label="能力"></el-table-column>
-						<el-table-column align="center" label="得分率">
+						<el-table-column align="center" label="得分率(单位：%)">
+							<el-table-column align="center" prop="divideStudent" label="我的"></el-table-column>
 							<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 							<el-table-column align="center" prop="divideSchool" label="全校"></el-table-column>
 							<el-table-column align="center" prop="divideAera" label="全区县"></el-table-column>
@@ -495,6 +496,7 @@ export default {
 				},
 				]
 			},
+			optionSubjectsDiagnosisWord:"",
 			optionSubjectsDiagnosis:{
 				color: ['#70CDF3'],
 				tooltip : {
@@ -551,11 +553,12 @@ export default {
 				    },
 				    ]
 				},
+				optionSubjectsDiagnosisRightWord:"",
 				optionSubjectsDiagnosisRight:{
 					tooltip: {},
 					legend: {
 						x: 'center',
-						data:['个人','平均水平']
+						data:['个人-（单位：%）','平均水平-（单位：%）']
 					},
 					grid: {
 						left: '4%',
@@ -565,7 +568,6 @@ export default {
 						containLabel: true
 					},
 					radar: [
-
 					{
 						indicator: [
 						{text: '总分', max: 100},
@@ -583,12 +585,12 @@ export default {
 						type: 'radar',
 						data: [
 						{
-							name: '个人',
+							name: '个人-（单位：%）',
 							value: [23,43,54,65,23],
 							itemStyle: {normal: {color: '#FFD244',areaStyle: {color: 'rgba(255,210,68,0.3)'}}},
 						},
 						{
-							name:'平均水平',
+							name:'平均水平-（单位：%）',
 							value:[34,54,56,76,87],
 							itemStyle: {normal: {color: '#70CDF3',areaStyle: {color: 'rgba(112,205,243,0.3)'}}},
 						}
@@ -1370,6 +1372,8 @@ geReportCards:function(){
 						}
 						obj.optionSubjectsDiagnosisRight.radar[0].indicator.push(arr);
 					}
+					obj.optionSubjectsDiagnosisWord=res.result.summaryVO.stuSubjBalanceST;
+					obj.optionSubjectsDiagnosisRightWord=res.result.summaryVO.stuSubjBalancePR;
 					obj.echarts.init(document.getElementById("subjectsDiagnosis1")).setOption(obj.optionSubjectsDiagnosis);
 					obj.echarts.init(document.getElementById("subjectsDiagnosis2")).setOption(obj.optionSubjectsDiagnosisRight);
 				}else{
@@ -2344,6 +2348,8 @@ objectSpanMethod({ row, column, rowIndex, columnIndex }) {
 			background-color: white;
 			width: 300px;
 			text-align: center;
+			max-height: 125px;
+			overflow: auto;
 		}
 		#studentlevel .showselect li{
 			margin: 0;padding:0;

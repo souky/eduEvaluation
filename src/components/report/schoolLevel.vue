@@ -3,58 +3,58 @@
 		<ul id="navInside" >
 			<li v-for="item in liList" :class="activeList == item.id? 'active': ''" :key="item.id" @click="testtest(item.id)">{{item.name}}</li>
 		</ul>
-		  <el-carousel :interval="5000" indicator-position="none" ref="carousel" @change="testChange($event)" arrow="always" :autoplay="false">
-		    <el-carousel-item v-for="item in testList" :key="item.id" :name="item.examName">
-		      <p class="alltest" @click="selectShow">{{item.examName}}</p>
+		<el-carousel :interval="5000" indicator-position="none" ref="carousel" @change="testChange($event)" arrow="always" :autoplay="false">
+			<el-carousel-item v-for="item in testList" :key="item.id" :name="item.examName">
+				<p class="alltest" @click="selectShow">{{item.examName}}</p>
 			</el-carousel-item>
-		  </el-carousel>
-		  <el-collapse-transition>
-			  <ul v-if='showselect' class="showselect">
-			  	<li v-for="item in testList" :key="item.id" @click="changetest(item.id,item.examName)">{{item.examName}}</li>
-			  </ul>
-		  </el-collapse-transition>
-		 <div class="header louceng">
+		</el-carousel>
+		<el-collapse-transition>
+			<ul v-if='showselect' class="showselect">
+				<li v-for="item in testList" :key="item.id" @click="changetest(item.id,item.examName)">{{item.examName}}</li>
+			</ul>
+		</el-collapse-transition>
+		<div class="header louceng">
 			<p>学校整体成绩报告单</p>
 			<div class="header-title-foot"></div>
-		  </div>
-		  <div id="overallReport">
-		    <el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-		      <el-table-column width="50" prop="subject" label="学科">
-		      </el-table-column>
-		      <el-table-column width="80" :formatter="setMan" label="统计人数">
-		      </el-table-column>
-		      <el-table-column width="50" prop="fullMarks" label="满分">
-		      </el-table-column>
-		      <el-table-column prop="schoolAvgScore" :formatter='setParse' label="平均分 (学校)">
-		      </el-table-column>
-		      <el-table-column :formatter="setRow" label="平均分 (地区)">
-		      </el-table-column>
-		      <el-table-column width="80" :formatter="setRow" label="离均差">
-		      </el-table-column>
-		      <el-table-column :formatter="setRow" label=" 排名 (地区)">
-		      </el-table-column>
-		      <el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
-		      </el-table-column>
-		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 [90%-100%]">
-		      </el-table-column>
-		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 [80%-90%)">
-		      </el-table-column>
-		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 [70%-80%)">
-		      </el-table-column>
-		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 [60%-70%)">
-		      </el-table-column>
-		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
-		      </el-table-column>
-		    </el-table>
-		   <!--  <p class="testTips">本次考试中，我校参与统计人数{{countP}}人，总分平均分{{totalCount}}分。各学科中{{goodsuject}}平均分表现较好；{{lowSuject}}科目表现较弱。</p> -->
-		  </div>
+		</div>
+		<div id="overallReport">
+			<el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
+				<el-table-column width="50" prop="subject" label="学科">
+				</el-table-column>
+				<el-table-column width="80" :formatter="setMan" label="统计人数">
+				</el-table-column>
+				<el-table-column width="50" prop="fullMarks" label="满分">
+				</el-table-column>
+				<el-table-column prop="schoolAvgScore" :formatter='setParse' label="平均分 (学校)">
+				</el-table-column>
+				<el-table-column :formatter="setRow" label="平均分 (地区)">
+				</el-table-column>
+				<el-table-column width="80" :formatter="setRow" label="离均差">
+				</el-table-column>
+				<el-table-column :formatter="setRow" label=" 排名 (地区)">
+				</el-table-column>
+				<el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
+				</el-table-column>
+				<el-table-column prop="highRate" :formatter='setParse' label=" 高分率 [90%-100%]">
+				</el-table-column>
+				<el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 [80%-90%)">
+				</el-table-column>
+				<el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 [70%-80%)">
+				</el-table-column>
+				<el-table-column prop="passRate" :formatter='setParse' label=" 合格率 [60%-70%)">
+				</el-table-column>
+				<el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
+				</el-table-column>
+			</el-table>
+			<!--  <p class="testTips">本次考试中，我校参与统计人数{{countP}}人，总分平均分{{totalCount}}分。各学科中{{goodsuject}}平均分表现较好；{{lowSuject}}科目表现较弱。</p> -->
+		</div>
 
-		  <div class="header">
+		<div class="header">
 			<p>学生等级分布图</p>
 			<div class="header-title-foot"></div>
-		  </div>
-		  <div id="ranked">
-		  		<div id="rankedchart"></div>
+		</div>
+		<div id="ranked">
+			<div id="rankedchart"></div>
 		  		<!-- 产品版暂时不要<div class="schoolSelectBox">
 					  <el-select v-model="changeSchool" class="myselect" placeholder="请选择">
 					    <el-option
@@ -65,6 +65,7 @@
 					    </el-option>
 					  </el-select>
 					<el-button type="primary" @click="compareSchool" plain>学校对比</el-button>
+
 		  		</div> -->
 		  </div>
 		   <div class="header louceng" >
@@ -123,22 +124,23 @@
 		  <p class="testTips">{{classesLevelDistri}}</p>
 		  </div>
 
-		  <div class="header">
-			<p>各班前？名对比图</p>
-			<div class="header-title-foot"></div>
-		  </div>
-		  <div id="topCompared">
-		  		<div id="topComparedChart">
-		  		
-		  		</div>
-		  		<!-- <p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p> -->
-		  </div>
-		  <div class="header louceng">
-			<p>科目成绩报告单</p>
-			<div class="header-title-foot"></div>
-		  </div>
-		  <div id="achievement">
-		  	<div class="achievementSelectBox">
+
+			<div class="header">
+				<p>各班前？名对比图</p>
+				<div class="header-title-foot"></div>
+			</div>
+			<div id="topCompared">
+				<div id="topComparedChart">
+
+				</div>
+				<!-- <p class="testTips">我校及格率较高的前三名为{{classS}}。其中{{classH}}班的及格率达到{{classH}}%。{{classH}}班的优秀率为{{classH}}%，其他班级优秀率为零。{{classL}}班的不及格率较高。</p> -->
+			</div>
+			<div class="header louceng">
+				<p>科目成绩报告单</p>
+				<div class="header-title-foot"></div>
+			</div>
+			<div id="achievement">
+				<div class="achievementSelectBox">
 					<el-select v-model="changeSchool" @change="changeReprot($event)" class="myselect" placeholder="请选择">
 					    <el-option
 					      v-for="item in classList"
@@ -172,9 +174,9 @@
 		  	<div class="header">
 				<p>贡献率折线图</p>
 				<div class="header-title-foot"></div>
-		  	</div>
-		  	<div id="achievementChart"></div>
-		  </div>
+			</div>
+			<div id="achievementChart"></div>
+		</div>
 	</div>	
 </template>
 
@@ -250,20 +252,20 @@ export default {
     	},
     	setParse(row, column){
     		var e = row[column.property];
-	        if(e<1){
-	        	return e*1000000/10000 + '%';
-	        }else{
-	        	return e;
-	        }
-	         
+    		if(e<1){
+    			return e*1000000/10000 + '%';
+    		}else{
+    			return e;
+    		}
+
     	},
     	initPrate(e){
     		if(e<1){
-	        	return e*1000000/10000 ;
-	        }else{
-	        	return e;
-	        }
-	          
+    			return e*1000000/10000 ;
+    		}else{
+    			return e;
+    		}
+
     	},
     	testChange(e){
     		var needData = {tab:'SCHOOL_REPORT',examId:this.testList[e].id};
@@ -275,17 +277,16 @@ export default {
 	           		obj.changeSchool = obj.classList[0];
 	        });
     		this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
-	    	   	if(data.result == undefined){
-	    	   		var data1 = [0,0,0,0,0]
-	    	   	}else{
-					var data1 = [obj.initPrate(data.result.highRate),
-	    	   					obj.initPrate(data.result.excellentRate),
-	    	   					obj.initPrate(data.result.commissionRate),
-	    	   					obj.initPrate(data.result.passRate),
-	    	   					obj.initPrate(data.result.failureRate)];
-	    	   	}
-	    	   obj.option1.series[0].data = data1;
-
+    			if(data.result == undefined){
+    				var data1 = [0,0,0,0,0]
+    			}else{
+    				var data1 = [obj.initPrate(data.result.highRate),
+    				obj.initPrate(data.result.excellentRate),
+    				obj.initPrate(data.result.commissionRate),
+    				obj.initPrate(data.result.passRate),
+    				obj.initPrate(data.result.failureRate)];
+    			}
+    			obj.option1.series[0].data = data1;
 	           obj.echarts.init(document.getElementById("rankedchart")).setOption(obj.option1);
 	        });
 	        this.postHttp(this,needData,"score/getEachClassTopScores",function(obj,data){
@@ -419,15 +420,15 @@ export default {
 
     	},
     	rowsClassName:function({row, rowIndex}){
-	       if(rowIndex%2===1)
+    		if(rowIndex%2===1)
     			return 'tableBackground'
-      		else 
-      			return 'tableCenter'
+    		else 
+    			return 'tableCenter'
     	},
-		eachWork:function(e,a){
+    	eachWork:function(e,a){
     		var eachWorks='';
     		if(e.length>0){
-    		for(var i=0;i<e.length;i++){
+    			for(var i=0;i<e.length;i++){
     				if(i==e.length-1)
     					eachWorks +=e[i];
     				else
@@ -441,7 +442,7 @@ export default {
     		var olouceng = document.getElementsByClassName("louceng");
     		var oNav = document.getElementById("navInside").getElementsByTagName("li");
     		this.activeList = e;
-			window.scrollTo(0 ,olouceng[e].offsetTop);
+    		window.scrollTo(0 ,olouceng[e].offsetTop);
     	},
     	changeReprot(e){
 			this.postHttp(this,{tab:'SCHOOL_REPORT',examId:this.ides,subject:e},"score/geReportCards",function(obj,data){
@@ -466,7 +467,6 @@ export default {
 				}
 	           
 	        });
-	        
     	}
     },
     mounted:function(){
@@ -479,9 +479,9 @@ export default {
     			for(var i=0;i<olouceng.length;i++){
     				if(oheight+otop-olouceng[i].offsetTop>oheight/1.1){
     					for(var j=0;j<oNav.length;j++){
-							oNav[j].className = '';
-						}
-						oNav[i].className = 'active'
+    						oNav[j].className = '';
+    					}
+    					oNav[i].className = 'active'
     				}
 
     			}
@@ -511,13 +511,13 @@ export default {
     	this.initAll();
     },
     updated:function(){
-    	 if(this.$route.query.name!=undefined){
+    	if(this.$route.query.name!=undefined){
     		for(var a of this.testList){
-    				if(a.id==this.$route.query.name){
-    					this.$refs.carousel.setActiveItem(a.examName);
-    				}
+    			if(a.id==this.$route.query.name){
+    				this.$refs.carousel.setActiveItem(a.examName);
     			}
     		}
+    	}
     }
 }
 </script>
@@ -529,19 +529,19 @@ export default {
 	border-top: 1px solid #f2f2f2
 }
 #schoolLevel .el-carousel {
-    overflow-x: hidden;
-    position: relative;
-    height: 50px;
-    text-align: center;
-    width: 400px;
-    margin: auto;
-    margin-top: 30px;
-    line-height: 50px;
+	overflow-x: hidden;
+	position: relative;
+	height: 50px;
+	text-align: center;
+	width: 400px;
+	margin: auto;
+	margin-top: 30px;
+	line-height: 50px;
 }
 #schoolLevel .el-carousel__container {
-    position: relative;
-    height: 50px;
-    margin: auto;
+	position: relative;
+	height: 50px;
+	margin: auto;
 }
 #schoolLevel .myselect{
 	border:1px solid #44a9ff;
@@ -609,9 +609,11 @@ export default {
 	border: 1px solid #f2f2f2;
 	left: 400px;
 	z-index: 999;
-    background-color: white;
-    width: 300px;
-    text-align: center;
+	background-color: white;
+	width: 300px;
+	text-align: center;
+	max-height: 125px;
+	overflow: auto;
 }
 #schoolLevel .showselect li{
 	margin: 0;padding:0;
@@ -628,11 +630,11 @@ export default {
 }
 #schoolLevel .header-title-foot{
 	width: 100px;
-    height: 2px;
-    background: #44A9FF;
-    margin: auto;
-    margin-top: 5px;
-    margin-bottom: 35px
+	height: 2px;
+	background: #44A9FF;
+	margin: auto;
+	margin-top: 5px;
+	margin-bottom: 35px
 }
 #rankedchart{
 	width: 100%;

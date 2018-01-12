@@ -4,7 +4,10 @@
 			<el-carousel height="100px" indicator-position="none" arrow="always" :autoplay="false">
 				<el-carousel-item v-for="item in subjects" :key="item.id">
 					<div class="header-banner-bit" v-for="(child,index) in item.childs">
-						<div class="header-banner-click" ref="fristBit" :style="'background:'+child.color" @click="rainbow(index,child.name)">
+						<div class="header-banner-click on" v-if="index == 0" :style="'background:'+child.color" @click="rainbow(index,child.name)">
+							<p>{{child.name}}</p>
+						</div>
+						<div class="header-banner-click" v-if="index != 0" :style="'background:'+child.color" @click="rainbow(index,child.name)">
 							<p>{{child.name}}</p>
 						</div>
 					</div>
@@ -43,7 +46,7 @@ export default {
 		
 	},
 	mounted:function(){
-		this.loadKonwP();
+		
 	},
 	methods:{
 		handleNodeClick(data) {
@@ -72,18 +75,15 @@ export default {
 				}
 				obj.subjects=childs;
 				obj.$emit('refreshbizlines','other');
+				obj.loadKonwP();
 			});
 		},
 		loadKonwP(){
 			this.postHttp(this,{subjectName:this.queryName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 				obj.data = res.result;
-				obj.$refs.fristBit[0].className+=" on";
 			});
 		},
 		rainbow:function(index,num){
-			this.postHttp(this,{subjectName:num},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
-				obj.data = res.result;
-			});
 			for(var i=0;i<document.getElementsByClassName("header-banner-click").length;i++){
 				document.getElementById("Srainbow").getElementsByClassName("header-banner-click")[i].className="header-banner-click";
 			}
@@ -93,6 +93,9 @@ export default {
 			for(var a = 0;a<oNav.length;a++){
 				oNav[a].className = '';
 			}
+			this.postHttp(this,{subjectName:num},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+				obj.data = res.result;
+			});
 		},
 	},
 }
