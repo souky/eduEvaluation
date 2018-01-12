@@ -169,13 +169,14 @@
 			      <el-table-column prop="contribution" label="科目贡献率(班级课目标准分/班级总分标准分*100)">
 			      </el-table-column>
 			    </el-table>
-			    <p class="testTips">{{mycontribution}}</p>
+			    
 		  	</div>
 		  	<div class="header">
 				<p>贡献率折线图</p>
 				<div class="header-title-foot"></div>
 			</div>
 			<div id="achievementChart"></div>
+			<p class="testTips">{{mycontribution}}</p>
 		</div>
 	</div>	
 </template>
