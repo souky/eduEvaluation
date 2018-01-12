@@ -270,7 +270,7 @@
 						<el-table class="knowledge-table-true" :span-method="objectSpanMethod" :data="truetableData3.knowDetail" style="width: 100%">
 							<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
 							<el-table-column align="center" :show-overflow-tooltip="true" prop="knowledge" label="知识点"></el-table-column>
-							<el-table-column align="center" label="得分率%">
+							<el-table-column align="center" label="得分率(单位：%)">
 								<el-table-column align="center" prop="divideClass" label="我的"></el-table-column>
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
@@ -304,7 +304,8 @@
 				<div id="abilityAnalyze2">
 					<el-table class="borders" :data="scoreName" style="width: 100%">
 						<el-table-column align="center" prop="ablityName" label="能力"></el-table-column>
-						<el-table-column align="center" label="得分率">
+						<el-table-column align="center" label="得分率(单位：%)">
+							<el-table-column align="center" prop="divideStudent" label="我的"></el-table-column>
 							<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 							<el-table-column align="center" prop="divideSchool" label="全校"></el-table-column>
 							<el-table-column align="center" prop="divideAera" label="全区县"></el-table-column>

@@ -134,7 +134,8 @@
 			<div id="ClassdisciplinesLevel2"></div>
 			<div class="cl"></div>
 			<div class="subjectsDiagnosisText">
-				<p>在本次考试中，语文的标准分较高，并且高于总分标准分，是本班级的优势科目，请继续保持；数学、英语和综合的标准分较低，并且低于总分标准分，是本班级的弱势科目，需要多关注。在本次考试中，本班级的语文、数学、英语、综合以及总分的得分率都高于学校平均得分率，请继续保持</p>
+				<p>{{optionClassdisciplinesLevelWord}}</p>
+				<p>{{optionClassdisciplinesLevelRightWord}}</p>
 			</div>
 		</div>
 	</div>
@@ -441,7 +442,7 @@ export default{
 			truetableDatas:[],
 			headerData:[{
 				name : '名次',
-				dataIndex:'subject1Score',
+				dataIndex:'classRanking',
 			},{
 				name : '考号/学号',
 				dataIndex:'studentNo',
@@ -460,7 +461,7 @@ export default{
 			}],
 			SheaderData:[{
 				name : '名次',
-				dataIndex:'subject1Score',
+				dataIndex:'classRanking',
 			},{
 				name : '考号/学号',
 				dataIndex:'studentNo',
@@ -606,6 +607,7 @@ export default{
 			    }
 			    ]
 			},
+			optionClassdisciplinesLevelWord:"",
 			optionClassdisciplinesLevel:{
 				color: ['#70CDF3'],
 				tooltip : {
@@ -662,6 +664,7 @@ export default{
 				    },
 				    ]
 				},
+				optionClassdisciplinesLevelRightWord:"",
 				optionClassdisciplinesLevelRight:{
 					tooltip : {
 						trigger: 'item',
@@ -1406,6 +1409,8 @@ export default{
 								}
 								obj.optionClassdisciplinesLevelRight.radar[0].indicator.push(arr);
 							}
+							obj.optionClassdisciplinesLevelWord=res.result.summaryVO.stuSubjBalanceST;
+							obj.optionClassdisciplinesLevelRightWord=res.result.summaryVO.stuSubjBalancePR;
 							obj.echarts.init(document.getElementById("ClassdisciplinesLevel2")).setOption(obj.optionClassdisciplinesLevelRight);
 							obj.echarts.init(document.getElementById("ClassdisciplinesLevel1")).setOption(obj.optionClassdisciplinesLevel);
 						}else{
@@ -1607,9 +1612,6 @@ export default{
 				getClassRankingReport:function(){
 					this.postHttp(this,{examId:this.basicData.id,classroomId:this.basicData.class},'score/getClassRankingReport',function(obj,res){
 						if(res.code == '10000'){
-							for(var i=0;i<res.result.classScoreList.length;i++){
-								res.result.classScoreList[i].subject1Score=i+1;
-							}
 							obj.tableData3=res.result.classScoreList;
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
