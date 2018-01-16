@@ -343,6 +343,7 @@ export default{
 			basicData:{
 				subject:'总分',
 				class:'',
+				className:'',
 				anotherclass:'',
 				id:'',
 				topNum:50,
@@ -1198,6 +1199,7 @@ export default{
 							obj.schoolList1=res.result[name].classroom;
 							obj.schoolList2=res.result[name].classroom;
 							obj.basicData.class=res.result[name].classroom[0].id;
+							obj.basicData.className=res.result[name].classroom[0].classroomName;
 							obj.basicData.subject="总分";
 							obj.items.unshift(totle);
 							var childNum=Math.ceil(obj.items.length/11);
@@ -1306,6 +1308,11 @@ export default{
 				changeClassName(value){
 					this.basicData.class=value;
 					this.rainbow(0,0,"总分");
+					for(var i=0;i<this.schoolList.length;i++){
+						if(value==this.schoolList[i].id){
+							this.basicData.className=this.schoolList[i].classroomName;
+						}
+					}
 				},
 				changeClassName1(value){
 					this.basicData.anotherclass=value;
@@ -1703,7 +1710,7 @@ export default{
 					if(this.diaLoading){
 						setTimeout(function(){
 							selfs.diaLoading = false;
-							selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+							selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomName:selfs.basicData.className,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
 								if(res.code == '10000'){
 									obj.optionclassLastScore.xAxis.data=[];
 									obj.optionclassLastScore.xAxis.data=res.result.examNameList;
@@ -1717,7 +1724,7 @@ export default{
 							})
 						},1000);
 					}else{
-						selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomId:selfs.basicData.class,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
+						selfs.postHttp(selfs,{examId:selfs.basicData.id,classroomName:selfs.basicData.className,tab:'CLASS_REPORT', subject:selfs.basicData.subject},'score/compareExamScores',function(obj,res){
 							if(res.code == '10000'){
 								obj.optionclassLastScore.xAxis.data=[];
 								obj.optionclassLastScore.xAxis.data=res.result.examNameList;
