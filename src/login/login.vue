@@ -68,7 +68,8 @@ export default {
 			});
 		},
 		open3:function(){
-			this.$message({
+			this.$notify({
+				title: '警告',
 				message: '忘记密码请联系系统管理员',
 				type: 'warning'
 			});
