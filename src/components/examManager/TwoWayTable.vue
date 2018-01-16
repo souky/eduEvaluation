@@ -83,7 +83,7 @@
 									<el-col :span="15">分步答案</el-col>
 									<el-col :span="5">分步知识点</el-col>
 								</el-row>
-								<el-row v-for="(e,index) in props.row.stepList" style="border-bottom:1px #e6e6e6 solid;">
+								<el-row v-for="(e,index) in props.row.stepList" :key="index" style="border-bottom:1px #e6e6e6 solid;">
 									<el-col :span="2">{{(index+1)}}</el-col>
 									<el-col :span="2">{{e.stepScore}}</el-col>
 									<el-col :span="15" style="text-align:left;">{{e.stepAnswer}}</el-col>
@@ -657,9 +657,9 @@ export default {
 			}else{
 				delete data[i]['stepList'];
 				var listK = data[i].knowledgeId;
+				var strings = '';
 				for(var j = 0;j < listK.length;j++){
-					var strings = '';
-					if(x == 0){
+					if(j == 0){
 						strings += listK[j];
 					}else{
 						strings += "," + listK[j];
