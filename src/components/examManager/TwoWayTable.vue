@@ -524,7 +524,10 @@ export default {
 		var subjectName = this.TwoWaySpecification.subjectCode;
 		this.postHttp(this,{subjectName:subjectName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.knowOption = res.result;
-	  	});
+  	});
+		this.postHttp(this,{subjectName:subjectName},'subjectablity/querySubjectAblitys',function(obj,res){
+	  		obj.ablityArray = res.result;
+  	});
 	},
 	addDetile(){
 		this.two_way_D.push({
@@ -550,12 +553,12 @@ export default {
 	},
 	handleSizeChange(val) {
 	  	this.pageNum = 1;
-		this.pageSize = val;
-		//ajax_data(this);
+			this.pageSize = val;
+			this.queryInfo();
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-		//ajax_data(this);
+			this.queryInfo();
 	},
 	timeFormatter(row, column, cellValue){
 		var date = row[column.property];
