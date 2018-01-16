@@ -6,22 +6,22 @@
 			</div>
 			<div class="login-main-body">
 				<el-form ref="form" :rules="rules" :model="form">
-				  <el-form-item prop="user">
-				    <el-input placeholder="用户名" v-model="form.user">
-				    	<template slot="prepend"><img src="../../static/img/login/user.png" alt=""></template>
-				    </el-input>
-				  </el-form-item>
-				  <el-form-item prop="password">
-				    <el-input type="password" placeholder="请输入密码" v-model="form.password">
-				    	<template slot="prepend"><img src="../../static/img/login/password.png" alt=""></template>
-				    </el-input>
-				  </el-form-item>
-				  <el-form-item>
-				    <el-button type="primary" @click="onSubmit">登录</el-button>
-				  </el-form-item>
-				  <el-form-item class="login-main-foot">
-				  		<p>忘记密码？</p>
-				  </el-form-item>
+					<el-form-item prop="user">
+						<el-input placeholder="用户名" v-model="form.user">
+							<template slot="prepend"><img src="../../static/img/login/user.png" alt=""></template>
+						</el-input>
+					</el-form-item>
+					<el-form-item prop="password">
+						<el-input @keyup.enter.native="onSubmit()" type="password" placeholder="请输入密码" v-model="form.password">
+							<template slot="prepend"><img src="../../static/img/login/password.png" alt=""></template>
+						</el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="onSubmit">登录</el-button>
+					</el-form-item>
+					<el-form-item class="login-main-foot">
+						<p class="hand" @click="open3">忘记密码？</p>
+					</el-form-item>
 				</el-form>
 			</div>
 		</div>
@@ -41,10 +41,10 @@ export default {
 			},
 			rules:{
 				user:[
-					 { required: true, message: '请输入用户名', trigger: 'blur' },
+				{ required: true, message: '请输入用户名', trigger: 'blur' },
 				],
 				password:[
-					 { required: true, message: '请输入密码', trigger: 'blur' },
+				{ required: true, message: '请输入密码', trigger: 'blur' },
 				]
 			}
 		}
@@ -65,7 +65,13 @@ export default {
 					obj.notify_jr(obj,'错误提示',res.message,'error');
 				}
 
-		  	});
+			});
+		},
+		open3:function(){
+			this.$message({
+				message: '忘记密码请联系系统管理员',
+				type: 'warning'
+			});
 		}
 	}
 }
@@ -137,5 +143,8 @@ export default {
 #login .login-main-body i{
 	width: 20px;
 	margin-left:10px;
+}
+#login .hand{
+	cursor: pointer;
 }
 </style>
