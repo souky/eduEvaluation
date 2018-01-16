@@ -2262,7 +2262,7 @@ objectSpanMethod({ row, column, rowIndex, columnIndex }) {
 			color: #70CDF3
 		}
 		#studentlevel .el-carousel  {
-			overflow-x: hidden;
+			overflow: hidden;
 			position: relative;
 			text-align: center;
 			margin: auto;

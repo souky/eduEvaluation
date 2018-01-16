@@ -734,7 +734,7 @@ czxc
 	border-top: 1px solid #f2f2f2
 }
 #teachLevel .el-carousel  {
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     text-align: center;
     margin: auto;

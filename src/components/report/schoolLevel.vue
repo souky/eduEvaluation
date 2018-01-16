@@ -530,7 +530,7 @@ export default {
 	border-top: 1px solid #f2f2f2
 }
 #schoolLevel .el-carousel {
-	overflow-x: hidden;
+	overflow: hidden;
 	position: relative;
 	height: 50px;
 	text-align: center;
