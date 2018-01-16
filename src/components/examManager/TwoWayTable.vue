@@ -7,21 +7,21 @@
 				  <el-col class="queryItems" :span="6">
 				  	<div class="l">细目表名称</div>
 				  	<div class="r">
-				  		<el-input v-model="queryInfos.specificationName" placeholder="双向细目表名称"></el-input>
+				  		<el-input v-model="queryInfos.specificationName" clearable placeholder="双向细目表名称"></el-input>
 				  	</div>
 				  </el-col>
 				  <el-col class="queryItems" :span="6">
 				  	<div class="l">年级</div>
 				  	<div class="r">
-				  		<el-select v-model="queryInfos.gradeCode" placeholder="年级">
+				  		<el-select v-model="queryInfos.gradeCode" clearable placeholder="年级">
 					      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
 					    </el-select>
 				  	</div>
 				  </el-col>
-				  <el-col class="queryItems" :span="6">	
+				  <el-col class="queryItems" :span="6">
 				  	<div class="l">科目</div>
 				  	<div class="r">
-				  		<el-select v-model="queryInfos.subjectCode" placeholder="请选择科目">
+				  		<el-select v-model="queryInfos.subjectCode" clearable placeholder="请选择科目">
 						    <el-option v-for="e in subjectArray" :key="e" :label="e" :value="e">
 						    </el-option>
 						</el-select>
@@ -34,12 +34,12 @@
 				  </el-col>
 				</el-row>
 			</div>
-			
+
 			<div class="twoWay_info_table">
 				<div class="tools fix">
 					<div class="items_tools l" @click="add_two_way">
 						<i class="el-icon-circle-plus-outline">新增</i>
-					</div>	
+					</div>
 				</div>
 				<el-table :data="tableData" style="width: 100%">
 			      <el-table-column prop="specificationName" align="center" label="双向细目表名称"></el-table-column>
@@ -49,11 +49,12 @@
 			      <el-table-column align="center" label="操作" width='250'>
 			      	<template slot-scope="scope">
 			      		<el-button type="primary" icon="el-icon-search" @click="showInfo(scope.row)">查看</el-button>
+								<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row)">编辑</el-button>
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 			      	</template>
 			      </el-table-column>
 			    </el-table>
-			    
+
 			    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 			      :page-sizes="[10, 20, 50]"
 			      :page-size="pageSize"
@@ -64,42 +65,50 @@
 			</div>
 		</div>
 		</transition>
-			
+
 		<transition name="el-zoom-in-bottom">
 		<div v-show="showDetails" class="twoWay_details main_body">
 			<div class="twoWay_info_table">
 				<div class="tools fix">
-					<div class="items_tools l" @click="addDetials">
-						<i class="el-icon-circle-plus-outline">新增</i>
-					</div>
 					<div class="items_tools r" @click="backList">
 						<i class="el-icon-back" >返回列表</i>
 					</div>
 				</div>
-				<el-table :data="detailsData" style="width: 100%">
-			      <el-table-column prop="itemNo" align="center" label="题号" width="50px"></el-table-column>
+				<el-table :data="detailsData" style="width: 100%" :row-class-name="setClassName">
+						<el-table-column prop="itemType" type="expand">
+							<template slot-scope="props">
+								<el-row style="border-bottom:1px #c7c7c7 solid;">
+									<el-col :span="2">序号</el-col>
+									<el-col :span="2">分步分数</el-col>
+									<el-col :span="15">分步答案</el-col>
+									<el-col :span="5">分步知识点</el-col>
+								</el-row>
+								<el-row v-for="(e,index) in props.row.stepList" style="border-bottom:1px #e6e6e6 solid;">
+									<el-col :span="2">{{(index+1)}}</el-col>
+									<el-col :span="2">{{e.stepScore}}</el-col>
+									<el-col :span="15" style="text-align:left;">{{e.stepAnswer}}</el-col>
+									<el-col :span="5">{{e.knowledgePointName}}</el-col>
+								</el-row>
+							</template>
+						</el-table-column>
+			      <el-table-column prop="itemNo"  align="center" label="题号" width="50px"></el-table-column>
 			      <el-table-column prop="itemType" :formatter="typeFormatter" align="center" label="题型"></el-table-column>
 			      <el-table-column prop="itemScore" align="center"  label="满分" width="50px"></el-table-column>
-			      <el-table-column prop="itemAnswer" align="center" label="答案" width="50px"></el-table-column>
+			      <el-table-column prop="itemAnswer" show-overflow-tooltip align="center" label="答案" width="50px"></el-table-column>
 			      <el-table-column align="center" label="能力值">
-			      	<el-table-column prop="itemAbility[0]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="空间想象"></el-table-column>
-			      	<el-table-column prop="itemAbility[1]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="抽象概括"></el-table-column>
-			      	<el-table-column prop="itemAbility[2]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="推理论证"></el-table-column>
-			      	<el-table-column prop="itemAbility[3]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="运算求解"></el-table-column>
-			      	<el-table-column prop="itemAbility[4]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="数据处理"></el-table-column>
-			      	<el-table-column prop="itemAbility[5]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" label="综合应用"></el-table-column>
+			      	<el-table-column prop="itemAbility[0]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" :label="ablityArray[0]"></el-table-column>
+			      	<el-table-column prop="itemAbility[1]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" :label="ablityArray[1]"></el-table-column>
+			      	<el-table-column prop="itemAbility[2]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" :label="ablityArray[2]"></el-table-column>
+			      	<el-table-column prop="itemAbility[3]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" :label="ablityArray[3]"></el-table-column>
+			      	<el-table-column prop="itemAbility[4]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" :label="ablityArray[4]"></el-table-column>
+			      	<el-table-column prop="itemAbility[5]" class-name="checkIcon" width='100' :formatter="ablitFormatter" align="center" :label="ablityArray[5]"></el-table-column>
 			      </el-table-column>
 			      <el-table-column prop="knowledgeName" align="center" width='250' show-overflow-tooltip label="知识点"></el-table-column>
-			      <el-table-column align="center" label="操作" width='250'>
-			      	<template slot-scope="scope">
-			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfoDetail(scope.row.id)">删除</el-button>
-			      	</template>
-			      </el-table-column>
 			    </el-table>
 			</div>
 		</div>
 		</transition>
-		
+
 		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="90%">
 		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
 			  <el-col class="queryItems" :span="6" >
@@ -125,143 +134,101 @@
 					</el-select>
 			  	</div>
 			  </el-col>
-			 
+
 			  <el-col :span="6">
-			  		<div class="btn_query r" @click="addDetile">
-				  		<i class="el-icon-plus">添加详细</i>
-				  	</div>
 			  </el-col>
 			</el-row>
-			
+
 			<el-row :gutter="10">
 				<el-col :span="1">题号</el-col>
 				<el-col :span="2">题型</el-col>
 				<el-col :span="1">满分</el-col>
-				<el-col :span="2">答案</el-col>
-				<el-col :span="12">能力值</el-col>
+				<el-col :span="7">答案</el-col>
 				<el-col :span="4">知识点</el-col>
-				<el-col :span="2">操作</el-col>
+				<el-col :span="5">能力值</el-col>
+				<el-col :span="4">操作</el-col>
 			</el-row>
-			
-			<el-row v-model="two_way_D" :gutter="10">
-				<div v-for="e in two_way_D" :key="e.id">
-					<el-col :span="1">
-						<el-input v-model="e.itemNo" ></el-input>
+
+			<el-row v-model="two_way_D" :gutter="10" >
+				<div v-for="e in two_way_D" :key="e.id" class="fix" style="min-height: 80px;">
+					<el-col :span="1" style="margin-top:25px">
+						<el-input v-model="e.itemNo" placeholder="题号"></el-input>
 					</el-col>
-					<el-col :span="2">
+					<el-col :span="2" style="margin-top:25px">
 						<el-select v-model="e.itemType" >
 					      <el-option label="主观题" value="1"></el-option>
 					      <el-option label="客观题" value="0"></el-option>
 					    </el-select>
 					</el-col>
-					<el-col :span="1">
-						<el-input v-model="e.itemScore" ></el-input>
+					<el-col :span="1" style="margin-top:25px">
+						<el-input v-model="e.itemScore" placeholder="满分" ></el-input>
 					</el-col>
-					<el-col :span="2">
+					<el-col :span="7" style="margin-top:25px" v-if="e.itemType == 0">
 						<el-input v-model="e.itemAnswer" ></el-input>
 					</el-col>
-					<el-col :span="12">
-						<el-row :gutter="10">
+					<el-col :span="4" style="margin-top:25px" v-if="e.itemType == 0">
+					    <el-cascader v-model="e.knowledgeId" placeholder="选择知识点" :options="knowOption" :props="defaultProps" :show-all-levels="false"></el-cascader>
+					</el-col>
+
+					<div style="width: 45.83333%;float: left;" v-if="e.itemType == 1">
+						<div v-for="es in e.stepList" :key="es.id">
+							<el-col :span="3" style="margin-top:25px" v-if="e.itemType == 1">
+								<el-input v-model="es.stepScore" placeholder="分步分"></el-input>
+							</el-col>
+							<el-col :span="8" style="margin-top:25px" v-if="e.itemType == 1">
+								<el-input v-model="es.stepAnswer" placeholder="分步答案" ></el-input>
+							</el-col>
+							<el-col :span="7" style="margin-top:25px" v-if="e.itemType == 1">
+								 <el-cascader v-model="es.knowledgePointId" placeholder="选择知识点" :options="knowOption" :props="defaultProps" :show-all-levels="false"></el-cascader>
+							</el-col>
+							<el-col :span="6" style="margin-top:25px" v-if="e.itemType == 1">
+								<el-button type="primary" size="small" round @click="addItems(e)">添加分步</el-button>
+								<el-button type="danger" size="small" round style="backgound:red" @click.prevent="deleteItems(es,e)">删除</el-button>
+							</el-col>
+						</div>
+					</div>
+
+					<el-col :span="5">
 							<el-checkbox-group v-model="e.itemAbility">
-								<el-col :span="4">
-									<el-checkbox label="空间想象" ></el-checkbox>
-								</el-col>
-								<el-col :span="4">
-									<el-checkbox label="抽象概括" ></el-checkbox>
-								</el-col>
-								<el-col :span="4">
-									<el-checkbox label="推理论证" ></el-checkbox>
-								</el-col>
-								<el-col :span="4">
-									<el-checkbox label="运算求解" ></el-checkbox>
-								</el-col>
-								<el-col :span="4">
-									<el-checkbox label="数据处理" ></el-checkbox>
-								</el-col>
-								<el-col :span="4">
-									<el-checkbox label="综合应用" ></el-checkbox>
-								</el-col>
+								<el-row :gutter="10">
+									<el-col :span="8">
+										<el-checkbox :label="ablityArray[0]" ></el-checkbox>
+									</el-col>
+									<el-col :span="8">
+										<el-checkbox :label="ablityArray[1]" ></el-checkbox>
+									</el-col>
+									<el-col :span="8">
+										<el-checkbox :label="ablityArray[2]" ></el-checkbox>
+									</el-col>
+								</el-row>
+								<el-row :gutter="10">
+									<el-col :span="8">
+										<el-checkbox :label="ablityArray[3]" ></el-checkbox>
+									</el-col>
+									<el-col :span="8">
+										<el-checkbox :label="ablityArray[4]" ></el-checkbox>
+									</el-col>
+									<el-col :span="8">
+										<el-checkbox :label="ablityArray[5]" ></el-checkbox>
+									</el-col>
+								</el-row>
 							</el-checkbox-group>
-						</el-row>
 					</el-col>
-					<el-col :span="4">
-					    <el-cascader v-model="e.knowledgeId" :options="knowOption" :props="defaultProps" :show-all-levels="false"></el-cascader>
-					</el-col>
-					<el-col :span="2">
+					<el-col :span="4" style="margin-top:25px">
+						 <el-button type="primary" size="small" round @click="addDetile()">添加</el-button>
 						 <el-button type="danger" size="small" round @click.prevent="removeDomain(e)">删除</el-button>
 					</el-col>
 				</div>
-				
+
 			</el-row>
-		  	
+
 		  	<span slot="footer" class="dialog-footer">
 			  <el-button type="primary" @click="dialogVisible = false">取 消</el-button>
 			  <el-button type="primary" @click="saveEdit">确 定</el-button>
 			</span>
 		</el-dialog>
-		
-		<el-dialog title="编辑双向细目表" :visible.sync="dialogEdit" width="70%">
-			<el-row :gutter="10">
-				<el-col :span="1">题号</el-col>
-				<el-col :span="2">题型</el-col>
-				<el-col :span="1">满分</el-col>
-				<el-col :span="2">答案</el-col>
-				<el-col :span="12">能力值</el-col>
-				<el-col :span="6">知识点</el-col>
-			</el-row>
-			
-			<el-row v-model="two_way_D_single" :gutter="10">
-				<el-col :span="1">
-					<el-input v-model="two_way_D_single.itemNo" ></el-input>
-				</el-col>
-				<el-col :span="2">
-					<el-select v-model="two_way_D_single.itemType" >
-				      <el-option label="主观题" value="1"></el-option>
-				      <el-option label="客观题" value="0"></el-option>
-				    </el-select>
-				</el-col>
-				<el-col :span="1">
-					<el-input v-model="two_way_D_single.itemScore" ></el-input>
-				</el-col>
-				<el-col :span="2">
-					<el-input v-model="two_way_D_single.itemAnswer" ></el-input>
-				</el-col>
-				<el-col :span="12">
-					<el-row :gutter="10">
-						<el-checkbox-group v-model="two_way_D_single.itemAbility">
-							<el-col :span="4">
-								<el-checkbox label="空间想象" ></el-checkbox>
-							</el-col>
-							<el-col :span="4">
-								<el-checkbox label="抽象概括" ></el-checkbox>
-							</el-col>
-							<el-col :span="4">
-								<el-checkbox label="推理论证" ></el-checkbox>
-							</el-col>
-							<el-col :span="4">
-								<el-checkbox label="运算求解" ></el-checkbox>
-							</el-col>
-							<el-col :span="4">
-								<el-checkbox label="数据处理" ></el-checkbox>
-							</el-col>
-							<el-col :span="4">
-								<el-checkbox label="综合应用" ></el-checkbox>
-							</el-col>
-						</el-checkbox-group>
-					</el-row>
-				</el-col>
-				<el-col :span="6">
-				    <el-cascader v-model="two_way_D_single.knowledgeId" :options="knowOption" :props="defaultProps" :show-all-levels="false"></el-cascader>
-				</el-col>
-				
-			</el-row>
-			
-			<span slot="footer" class="dialog-footer">
-			  <el-button type="primary" @click="dialogEdit = false">取 消</el-button>
-			  <el-button type="primary" @click="saveDetials">确 定</el-button>
-			</span>
-		</el-dialog>
-		
+
+
 	</div>
 </template>
 
@@ -282,43 +249,53 @@ export default {
 	  pageNum:1,
       pageSize:10,
       total:1,
-      
+
       subjectArray:[],
       gradeOption:[],
-      
+
       showTable:true,
       showDetails:false,
       parentId:'',
       dialogVisible:false,
       dialogSubject:'',
-      
+			innerVisible:false,
+			changeItems:null,
+			ablityArray:['空间想象','抽象概括','推理论证','运算求解','数据处理','综合应用'],
+
       dialogEdit:false,
       two_way_D_single:{
       	itemNo:'',
-  		itemType:'0',
-  		itemScore:'',
-  		itemAnswer:'',
-  		itemAbility:[]
-      },
-      
-      TwoWaySpecification:{
-	  },
-	  two_way_D:[
-	  	{
-	  		itemNo:'',
 	  		itemType:'0',
 	  		itemScore:'',
 	  		itemAnswer:'',
 	  		itemAbility:[]
-	  	},
-	  ],
-	  
+      },
+
+      TwoWaySpecification:{
+		  },
+		  two_way_D:[
+		  	{
+		  		itemNo:'',
+		  		itemType:'0',
+		  		itemScore:'',
+		  		itemAnswer:'',
+		  		itemAbility:[],
+					stepList:[
+						{
+							stepScore:'',
+							stepAnswer:'',
+							knowledgePointId:[],
+						}
+					],
+		  	},
+		  ],
+
 	  rules: {
           specificationName: [
             { required: true, message: '请输入角色名称', trigger: 'blur' }
           ],
      },
-     
+
      knowOption:[],
      defaultProps: {
 	      children: 'kpVOChildList',
@@ -332,7 +309,7 @@ export default {
   	this.postHttp(this,{},"school/querySchools",function(obj,res){
   		obj.subjectArray = res.result.subjectArray;
   	});
-  	
+
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
   	});
@@ -351,10 +328,12 @@ export default {
   		var id = this.TwoWaySpecification.id;
   		var address = 'twowayspecification/saveTwoWaySpecification';
   		if(id){
+				delete this.TwoWaySpecification['createDate'];
+				delete this.TwoWaySpecification['updateDate'];
   			address = 'twowayspecification/updateTwoWaySpecification';
   		}
   		var dataDetails = this.formatDate();
-		this.TwoWaySpecification['twDetails'] = JSON.stringify(dataDetails);
+			this.TwoWaySpecification['twDetails'] = JSON.stringify(dataDetails);
   		if(!this.TwoWaySpecification.specificationName){
   			this.notify_jr(this,'操作错误','请输入细目表名称','warning');
   			return;
@@ -380,8 +359,37 @@ export default {
 			}
         });
   	},
-	editInfo(id){
-		
+	editInfo(row){
+		var subjectName = row.subjectCode;
+		this.postHttp(this,{subjectName:subjectName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+	  		obj.knowOption = res.result;
+  	});
+		this.postHttp(this,{id:row.id},'twowayspecification/queryTwoWaySpecificationById',function(obj,res){
+			var ablityArray = obj.ablityArray;
+			var list = res.result.listDetail;
+			for(var i = 0;i < list.length; i++){
+				var itemAbility = list[i].itemAbility;
+				var arrays = new Array();
+				for(var j = 0;j < itemAbility.length;j++){
+					if(itemAbility[j] == '1'){
+						arrays.push(ablityArray[j]);
+					}
+				}
+				list[i].itemAbility = arrays;
+				if(list[i].itemType == 0){
+					list[i].knowledgeId = list[i].knowledgeId.split(",");
+				}else{
+					var lists = list[i].stepList;
+					for(var x = 0;x < lists.length;x++){
+						lists[x].knowledgePointId = lists[x].knowledgePointId.split(",");
+					}
+				}
+				list[i].itemType += '';
+			}
+			obj.TwoWaySpecification = res.result.twowayspecification;
+			obj.two_way_D = list;
+			obj.dialogVisible = true;
+		})
 	},
 	deleteInfo(id){
 		this.$confirm('此操作将删除该双向细目表和已经关联的考试计划,是否继续?', '提示', {
@@ -398,7 +406,7 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	deleteInfoDetail(id){
@@ -417,7 +425,7 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	addDetials(){
@@ -425,6 +433,36 @@ export default {
 		this.postHttp(this,{subjectName:this.dialogSubject},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.knowOption = res.result;
 	  	});
+	},
+	addItems(e){
+		e.stepList.push({
+			stepScore:'',
+			stepAnswer:'',
+			knowledgePointId:[],
+		})
+	},
+	deleteItems(es,e){
+		var index = e.stepList.indexOf(es)
+		if (index !== -1 && e.stepList.length != 1) {
+			e.stepList.splice(index, 1)
+		}
+	},
+	saveItemsAn(){
+		var s = this.itemsL;
+		var html = '';
+		for(var i = 0;i<s.length;i++){
+			html += s[i].num + ':' + s[i].answer+';';
+			s[i].knowledge = s[i].knowledge[(s[i].knowledge.length - 1)];
+		}
+		this.changeItems.itemAnswer = s;
+		this.changeItems.itemAnswers = html;
+		this.innerVisible = false;
+		this.itemsL = [{
+			num:'',
+			score:'',
+			answer:'',
+			knowledge:[]
+		}]
 	},
 	saveDetials(){
 		this.two_way_D_single["parentId"] = this.parentId;
@@ -472,7 +510,14 @@ export default {
 	  		itemType:'0',
 	  		itemScore:'',
 	  		itemAnswer:'',
-	  		itemAbility:[]
+	  		itemAbility:[],
+				stepList:[
+					{
+						stepScore:'',
+						stepAnswer:'',
+						knowledgePointId:[],
+					}
+				],
 		}];
 	},
 	subjectChange(){
@@ -487,12 +532,19 @@ export default {
 	  		itemType:'0',
 	  		itemScore:'',
 	  		itemAnswer:'',
-	  		itemAbility:[]
+	  		itemAbility:[],
+				stepList:[
+					{
+						stepScore:'',
+						stepAnswer:'',
+						knowledgePointId:[],
+					}
+				],
 		});
 	},
 	removeDomain(item) {
 	    var index = this.two_way_D.indexOf(item)
-	    if (index !== -1) {
+	    if (index !== -1 && this.two_way_D.length != 1) {
 	      this.two_way_D.splice(index, 1)
 	    }
 	},
@@ -506,21 +558,21 @@ export default {
 		//ajax_data(this);
 	},
 	timeFormatter(row, column, cellValue){
-		var date = row[column.property];  
-	  	if (date == undefined || date == '') {  
-	     return "";  
-	  	}  
-	  	return this.timeF(date).format("YYYY-MM-DD HH:mm:ss");  
+		var date = row[column.property];
+	  	if (date == undefined || date == '') {
+	     return "";
+	  	}
+	  	return this.timeF(date).format("YYYY-MM-DD HH:mm:ss");
 	},
 	typeFormatter(row, column, cellValue){
-		var type = row[column.property];  
+		var type = row[column.property];
 		if(type == '1'){
 	  		return '主观题';
 	  	}else{
 	  		return '客观题';
 	  	}
-	  	if (type == undefined || type == '') {  
-	     return "";  
+	  	if (type == undefined || type == '') {
+	     return "";
 	  	}
 	},
 	ablitFormatter(row, column, cellValue){
@@ -531,6 +583,9 @@ export default {
 	  		return '';
 	  	}
 	},
+	setClassName({row, index}){
+      return row.itemType == 0 ? 'expand' : '';
+  },
 	ajaxData(){
 		var data = new Object();
 		data["pageSize"] = this.pageSize;
@@ -538,47 +593,6 @@ export default {
 		data["specificationName"] = this.queryInfos.specificationName;
 		data["gradeCode"] = this.queryInfos.gradeCode;
 		data["subjectCode"] = this.queryInfos.subjectCode;
-		return data;
-	},
-	formatDateSingle(){
-		var data = JSON.parse(JSON.stringify(this.two_way_D_single));
-		var itemAbility = data.itemAbility.toString();
-		var itemAbilityString = "";
-		if(itemAbility.indexOf('空间想象') >= 0){
-			itemAbilityString +='1';
-		}else{
-			itemAbilityString +='0';
-		}
-		if(itemAbility.indexOf('抽象概括') >= 0){
-			itemAbilityString +='1';
-		}else{
-			itemAbilityString +='0';
-		}
-		if(itemAbility.indexOf('推理论证') >= 0){
-			itemAbilityString +='1';
-		}else{
-			itemAbilityString +='0';
-		}
-		if(itemAbility.indexOf('运算求解') >= 0){
-			itemAbilityString +='1';
-		}else{
-			itemAbilityString +='0';
-		}
-		if(itemAbility.indexOf('数据处理') >= 0){
-			itemAbilityString +='1';
-		}else{
-			itemAbilityString +='0';
-		}
-		if(itemAbility.indexOf('综合应用') >= 0){
-			itemAbilityString +='1';
-		}else{
-			itemAbilityString +='0';
-		}
-		data.itemAbility = itemAbilityString;
-		if(data.knowledgeId != undefined){
-			var knowledgeId = data.knowledgeId[(data.knowledgeId.length -1)];
-			data.knowledgeId = knowledgeId;
-		}
 		return data;
 	},
 	formatDate(){
@@ -618,9 +632,37 @@ export default {
 				itemAbilityString +='0';
 			}
 			data[i].itemAbility = itemAbilityString;
-			if(data[i].knowledgeId != undefined){
-				var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
-				data[i].knowledgeId = knowledgeId;
+			// if(data[i].knowledgeId != undefined){
+			// 	var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
+			// 	data[i].knowledgeId = knowledgeId;
+			// }
+			if(data[i].itemType == '1'){
+				data[i].knowledgeId = '';
+				var lists = data[i].stepList;
+				for(var j = 0;j < lists.length;j++){
+					var strings = '';
+					var listk = lists[j].knowledgePointId;
+					for(var x = 0;x < listk.length;x++){
+						if(x == 0){
+							strings += listk[x];
+						}else{
+							strings += "," + listk[x];
+						}
+					}
+					data[i].stepList[j].knowledgePointId = strings;
+				}
+			}else{
+				delete data[i]['stepList'];
+				var listK = data[i].knowledgeId;
+				for(var j = 0;j < listK.length;j++){
+					var strings = '';
+					if(x == 0){
+						strings += listK[j];
+					}else{
+						strings += "," + listK[j];
+					}
+				}
+				data[i].knowledgeId = strings;
 			}
 			dataArray[i] = data[i];
 		}
@@ -662,4 +704,7 @@ export default {
     margin-bottom:2px;
 }
 #twoWayTable .el-col-1 .el-input__inner{padding:0px;text-align: center;}
+#twoWayTable .expand .el-table__expand-column .cell {
+    display: none;
+}
 </style>
