@@ -5,7 +5,7 @@
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">科目名称</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.subjectName" placeholder="科目名称"></el-input>
+			  		<el-input v-model="queryInfos.subjectName" clearable placeholder="科目名称"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">

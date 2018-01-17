@@ -528,7 +528,8 @@ export default {
 	},
 	subjectChange(){
 		var subjectName = this.TwoWaySpecification.subjectCode;
-		this.postHttp(this,{subjectName:subjectName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+		var gradeCode = this.TwoWaySpecification.gradeCode;
+		this.postHttp(this,{subjectName:subjectName,gradeCode:gradeCode},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.knowOption = res.result;
   	});
 		this.postHttp(this,{subjectName:subjectName},'subjectablity/querySubjectAblitys',function(obj,res){

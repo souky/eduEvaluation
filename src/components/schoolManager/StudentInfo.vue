@@ -6,19 +6,19 @@
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">姓名</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.studentName" placeholder="姓名"></el-input>
+			  		<el-input v-model="queryInfos.studentName" clearable placeholder="姓名"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  		<div class="l">学号</div>
 				  	<div class="r">
-				  		<el-input v-model="queryInfos.studentNo" placeholder="学号"></el-input>
+				  		<el-input v-model="queryInfos.studentNo" clearable placeholder="学号"></el-input>
 				  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  		<div class="l">年级</div>
 				  	<div class="r">
-				  		<el-select v-model="grade" @change='changeGrade' placeholder="请选择">
+				  		<el-select v-model="grade" @change='changeGrade' clearable placeholder="请选择">
 						    <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
 						    </el-option>
 						</el-select>
@@ -27,7 +27,7 @@
 			  <el-col class="queryItems" :span="6">
 			  		<div class="l">班级</div>
 				  	<div class="r">
-				  		<el-select v-model="queryInfos.classroomId" placeholder="请选择">
+				  		<el-select v-model="queryInfos.classroomId" clearable placeholder="请选择">
 					  		<el-option v-for="e in classOption" :label="e.classroomName" :key="e.id" :value="e.id" name="classId"></el-option>
 							</el-select>
 				  	</div>

@@ -6,13 +6,13 @@
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">班级</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.classroomName" placeholder="班级"></el-input>
+			  		<el-input v-model="queryInfos.classroomName" placeholder="班级" clearable></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">班主任名称</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.classTeather" placeholder="班主任名称"></el-input>
+			  		<el-input v-model="queryInfos.classTeather" placeholder="班主任名称" clearable></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">

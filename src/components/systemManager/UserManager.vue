@@ -6,21 +6,21 @@
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">姓名</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.name" placeholder="姓名"></el-input>
+			  		<el-input v-model="queryInfos.name" clearable placeholder="姓名"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">用户名</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.userName" placeholder="用户名"></el-input>
+			  		<el-input v-model="queryInfos.userName" clearable placeholder="用户名"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">角色</div>
 			  	<div class="r">
-			  		<el-select v-model="queryInfos.roleId" placeholder="请选择">
-				    <el-option v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
-				  </el-select>
+			  		<el-select v-model="queryInfos.roleId" clearable placeholder="请选择">
+					    <el-option v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+					  </el-select>
 			  	</div>
 			  </el-col>
 			  <el-col :span="6">

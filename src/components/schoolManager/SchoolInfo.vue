@@ -1,6 +1,6 @@
 <template>
 	<div id="schoolInfo" class="main_body">
-		
+
 		<div class="info_body">
 			<el-form label-position="left" label-width="100px" :rules="rules" ref="schoolInfo" class="demo-ruleForm" :model="schoolInfo">
 			  <el-form-item label="学校名称" prop="schoolName" :maxlength="50">
@@ -34,14 +34,14 @@
 			    </el-checkbox-group>
 			  </el-form-item>
 			</el-form>
-			
+
 			<div class="ok_btn" v-show="showEdit" @click="updateSchool">
 				确认修改
 			</div>
 		</div>
-		
+
 	</div>
-	
+
 </template>
 
 <script>
@@ -52,7 +52,7 @@ export default {
 		if(!reg.test(value)){
           callback(new Error('电话格式不正确'));
         }else if(value.length != 11){
-          callback(new Error('电话格式不正确'));	
+          callback(new Error('电话格式不正确'));
         }else{
         	callback();
         }
@@ -93,18 +93,18 @@ export default {
   		obj.schoolInfo = res.result;
   		this.$refs['schoolInfo'].resetFields();
   	})
-  	
+
   	this.postHttp(this,{pageNum:1,pageSize:0},'subject/querySubjects',function(obj,res){
   		obj.subjectList = res.result.list;
   	});
-  	
+
   	this.postHttp(this,{},'user/getLoginUser',function(obj,res){
   		if(res.result.roleId == '2'){
   			obj.showEdit = true;
   		}
   	});
-  		
-  	
+
+
   },
   methods:{
 	updateSchool(){
@@ -123,7 +123,7 @@ export default {
             return false;
           }
         });
-		
+
 	}
   }
 }
@@ -131,7 +131,7 @@ export default {
 
 <style>
 #schoolInfo{
-	
+
 }
 #schoolInfo .info_body{
 	width: 30%;

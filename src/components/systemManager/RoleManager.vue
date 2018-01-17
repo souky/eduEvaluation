@@ -1,17 +1,17 @@
 <template>
 	<div id="roleManager" class="main_body">
 		<div class="role_info_search">
-			
+
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">名称</div>
 			  	<div class="r">
-			  		<el-input v-model="queryInfos.roleName" placeholder="名称"></el-input>
+			  		<el-input v-model="queryInfos.roleName" clearable placeholder="名称"></el-input>
 			  	</div>
 			  </el-col>
 			  <el-col class="queryItems" :span="6">
 			  </el-col>
-			  <el-col class="queryItems" :span="6">	
+			  <el-col class="queryItems" :span="6">
 			  </el-col>
 			  <el-col :span="6">
 			  	<div class="btn_query r" @click="queryInfo">
@@ -19,14 +19,14 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-			
+
 		</div>
-		
+
 		<div class="role_info_table">
 			<div class="tools fix">
 				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline" >新增</i>
-				</div>	
+				</div>
 			</div>
 			<el-table :data="tableData" style="width: 100%">
 		      <el-table-column prop="roleName" align="center" label="名称"></el-table-column>
@@ -46,7 +46,7 @@
 		      	</template>
 		      </el-table-column>
 		    </el-table>
-		    
+
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
@@ -55,7 +55,7 @@
 		      >
 		    </el-pagination>
 		</div>
-		
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="role" class="demo-ruleForm" label-width="80px" :model="role">
@@ -72,7 +72,7 @@
 		    <el-button type="primary" @click="saveEdit">确 定</el-button>
 		  </span>
 		</el-dialog>
-		
+
 		<el-dialog title="授权" :visible.sync="dialogVisibleAuth" width="50%">
 			<el-tree id="textBookT" :data="authorization" ref="tree" check-strictly :default-checked-keys="authKey" @check-change="handleChange"  node-key="id" :props="defaultProps" show-checkbox></el-tree>
 			<span slot="footer" class="dialog-footer">
@@ -81,7 +81,7 @@
 			</span>
 		</el-dialog>
 	</div>
-	
+
 </template>
 
 <script>
@@ -98,10 +98,10 @@ export default {
 	  pageNum:1,
       pageSize:10,
       total:1,
-      
+
       dialogVisible:false,
       diaTitle:'新增',
-      
+
       authorization:[],
       dialogVisibleAuth:false,
       defaultProps: {
@@ -113,7 +113,7 @@ export default {
 	  roleIdAuth:"",
 	  user:{},
       isdeep:true,
-      
+
       role:{},
       rules: {
           roleName: [
@@ -148,7 +148,7 @@ export default {
   				for(var i = 0;i<nodes.children.length;i++){
   					if(this.authKey.indexOf(nodes.children[i].id) == -1){
   						this.authKey.push(nodes.children[i].id);
-  						this.$refs.tree.setChecked(nodes.children[i].id,true,false); 
+  						this.$refs.tree.setChecked(nodes.children[i].id,true,false);
   					}
   				}
   			}
@@ -168,7 +168,7 @@ export default {
   			}else{
   				this.isdeep = true;
   			}
-  			
+
   			this.$refs.tree.setChecked(nodes.id,true,false);
   		}else{
   			var index = this.authKey.indexOf(nodes.id);
@@ -246,7 +246,7 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	authorizationInfo(id){
@@ -288,7 +288,7 @@ export default {
 				obj.notify_jr(obj,'操作错误',res.message,'error');
 			}
 		})
-		
+
 	},
 	closeAuth(){
 		this.dialogVisibleAuth = false;
@@ -305,11 +305,11 @@ export default {
 		this.queryInfo();
 	},
 	timeFormatter(row, column, cellValue){
-		var date = row[column.property];  
-	  	if (date == undefined || date == '') {  
-	     return "";  
-	  	}  
-	  	return this.timeF(date).format("YYYY-MM-DD HH:mm:ss");  
+		var date = row[column.property];
+	  	if (date == undefined || date == '') {
+	     return "";
+	  	}
+	  	return this.timeF(date).format("YYYY-MM-DD HH:mm:ss");
 	},
 	ajaxData(){
 		var data = new Object();

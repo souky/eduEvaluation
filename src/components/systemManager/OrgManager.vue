@@ -3,7 +3,7 @@
 		<div class="org_body fix">
 			<div class="left_part l">
 				<div class="title">机构树</div>
-				<el-input placeholder="请输入机构名称" v-model="filterText"></el-input>
+				<el-input placeholder="请输入机构名称" clearable v-model="filterText"></el-input>
 				<el-tree :data="data" :props="defaultProps" ref="orgTree" accordion @node-click="handleNodeClick" :filter-node-method="filterNode"></el-tree>
 			</div>
 			<div class="right_part r">
@@ -11,7 +11,7 @@
 				<div class="tools fix">
 					<div class="items_tools r" @click="addNew">
 						<i class="el-icon-circle-plus-outline" >新增</i>
-					</div>	
+					</div>
 				</div>
 				<el-table :data="tableData" style="width: 100%">
 			      <el-table-column prop="orgName" align="center" label="名称"></el-table-column>
@@ -26,7 +26,7 @@
 			    </el-table>
 			</div>
 		</div>
-		
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="org" class="demo-ruleForm" :model="org">
@@ -55,7 +55,7 @@
 		    <el-button type="primary" @click="saveEdit">确 定</el-button>
 		  </span>
 		</el-dialog>
-		
+
 		<el-dialog title="添加管理员" :visible.sync="showManager" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rulesU" ref="user" class="demo-ruleForm" :model="user">
@@ -75,9 +75,9 @@
 		    <el-button type="primary" @click="saveEditU">确 定</el-button>
 		  </span>
 		</el-dialog>
-		
+
 	</div>
-	
+
 </template>
 
 <script>
@@ -91,7 +91,7 @@ export default {
 	        label: 'label'
 	    },
         tableData:[],
-        
+
         diaTitle:'新增',
         dialogVisible:false,
       	org:{},
@@ -101,13 +101,13 @@ export default {
       	aOption:[],
       	p_name:'',
       	c_name:'',
-      	
+
       	filterText:'',
       	managerOrgId:'',
       	showManager:false,
       	user:{
       	},
-      	
+
       	rules: {
           orgName: [
             { required: true, message: '请输入组织名称', trigger: 'blur' }
@@ -123,7 +123,7 @@ export default {
           userName: [
             { required: true, message: '请输入用户名', trigger: 'blur' }
           ],
-          
+
       	}
     }
   },
@@ -133,11 +133,11 @@ export default {
       }
   },
   mounted:function(){
-  	
+
   	this.postHttp(this,{},'organization/loadOrganizations',function(obj,res){
   		obj.data = res.result;
   	});
-  	
+
   	this.postHttp(this,{regionPId:'000000'},'region/queryRegionsByParentId',function(obj,res){
   		obj.pOption = res.result;
   	});
@@ -167,7 +167,7 @@ export default {
   		delete this.org["updateDate"];
   		var address = 'organization/saveOrganization';
   		if(id){
-  			
+
   			address = 'organization/updateOrganization';
   			this.org.regionCode = "1";
   			this.$refs['org'].validate((valid) => {
@@ -223,7 +223,7 @@ export default {
   		this.org = {};
   		this.p_name = "";
   		this.c_name = "";
-  		
+
   		if(this.$refs['org']){
   			this.$refs['org'].resetFields();
   		}
@@ -234,7 +234,7 @@ export default {
 		this.diaTitle = "编辑";
 		if(this.$refs['org']){
   			this.$refs['org'].resetFields();
-  		}		
+  		}
 		this.postHttp(this,{id:id},"organization/getOrganizationById",function(obj,res){
 			if(res.code == '10000'){
 				obj.org = res.result;
@@ -261,7 +261,7 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	addManager(orgId){

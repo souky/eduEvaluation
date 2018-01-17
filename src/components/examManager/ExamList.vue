@@ -8,13 +8,13 @@
 				  <el-col class="queryItems" :span="6">
 				  	<div class="l">考试名称</div>
 				  	<div class="r">
-				  		<el-input v-model="queryInfos.examName" placeholder="考试名称"></el-input>
+				  		<el-input v-model="queryInfos.examName" placeholder="考试名称" clearable></el-input>
 				  	</div>
 				  </el-col>
 				  <el-col class="queryItems" :span="6">
 				  	<div class="l">科目</div>
 				  	<div class="r">
-				  		<el-input v-model="queryInfos.subject" placeholder="科目"></el-input>
+				  		<el-input v-model="queryInfos.subject" placeholder="科目" clearable></el-input>
 				  	</div>
 				  </el-col>
 				  <el-col class="queryItems" :span="6">
