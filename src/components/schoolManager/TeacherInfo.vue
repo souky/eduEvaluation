@@ -314,7 +314,16 @@ export default {
         }else{
 					document.getElementById("fileUploadTip").innerHTML = response.data.message;
 				}
-      })
+      },response => {
+				this.loadings = false;
+				this.$notify({
+			      title: '网络错误',
+			      message: '网络错误',
+			      offset: 100,
+			      duration:1500,
+			      type:'error'
+			    });
+			})
 		},
   	colseDia(){
   		this.dialogVisible = false;
