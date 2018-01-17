@@ -259,7 +259,6 @@ export default {
 	},
 	handleCurrentChange(val) {
 	  	this.pageNum = val;
-	  	console.log(this.pageNum)
 		this.queryInfo();
 	},
 	timeFormatter(row, column, cellValue){
