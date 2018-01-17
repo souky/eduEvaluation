@@ -2,7 +2,7 @@
   <div id="app">
   	<b-header ></b-header>
   	<b-menu></b-menu>
-  	<transition name="slide-fade">
+  	<transition>
     	<router-view></router-view>
     </transition>
   </div>
