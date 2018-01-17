@@ -197,7 +197,7 @@
 			</el-row>
 
 			<el-row v-model="two_way_D" :gutter="10" >
-				<div v-for="e in two_way_D" :key="e.id" class="fix" style="min-height: 80px;">
+				<div v-for="e in two_way_D" :key="e.id" class="fix" style="min-height: 80px;border-bottom:1px #c7c7c7 solid;">
 					<el-col :span="1" style="margin-top:25px">
 						<el-input v-model="e.itemNo" placeholder="题号"></el-input>
 					</el-col>
@@ -235,7 +235,7 @@
 						</div>
 					</div>
 
-					<el-col :span="5">
+					<el-col :span="5" class="checkELM">
 							<el-checkbox-group v-model="e.itemAbility">
 								<el-row :gutter="10">
 									<el-col :span="8">
@@ -468,10 +468,10 @@ export default {
   	},
   	saveEdit(){
   		this.$refs['exam'].validate((valid) => {
-	          if (valid) {
-	          	var loading = this.loading('正在处理...');
-				this.exam.examStartDate = this.timeF(this.exam.examStartDateS).format("YYYY-MM-DD HH:mm:ss");
-				this.exam.examEndDate = this.timeF(this.exam.examEndDateS).format("YYYY-MM-DD HH:mm:ss");
+        if (valid) {
+        	var loading = this.loading('正在处理...');
+					this.exam.examStartDate = this.timeF(this.exam.examStartDateS).format("YYYY-MM-DD HH:mm:ss");
+					this.exam.examEndDate = this.timeF(this.exam.examEndDateS).format("YYYY-MM-DD HH:mm:ss");
 
 		  		//获取学生
 		  		var s = this.student;
@@ -490,29 +490,30 @@ export default {
 		  				}
 		  			}
 		  		}
+					if(examStudent.length <= 0){
+						this.notify_jr(this,'错误','未绑定学生信息','error');
+					}
+	  			var examStudent = JSON.stringify(examStudent)
+					this.exam["examStudent"] = examStudent;
+					this.exam["examSpecification"] = JSON.stringify(this.subject);
+					this.exam['classroom'] = classroom;
 
+					this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
+				  		if(res.code == "10000"){
+				  			loading.close();
+				  			obj.notify_success();
+								obj.queryInfo();
+								obj.backList();
 
-		  		var examStudent = JSON.stringify(examStudent)
-				this.exam["examStudent"] = examStudent;
-				this.exam["examSpecification"] = JSON.stringify(this.subject);
-				this.exam['classroom'] = classroom;
-
-				this.postHttp(this,this.exam,'exam/saveExam',function(obj,res){
-			  		if(res.code == "10000"){
-			  			loading.close();
-			  			obj.notify_success();
-						obj.queryInfo();
-						obj.backList();
-
-			  		}else{
-			  			loading.close();
-			  			obj.notify_jr(obj,'操作错误',res.message,'error');
-			  		}
-			  	});
-	          } else {
-	            return false;
-	          }
-        });
+				  		}else{
+				  			loading.close();
+				  			obj.notify_jr(obj,'操作错误',res.message,'error');
+				  		}
+				  	});
+          } else {
+            return false;
+          }
+      });
   	},
 	editInfo(id){
 
@@ -883,4 +884,7 @@ export default {
 	margin-top: 5px;
 }
 #examList .el-date-editor.el-input, .el-date-editor.el-input__inner{width:100%}
+#examList .checkELM .el-checkbox:first-child{
+	margin-right: 0px;
+}
 </style>

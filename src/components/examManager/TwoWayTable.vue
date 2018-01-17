@@ -150,7 +150,7 @@
 			</el-row>
 
 			<el-row v-model="two_way_D" :gutter="10" >
-				<div v-for="e in two_way_D" :key="e.id" class="fix" style="min-height: 80px;">
+				<div v-for="e in two_way_D" :key="e.id" class="fix" style="min-height: 80px;border-bottom:1px #c7c7c7 solid;">
 					<el-col :span="1" style="margin-top:25px">
 						<el-input v-model="e.itemNo" placeholder="题号"></el-input>
 					</el-col>
@@ -709,5 +709,8 @@ export default {
 #twoWayTable .el-col-1 .el-input__inner{padding:0px;text-align: center;}
 #twoWayTable .expand .el-table__expand-column .cell {
     display: none;
+}
+#twoWayTable .el-checkbox:first-child{
+	margin-right: 0px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<div id="userManager" class="main_body">
 		<div class="user_info_search">
-			
+
 			<el-row id="queryForm" :model="queryInfos" :gutter="20">
 			  <el-col class="queryItems" :span="6">
 			  	<div class="l">姓名</div>
@@ -15,7 +15,7 @@
 			  		<el-input v-model="queryInfos.userName" placeholder="用户名"></el-input>
 			  	</div>
 			  </el-col>
-			  <el-col class="queryItems" :span="6">	
+			  <el-col class="queryItems" :span="6">
 			  	<div class="l">角色</div>
 			  	<div class="r">
 			  		<el-select v-model="queryInfos.roleId" placeholder="请选择">
@@ -29,14 +29,14 @@
 			  	</div>
 			  </el-col>
 			</el-row>
-			
+
 		</div>
-		
+
 		<div class="user_info_table">
 			<div class="tools fix">
 				<div class="items_tools l" @click="addNew">
 					<i class="el-icon-circle-plus-outline">新增</i>
-				</div>	
+				</div>
 			</div>
 			<el-table :data="tableData" style="width: 100%">
 		      <el-table-column prop="name" align="center" label="姓名"></el-table-column>
@@ -50,7 +50,7 @@
 		      	</template>
 		      </el-table-column>
 		    </el-table>
-		    
+
 		    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum"
 		      :page-sizes="[10, 20, 50]"
 		      :page-size="pageSize"
@@ -59,7 +59,7 @@
 		      >
 		    </el-pagination>
 		</div>
-		
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rules" ref="user" class="demo-ruleForm" label-width="80px" :model="user">
@@ -90,7 +90,7 @@
 		  </span>
 		</el-dialog>
 	</div>
-	
+
 </template>
 
 <script>
@@ -111,7 +111,7 @@ export default {
       editDisabled:false,
       nameMax:10,
       userNameMax:64,
-      
+
       dialogVisible:false,
       diaTitle:'新增',
       user:{},
@@ -146,7 +146,7 @@ export default {
       		value:'个人用户'
       	}
       ],
-      
+
        rules: {
           name: [
             { required: true, message: '请输入名字', trigger: 'blur' }
@@ -202,7 +202,7 @@ export default {
 					if(res.code == '10000'){
 						obj.dialogVisible = false;
 						obj.notify_success();
-						obj.$alert('重置密码成功,密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+
 					}else{
 						obj.notify_jr(obj,'操作错误',res.message,'error');
 					}
@@ -214,23 +214,22 @@ export default {
   		}else{
   			this.$refs['user'].validate((valid) => {
 	          if (valid) {
-	          	
 	          	this.postHttp(this,this.user,address,function(obj,res){
-					if(res.code == '10000'){
-						obj.dialogVisible = false;
-						obj.notify_success();
-						obj.queryInfo();
-					}else{
-						obj.notify_jr(obj,'操作错误',res.message,'error');
-					}
-				})
+								if(res.code == '10000'){
+									obj.dialogVisible = false;
+									obj.queryInfo();
+									obj.$alert('新增成功,初始密码为:Aa111111', '提示', {confirmButtonText: '确定'});
+								}else{
+									obj.notify_jr(obj,'操作错误',res.message,'error');
+								}
+							})
 	          } else {
 	            return false;
 	          }
 	        });
   		}
-  		
-  		
+
+
   	},
   	addNew(){
   		this.dialogVisible = true;
@@ -273,7 +272,7 @@ export default {
 		  		}
 		  	});
         }).catch(() => {
-        	
+
         });
 	},
 	initPsw(id){
@@ -295,8 +294,8 @@ export default {
 		this.queryInfo();
 	},
 	sexFormatter(row, column, cellValue){
-		var age = row[column.property];  
-	  	if (age == undefined) {  
+		var age = row[column.property];
+	  	if (age == undefined) {
 	     return "";
 	  	}
 	  	if(age == '1'){
