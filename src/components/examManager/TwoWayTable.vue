@@ -489,6 +489,9 @@ export default {
 		this.showDetails = true;
 		this.parentId = row.id;
 		this.dialogSubject = row.subjectCode;
+		this.postHttp(this,{subjectName:row.subjectCode},'subjectablity/querySubjectAblitys',function(obj,res){
+	  		obj.ablityArray = res.result;
+  	});
 		this.postHttp(this,{parentId:row.id},'twowayspecificationdetail/queryTwoWaySpecificationDetails',function(obj,res){
 			var deDate = res.result;
 			for(var i = 0;i < deDate.length; i++){
