@@ -91,7 +91,7 @@ export default {
   			res.result['subjectArray'] = new Array();
   		}
   		obj.schoolInfo = res.result;
-  		this.$refs['schoolInfo'].resetFields();
+  		obj.$refs['schoolInfo'].resetFields();
   	})
 
   	this.postHttp(this,{pageNum:1,pageSize:0},'subject/querySubjects',function(obj,res){
