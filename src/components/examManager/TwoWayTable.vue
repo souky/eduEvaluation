@@ -604,35 +604,36 @@ export default {
 	formatDate(){
 		var data = JSON.parse(JSON.stringify(this.two_way_D));
 		var dataArray = new Array();
+		var ablityArrayS = this.ablityArray;
 		for(var i = 0;i < data.length;i++){
 			var itemAbility = data[i].itemAbility.toString();
 			var itemAbilityString = "";
-			if(itemAbility.indexOf('空间想象') >= 0){
+			if(itemAbility.indexOf(ablityArrayS[0]) >= 0){
 				itemAbilityString +='1';
 			}else{
 				itemAbilityString +='0';
 			}
-			if(itemAbility.indexOf('抽象概括') >= 0){
+			if(itemAbility.indexOf(ablityArrayS[1]) >= 0){
 				itemAbilityString +='1';
 			}else{
 				itemAbilityString +='0';
 			}
-			if(itemAbility.indexOf('推理论证') >= 0){
+			if(itemAbility.indexOf(ablityArrayS[2]) >= 0){
 				itemAbilityString +='1';
 			}else{
 				itemAbilityString +='0';
 			}
-			if(itemAbility.indexOf('运算求解') >= 0){
+			if(itemAbility.indexOf(ablityArrayS[3]) >= 0){
 				itemAbilityString +='1';
 			}else{
 				itemAbilityString +='0';
 			}
-			if(itemAbility.indexOf('数据处理') >= 0){
+			if(itemAbility.indexOf(ablityArrayS[4]) >= 0){
 				itemAbilityString +='1';
 			}else{
 				itemAbilityString +='0';
 			}
-			if(itemAbility.indexOf('综合应用') >= 0){
+			if(itemAbility.indexOf(ablityArrayS[5]) >= 0){
 				itemAbilityString +='1';
 			}else{
 				itemAbilityString +='0';
