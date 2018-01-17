@@ -361,6 +361,9 @@ export default {
   	},
 	editInfo(row){
 		var subjectName = row.subjectCode;
+		this.postHttp(this,{subjectName:subjectName},'subjectablity/querySubjectAblitys',function(obj,res){
+	  		obj.ablityArray = res.result;
+  	});
 		this.postHttp(this,{subjectName:subjectName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.knowOption = res.result;
   	});
