@@ -274,7 +274,7 @@
 								<el-table-column align="center" prop="divideClass" label="我的"></el-table-column>
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
-								<el-table-column align="center" prop="divideAera" label="区级"></el-table-column>
+								<el-table-column align="center" prop="divideSchool" label="区级"></el-table-column>
 								<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)"></el-table-column>
 							</el-table-column>
 							<el-table-column align="center" prop="qid" label="对应题目"></el-table-column>
@@ -1183,7 +1183,7 @@ export default {
 						if(res.result.listVO){
 							if(res.result.listVO.length>=3){
 								document.getElementById("knowledge1").style.display="block";
-								for(var i=0;i<res.result.length;i++){
+								for(var i=0;i<res.result.listVO.length;i++){
 									var arr={
 										"text":res.result.listVO[i].knowDetail[0].knowledgemodule,
 										"max":100,
