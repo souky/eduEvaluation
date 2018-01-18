@@ -83,7 +83,7 @@
 	width:100px;
 	margin:10px auto;
 	background: #FFD100;
-	color:#fff;
+	color:#2b2b2b;
 	border-radius: 3px;
 	height:40px;
 	line-height: 40px;
@@ -96,7 +96,7 @@
 	height:40px;
 	line-height: 40px;
 	text-align: center;
-	color: #fff;
+	color: #2b2b2b;
 	background: #FFD100;
 	border-radius: 3px;
 	cursor: pointer;
@@ -188,7 +188,7 @@
 	font-size:14px;
 	border-radius: 4px;
 	background: #FFD100;
-	color:#fff;
+	color:#2b2b2b;
 }
 
 .dialog_body{
@@ -214,13 +214,13 @@
 .el-select{width: 100%;}
 .el-select .el-input.is-focus .el-input__inner{border-color:#FFD100!important;width:100%;}
 
-.el-pager li.active{background:#FFD100;border-color:#FFD100;color:#fff}
-.el-pager li.active:hover{color:#fff;}
+.el-pager li.active{background:#FFD100;border-color:#FFD100;color:#2b2b2b}
+.el-pager li.active:hover{color:#2b2b2b;}
 .el-pager li:hover{color:#FFD100}
 .el-pagination button:hover{color:#FFD100}
 .el-pagination__editor:focus{border-color:#FFD100}
-.el-pagination__sizes .el-input .el-input__inner:hover{border-color:#FFD100!important}
-.el-pagination__sizes .el-input.is-focus .el-input__inner{border-color:#FFD100}
+.el-pagination__sizes .el-input .el-input__inner:hover{border-color:#FFD100!important;}
+.el-pagination__sizes .el-input.is-focus .el-input__inner{border-color:#FFD100;}
 .el-pagination__total{margin-left:20px;}
 
 .el-checkbox__inner:hover{border-color:#FFD100}
@@ -231,9 +231,9 @@
 .el-checkbox__input.is-checked+.el-checkbox__label{color:#FFD100};
 
 
-.el-select-dropdown__item.selected.hover{background:#FFD100;color:#fff}
-.el-select-dropdown__item.selected{background:#FFD100;color:#fff}
-.el-button--primary{color:#fff;padding: 7px;background-color:#FFD100 !important;border-color:#FFD100 !important;}
+.el-select-dropdown__item.selected.hover{background:#FFD100;color:#2b2b2b}
+.el-select-dropdown__item.selected{background:#FFD100;color:#2b2b2b}
+.el-button--primary{color:#2b2b2b;padding: 7px;background-color:#FFD100 !important;border-color:#FFD100 !important;}
 .el-button--primary:hover{background-color:#6EC400;border-color:#6EC400;}
 .el-button:active{color:#FFD100;border-color:#FFD100;}
 .el-button:hover{border-color:#FFD100;}

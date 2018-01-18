@@ -18,9 +18,9 @@
 			<div class="konwledge_detiles fix">
 				<el-tree id="textBookT" :data="data" :render-content="renderContent" node-key="id" :props="defaultProps"  @node-click="handleNodeClick"></el-tree>
 			</div>
-			
+
 		</div>
-		
+
 		<el-dialog :title="diaTitle" :visible.sync="dialogVisible" width="30%">
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rules" ref="konw" class="demo-ruleForm" :model="konw" >
@@ -35,7 +35,7 @@
 		  </span>
 		</el-dialog>
 	</div>
-	
+
 </template>
 
 <script>
@@ -52,7 +52,7 @@ export default {
 	        id:'id'
 	  },
 	  data: [],
-	  
+
 	  dialogVisible:false,
 	  konw:{
 	  	parentId:'',
@@ -66,7 +66,7 @@ export default {
      queryName:'',
      queryCode:'',
      text_id:'',
-     
+
      diaTitle:'新增'
     }
   },
@@ -80,7 +80,7 @@ export default {
   			obj.loadKonwP();
   		});
   	})
-  	
+
   },
   methods:{
 	changeSubject(event){
@@ -138,7 +138,7 @@ export default {
             return false;
           }
         });
-  		
+
   	},
 	handleNodeClick(data){
 		console.log(data)
@@ -155,30 +155,30 @@ export default {
 	  	});
 	},
 	renderContent(createElement, { node, data, store }) {
-	    var self = this;  
-	    return createElement('div',{attrs:{  
-	            style:"width:100%;"  
-	        }}, [  
-	        createElement('span', node.label),  
-	        createElement('span', {attrs:{  
-	            style:"float: right; margin-right: 20px",class:"tree_btn"  
-	        }},[  
-	            createElement('i',{attrs:{  
+	    var self = this;
+	    return createElement('div',{attrs:{
+	            style:"width:100%;"
+	        }}, [
+	        createElement('span', node.label),
+	        createElement('span', {attrs:{
+	            style:"float: right; margin-right: 20px",class:"tree_btn"
+	        }},[
+	            createElement('i',{attrs:{
 	                class:'el-icon-plus'
-	            },on:{  
-	                click:function() {  
+	            },on:{
+	                click:function() {
 	                	self.konw.parentId = data.id;
 	                	self.konw.subjectId = self.queryName;
 	                	self.konw.gradeCode = self.queryCode;
 	                	self.dialogVisible = true;
 	                	self.$refs['konw'].resetFields();
 	                	self.konw.knowledgeContent = "";
-	                }  
-	            }},""),  
-	            createElement('i',{attrs:{  
-	                 class:'el-icon-minus'  
-	            },on:{  
-	                click:function() {  
+	                }
+	            }},""),
+	            createElement('i',{attrs:{
+	                 class:'el-icon-minus'
+	            },on:{
+	                click:function() {
 	                	self.text_id = data.id;
 	                	self.$confirm('此操作将删除该知识点下所有子项,是否继续?', '提示', {
 							          confirmButtonText: '确定',
@@ -187,12 +187,12 @@ export default {
 							        }).then(() => {
 							        	self.delete_text_s();
 							        }).catch(() => {
-							        	
+
 							        });
-	                }  
-	            }},""),  
-	        ]),  
-	    ]);  
+	                }
+	            }},""),
+	        ]),
+	    ]);
 	  },
   }
 }
@@ -228,7 +228,7 @@ export default {
 #knowledgePoint .knowledge_body .select_subject .items.active{
 	border-color: #FFD100;
 	background: #FFD100;
-	color:#fff;
+	color:#2b2b2b;
 }
 #knowledgePoint .knowledge_body .select_subject .itemsG{
 	width:18%;
@@ -246,7 +246,7 @@ export default {
 #knowledgePoint .knowledge_body .select_subject .itemsG.active{
 	border-color: #FFD100;
 	background: #FFD100;
-	color:#fff;
+	color:#2b2b2b;
 }
 #knowledgePoint .konwledge_detiles{
 	padding-top: 20px;
@@ -255,7 +255,7 @@ export default {
 	width: 400px;
 }
 #knowledgePoint .konwledge_detiles .detiles_right{
-	width: calc(100% - 420);	
+	width: calc(100% - 420);
 }
 #knowledgePoint .addBtnFa{
 	width:95%;
@@ -266,7 +266,7 @@ export default {
 	text-align: center;
 	height:30px;
 	line-height: 30px;
-	color:#fff;
+	color:#2b2b2b;
 	background: #FFD100;
 	border-radius: 4px;
 	cursor: pointer;
