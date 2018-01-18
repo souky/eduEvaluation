@@ -1174,25 +1174,25 @@ export default {
 			knowAnalysis:function(){
 				this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/knowAnalysis',function(obj,res){
 					if(res.code == '10000'){
-						obj.truetableDatas=res.result;
+						obj.truetableDatas=res.result.listVO;
 						obj.optionknowledge.series[0].data[0].value=[];
 						obj.optionknowledge.series[0].data[1].value=[];
 						obj.optionknowledge.series[0].data[2].value=[];
 						obj.optionknowledge.series[0].data[3].value=[];
 						obj.optionknowledge.radar[0].indicator=[];
-						if(res.result){
-							if(res.result.length>=3){
+						if(res.result.listVO){
+							if(res.result.listVO.length>=3){
 								document.getElementById("knowledge1").style.display="block";
 								for(var i=0;i<res.result.length;i++){
 									var arr={
-										"text":res.result[i].knowDetail[0].knowledgemodule,
+										"text":res.result.listVO[i].knowDetail[0].knowledgemodule,
 										"max":100,
 									}
 									obj.optionknowledge.radar[0].indicator.push(arr);
-									obj.optionknowledge.series[0].data[0].value.push(res.result[i].divideStudent);
-									obj.optionknowledge.series[0].data[1].value.push(res.result[i].divideClass);
-									obj.optionknowledge.series[0].data[2].value.push(res.result[i].divideSchool);
-									obj.optionknowledge.series[0].data[3].value.push(res.result[i].divideAera);
+									obj.optionknowledge.series[0].data[0].value.push(res.result.listVO[i].divideStudent);
+									obj.optionknowledge.series[0].data[1].value.push(res.result.listVO[i].divideClass);
+									obj.optionknowledge.series[0].data[2].value.push(res.result.listVO[i].divideSchool);
+									obj.optionknowledge.series[0].data[3].value.push(res.result.listVO[i].divideSchool);
 								}
 								obj.echarts.init(document.getElementById("knowledge1")).setOption(obj.optionknowledge);
 							}else{
@@ -1241,16 +1241,17 @@ export default {
 			ablityAnalysis:function(){
 				this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,studentId:this.basicData.student},'/ablityAnalysis',function(obj,res){
 					if(res.code == '10000'){
-						obj.scoreName=res.result;
+						obj.scoreName=res.result.listVO;
 						obj.optionabilityAnalyze.series[0].data[0].value=[];
 						obj.optionabilityAnalyze.series[0].data[1].value=[];
 						obj.optionabilityAnalyze.series[0].data[2].value=[];
 						obj.optionabilityAnalyze.series[0].data[3].value=[];
-						for(var i=0;i<res.result.length;i++){
-							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result[i].divideStudent)
-							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result[i].divideClass)
-							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result[i].divideSchool)
-							obj.optionabilityAnalyze.series[0].data[3].value.push(res.result[i].divideAera)
+						for(var i=0;i<res.result.listVO.length;i++){
+							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result.listVO[i].divideStudent);
+							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result.listVO[i].divideClass);
+							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result.listVO[i].divideSchool);
+							obj.optionabilityAnalyze.series[0].data[3].value.push(res.result.listVO[i].divideAera);
+							obj.optionabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
 						}
 						obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
 					}else{
