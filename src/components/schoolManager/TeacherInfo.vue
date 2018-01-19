@@ -70,7 +70,7 @@
 		      	<template slot-scope="scope">
 		      		<el-button type="primary" v-show="userType == 1 || userType == 0" v-if="scope.row.userName == '' || scope.row.userName == undefined "
 		      			icon="el-icon-upload" @click="allotAuth(scope.row.id)">开通账号</el-button>
-		      		<el-button type="primary forbid" v-show="userType == 1 || userType == 0" v-else icon="el-icon-upload">开通账号</el-button>
+		      		<el-button type="primary forbid" title="账号已开通" v-show="userType == 1 || userType == 0" v-else icon="el-icon-upload">开通账号</el-button>
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
 		      	</template>
@@ -475,5 +475,6 @@ export default {
 #teacherInfo .forbid{
 	background:#C0C0C0!important;
 	border-color: #C0C0C0!important;
+	color:#828282!important;
 }
 </style>

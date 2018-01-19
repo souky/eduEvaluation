@@ -334,5 +334,6 @@ export default {
 #roleManager .forbid{
 	background:#C0C0C0!important;
 	border-color: #C0C0C0!important;
+	color:#828282!important;
 }
 </style>
