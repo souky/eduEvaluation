@@ -1252,6 +1252,7 @@ export default {
 						obj.optionabilityAnalyze.series[0].data[2].value=[];
 						obj.optionabilityAnalyze.series[0].data[3].value=[];
 						for(var i=0;i<res.result.listVO.length;i++){
+							obj.optionabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
 							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result.listVO[i].divideStudent);
 							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result.listVO[i].divideClass);
 							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result.listVO[i].divideSchool);
@@ -1259,7 +1260,7 @@ export default {
 							obj.optionabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
 						}
 						obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
-						obj.optionabilityAnalyzeWord=res.result.summaryVO.knowledgeAnalysis;
+						obj.optionabilityAnalyzeWord=res.result.summaryVO.abilityAnalysis;
 					}else{
 						obj.notify_jr(obj,'错误提示',res.message,'error');
 					}
