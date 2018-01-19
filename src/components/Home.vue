@@ -172,12 +172,15 @@ created: function(){
   				}
   				datas = [];
   				obj.postHttp(obj,'',"score/getHomePageChart",function(objs,data){
+  					if(data.code!='10000'){
+  						objs.code = '-';
+  					}
   					if(data.result=="没有该教师所在班级的最近一场考试数据"){
   						objs.name = data.result.name
   						objs.code = data.result.label
   						objs.option1.series[0].data =[0,0,0,0,0];
   						objs.echarts.init(document.getElementById("average")).setOption(obj.option1);
-  					}else{
+  					}else if(data.code=='10000'){
   						objs.name = data.result.name
   						objs.code = data.result.label
   						datas = [obj.initPrate(data.result.rateMap.highRate),

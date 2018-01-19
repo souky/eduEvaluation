@@ -225,7 +225,7 @@ D值为0.4以上表明区分度优秀； D值为0.3~0.39表明区分度合格；
 		  						<p>在本次考试中，得分率低于学校平均水平的题目分别是第4题、第8题、第12题、第16题和第20题，其中中等难度的题目为第4题和第12题，这些题目需要注意；其中简单难度的题目为第8题和第20题，需要特别注意。</p>
 		  					</div>
 		  				</div>
-		  			</div> -->
+		  	</div> -->
 		  </div>
 	</div>	
 </template>
@@ -415,16 +415,17 @@ export default {
 			           }
 		    		}else{
 						for(var value of data.result){
-			           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
-			           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+			           		datax.push(value.classroomName);
+			           		data10.push(value.classTopTenStuNum);
+			           		data20.push(value.classTopTwentyStuNum);
+			           		data50.push(value.classTopFiftyStuNum);
 			           		data100.push(value.classTopOneHundredStuNum);
 			           		data200.push(value.classTopTwoHundredStuNum);
 			           		data500.push(value.classTopFiveHundredStuNum);
-			           		data1000.push(value.classTopFortyStuNum);
+			           		data1000.push(value.classTopOneThousandStuNum);
 		           		}
 		    		}
-		    		
-				   objs.option3.xAxis[0].data = datax;
+		    	   objs.option3.xAxis[0].data = datax;
 		           objs.option3.series[0].data = data10;obj.option3.series[1].data = data20;
 		           objs.option3.series[2].data = data50;obj.option3.series[3].data = data100;
 		           objs.option3.series[4].data = data200;obj.option3.series[5].data = data500;
@@ -579,9 +580,7 @@ export default {
 			    	   				var data1 = [0,0,0,0,0]
 			    	   			}
 			    	   		}
-							
-			    	   	
-			    	   objs.option1.series[0].data = data1;
+					   objs.option1.series[0].data = data1;
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
 			        });
 			this.postHttp(this,{subject:name,examId:this.testid},"/testAnalysis",function(objs,data){

@@ -312,12 +312,14 @@ export default {
 	    			datax = [];data10 = [];data20 = [];data50 = [];
 	    			data100 = [];data200 = [];data500 = [];data1000 = [];
 		    		for(var value of data.result){
-		           		datax.push(value.classroomName);data10.push(value.classTopTenStuNum);
-		           		data20.push(value.classTopTwentyStuNum);data50.push(value.classTopFiftyStuNum);
+		           		datax.push(value.classroomName);
+		           		data10.push(value.classTopTenStuNum);
+		           		data20.push(value.classTopTwentyStuNum);
+		           		data50.push(value.classTopFiftyStuNum);
 		           		data100.push(value.classTopOneHundredStuNum);
 		           		data200.push(value.classTopTwoHundredStuNum);
 		           		data500.push(value.classTopFiveHundredStuNum);
-		           		data1000.push(value.classTopFortyStuNum);
+		           		data1000.push(value.classTopOneThousandStuNum);
 		           	}
 		           	
 	       		}
