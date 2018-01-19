@@ -271,7 +271,7 @@
 							<el-table-column align="center" prop="knowledgemodule" label="知识点模块"></el-table-column>
 							<el-table-column align="center" :show-overflow-tooltip="true" prop="knowledge" label="知识点"></el-table-column>
 							<el-table-column align="center" label="得分率(单位：%)">
-								<el-table-column align="center" prop="divideClass" label="我的"></el-table-column>
+								<el-table-column align="center" prop="divideStudent" label="我的"></el-table-column>
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="区级"></el-table-column>
