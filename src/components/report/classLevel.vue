@@ -261,7 +261,7 @@
 			</div>
 		</div>
 		<div class="foot-word">
-			<p>在本次考试中，得分率低于学校平均水平的题目分别是第4题、第8题、第12题、第16题和第20题，其中中等难度的题目为第4题和第12题，这些题目需要注意；其中简单难度的题目为第8题和第20题，需要特别注意。</p>
+			<p>{{optionClassScoreQuestionWord}}</p>
 		</div>
 	</div>
 </div>
@@ -305,6 +305,9 @@
 				</div>
 			</div>
 		</div>
+		<div class="abilityAnalyze-foot">
+			<p>{{optionclassknowledgeWord}}</p>
+		</div>
 	</div>
 </div>
 <div id="classabilityAnalyze" v-show="displayAll.classabilityAnalyze" class="mt20">
@@ -326,8 +329,7 @@
 			</el-table>
 		</div>
 		<div class="abilityAnalyze-foot">
-			<p>在本次考试中，得分率低于学校平均水平的能力点为空间想象能力，抽象概括能力、推理论证能力、运算求解能力和综合应用能力，需要特别注意。
-			得分率高于学校平均水平的能力为数据处理能力，请继续保持。</p>
+			<p>{{optionclassabilityAnalyzeWord}}</p>
 		</div>
 	</div>
 	<div class="leftAnchorPoint">
@@ -736,6 +738,7 @@ export default{
 					}
 					]
 				},
+				optionClassScoreQuestionWord:"",
 				optionClassScoreQuestion:{
 					tooltip: {
 						trigger: 'axis',
@@ -925,6 +928,7 @@ export default{
 					}
 					]
 				},
+				optionclassknowledgeWord:"",
 				optionclassknowledge:{
 					tooltip: {},
 					legend: {
@@ -938,8 +942,8 @@ export default{
 						{text: '三角函数', max: 100},
 						{text: '圆锥曲线与方程', max: 100},
 						],
-						radius: 200,
-						center: ['50%','65%'],
+						radius: 180,
+						center: ['50%','55%'],
 					}
 					],
 					series: [
@@ -964,6 +968,7 @@ export default{
 					}
 					]
 				},
+				optionclassabilityAnalyzeWord:"",
 				optionclassabilityAnalyze:{
 					tooltip: {},
 					legend: {
@@ -1428,19 +1433,25 @@ export default{
 				knowAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/knowAnalysis',function(obj,res){
 						if(res.code == '10000'){
-							obj.truetableDatas=res.result;
+							obj.truetableDatas=res.result.listVO;
 							obj.optionclassknowledge.series[0].data[0].value=[];
 							obj.optionclassknowledge.series[0].data[1].value=[];
 							obj.optionclassknowledge.series[0].data[2].value=[];
-							if(res.result){
+							obj.optionclassknowledge.radar[0].indicator=[];
+							if(res.result.listVO){
 								document.getElementById("classknowledge1").style.display="block";
-								if(res.result.length>=3){
-									for(var i=0;i<res.result.length;i++){
-										obj.optionclassknowledge.radar[0].indicator[i].text=res.result[i].knowDetail[0].knowledgemodule;
-										obj.optionclassknowledge.series[0].data[0].value.push(res.result[i].divideClass);
-										obj.optionclassknowledge.series[0].data[1].value.push(res.result[i].divideSchool);
-										obj.optionclassknowledge.series[0].data[2].value.push(res.result[i].divideAera);
+								if(res.result.listVO.length>=3){
+									for(var i=0;i<res.result.listVO.length;i++){
+										var arr={
+											"text": res.result.listVO[i].knowDetail[0].knowledgemodule,
+											"max": 100,
+										}
+										obj.optionclassknowledge.radar[0].indicator.push(arr)
+										obj.optionclassknowledge.series[0].data[0].value.push(res.result.listVO[i].divideClass);
+										obj.optionclassknowledge.series[0].data[1].value.push(res.result.listVO[i].divideSchool);
+										obj.optionclassknowledge.series[0].data[2].value.push(res.result.listVO[i].divideAera);
 									}
+									obj.optionclassknowledgeWord=res.result.summaryVO.knowledgeAnalysis;
 									obj.echarts.init(document.getElementById("classknowledge1")).setOption(obj.optionclassknowledge);
 								}else{
 									document.getElementById("classknowledge1").style.display="none";
@@ -1455,15 +1466,17 @@ export default{
 				ablityAnalysis:function(){
 					this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id,classroomId:this.basicData.class},'/ablityAnalysis',function(obj,res){
 						if(res.code == '10000'){
-							obj.scoreName=res.result;
+							obj.scoreName=res.result.listVO;
 							obj.optionclassabilityAnalyze.series[0].data[0].value=[];
 							obj.optionclassabilityAnalyze.series[0].data[1].value=[];
 							obj.optionclassabilityAnalyze.series[0].data[2].value=[];
-							for(var i=0;i<res.result.length;i++){
-								obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result[i].divideClass)
-								obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result[i].divideSchool)
-								obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result[i].divideAera)
+							for(var i=0;i<res.result.listVO.length;i++){
+								obj.optionclassabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
+								obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result.listVO[i].divideClass)
+								obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result.listVO[i].divideSchool)
+								obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result.listVO[i].divideAera)
 							}
+							obj.optionclassabilityAnalyzeWord=res.result.summaryVO.abilityAnalysis;
 							obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -1571,7 +1584,8 @@ export default{
 									list1.push(parseFloat(res.result.listVO[i].qid));
 									obj.optionTwoDimensionalAnalysisS.series[1].data.push(list1);
 								}
-							}						
+							}
+							obj.optionClassScoreQuestionWord=res.result.summaryVO.difficultyAnalysis;						
 							obj.echarts.init(document.getElementById("classOptionScoreQuestion1")).setOption(obj.optionClassScoreQuestion);
 							obj.echarts.init(document.getElementById("classtwoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysisS);
 						}else{
@@ -2102,7 +2116,7 @@ export default{
 		}
 		#classLevel #classknowledge1{
 			width: 1080px;
-			height: 400px;
+			height: 450px;
 			margin: auto;
 		}
 		#classLevel .el-select .el-input .el-input__icon{
