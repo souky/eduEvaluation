@@ -156,8 +156,8 @@
 				</div>
 				<div id="myGoal1"></div>
 				<div class="subjectsDiagnosisText ml20 mb20">
-					<p>在本次考试中，你的简单题失分率最低，难题失分率最高。</p>
-					<p>在下次考试中，简单题多加注意很容易就能加分，中等题再努力一下也能得分，难题需要多多练习。</p>
+					<p>{{optionMyGoalWord1}}</p>
+					<p>{{optionMyGoalWord2}}</p>
 				</div>
 			</div>
 		</div>
@@ -242,7 +242,7 @@
 					</div>
 				</div>
 				<div class="foot-word">
-					<p>在本次考试中，得分率低于学校平均水平的题目分别是第4题、第8题、第12题、第16题和第20题，其中中等难度的题目为第4题和第12题，这些题目需要注意；其中简单难度的题目为第8题和第20题，需要特别注意。</p>
+					<p>{{optionTwoDimensionalAnalysisWord}}</p>
 				</div>
 			</div>
 		</div>
@@ -290,7 +290,7 @@
 					</div>
 				</div>
 				<div class="knowledge-foot">
-					<p>在本次考试中，得分率低于学校平均水平的知识点分别是函数模块中的指数函数，对应的题目为第5题；三角函数中的任意角、弧度，对应的题目为第3题；三角函数中借助单位圆中的三角函数推导出诱导公式，对应题目为16题，需要特别注意</p>
+					<p>{{optionknowledgeWord}}</p>
 				</div>
 			</div>
 		</div>
@@ -314,8 +314,7 @@
 					</el-table>
 				</div>
 				<div class="abilityAnalyze-foot">
-					<p>在本次考试中，得分率低于学校平均水平的能力点为空间想象能力，抽象概括能力、推理论证能力、运算求解能力和综合应用能力，需要特别注意。
-					得分率高于学校平均水平的能力为数据处理能力，请继续保持。</p>
+					<p>{{optionabilityAnalyzeWord}}</p>
 				</div>
 			</div>
 		</div>
@@ -598,6 +597,8 @@ export default {
 					}
 					]
 				},
+				optionMyGoalWord1:"",
+				optionMyGoalWord2:"",
 				optionMyGoal:{
 					tooltip : {
 						trigger: 'axis',
@@ -731,6 +732,7 @@ export default {
 					}
 					]
 				},
+				optionTwoDimensionalAnalysisWord:"",
 				optionTwoDimensionalAnalysis:{
 					tooltip : {
 						padding: 10,
@@ -852,6 +854,7 @@ export default {
 					}
 					]
 				},
+				optionknowledgeWord:"",
 				optionknowledge:{
 					tooltip: {},
 					legend: {
@@ -902,6 +905,7 @@ export default {
 					}
 					]
 				},
+				optionabilityAnalyzeWord:"",
 				optionabilityAnalyze:{
 					tooltip: {},
 					legend: {
@@ -1195,6 +1199,7 @@ export default {
 									obj.optionknowledge.series[0].data[3].value.push(res.result.listVO[i].divideSchool);
 								}
 								obj.echarts.init(document.getElementById("knowledge1")).setOption(obj.optionknowledge);
+								obj.optionknowledgeWord=res.result.summaryVO.knowledgeAnalysis;
 							}else{
 								document.getElementById("knowledge1").style.display="none";
 							}
@@ -1254,6 +1259,7 @@ export default {
 							obj.optionabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
 						}
 						obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
+						obj.optionabilityAnalyzeWord=res.result.summaryVO.knowledgeAnalysis;
 					}else{
 						obj.notify_jr(obj,'错误提示',res.message,'error');
 					}
@@ -1334,6 +1340,9 @@ export default {
 						obj.echarts.init(document.getElementById("scoreQuestion1")).setOption(obj.optionScoreQuestion);
 						obj.echarts.init(document.getElementById("twoDimensionalAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 						obj.echarts.init(document.getElementById("myGoal1")).setOption(obj.optionMyGoal);
+						obj.optionMyGoalWord1=res.result.summaryVO.nextTimeAddScore;
+						obj.optionMyGoalWord2=res.result.summaryVO.promoteForNextTime;
+						obj.optionTwoDimensionalAnalysisWord=res.result.summaryVO.difficultyAnalysis;
 					}else{
 						obj.notify_jr(obj,'错误提示',res.message,'error');
 					}

@@ -942,8 +942,8 @@ export default{
 						{text: '三角函数', max: 100},
 						{text: '圆锥曲线与方程', max: 100},
 						],
-						radius: 200,
-						center: ['50%','65%'],
+						radius: 180,
+						center: ['50%','55%'],
 					}
 					],
 					series: [
@@ -1437,11 +1437,16 @@ export default{
 							obj.optionclassknowledge.series[0].data[0].value=[];
 							obj.optionclassknowledge.series[0].data[1].value=[];
 							obj.optionclassknowledge.series[0].data[2].value=[];
+							obj.optionclassknowledge.radar[0].indicator=[];
 							if(res.result.listVO){
 								document.getElementById("classknowledge1").style.display="block";
-								if(res.result.length>=3){
-									for(var i=0;i<res.result.length;i++){
-										obj.optionclassknowledge.radar[0].indicator[i].text=res.result.listVO[i].knowDetail[0].knowledgemodule;
+								if(res.result.listVO.length>=3){
+									for(var i=0;i<res.result.listVO.length;i++){
+										var arr={
+											"text": res.result.listVO[i].knowDetail[0].knowledgemodule,
+											"max": 100,
+										}
+										obj.optionclassknowledge.radar[0].indicator.push(arr)
 										obj.optionclassknowledge.series[0].data[0].value.push(res.result.listVO[i].divideClass);
 										obj.optionclassknowledge.series[0].data[1].value.push(res.result.listVO[i].divideSchool);
 										obj.optionclassknowledge.series[0].data[2].value.push(res.result.listVO[i].divideAera);
@@ -1465,12 +1470,13 @@ export default{
 							obj.optionclassabilityAnalyze.series[0].data[0].value=[];
 							obj.optionclassabilityAnalyze.series[0].data[1].value=[];
 							obj.optionclassabilityAnalyze.series[0].data[2].value=[];
-							for(var i=0;i<res.result.length;i++){
+							for(var i=0;i<res.result.listVO.length;i++){
+								obj.optionclassabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
 								obj.optionclassabilityAnalyze.series[0].data[0].value.push(res.result.listVO[i].divideClass)
 								obj.optionclassabilityAnalyze.series[0].data[1].value.push(res.result.listVO[i].divideSchool)
 								obj.optionclassabilityAnalyze.series[0].data[2].value.push(res.result.listVO[i].divideAera)
 							}
-							//obj.optionclassabilityAnalyzeWord=res.result.summaryVO.difficultyAnalysis.
+							obj.optionclassabilityAnalyzeWord=res.result.summaryVO.abilityAnalysis;
 							obj.echarts.init(document.getElementById("classabilityAnalyze1")).setOption(obj.optionclassabilityAnalyze);
 						}else{
 							obj.notify_jr(obj,'错误提示',res.message,'error');
@@ -2110,7 +2116,7 @@ export default{
 		}
 		#classLevel #classknowledge1{
 			width: 1080px;
-			height: 400px;
+			height: 450px;
 			margin: auto;
 		}
 		#classLevel .el-select .el-input .el-input__icon{
