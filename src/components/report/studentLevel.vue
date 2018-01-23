@@ -1736,7 +1736,7 @@ twoDimensionalAnalysisChoose:function(e,obj){
 					}else{
 						var list1=[];
 						list1.push(res.result.listVO[i].difficulty);
-						list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+						list1.push(parseFloat(res.result.listVO[i].divideStudentToSchool));
 						list1.push(res.result.listVO[i].topic);
 						list1.push(parseFloat(res.result.listVO[i].fractionalValue));
 						list1.push(parseFloat(res.result.listVO[i].qid));
@@ -1760,7 +1760,7 @@ twoDimensionalAnalysisChoose:function(e,obj){
 					if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
 						var list=[];
 						list.push(res.result.listVO[i].difficulty);
-						list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+						list.push(parseFloat(res.result.listVO[i].divideStudentToArea));
 						list.push(res.result.listVO[i].topic);
 						list.push(parseFloat(res.result.listVO[i].fractionalValue));
 						list.push(parseFloat(res.result.listVO[i].qid));
