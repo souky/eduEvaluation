@@ -17,7 +17,7 @@
 			    <el-input v-model="schoolInfo.schoolAddr" :maxlength="50"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校电话" prop="schoolMobile">
-			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="14"></el-input>
+			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校唯一码">
 			    <el-input v-model="schoolInfo.schoolOnlyCode" readonly disabled></el-input>
@@ -59,7 +59,7 @@ export default {
     return {
       msg: 'schoolInfo',
       schoolInfo:{},
-      maxLength:11,
+      maxLength:15,
       subjectList:[],
       showEdit:false,
       rules: {
