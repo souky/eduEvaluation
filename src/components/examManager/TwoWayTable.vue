@@ -642,21 +642,19 @@ export default {
 				itemAbilityString +='0';
 			}
 			data[i].itemAbility = itemAbilityString;
-			// if(data[i].knowledgeId != undefined){
-			// 	var knowledgeId = data[i].knowledgeId[(data[i].knowledgeId.length -1)];
-			// 	data[i].knowledgeId = knowledgeId;
-			// }
 			if(data[i].itemType == '1'){
 				data[i].knowledgeId = '';
 				var lists = data[i].stepList;
 				for(var j = 0;j < lists.length;j++){
 					var strings = '';
 					var listk = lists[j].knowledgePointId;
-					for(var x = 0;x < listk.length;x++){
-						if(x == 0){
-							strings += listk[x];
-						}else{
-							strings += "," + listk[x];
+					if(listk != undefined){
+						for(var x = 0;x < listk.length;x++){
+							if(x == 0){
+								strings += listk[x];
+							}else{
+								strings += "," + listk[x];
+							}
 						}
 					}
 					data[i].stepList[j].knowledgePointId = strings;
@@ -665,11 +663,13 @@ export default {
 				delete data[i]['stepList'];
 				var listK = data[i].knowledgeId;
 				var strings = '';
-				for(var j = 0;j < listK.length;j++){
-					if(j == 0){
-						strings += listK[j];
-					}else{
-						strings += "," + listK[j];
+				if(listK != undefined){
+					for(var j = 0;j < listK.length;j++){
+						if(j == 0){
+							strings += listK[j];
+						}else{
+							strings += "," + listK[j];
+						}
 					}
 				}
 				data[i].knowledgeId = strings;

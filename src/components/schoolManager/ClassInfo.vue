@@ -38,7 +38,7 @@
 		      <el-table-column prop="studentCount" align="center" label="班级人数"></el-table-column>
 		      <el-table-column prop="position" align="center" show-overflow-tooltip label="地理位置"></el-table-column>
 		      <el-table-column prop="remark" align="center" show-overflow-tooltip label="备注"></el-table-column>
-		      <el-table-column align="center" label="操作">
+		      <el-table-column align="center" width="200" label="操作">
 		      	<template slot-scope="scope">
 		      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 		      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>

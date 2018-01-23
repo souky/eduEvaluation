@@ -102,10 +102,10 @@
 							<div class="title l">{{e.name}}</div>
 							<div class="selete_item l">
 								<el-select v-model="e.spId" placeholder="选择细目表">
-							      <el-option v-for="e in twList"  :label="e.specificationName" :value="e.id" :key="e.id"></el-option>
+							      <el-option v-for="ee in e.twList"  :label="ee.specificationName" :value="ee.id" :key="ee.id"></el-option>
 							    </el-select>
 							</div>
-							<div class="add_two_way l" @click="add_two_way">添加细目表</div>
+							<div class="add_two_way l" @click="add_two_way(e.name)">添加细目表</div>
 						</div>
 			    	</div>
 
@@ -455,9 +455,11 @@ export default {
 				loading.close();
 				obj.postHttp(obj,{pageNum:1,pageSize:0},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
 			  		var s = res.result.list;
-			  		for(var i = 0;i<s.length;i++){
-			  			s[i]['spId'] = s[i]['id'];
-			  		}
+						if(s != undefined){
+							for(var i = 0;i<s.length;i++){
+				  			s[i]['spId'] = s[i]['id'];
+				  		}
+						}
 			  		obj.twList = res.result.list;
 			  	});
 			}else{
@@ -616,6 +618,8 @@ export default {
 		this.showTable = true;
 		this.showAdd = false;
 		this.exam = {subject:[],};
+		this.grade = "";
+		this.subject = [];
 		this.TwoWaySpecification = {};
 		this.two_way_D = [
 			{
@@ -642,12 +646,21 @@ export default {
 			var s = new Object();
 			s['name'] = checkboxArray[e];
 			s['spId'] = '';
-			this.subject.push(s);
+			//加入集合查询  影响效率
+			var data = {pageSize:0,pageNum:1,gradeCode:this.grade,subjectCode:s.name}
+			this.postHttp(this,data,'twowayspecification/queryTwoWaySpecifications',function(obj,res){
+		  		s['twList'] = res.result.list;
+					obj.subject.push(s);
+		  });
+
 		}
 	},
-	add_two_way(){
+	add_two_way(val){
 		this.dialogVisible = true;
-		this.TwoWaySpecification = {};
+		this.TwoWaySpecification = {
+			subjectCode:val,
+			gradeCode:this.grade,
+	  },
 		this.two_way_D = [
 			{
 				itemNo:'',
@@ -713,13 +726,6 @@ export default {
 	  		obj.student = s;
 	  });
 
-	  	this.postHttp(this,{pageNum:1,pageSize:0,gradeCode:grade},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
-	  		var s = res.result.list;
-	  		for(var i = 0;i<s.length;i++){
-	  			s[i]['spId'] = s[i]['id'];
-	  		}
-	  		obj.twList = res.result.list;
-	  	});
 	},
 	addItems(e){
 		e.stepList.push({
@@ -778,11 +784,13 @@ export default {
 				for(var j = 0;j < lists.length;j++){
 					var strings = '';
 					var listk = lists[j].knowledgePointId;
-					for(var x = 0;x < listk.length;x++){
-						if(x == 0){
-							strings += listk[x];
-						}else{
-							strings += "," + listk[x];
+					if(listK != undefined){
+						for(var x = 0;x < listk.length;x++){
+							if(x == 0){
+								strings += listk[x];
+							}else{
+								strings += "," + listk[x];
+							}
 						}
 					}
 					data[i].stepList[j].knowledgePointId = strings;
@@ -791,11 +799,13 @@ export default {
 				delete data[i]['stepList'];
 				var listK = data[i].knowledgeId;
 				var strings = '';
-				for(var j = 0;j < listK.length;j++){
-					if(j == 0){
-						strings += listK[j];
-					}else{
-						strings += "," + listK[j];
+				if(listK != undefined){
+					for(var j = 0;j < listK.length;j++){
+						if(j == 0){
+							strings += listK[j];
+						}else{
+							strings += "," + listK[j];
+						}
 					}
 				}
 				data[i].knowledgeId = strings;

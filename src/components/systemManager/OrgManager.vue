@@ -60,13 +60,13 @@
 		  <div class="dialog_body">
 		  	<el-form label-position="right" label-width="80px" :rules="rulesU" ref="user" class="demo-ruleForm" :model="user">
 			  <el-form-item label="名称" prop="name">
-			    <el-input v-model="user.name"></el-input>
+			    <el-input v-model="user.name" :maxlength="20" ></el-input>
 			  </el-form-item>
 			  <el-form-item label="用户名" prop="userName">
-			    <el-input v-model="user.userName"></el-input>
+			    <el-input v-model="user.userName" :maxlength="20"></el-input>
 			  </el-form-item>
 			  <el-form-item label="备注"  >
-			    <el-input v-model="user.remark"></el-input>
+			    <el-input v-model="user.remark" :maxlength="200"></el-input>
 			  </el-form-item>
 			</el-form>
 		  </div>

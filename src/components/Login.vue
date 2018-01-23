@@ -28,7 +28,7 @@
 		<div class="login-foot">
 			<p>© 2017-2018 苏州金瑞阳信息科技有限公司 苏ICP备17029802号</p>
 		</div>
-		
+
 		<el-dialog title="请先修改初始密码" :visible.sync="dialogVisible" width="30%"  :close-on-click-modal='booleanFasle' :close-on-press-escape='booleanFasle'>
 		  <div class="dialog_body">
 		  	<el-form label-position="right" :rules="rulesChange" ref="changUser" class="demo-ruleForm" label-width="80px" :model="changUser">
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+//var crypto = require('crypto');
 export default {
 	data(){
 		var validatePass = (rule, value, callback) => {
@@ -72,7 +73,7 @@ export default {
 	          callback();
 	        }
 	    };
-		
+
 		return{
 			form:{
 				userName:"",
@@ -111,7 +112,15 @@ export default {
 		this.$refs.loginHight.style.height=h+"px";
 	},
 	methods:{
-		onSubmit:function(){
+		onSubmit(){
+
+			// var password = this.form.psw;
+			// var hmac = crypto.createHmac('sha256','asd');
+			// hmac.update(password);
+			// var s =	hmac.digest('hex');
+			// console.log(s);
+			// return;
+
 			this.postHttp(this,this.form,'login',function(obj,res){
 				if(res.code == '10000'){
 //					if(res.result.isChangedPsw == '0'){
@@ -125,7 +134,7 @@ export default {
 					obj.notify_jr(obj,'错误提示',res.message,'error');
 				}
 			})
-			
+
 		},
 		saveEdit(){
 			this.$refs['changUser'].validate((valid) => {
@@ -155,8 +164,8 @@ export default {
 #login{
 	width: 100%;
 	height: 100%;
-	background-image:url(../../static/img/login/bg-d.png); 
-	background-repeat:no-repeat; 
+	background-image:url(../../static/img/login/bg-d.png);
+	background-repeat:no-repeat;
 	background-size:100% 100%;
 	-moz-background-size:100% 100%;
 }
@@ -173,7 +182,7 @@ export default {
 	font-size: 24px;
 	color: #fff;
 	letter-spacing: 0;
-	
+
 }
 #login .login-main{
 	position: absolute;
