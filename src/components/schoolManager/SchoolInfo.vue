@@ -16,8 +16,8 @@
 			  <el-form-item label="学校地址">
 			    <el-input v-model="schoolInfo.schoolAddr" :maxlength="50"></el-input>
 			  </el-form-item>
-			  <el-form-item label="学校手机" prop="schoolMobile">
-			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="maxLength"></el-input>
+			  <el-form-item label="学校电话" prop="schoolMobile">
+			    <el-input v-model="schoolInfo.schoolMobile" :maxlength="14"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校唯一码">
 			    <el-input v-model="schoolInfo.schoolOnlyCode" readonly disabled></el-input>
@@ -25,7 +25,7 @@
 			  <el-form-item label="学校联系人">
 			    <el-input v-model="schoolInfo.schoolContact" :maxlength="10"></el-input>
 			  </el-form-item>
-			  <el-form-item label="联系人手机"  prop="schoolContactMobile">
+			  <el-form-item label="联系人电话"  prop="schoolContactMobile">
 			    <el-input v-model="schoolInfo.schoolContactMobile" :maxlength="maxLength"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校学科" prop="subjectArray">
@@ -47,15 +47,14 @@
 <script>
 export default {
   data () {
-	var validatePhone = (rule, value, callback) => {
-		var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
-		if(!reg.test(value)){
-          callback(new Error('电话格式不正确'));
-        }else if(value.length != 11){
-          callback(new Error('电话格式不正确'));
-        }else{
-        	callback();
-        }
+		var validatePhone = (rule, value, callback) => {
+			var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
+			var regTell = /^((0\d{2,4})-)(\d{7,8})(-(\d{3,}))?$/;
+			if(reg.test(value) || regTell.test(value)){
+	      	callback();
+      }else{
+      		callback(new Error('电话格式不正确'));
+      }
     };
     return {
       msg: 'schoolInfo',
