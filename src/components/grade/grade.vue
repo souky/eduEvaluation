@@ -163,7 +163,8 @@
 					</div>
 					<div id="myGoal1"></div>
 					<div class="Subjectsdiagnose-foot">
-						<p>在本次考试中，你的简单题失分率最低，难题失分率最高。在下次考试中，简单题多加注意很容易就能加分，中等题再努力一下也能得分，难题需要多多练习。</p>
+						<p>{{optionMyGoalWord1}}</p>
+						<p>{{optionMyGoalWord2}}</p>
 					</div>
 				</div>
 			</div>
@@ -230,7 +231,7 @@
 						<div class="cl"></div>
 					</div>
 					<div class="Subjectsdiagnose-foot mt10">
-						<p>在本次考试中，得分率低于学校平均水平的题目分别是第4题、第8题、第12题、第16题和第20题，其中中等难度的题目为第4题和第12题，这些题目需要注意；其中简单难度的题目为第8题和第20题，需要特别注意。</p>
+						<p>{{optionTwoDimensionalAnalysisWord}}</p>
 					</div>
 				</div>
 			</div>
@@ -556,6 +557,8 @@ export default {
 					}
 					]
 				},
+				optionMyGoalWord1:"",
+				optionMyGoalWord2:"",
 				optionMyGoal:{
 					tooltip : {
 						trigger: 'axis',
@@ -673,6 +676,7 @@ export default {
 					}
 					]
 				},
+				optionTwoDimensionalAnalysisWord:"",
 				optionTwoDimensionalAnalysis:{
 					tooltip : {
 						padding: 10,
@@ -1071,25 +1075,25 @@ export default {
 			knowAnalysis:function(){
 				this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/knowAnalysis',function(obj,res){
 					if(res.code == '10000'){
-						obj.truetableDatas=res.result;
+						obj.truetableDatas=res.result.listVO;
 						obj.optionknowledge.series[0].data[0].value=[];
 						obj.optionknowledge.series[0].data[1].value=[];
 						obj.optionknowledge.series[0].data[2].value=[];
 						obj.optionknowledge.series[0].data[3].value=[];
 						obj.optionknowledge.radar[0].indicator=[];
-						if(res.result){
-							if(res.result.length>=3){
+						if(res.result.listVO){
+							if(res.result.listVO.length>=3){
 								document.getElementById("knowledgeAnalysis1").style.display="block";
-								for(var i=0;i<res.result.length;i++){
+								for(var i=0;i<res.result.listVO.length;i++){
 									var arr={
-										"text":res.result[i].knowDetail[0].knowledgemodule,
+										"text":res.result.listVO[i].knowDetail[0].knowledgemodule,
 										"max":100,
 									}
 									obj.optionknowledge.radar[0].indicator.push(arr);
-									obj.optionknowledge.series[0].data[0].value.push(res.result[i].divideStudent);
-									obj.optionknowledge.series[0].data[1].value.push(res.result[i].divideClass);
-									obj.optionknowledge.series[0].data[2].value.push(res.result[i].divideSchool);
-									obj.optionknowledge.series[0].data[3].value.push(res.result[i].divideAera);
+									obj.optionknowledge.series[0].data[0].value.push(res.result.listVO[i].divideStudent);
+									obj.optionknowledge.series[0].data[1].value.push(res.result.listVO[i].divideClass);
+									obj.optionknowledge.series[0].data[2].value.push(res.result.listVO[i].divideSchool);
+									obj.optionknowledge.series[0].data[3].value.push(res.result.listVO[i].divideAera);
 								}
 								obj.echarts.init(document.getElementById("knowledgeAnalysis1")).setOption(obj.optionknowledge);
 							}else{
@@ -1108,16 +1112,17 @@ export default {
 			ablityAnalysis:function(){
 				this.postHttp(this,{subject:this.basicData.subject,examId:this.basicData.id},'/ablityAnalysis',function(obj,res){
 					if(res.code == '10000'){
-						obj.scoreName=res.result;
+						obj.scoreName=res.result.listVO;
 						obj.optionabilityAnalyze.series[0].data[0].value=[];
 						obj.optionabilityAnalyze.series[0].data[1].value=[];
 						obj.optionabilityAnalyze.series[0].data[2].value=[];
 						obj.optionabilityAnalyze.series[0].data[3].value=[];
-						for(var i=0;i<res.result.length;i++){
-							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result[i].divideStudent)
-							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result[i].divideClass)
-							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result[i].divideSchool)
-							obj.optionabilityAnalyze.series[0].data[3].value.push(res.result[i].divideAera)
+						for(var i=0;i<res.result.listVO.length;i++){
+							obj.optionabilityAnalyze.radar[0].indicator[i].text=res.result.listVO[i].ablityName;
+							obj.optionabilityAnalyze.series[0].data[0].value.push(res.result.listVO[i].divideStudent)
+							obj.optionabilityAnalyze.series[0].data[1].value.push(res.result.listVO[i].divideClass)
+							obj.optionabilityAnalyze.series[0].data[2].value.push(res.result.listVO[i].divideSchool)
+							obj.optionabilityAnalyze.series[0].data[3].value.push(res.result.listVO[i].divideAera)
 						}
 						obj.echarts.init(document.getElementById("abilityAnalyze1")).setOption(obj.optionabilityAnalyze);
 						obj.handleClose();
@@ -1179,6 +1184,9 @@ export default {
 						obj.echarts.init(document.getElementById("allItem1")).setOption(obj.optionScoreQuestion);
 						obj.echarts.init(document.getElementById("twoAnalysis1")).setOption(obj.optionTwoDimensionalAnalysis);
 						obj.echarts.init(document.getElementById("myGoal1")).setOption(obj.optionMyGoal);
+						obj.optionMyGoalWord1=res.result.summaryVO.nextTimeAddScore;
+						obj.optionMyGoalWord2=res.result.summaryVO.promoteForNextTime;
+						obj.optionTwoDimensionalAnalysisWord=res.result.summaryVO.difficultyAnalysis;
 					}else{
 						obj.$toast({message:res.message, position: 'bottom',duration: 5000})
 					}
@@ -1564,7 +1572,7 @@ export default {
 							obj.optionScoreQuestion.series[1].data=[];
 							for(var i=0;i<res.result.listVO.length;i++){
 								obj.optionScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideStudent));
+								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideClass));
 								obj.optionScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideClass));
 							}
 							obj.optionScoreQuestion.legend.data=['我的得分率','班级得分率'];
@@ -1583,7 +1591,7 @@ export default {
 							obj.optionScoreQuestion.series[1].data=[];
 							for(var i=0;i<res.result.listVO.length;i++){
 								obj.optionScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideStudent));
+								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideSchool));
 								obj.optionScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideSchool));
 							}
 							obj.optionScoreQuestion.legend.data=['我的得分率','校级得分率'];
@@ -1602,7 +1610,7 @@ export default {
 							obj.optionScoreQuestion.series[1].data=[];
 							for(var i=0;i<res.result.listVO.length;i++){
 								obj.optionScoreQuestion.xAxis[0].data.push(res.result.listVO[i].qid);
-								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideStudent));
+								obj.optionScoreQuestion.series[0].data.push(parseFloat(res.result.listVO[i].divideAera));
 								obj.optionScoreQuestion.series[1].data.push(parseFloat(res.result.listVO[i].divideAera));
 							}
 							obj.optionScoreQuestion.legend.data=['我的得分率','地区级得分率'];

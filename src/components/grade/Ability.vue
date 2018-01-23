@@ -63,16 +63,16 @@ export default {
 	},
 	methods:{
 		knowAnalysis:function(){
-			this.postHttp(this,{subject:this.$store.state.basisSubject,examId:this.$store.state.basisExmaid,studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/ablityAnalysis',function(obj,res){
-				for(var i=0;i<res.result.length;i++){
+			this.postHttp(this,{subject:this.$store.state.basisSubject,examId:this.$store.state.basisExmaid},'/ablityAnalysis',function(obj,res){
+				for(var i=0;i<res.result.listVO.length;i++){
 					var arr={
-						"title":res.result[i].ablityName,
+						"title":res.result.listVO[i].ablityName,
 						//"sroce":res.result[i].score,
 						//"total":res.result[i].totle,
-						"student":res.result[i].divideStudent,
-						"class":res.result[i].divideClass,
-						"school":res.result[i].divideSchool,
-						"titleQid":res.result[i].numbers,
+						"student":res.result.listVO[i].divideStudent,
+						"class":res.result.listVO[i].divideClass,
+						"school":res.result.listVO[i].divideSchool,
+						"titleQid":res.result.listVO[i].numbers,
 					}
 					obj.baseData.push(arr);
 				}

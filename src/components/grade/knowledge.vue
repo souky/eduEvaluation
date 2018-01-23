@@ -66,23 +66,23 @@ export default {
 	},
 	methods:{
 		knowAnalysis:function(){
-			this.postHttp(this,{subject:this.$store.state.basisSubject,examId:this.$store.state.basisExmaid,studentId:"d6fd8ddf343b4defbf59c66e2611b8a8"},'/knowAnalysis',function(obj,res){
-				for(var i=0;i<res.result.length;i++){
+			this.postHttp(this,{subject:this.$store.state.basisSubject,examId:this.$store.state.basisExmaid},'/knowAnalysis',function(obj,res){
+				for(var i=0;i<res.result.listVO.length;i++){
 					obj.titleQid="";
-					for(var l=0;l<res.result[i].knowDetail.length;l++){
-						obj.titleQid+=res.result[i].knowDetail[l].qid;
-						if(l==res.result[i].knowDetail.length-1){
+					for(var l=0;l<res.result.listVO[i].knowDetail.length;l++){
+						obj.titleQid+=res.result.listVO[i].knowDetail[l].qid;
+						if(l==res.result.listVO[i].knowDetail.length-1){
 						}else{
 							obj.titleQid+=",";
 						}
 					}
 					var arr={
-						"title":res.result[i].knowDetail[0].knowledgemodule,
-						"sroce":res.result[i].score,
-						"total":res.result[i].totle,
-						"student":res.result[i].divideStudent,
-						"class":res.result[i].divideClass,
-						"school":res.result[i].divideSchool,
+						"title":res.result.listVO[i].knowDetail[0].knowledgemodule,
+						"sroce":res.result.listVO[i].score,
+						"total":res.result.listVO[i].totle,
+						"student":res.result.listVO[i].divideStudent,
+						"class":res.result.listVO[i].divideClass,
+						"school":res.result.listVO[i].divideSchool,
 						"titleQid":obj.titleQid
 					}
 					obj.baseData.push(arr);
