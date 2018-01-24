@@ -110,33 +110,58 @@
 		</transition>
 
 		<el-dialog title="添加双向细目表" :visible.sync="dialogVisible" width="90%">
-		  	<el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
-			  <el-col class="queryItems" :span="6" >
-			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>名称</div>
-			  	<div class="r">
-			  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称" :maxlength="30"></el-input>
-			  	</div>
-			  </el-col>
-			   <el-col class="queryItems" :span="6">
-			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>年级</div>
-			  	<div class="r">
-			  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
-				      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
-				    </el-select>
-			  	</div>
-			  </el-col>
-			  <el-col class="queryItems" :span="6">
-			  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>科目</div>
-			  	<div class="r">
-			  		<el-select @change="subjectChange" v-model="TwoWaySpecification.subjectCode" placeholder="请选择科目">
-					    <el-option v-for="e in subjectArray" :key="e" :label="e" :value="e">
-					    </el-option>
-					</el-select>
-			  	</div>
-			  </el-col>
+		  <el-row id="queryForm" :model="TwoWaySpecification" :gutter="20">
+				  <el-col class="queryItems" :span="6" >
+				  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>名称</div>
+				  	<div class="r">
+				  		<el-input v-model="TwoWaySpecification.specificationName" placeholder="名称" :maxlength="30"></el-input>
+				  	</div>
+				  </el-col>
+				   <el-col class="queryItems" :span="6">
+				  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>年级</div>
+				  	<div class="r">
+				  		<el-select v-model="TwoWaySpecification.gradeCode" placeholder="年级">
+					      <el-option v-for="e in gradeOption" :key="e" :label="e" :value="e"></el-option>
+					    </el-select>
+				  	</div>
+				  </el-col>
+				  <el-col class="queryItems" :span="6">
+				  	<div class="l"><font style="color: red;margin-right: 3px;">*</font>科目</div>
+				  	<div class="r">
+				  		<el-select @change="subjectChange" v-model="TwoWaySpecification.subjectCode" placeholder="请选择科目">
+						    <el-option v-for="e in subjectArray" :key="e" :label="e" :value="e">
+						    </el-option>
+							</el-select>
+				  	</div>
+				  </el-col>
 
-			  <el-col :span="6">
-			  </el-col>
+				  <el-col :span="6">
+				  </el-col>
+			</el-row>
+
+			<el-row class="adds" v-model="addsD" :gutter="20" style="margin-top:10px">
+				<el-col :span="15"></el-col>
+			  <el-col :span="1">
+					<el-input v-model="addsD.startNum"  placeholder="题号"></el-input>
+				</el-col>
+				<el-col :span="1">~</el-col>
+				<el-col :span="1">
+					<el-input v-model="addsD.endNum" placeholder="题号"></el-input>
+				</el-col>
+				<el-col :span="1">
+					<el-input v-model="addsD.point" placeholder="分值"></el-input>
+				</el-col>
+				<el-col :span="2">
+					<el-select v-model="addsD.types" placeholder="选择题型">
+							<el-option label="主观题" value="1"></el-option>
+							<el-option label="客观题" value="0"></el-option>
+					</el-select>
+				</el-col>
+				<el-col :span="3">
+					<div class="btn_query " @click="addsItems">
+						<i class="el-icon-plus">批量新增</i>
+					</div>
+				</el-col>
 			</el-row>
 
 			<el-row :gutter="10">
@@ -238,40 +263,40 @@ export default {
   data () {
 
     return {
-	  msg: 'twoWayTable',
-	  tableData:[],
-	  detailsData:[],
-	  queryInfos:{
-	  	specificationName:'',
-	  	gradeCode:'',
-	  	subjectCode:''
-	  },
-	  pageNum:1,
-      pageSize:10,
-      total:1,
+		  msg: 'twoWayTable',
+		  tableData:[],
+		  detailsData:[],
+		  queryInfos:{
+		  	specificationName:'',
+		  	gradeCode:'',
+		  	subjectCode:''
+		  },
+		  pageNum:1,
+	    pageSize:10,
+	    total:1,
 
-      subjectArray:[],
-      gradeOption:[],
+	    subjectArray:[],
+	    gradeOption:[],
 
-      showTable:true,
-      showDetails:false,
-      parentId:'',
-      dialogVisible:false,
-      dialogSubject:'',
+	    showTable:true,
+	    showDetails:false,
+	    parentId:'',
+	    dialogVisible:false,
+	    dialogSubject:'',
 			innerVisible:false,
 			changeItems:null,
 			ablityArray:['空间想象','抽象概括','推理论证','运算求解','数据处理','综合应用'],
 
-      dialogEdit:false,
-      two_way_D_single:{
-      	itemNo:'',
+	    dialogEdit:false,
+	    two_way_D_single:{
+	    	itemNo:'',
 	  		itemType:'0',
 	  		itemScore:'',
 	  		itemAnswer:'',
 	  		itemAbility:[]
-      },
+	    },
 
-      TwoWaySpecification:{
+	    TwoWaySpecification:{
 		  },
 		  two_way_D:[
 		  	{
@@ -290,19 +315,21 @@ export default {
 		  	},
 		  ],
 
-	  rules: {
-          specificationName: [
-            { required: true, message: '请输入角色名称', trigger: 'blur' }
-          ],
-     },
+	  	rules: {
+	        specificationName: [
+	          { required: true, message: '请输入角色名称', trigger: 'blur' }
+	        ],
+	   	},
 
-     knowOption:[],
-     defaultProps: {
-	      children: 'kpVOChildList',
-	      label: 'knowledgeContent',
-	      value:'id'
-	 },
-    }
+	   	knowOption:[],
+	   	defaultProps: {
+	      	children: 'kpVOChildList',
+	      	label: 'knowledgeContent',
+	      	value:'id'
+		 	},
+
+			addsD:{}
+	  }
   },
   mounted:function(){
   	this.queryInfo();
@@ -538,17 +565,17 @@ export default {
 	addDetile(){
 		this.two_way_D.push({
 			itemNo:'',
-	  		itemType:'0',
-	  		itemScore:'',
-	  		itemAnswer:'',
-	  		itemAbility:[],
-				stepList:[
-					{
-						stepScore:'',
-						stepAnswer:'',
-						knowledgePointId:[],
-					}
-				],
+  		itemType:'0',
+  		itemScore:'',
+  		itemAnswer:'',
+  		itemAbility:[],
+			stepList:[
+				{
+					stepScore:'',
+					stepAnswer:'',
+					knowledgePointId:[],
+				}
+			],
 		});
 	},
 	removeDomain(item) {
@@ -595,6 +622,39 @@ export default {
 	setClassName({row, index}){
       return row.itemType == 0 ? 'expand' : '';
   },
+	addsItems(){
+		var startNum = parseInt(this.addsD.startNum);
+		var endNum = parseInt(this.addsD.endNum);
+		var types = this.addsD.types;
+		var point = this.addsD.point;
+
+		if(isNaN(startNum) || isNaN(endNum) || (startNum <= 0 || endNum <=0)){
+			this.notify_jr(this,'操作错误','题号格式错误','error');
+			return;
+		}
+		if(startNum >= endNum){
+			this.notify_jr(this,'操作错误','起始题号必须小于结束题号','error');
+			return;
+		}
+		for(startNum;startNum <= endNum;startNum++){
+			var o = {
+				itemNo:startNum,
+	  		itemType:types,
+	  		itemScore:point,
+	  		itemAnswer:'',
+	  		itemAbility:[],
+				stepList:[
+					{
+						stepScore:'',
+						stepAnswer:'',
+						knowledgePointId:[],
+					}
+				],
+			}
+			this.two_way_D.push(o);
+		}
+		this.addsD = {};
+	},
 	ajaxData(){
 		var data = new Object();
 		data["pageSize"] = this.pageSize;
