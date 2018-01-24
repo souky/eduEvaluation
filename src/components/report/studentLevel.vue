@@ -57,7 +57,7 @@
 			<div class="body">
 				<el-table class="borders" :data="anothertableData" stripe style="width: 100%" header-row-class-name="table-header">
 					<el-table-column align="center" prop="score" label="原始分数"></el-table-column>
-					<el-table-column align="center" prop="scoschoolAvgScorere" label="平均分(校级)"></el-table-column>
+					<el-table-column align="center" prop="schoolAvgScore" label="平均分(校级)"></el-table-column>
 					<el-table-column align="center" prop="classTopScore" label="最高分(班级)"></el-table-column>
 					<el-table-column align="center" prop="schoolTopScore" label="最高分(校级)"></el-table-column>
 					<el-table-column align="center" prop="regionTopScore" label="最高分(地区级)"></el-table-column>
@@ -1391,19 +1391,19 @@ geReportCards:function(){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1551,19 +1551,19 @@ chooseSubject:function(e,num){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1605,19 +1605,19 @@ chooseSubject:function(e,num){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1659,19 +1659,19 @@ chooseSubject:function(e,num){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
