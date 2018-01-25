@@ -1285,6 +1285,15 @@ export default {
 						var num2=parseFloat(number2)/100;
 						var number3=parseInt((parseFloat(100)-parseFloat(res.result.targetVO.divideDifficult))*100)
 						var num3=parseFloat(number3)/100;
+						if(res.result.targetVO.easyNum==0){
+							num1=0;
+						}
+						if(res.result.targetVO.secondaryNum==0){
+							num2=0;
+						}
+						if(res.result.targetVO.difficultNum==0){
+							num3=0;
+						}
 						obj.optionMyGoal.series[0].data.push(num1)
 						obj.optionMyGoal.series[0].data.push(num2)
 						obj.optionMyGoal.series[0].data.push(num3)
