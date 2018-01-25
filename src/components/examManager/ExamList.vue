@@ -350,6 +350,7 @@ export default {
 	      label: 'knowledgeContent',
 	      value:'id'
 	  },
+		subjectMap:{},
 	  rules: {
           examName: [
             { required: true, message: '请输入考试名称', trigger: 'blur' }
@@ -392,6 +393,10 @@ export default {
 
   	this.postHttp(this,{},"school/querySchools",function(obj,res){
   		obj.subjectArray = res.result.subjectArray;
+			obj.postHttp(obj,{gradeCode:obj.grade,subjectCode:obj.subjectArray},'twowayspecification/queryTwoWaySpecificationsByCode',function(obj,res){
+				obj.subjectMap = res.result;
+		  });
+
   	});
   	this.postHttp(this,{},'getLoingGrade',function(obj,res){
   		obj.gradeOption = res.result;
@@ -639,19 +644,19 @@ export default {
 		]
 	},
 	subjectChange(val){
-		var checkboxArray = this.exam.subject;
 		var e;
 		var newArray = new Array();
-		for(e in checkboxArray){
+		for(e in val){
 			var s = new Object();
-			s['name'] = checkboxArray[e];
+			var names = val[e];
+			s['name'] = names;
 			s['spId'] = '';
-			//加入集合查询  影响效率
-			var data = {pageSize:0,pageNum:1,gradeCode:this.grade,subjectCode:checkboxArray[e]}
-			this.postHttp(this,data,'twowayspecification/queryTwoWaySpecifications',function(obj,res){
-		  		s['twList'] = res.result.list;
-					newArray.push(s);
-		  });
+			var es = this.subjectMap[names];
+			if(es == undefined){
+				es = new Array();
+			}
+			s['twList'] = es;
+			newArray.push(s);
 		}
 		this.subject = newArray;
 	},
