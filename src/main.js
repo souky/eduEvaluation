@@ -9,6 +9,10 @@ import '../static/css/main.css'
 import '../static/css/apps.css'
 import axios from 'axios'
 
+// 以下代码是嘉宁加得有锅找他 我不背  搞ie
+import promise from 'es6-promise';
+promise.polyfill();
+
 
 /* vue配置 */
 Vue.config.debug = process.env.NODE_ENV !== 'production'
@@ -18,8 +22,6 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
-/* IE */
-window.Promise = Promise
 
 /* axios配置 */
 axios.defaults.withCredentials = true
