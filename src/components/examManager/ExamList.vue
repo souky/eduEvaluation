@@ -641,19 +641,19 @@ export default {
 	subjectChange(val){
 		var checkboxArray = this.exam.subject;
 		var e;
-		this.subject = [];
+		var newArray = new Array();
 		for(e in checkboxArray){
 			var s = new Object();
 			s['name'] = checkboxArray[e];
 			s['spId'] = '';
 			//加入集合查询  影响效率
-			var data = {pageSize:0,pageNum:1,gradeCode:this.grade,subjectCode:s.name}
+			var data = {pageSize:0,pageNum:1,gradeCode:this.grade,subjectCode:checkboxArray[e]}
 			this.postHttp(this,data,'twowayspecification/queryTwoWaySpecifications',function(obj,res){
 		  		s['twList'] = res.result.list;
-					obj.subject.push(s);
+					newArray.push(s);
 		  });
-
 		}
+		this.subject = newArray;
 	},
 	add_two_way(val){
 		this.dialogVisible = true;

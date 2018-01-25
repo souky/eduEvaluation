@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '../static/css/main.css'
 import '../static/css/apps.css'
 import axios from 'axios'
+import promise from 'es6-promise';
 
 
 /* vue配置 */
@@ -19,7 +20,7 @@ Vue.use(VueRouter)
 Vue.use(ElementUI)
 
 /* IE */
-window.Promise = Promise
+promise.polyfill();
 
 /* axios配置 */
 axios.defaults.withCredentials = true
@@ -34,7 +35,7 @@ Vue.prototype.echarts = require('echarts');
 var querystring = require('querystring');
 
 var baseUrl = "http://192.168.1.213:8080/edu-system/"
-/* 
+/*
  * 封装ajax
  * obj : 全局this
  * data : ajax传入后台data数据
@@ -61,7 +62,7 @@ Vue.prototype.postHttp = function(obj,data,address,fn){
 	})
 }
 
-/* 
+/*
  * 封装提示
  * obj : 全局this
  * title : 标题
@@ -78,7 +79,7 @@ Vue.prototype.notify_jr = function(obj,title,message,type){
     });
 }
 
-/* 
+/*
  * 封装未登录提示
  * */
 Vue.prototype.notify_login = function(){
@@ -91,7 +92,7 @@ Vue.prototype.notify_login = function(){
     });
 }
 
-/* 
+/*
  * 封装操作成功提示
  * */
 Vue.prototype.notify_success = function(){
@@ -104,7 +105,7 @@ Vue.prototype.notify_success = function(){
     });
 }
 
-/* 
+/*
  * 封装loading提示
  * */
 Vue.prototype.loading = function(text){
@@ -122,7 +123,7 @@ Vue.prototype.getBaseUrl = function(){
 }
 
 
-/* 
+/*
  * 视频时间转化 毫秒转为时分
  * msec : 毫秒值
  * */
