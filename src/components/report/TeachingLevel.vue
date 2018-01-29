@@ -482,8 +482,7 @@ export default {
     	subReport:function(ename){
     		var needData = {tab:'TEACHING_REPORT'};
     		var names = ename;
-
-    	},
+		},
     	selectShow:function(){
     		this.showselect = !this.showselect
     	},
@@ -515,8 +514,7 @@ export default {
     	},
     	alertas:function(){
     		var selfs = this;
-
-    		if(this.diaLoading){
+			if(this.diaLoading){
     			setTimeout(function(){
 	    			selfs.diaLoading = false;
 					selfs.postHttp(selfs,{tab:'TEACHING_REPORT',examId:selfs.testid},"score/compareExamScores",function(objs,data){
@@ -526,8 +524,7 @@ export default {
 									objs.option5.xAxis[0].data=data.result.examNameList;
 									objs.echarts.init(document.getElementById("compareTestChart")).setOption(objs.option5);
 					});
-		    		
-	    		},1000);
+		    	},1000);
     		}
     		
     	},
