@@ -57,7 +57,7 @@
 			<div class="body">
 				<el-table class="borders" :data="anothertableData" stripe style="width: 100%" header-row-class-name="table-header">
 					<el-table-column align="center" prop="score" label="原始分数"></el-table-column>
-					<el-table-column align="center" prop="scoschoolAvgScorere" label="平均分(校级)"></el-table-column>
+					<el-table-column align="center" prop="schoolAvgScore" label="平均分(校级)"></el-table-column>
 					<el-table-column align="center" prop="classTopScore" label="最高分(班级)"></el-table-column>
 					<el-table-column align="center" prop="schoolTopScore" label="最高分(校级)"></el-table-column>
 					<el-table-column align="center" prop="regionTopScore" label="最高分(地区级)"></el-table-column>
@@ -1285,6 +1285,15 @@ export default {
 						var num2=parseFloat(number2)/100;
 						var number3=parseInt((parseFloat(100)-parseFloat(res.result.targetVO.divideDifficult))*100)
 						var num3=parseFloat(number3)/100;
+						if(res.result.targetVO.easyNum==0){
+							num1=0;
+						}
+						if(res.result.targetVO.secondaryNum==0){
+							num2=0;
+						}
+						if(res.result.targetVO.difficultNum==0){
+							num3=0;
+						}
 						obj.optionMyGoal.series[0].data.push(num1)
 						obj.optionMyGoal.series[0].data.push(num2)
 						obj.optionMyGoal.series[0].data.push(num3)
@@ -1391,19 +1400,19 @@ geReportCards:function(){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1551,19 +1560,19 @@ chooseSubject:function(e,num){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1605,19 +1614,19 @@ chooseSubject:function(e,num){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1659,19 +1668,19 @@ chooseSubject:function(e,num){
 					if(res.result.scoreVOList){
 						var num=0;
 						obj.anothertableData=[];
-						for(var i=0;i<res.result.scoreVOList.length;i++){
-							if(res.result.scoreVOList[i].subject==obj.basicData.subject){
-								num=i;
-							}
-						}
-						var arr={
-							"score":res.result.scoreVOList[num].score,
-							"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
-							"classTopScore":res.result.scoreVOList[num].classTopScore,
-							"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
-							"regionTopScore":res.result.scoreVOList[num].regionTopScore,
-						}
-						obj.anothertableData.push(arr);
+						// for(var i=0;i<res.result.scoreVOList.length;i++){
+						// 	if(res.result.scoreVOList[i].subject==obj.basicData.subject){
+						// 		num=i;
+						// 	}
+						// }
+						// var arr={
+						// 	"score":res.result.scoreVOList[num].score,
+						// 	"scoschoolAvgScorere":res.result.scoreVOList[num].schoolAvgScore,
+						// 	"classTopScore":res.result.scoreVOList[num].classTopScore,
+						// 	"schoolTopScore":res.result.scoreVOList[num].schoolTopScore,
+						// 	"regionTopScore":res.result.scoreVOList[num].regionTopScore,
+						// }
+						obj.anothertableData=res.result.scoreVOList;
 					}
 				}
 			}
@@ -1736,7 +1745,7 @@ twoDimensionalAnalysisChoose:function(e,obj){
 					}else{
 						var list1=[];
 						list1.push(res.result.listVO[i].difficulty);
-						list1.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+						list1.push(parseFloat(res.result.listVO[i].divideStudentToSchool));
 						list1.push(res.result.listVO[i].topic);
 						list1.push(parseFloat(res.result.listVO[i].fractionalValue));
 						list1.push(parseFloat(res.result.listVO[i].qid));
@@ -1760,7 +1769,7 @@ twoDimensionalAnalysisChoose:function(e,obj){
 					if(parseFloat(res.result.listVO[i].divideStudentToClass)>=0){
 						var list=[];
 						list.push(res.result.listVO[i].difficulty);
-						list.push(parseFloat(res.result.listVO[i].divideStudentToClass));
+						list.push(parseFloat(res.result.listVO[i].divideStudentToArea));
 						list.push(res.result.listVO[i].topic);
 						list.push(parseFloat(res.result.listVO[i].fractionalValue));
 						list.push(parseFloat(res.result.listVO[i].qid));
