@@ -76,10 +76,10 @@
 				</el-select>
 			  </el-form-item>
 			  <el-form-item label="地理位置" >
-			  	<el-input v-model="classroom.position" placeholder="地理位置"></el-input>
+			  	<el-input v-model="classroom.position" :maxlength="200" placeholder="地理位置"></el-input>
 			  </el-form-item>
 			  <el-form-item label="备注" >
-			  	<el-input v-model="classroom.remark" placeholder="备注"></el-input>
+			  	<el-input v-model="classroom.remark" :maxlength="200" placeholder="备注"></el-input>
 			  </el-form-item>
 			</el-form>
 		  </div>
