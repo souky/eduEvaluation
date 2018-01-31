@@ -34,7 +34,7 @@
 
 		<div class="user_info_table">
 			<div class="tools fix">
-				<div class="items_tools l" @click="addNew">
+				<div class="items_tools l" @click="addNew" v-if="userT.userType != 0">
 					<i class="el-icon-circle-plus-outline">新增</i>
 				</div>
 			</div>
@@ -115,16 +115,10 @@ export default {
       dialogVisible:false,
       diaTitle:'新增',
       user:{},
+			userT:{},
       showPsw:true,
+
       userTypeO:[
-      	{
-      		id:0,
-      		value:'超级管理员'
-      	},
-      	{
-      		id:1,
-      		value:'管理员'
-      	},
       	{
       		id:2,
       		value:'自定义用户'
@@ -166,11 +160,21 @@ export default {
   mounted:function(){
   	this.queryInfo();
   	this.postHttp(this,{pageNum:1,pageSize:0},'role/queryRoles',function(obj,res){
+			var list = res.result.list;
+			for(var i in list){
+				if(list[i].roleName == "管理员"){
+					list.splice(i,1);
+					break;
+				}
+			}
   		obj.roleOptions = res.result.list;
   	})
   	//权限处理
   	this.postHttp(this,{pageNum:1,pageSize:0},'role/queryRoles',function(obj,res){
   		obj.roleOptions = res.result.list;
+  	});
+		this.postHttp(this,{},'user/getLoginUser',function(o,res){
+  		o.userT = res.result;
   	})
   },
   methods:{

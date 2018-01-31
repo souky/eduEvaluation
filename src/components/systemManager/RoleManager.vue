@@ -24,7 +24,7 @@
 
 		<div class="role_info_table">
 			<div class="tools fix">
-				<div class="items_tools l" @click="addNew">
+				<div class="items_tools l" @click="addNew" v-if="user.userType != 0">
 					<i class="el-icon-circle-plus-outline" >新增</i>
 				</div>
 			</div>
@@ -88,7 +88,14 @@
 let id = 1000;
 export default {
   data () {
-
+		var validatename = (rule, value, callback) => {
+			var reg = /^[\u4E00-\u9FA5]+$/;
+			if(!reg.test(value)){
+	          callback(new Error('角色名称必须为中文'));
+	        }else{
+	        	callback();
+        }
+    };
     return {
       msg: 'userManager',
       tableData:[],
@@ -117,7 +124,7 @@ export default {
       role:{},
       rules: {
           roleName: [
-            { required: true, message: '请输入角色名称', trigger: 'blur' }
+            { required: true,validator:validatename, trigger: 'blur' }
           ],
       }
     }
@@ -193,17 +200,20 @@ export default {
   		if(id){
   			address = 'role/updateRole';
   		}
+			delete this.role.createDate;
+			delete this.role.updateDate;
+
   		this.$refs['role'].validate((valid) => {
           if (valid) {
           	this.postHttp(this,this.role,address,function(obj,res){
-	  			if(res.code == '10000'){
-	  				obj.dialogVisible = false;
-	  				obj.notify_success();
-	  				obj.queryInfo();
-	  			}else{
-	  				obj.notify_jr(obj,'操作错误',res.message,'error');
-	  			}
-	  		})
+			  			if(res.code == '10000'){
+			  				obj.dialogVisible = false;
+			  				obj.notify_success();
+			  				obj.queryInfo();
+			  			}else{
+			  				obj.notify_jr(obj,'操作错误',res.message,'error');
+			  			}
+			  		})
           } else {
             return false;
           }

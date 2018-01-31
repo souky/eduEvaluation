@@ -146,7 +146,14 @@
 <script>
 export default {
   data () {
-
+		var validatename = (rule, value, callback) => {
+			var reg = /^[\u4E00-\u9FA5]+$/;
+			if(!reg.test(value)){
+	          callback(new Error('请输入中文字符'));
+	        }else{
+	        	callback();
+        }
+    };
     return {
 	  msg: 'studentInfo',
 	  tableData:[],
@@ -184,7 +191,7 @@ export default {
 
 	  rules: {
           studentName: [
-            { required: true, message: '请输入学生名字', trigger: 'blur' }
+            { required: true, validator:validatename, trigger: 'blur' }
           ],
           grade: [
             { required: true, message: '请选择年级', trigger: 'change' }
@@ -196,7 +203,7 @@ export default {
             { required: true, message: '请选择班级', trigger: 'change' }
           ],
           studentNo:[
-            { required: true, message: '请输入学号', trigger: 'blur' }
+            { required: true, message: '请输入正确学号', trigger: 'blur' }
           ],
 
      },

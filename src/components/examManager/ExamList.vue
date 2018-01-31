@@ -145,7 +145,7 @@
 							  		<el-input v-model="ee.examStuNo" placeholder="考号"></el-input>
 							  	</el-col>
 							  	<el-col :span="2">
-							  		<el-switch v-model="ee.status"  inactive-value="1" active-value="0" active-color="#FFD100" inactive-color="#9e9e9e"></el-switch>
+							  		<el-switch v-model="ee.status"  :inactive-value="1" :active-value="0" active-color="#FFD100" inactive-color="#9e9e9e"></el-switch>
 							  	</el-col>
 							  	<el-col :span="6"></el-col>
 							</el-row>
@@ -665,6 +665,8 @@ export default {
 			  			}
 			  		}
 			  		obj.student = s;
+						console.log(s);
+
 			  });
 			})
 		},

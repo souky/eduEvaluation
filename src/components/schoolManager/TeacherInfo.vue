@@ -159,14 +159,14 @@
 <script>
 export default {
   data () {
-	var validatePhone = (rule, value, callback) => {
-		var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
-		if(!reg.test(value)){
-          callback(new Error('电话格式不正确'));
-        }else if(value.length != 11){
-          callback(new Error('电话格式不正确'));
-        }else{
-        	callback();
+		var validatePhone = (rule, value, callback) => {
+			var reg = /^1[3|4|5|8|9|7|6][0-9]\d{3,11}$/;
+			if(!reg.test(value)){
+	          callback(new Error('电话格式不正确'));
+	        }else if(value.length != 11){
+	          callback(new Error('电话格式不正确'));
+	        }else{
+	        	callback();
         }
     };
     return {

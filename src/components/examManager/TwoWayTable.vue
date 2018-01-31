@@ -86,7 +86,7 @@
 								<el-row v-for="(e,index) in props.row.stepList" :key="index" style="border-bottom:1px #e6e6e6 solid;">
 									<el-col :span="2">{{(index+1)}}</el-col>
 									<el-col :span="2">{{e.stepScore}}</el-col>
-									<el-col :span="15" style="text-align:left;">{{e.stepAnswer}}</el-col>
+									<el-col :span="15" :title="e.stepAnswer" class="ell" style="text-align:left;">{{e.stepAnswer}}</el-col>
 									<el-col :span="5">{{e.knowledgePointName}}</el-col>
 								</el-row>
 							</template>
