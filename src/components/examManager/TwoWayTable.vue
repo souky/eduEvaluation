@@ -258,7 +258,6 @@
 </template>
 
 <script>
-import TwoWay from '../../assets/examManager/TwoWay'
 export default {
   data () {
 

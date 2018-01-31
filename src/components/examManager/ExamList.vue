@@ -544,11 +544,13 @@ export default {
 		  			}else{
 		  				classroom += ','+s[i].classroomName;
 		  			}
-		  			for(var j = 0;j<ss.length;j++){
-		  				if(ss[j]['checked']){
-		  					examStudent.push(ss[j]);
-		  				}
-		  			}
+						if(ss){
+							for(var j = 0;j<ss.length;j++){
+			  				if(ss[j]['checked']){
+			  					examStudent.push(ss[j]);
+			  				}
+			  			}
+						}
 		  		}
 					if(examStudent.length <= 0){
 						this.notify_jr(this,'错误','未绑定学生信息','error');
@@ -636,15 +638,34 @@ export default {
 					obj.subject = newArray;
 			  });
 
+				var arrayS = new Array();
+
 				for(var i in mapStu){
 					var list = mapStu[i].list;
 					for(var j in list){
-						list[j]['checked'] = true;
+						arrayS.push(list[j]);
 					}
 				}
-				obj.student = mapStu;
-				console.log(mapStu);
 
+				obj.postHttp(obj,{grade:obj.grade},'student/queryStudentsWithoutPage',function(obj,res){
+			  		var s = res.result;
+			  		for(var i = 0;i<s.length;i++){
+			  			var ss = s[i].list;
+			  			for(var j = 0;j<ss.length;j++){
+								ss[j]['checked'] = false;
+								ss[j]['examStuNo'] = ss[j]['studentNo'];
+								ss[j]['studentId'] = ss[j]['id'];
+								for(var x in arrayS){
+									if(arrayS[x].studentId == ss[j].id){
+										arrayS[x].checked = true;
+										ss[j] = arrayS[x];
+										console.log(arrayS[x]);
+									}
+								}
+			  			}
+			  		}
+			  		obj.student = s;
+			  });
 			})
 		},
 		deleteInfo(id){

@@ -157,7 +157,6 @@
 </template>
 
 <script>
-import TeacherInfo from '../../assets/schoolManagerData/TeacherInfo'
 export default {
   data () {
 	var validatePhone = (rule, value, callback) => {

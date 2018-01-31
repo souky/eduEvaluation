@@ -93,7 +93,6 @@
 </template>
 
 <script>
-import ClassInfo from '../../assets/schoolManagerData/ClassInfo'
 export default {
   data () {
 	var validateClass = (rule, value, callback) => {
