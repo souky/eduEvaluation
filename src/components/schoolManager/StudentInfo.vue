@@ -312,6 +312,7 @@ export default {
 			this.showAddAll = true;
 			if(document.getElementById("fileUpload") != undefined){
 				document.getElementById("fileUpload").value = '';
+				document.getElementById("fileUploadRead").innerHTML = '点击这里上传文件';
 			}
 		},
 		submitUpload(){

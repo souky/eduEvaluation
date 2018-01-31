@@ -149,7 +149,7 @@ export default {
 		this.$refs['formName'].validate((valid) => {
       if (valid) {
 				this.postHttp(this,data,'subjectablity/saveSubjectAblity',function(obj,res){
-					if(res.code = '10000'){
+					if(res.code == '10000'){
 						obj.notify_success();
 						obj.dialogVisible = false;
 					}else{
