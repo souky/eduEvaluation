@@ -315,14 +315,7 @@ export default {
 		           objs.mycontribution = data.result.summaryVO.contribution;
 	    		}
 	        });
-
-
-
-
-
-
-
-	        });
+			});
     		this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
     			if(data.result == undefined){
     				var data1 = [0,0,0,0,0]

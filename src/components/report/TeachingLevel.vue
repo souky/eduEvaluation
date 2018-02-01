@@ -637,6 +637,7 @@ export default {
 		    	   		for(var a of objs.classroom){
 		    	   			xAxisD.push(0)
 		    	   		}
+		    	   		objs.classesLevelDistri = '';
 		    	   		objs.option6.series[0].data = xAxisD;
 		    	   		objs.option6.series[1].data = xAxisD;
 		    	   		objs.option6.series[2].data = xAxisD;
@@ -655,6 +656,7 @@ export default {
 		    	   			failureRates.push(objs.initPrate(a.failureRate));
 		    	   			xDaras.push(a.classroomName);
 						}
+						objs.classesLevelDistri = data.result.summaryVO.classesLevelDistri;
 						objs.option6.xAxis.data = xDaras;
 						objs.option6.series[0].data = highRates;
 		    	   		objs.option6.series[1].data = excellentRates;
