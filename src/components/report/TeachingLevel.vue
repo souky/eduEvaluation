@@ -166,7 +166,7 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="achievement">
-		  	<p style="text-align:center;font-size:14px">本次试卷整体难度为：{{diffcultCount}}，整体区分度为{{diffcultCount}}</p>
+		  	<p style="text-align:center;font-size:14px">本次试卷整体难度为：{{diffcultCount}}，整体区分度为：{{diffcultCount}}</p>
 			<p style="font-size:14px;margin-bottom:30px">注释：<br>
 D值为0.4以上表明区分度优秀； D值为0.3~0.39表明区分度合格；D值为0.2~0.29表明区分度尚可，需要改进；D值在0.19以下表明区分度劣，必须淘汰或改进以提高区分度。</p>
 		  	<div id="achievementTable">
