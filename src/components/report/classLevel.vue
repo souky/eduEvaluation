@@ -639,7 +639,9 @@ export default{
 				    ],
 				    yAxis : [
 				    {
-				    	type : 'value'
+				    	type : 'value',
+				    	show: true,
+				    	name:'标准分',
 				    }
 				    ],
 				    series : [

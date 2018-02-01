@@ -15,15 +15,25 @@
 			</el-carousel>
 		</div>
 		<div id="knowledgeContent" class="mt20">
-			<div class="header">
-				<p>知识点</p>
-				<div class="header-title-foot"></div>
-			</div>
-			<div class="body mt20">
-				<el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-			</div>
+			<div class="grade">
+				<el-select v-model="value" @change="changeGrade" :placeholder="firstNum">
+					<el-option
+					v-for="item in options"
+					:key="item.value"
+					:label="item.label"
+					:value="item.value">
+				</el-option>
+			</el-select>
+		</div>
+		<div class="header">
+			<p>知识点</p>
+			<div class="header-title-foot"></div>
+		</div>
+		<div class="body mt20">
+			<el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -39,6 +49,9 @@ export default {
 			subjects:[],
 			items:[],
 			queryName:'',
+			options:[],
+			value:'',
+			firstNum:'',
 		}
 	},
 	created:function(){
@@ -75,11 +88,28 @@ export default {
 				}
 				obj.subjects=childs;
 				obj.$emit('refreshbizlines','other');
-				obj.loadKonwP();
+				obj.postHttp(obj,{},'/getLoingGrade',function(objS,resS){
+					for(var q=0;q<resS.result.length;q++){
+						var list={
+							"value":resS.result[q],
+							"label":resS.result[q],
+						}
+						objS.options.push(list);
+					}
+					objS.firstNum=resS.result[0];
+					objS.value=resS.result[0];
+					objS.loadKonwP();
+				});
 			});
 		},
 		loadKonwP(){
-			this.postHttp(this,{subjectName:this.queryName},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+			this.postHttp(this,{subjectName:this.queryName,gradeCode:this.firstNum},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+				obj.data = res.result;
+			});
+		},
+		changeGrade(value){
+			this.firstNum=value;
+			this.postHttp(this,{subjectName:this.queryName,gradeCode:value},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 				obj.data = res.result;
 			});
 		},
@@ -93,7 +123,7 @@ export default {
 			for(var a = 0;a<oNav.length;a++){
 				oNav[a].className = '';
 			}
-			this.postHttp(this,{subjectName:num},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
+			this.postHttp(this,{subjectName:num,gradeCode:this.firstNum},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 				obj.data = res.result;
 			});
 		},
@@ -165,5 +195,10 @@ export default {
 	background: #44A9FF;
 	margin: auto;
 	margin-top:5px;
+}
+#knowledgeContent .grade{
+	width: 200px;
+	margin: auto;
+	margin-bottom: 20px;
 }
 </style>
