@@ -276,6 +276,52 @@ export default {
 	           		obj.classroom = data.result.exams[e].classroom.split(",");
 	           		obj.classList = data.result.exams[e].subject.split(",");
 	           		obj.changeSchool = obj.classList[0];
+	           		obj.postHttp(obj,{tab:'SCHOOL_REPORT',examId:obj.testList[e].id,subject:obj.changeSchool},"score/geReportCards",function(objs,data){
+	    		if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
+					objs.tableData1 = [];
+		           objs.tableData2 = [];
+		           objs.option2.xAxis[0].data = objs.classroom;
+		           objs.option2.series[0].data = [];
+		           objs.option4.series[0].data = [];
+		           for(var a of objs.classroom){
+		           		objs.option2.series[0].data.push(0);
+		           		objs.option4.series[0].data.push(0);
+		           }
+		           objs.mycontribution = '';
+		           objs.subjAvgComparation ='';
+		           objs.option2.series[0].markLine.data[0].yAxis = 0;
+		           objs.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
+		           objs.tableData3 = [];
+		           objs.option4.xAxis[0].data = obj.classroom;
+		           objs.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
+				}else{
+	    		   objs.tableData1 = data.result.scoreVOList;
+		           objs.tableData2 = data.result.classScoreVOList;
+		           objs.option2.series[0].data = data.result.avgList;
+		           objs.option2.series[0].data[0] = {value:data.result.avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
+				   objs.option2.xAxis[0].data = data.result.classList;
+				   objs.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgTotalScore;
+		           objs.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
+		           objs.setmans = data.result.studentNum;
+		           objs.tableData3 = data.result.classSubScoreList;
+		           var comtribution = [];
+		           for(var a of data.result.classSubScoreList){
+		           		comtribution.push(a.contribution);
+		           }
+		           objs.option4.series[0].data = comtribution;
+		           objs.option4.xAxis[0].data = data.result.classList;
+		           objs.echarts.init(document.getElementById("achievementChart")).setOption(objs.option4);
+		           objs.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
+		           objs.mycontribution = data.result.summaryVO.contribution;
+	    		}
+	        });
+
+
+
+
+
+
+
 	        });
     		this.postHttp(this,needData,"score/getLevelDistribution",function(obj,data){
     			if(data.result == undefined){
@@ -329,45 +375,6 @@ export default {
 		           obj.option3.series[4].data = data200;obj.option3.series[5].data = data500;
 		           obj.option3.series[6].data = data1000;
 		           obj.echarts.init(document.getElementById("topComparedChart")).setOption(obj.option3);
-	        });
-	    	this.postHttp(this,{tab:'SCHOOL_REPORT',examId:this.testList[e].id,subject:this.changeSchool},"score/geReportCards",function(obj,data){
-	    		if(data.result =="该考试尚未制定双向细目表"||data.code=='20000'){
-					obj.tableData1 = [];
-		           obj.tableData2 = [];
-		           obj.option2.xAxis[0].data = obj.classroom;
-		           obj.option2.series[0].data = [];
-		           obj.option4.series[0].data = [];
-		           for(var a of obj.classroom){
-		           		obj.option2.series[0].data.push(0);
-		           		obj.option4.series[0].data.push(0);
-		           }
-		           obj.mycontribution = '';
-		           obj.subjAvgComparation ='';
-		           obj.option2.series[0].markLine.data[0].yAxis = 0;
-		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
-		           obj.tableData3 = [];
-		           obj.option4.xAxis[0].data = obj.classroom;
-		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
-				}else{
-	    		   obj.tableData1 = data.result.scoreVOList;
-		           obj.tableData2 = data.result.classScoreVOList;
-		           obj.option2.series[0].data = data.result.avgList;
-		           obj.option2.series[0].data[0] = {value:data.result.avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
-				   obj.option2.xAxis[0].data = data.result.classList;
-				   obj.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgTotalScore;
-		           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
-		           obj.setmans = data.result.studentNum;
-		           obj.tableData3 = data.result.classSubScoreList;
-		           var comtribution = [];
-		           for(var a of data.result.classSubScoreList){
-		           		comtribution.push(a.contribution);
-		           }
-		           obj.option4.series[0].data = comtribution;
-		           obj.option4.xAxis[0].data = data.result.classList;
-		           obj.echarts.init(document.getElementById("achievementChart")).setOption(obj.option4);
-		           obj.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
-		           obj.mycontribution = data.result.summaryVO.contribution;
-	    		}
 	        });
 			this.postHttp(this,needData,"score/getEachClassLevelDistribution",function(obj,data){
 				var xAxisD = [];var highRates;var excellentRates;

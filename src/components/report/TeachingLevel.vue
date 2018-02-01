@@ -252,6 +252,7 @@ export default {
 				id:3
 			}],
 			subname:'',
+			subs:'',
 			autoplay:false,
 			alse:'二中',
 			IndexData,
@@ -330,6 +331,7 @@ export default {
 	    		obj.indes = 0;
 	    		obj.items = data.result[ids].subject;
 	    		obj.subname = data.result[ids].subject[0].subjectName;
+	    		obj.subs = data.result[ids].subject[0].subjectName;
 	    		var childNum=Math.ceil(obj.items.length/11);
 				    var childs=[];
 				    for(var l=0;l<childNum;l++){
@@ -514,18 +516,18 @@ export default {
     	},
     	alertas:function(){
     		var selfs = this;
-			if(this.diaLoading){
-    			setTimeout(function(){
-	    			selfs.diaLoading = false;
-					selfs.postHttp(selfs,{tab:'TEACHING_REPORT',examId:selfs.testid},"score/compareExamScores",function(objs,data){
+    		var subjectst = this.subs;
+			setTimeout(function(){
+	    		selfs.diaLoading = false;
+				selfs.postHttp(selfs,{tab:'TEACHING_REPORT',examId:selfs.testid,subject:subjectst},"score/compareExamScores",function(objs,data){
 					    			objs.option5.series[0].data = [];
 									objs.option5.series[0].data=data.result.scoreAvgList;
 									objs.option5.xAxis[0].data = [];
 									objs.option5.xAxis[0].data=data.result.examNameList;
 									objs.echarts.init(document.getElementById("compareTestChart")).setOption(objs.option5);
 					});
-		    	},1000);
-    		}
+		    },1000);
+    		
     		
     	},
     	dialogClose:function(){
@@ -535,6 +537,7 @@ export default {
     	},
     	rainbow:function(index,num,name){
 			this.indes = index;
+			this.subs = name;
 			var needDataR = {tab:'TEACHING_REPORT',examId:this.testid,subject:name};
 			this.postHttp(this,needDataR,"score/geReportCards",function(objs,data){
 					objs.tableData1 = [];objs.tableData2 = [];
@@ -543,6 +546,8 @@ export default {
 						objs.tableData1 = [];objs.tableData2 = [];
 						objs.option2.xAxis[0].data = objs.classroom;
 		           		objs.option2.series[0].data = [];
+		           		objs.subjAvgComparation ='';
+					    objs.eachClassSubjScore = '';
 		           		objs.option2.series[0].markLine.data[0].yAxis = 0;
 		           		for(var a of obj.classroom){
 			           		objs.option2.series[0].data.push(0);
@@ -550,6 +555,8 @@ export default {
 			           }
 			           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 					}else{
+						objs.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
+						objs.eachClassSubjScore = data.result.summaryVO.eachClassSubjScore;
 						objs.tableData1.push(data.result.scoreVO);
 						objs.setmans = data.result.studentNum;
 					   	objs.tableData2 = data.result.classScoreVOList;
@@ -579,7 +586,7 @@ export default {
 			    	   		}
 					   objs.option1.series[0].data = data1;
 			           objs.echarts.init(document.getElementById("rankedchart")).setOption(objs.option1);
-			        });
+			        }); 
 			this.postHttp(this,{subject:name,examId:this.testid},"/testAnalysis",function(objs,data){
 					   objs.examination = [];
 			           objs.examination = data.result.listVO;
