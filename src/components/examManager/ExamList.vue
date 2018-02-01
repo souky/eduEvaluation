@@ -539,17 +539,21 @@ export default {
 		  		var examStudent = new Array();
 		  		for(var i = 0;i<s.length;i++){
 		  			var ss = s[i].list;
-		  			if(i == 0){
-		  				classroom += s[i].classroomName;
-		  			}else{
-		  				classroom += ','+s[i].classroomName;
-		  			}
+						var count = 0;
 						if(ss){
 							for(var j = 0;j<ss.length;j++){
 			  				if(ss[j]['checked']){
+									count = 1;
 			  					examStudent.push(ss[j]);
 			  				}
 			  			}
+						}
+						if(count == 1){
+							if(classroom == ''){
+								classroom += s[i].classroomName;
+							}else{
+								classroom += ','+s[i].classroomName;
+							}
 						}
 		  		}
 					if(examStudent.length <= 0){
