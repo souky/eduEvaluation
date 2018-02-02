@@ -536,6 +536,7 @@ export default {
 	add_two_way(){
 		this.dialogVisible = true;
 		this.TwoWaySpecification = {};
+		this.addsD = {};
 		this.two_way_D = [{
 			itemNo:'',
 	  		itemType:'0',

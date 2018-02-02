@@ -191,6 +191,7 @@
 				      <el-table-column prop="studentName" align="center" label="考生姓名"></el-table-column>
 				      <el-table-column prop="examStuNo" align="center" label="考试考号"></el-table-column>
 							<el-table-column prop="studentNo" align="center" label="考试学号"></el-table-column>
+							<el-table-column prop="status" :formatter="stuStatusFormatter" align="center" label="考生状态"></el-table-column>
 			    </el-table>
 				</el-collapse-item>
 			</el-collapse>
@@ -740,6 +741,15 @@ export default {
 		  		case 2:
 		  		return '已结束';
 		  	}
+		},
+		stuStatusFormatter(row, column, cellValue){
+			var status = row[column.property];
+	  	switch(status){
+	  		case 0:
+	  		return '缺考';
+	  		case 1:
+	  		return '正常';
+	  	}
 		},
 		show_add(){
 			this.showTable = false;
