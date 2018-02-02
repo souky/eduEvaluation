@@ -1031,7 +1031,7 @@ export default {
 #examList .el-checkbox-group{padding:0px 20px;}
 #examList .el-checkbox.is-bordered.is-checked{border-color:#FFD100}
 #examList .el-col{
-	height: 40px;
+		min-height: 40px;
     line-height: 40px;
     text-align: center;
     margin-bottom:2px;
