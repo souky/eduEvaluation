@@ -160,28 +160,28 @@
 		<el-dialog title="考试详情" :visible.sync="dialogInfo" width="50%">
 			<div class="diaTitle">考试信息</div>
 			<el-row>
-			  <el-col :span="2" class="tl">考试名称:</el-col>
-				<el-col :span="10" class="tl">{{examInfoShow.exam.examName}}</el-col>
-				<el-col :span="2" class="tl">考试科目:</el-col>
-			 	<el-col :span="10" class="tl">{{examInfoShow.exam.subject}}</el-col>
+			  <el-col :span="3" class="tl">考试名称:</el-col>
+				<el-col :span="9" class="tl">{{examInfoShow.exam.examName}}</el-col>
+				<el-col :span="3" class="tl">考试科目:</el-col>
+			 	<el-col :span="9" class="tl">{{examInfoShow.exam.subject}}</el-col>
 			</el-row>
 			<el-row>
-			  <el-col :span="2" class="tl">开始时间:</el-col>
-				<el-col :span="10" class="tl">{{examInfoShow.exam.examStartDate}}</el-col>
-				<el-col :span="2" class="tl">结束时间:</el-col>
-			 	<el-col :span="10" class="tl">{{examInfoShow.exam.examEndDate}}</el-col>
+			  <el-col :span="3" class="tl">开始时间:</el-col>
+				<el-col :span="9" class="tl">{{examInfoShow.exam.examStartDate}}</el-col>
+				<el-col :span="3" class="tl">结束时间:</el-col>
+			 	<el-col :span="9" class="tl">{{examInfoShow.exam.examEndDate}}</el-col>
 			</el-row>
 			<el-row>
-			  <el-col :span="2" class="tl">考试班级:</el-col>
-				<el-col :span="10" class="tl">{{examInfoShow.exam.classroom}}</el-col>
-				<el-col :span="2" class="tl">考试状态:</el-col>
-			 	<el-col :span="10" class="tl">{{examInfoShow.exam.examStatus}}</el-col>
+			  <el-col :span="3" class="tl">考试班级:</el-col>
+				<el-col :span="9" class="tl">{{examInfoShow.exam.classroom}}</el-col>
+				<el-col :span="3" class="tl">考试状态:</el-col>
+			 	<el-col :span="9" class="tl">{{examInfoShow.exam.examStatus}}</el-col>
 			</el-row>
 			<div class="diaTitle">双向细目表信息</div>
 			<el-row >
 				<div v-for="e in examInfoShow.examSpBySubjectList" :key="e.id">
-					<el-col :span="2">{{e.subjectCode}}:</el-col>
-					<el-col :span="10" class="tl">{{e.spName}}</el-col>
+					<el-col :span="3">{{e.subjectCode}}:</el-col>
+					<el-col :span="9" class="tl">{{e.spName}}</el-col>
 				</div>
 			</el-row>
 			<div class="diaTitle">考生信息</div>
