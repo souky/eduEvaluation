@@ -34,7 +34,11 @@ Vue.prototype.echarts = require('echarts');
 
 var querystring = require('querystring');
 
-var baseUrl = "http://192.168.1.213:8080/edu-system/"
+var baseUrl = "http://localhost:8080/edu-system/";
+
+// 阅卷系统地址
+Vue.prototype.outsiteUrl = 'http://fe27sy.natappfree.cc/codeMsgLogin?';
+
 /*
  * 封装ajax
  * obj : 全局this

@@ -40,11 +40,21 @@
 			      <el-table-column prop="examEndDate" :formatter="timeFormatter" align="center"  label="结束时间"></el-table-column>
 			      <el-table-column prop="subject" align="center"  label="科目"></el-table-column>
 			      <el-table-column prop="examStatus" :formatter="statusFormatter" align="center"  label="考试状态"></el-table-column>
-			      <el-table-column align="center" label="操作" width='300'>
+			      <el-table-column align="center" label="操作" width='370'>
 			      	<template slot-scope="scope">
 								<el-button type="primary" icon="el-icon-search" @click="showInfo(scope.row.id)">查看</el-button>
 			      		<el-button type="primary" icon="el-icon-edit" @click="editInfo(scope.row.id)">编辑</el-button>
 			      		<el-button type="primary" icon="el-icon-delete" @click="deleteInfo(scope.row.id)">删除</el-button>
+								<el-dropdown trigger="click" @command="handleCommand">
+								  <el-button type="primary">
+								    更多<i class="el-icon-arrow-down el-icon--right"></i>
+								  </el-button>
+								  <el-dropdown-menu slot="dropdown">
+								    <el-dropdown-item :command="scope.row.id+'/1'">同步信息</el-dropdown-item>
+								    <el-dropdown-item :command="scope.row.id+'/2'">考务管理</el-dropdown-item>
+								    <el-dropdown-item :command="scope.row.id+'/3'">教师阅卷</el-dropdown-item>
+								  </el-dropdown-menu>
+								</el-dropdown>
 			      	</template>
 			      </el-table-column>
 		    </el-table>
@@ -921,6 +931,36 @@ export default {
 				e.stepList.splice(index, 1)
 			}
 		},
+		handleCommand(command) {
+        var s = command.split("/");
+				if(s != undefined && s.length == 2){
+					var examId = s[0];
+					var comm = s[1];
+					if(comm == '1'){
+						var loading = this.loading('正在同步...');
+						this.postHttp(this,{examId:examId},"skip/synchronizationMsg",function(obj,res){
+							loading.close();
+							if(res.code == "10000"){
+								obj.notify_success();
+							}else{
+								obj.notify_jr(obj,'操作错误',res.message,'error');
+							}
+						})
+					}else if(comm == '2' || comm == '3'){
+						var type = '';
+						if(comm == '2'){type = 'kaowu';}
+						if(comm == '3'){type = 'yuejuan';}
+						this.postHttp(this,{},"",function(obj,res){
+							var codeMsg = "";
+							if(res.code == "10000"){
+								codeMsg = res.result;
+							}
+							var sUrl = obj.outsiteUrl+"codeMsg="+codeMsg+"&type="+type+"&examId="+examId;
+							window.open(sUrl);
+						})
+					}
+				}
+    },
 		formatDate(){
 			var data = JSON.parse(JSON.stringify(this.two_way_D));
 			var dataArray = new Array();
@@ -1090,4 +1130,5 @@ export default {
 	padding-left: 10px;
 	border-bottom: 1px #c7c7c7 solid;
 }
+.el-dropdown{margin-left: 10px}
 </style>
