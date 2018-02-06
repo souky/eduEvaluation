@@ -37,7 +37,7 @@ var querystring = require('querystring');
 var baseUrl = "http://localhost:8080/edu-system/";
 
 // 阅卷系统地址
-Vue.prototype.outsiteUrl = 'http://fe27sy.natappfree.cc/codeMsgLogin?';
+Vue.prototype.outsiteUrl = 'http://rr22ex.natappfree.cc/codeMsgLogin?';
 
 /*
  * 封装ajax
