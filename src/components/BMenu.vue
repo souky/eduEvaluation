@@ -26,9 +26,13 @@ export default {
     }
   },
   mounted:function(){
-  	this.postHttp(this,{},"getMenu",function(o,res){
-  		o.menuData = res.result;
-  	})
+		var path = this.$route.path.replace('/', '');
+		if(path != 'login'){
+			this.postHttp(this,{},"getMenu",function(o,res){
+	  		o.menuData = res.result;
+	  	})
+		}
+
   },
   watch: {
     '$route': 'fetchData'

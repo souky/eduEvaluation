@@ -24,7 +24,7 @@
 			金阳测评系统
 		</div>
 	</div>
-	
+
 </template>
 
 <script>
@@ -41,9 +41,12 @@ export default {
   },
   mounted:function(){
   	//判断cookie登陆信息初始化
-  	this.postHttp(this,{},'user/getLoginUser',function(o,res){
-  		o.user = res.result;
-  	})
+		var path = this.$route.path.replace('/', '');
+		if(path != 'login'){
+			this.postHttp(this,{},'user/getLoginUser',function(o,res){
+	  		o.user = res.result;
+	  	})
+		}
   },
   methods:{
 	logout(){

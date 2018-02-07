@@ -521,15 +521,18 @@ export default {
 				obj.dialogVisible = false;
 				obj.notify_success();
 				loading.close();
-				obj.postHttp(obj,{pageNum:1,pageSize:0},'twowayspecification/queryTwoWaySpecifications',function(obj,res){
-			  		var s = res.result.list;
-						if(s != undefined){
-							for(var i = 0;i<s.length;i++){
-				  			s[i]['spId'] = s[i]['id'];
-				  		}
+				var subArray = new Array();
+				subArray.push(obj.TwoWaySpecification.subjectCode)
+				obj.postHttp(obj,{gradeCode:obj.grade,subjectCode:subArray},'twowayspecification/queryTwoWaySpecificationsByCode',function(obj,res){
+					var oldArray = obj.subject;
+					var map = res.result;
+					var subStr = subArray[0]
+					for(var e in oldArray){
+						if(oldArray[e].name == subStr){
+							oldArray[e].twList = map[subStr];
 						}
-			  		obj.twList = res.result.list;
-			  	});
+					}
+			  });
 			}else{
 				loading.close();
 				obj.notify_jr(obj,'操作错误',res.message,'error');
@@ -814,12 +817,20 @@ export default {
 		},
 		subjectChange(val){
 			var e;
+			var oldArray = this.subject;
 			var newArray = new Array();
 			for(e in val){
+				var spOld = '';
+				for(var s in oldArray){
+					if(oldArray[s].name == val[e]){
+						spOld = oldArray[s].spId;
+						break;
+					}
+				}
 				var s = new Object();
 				var names = val[e];
 				s['name'] = names;
-				s['spId'] = '';
+				s['spId'] = spOld;
 				var es = this.subjectMap[names];
 				if(es == undefined){
 					es = new Array();
@@ -950,7 +961,7 @@ export default {
 						var type = '';
 						if(comm == '2'){type = 'kaowu';}
 						if(comm == '3'){type = 'yuejuan';}
-						this.postHttp(this,{},"",function(obj,res){
+						this.postHttp(this,{},"buttInterface/codeMsg",function(obj,res){
 							var codeMsg = "";
 							if(res.code == "10000"){
 								codeMsg = res.result;
