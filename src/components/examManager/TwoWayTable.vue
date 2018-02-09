@@ -404,11 +404,21 @@ export default {
 				}
 				list[i].itemAbility = arrays;
 				if(list[i].itemType == 0){
-					list[i].knowledgeId = list[i].knowledgeId.split(",");
+					if(list[i].knowledgeId){
+						list[i].knowledgeId = list[i].knowledgeId.split(",");
+					}else{
+						list[i].knowledgeId = [];
+					}
 				}else{
 					var lists = list[i].stepList;
-					for(var x = 0;x < lists.length;x++){
-						lists[x].knowledgePointId = lists[x].knowledgePointId.split(",");
+					if(lists){
+						for(var x = 0;x < lists.length;x++){
+							if(lists[x].knowledgePointId){
+								lists[x].knowledgePointId = lists[x].knowledgePointId.split(",");
+							}else{
+								lists[x].knowledgePointId = [];
+							}
+						}
 					}
 				}
 				list[i].itemType += '';
