@@ -618,6 +618,12 @@ export default {
 			  		case 2:
 						examString = '已结束'
 			  		break;
+						case 3:
+						examString = '正在阅卷'
+			  		break;
+						case 4:
+						examString = '阅卷结束'
+			  		break;
 			  	}
 					exam.examStatus = examString;
 				}
@@ -753,6 +759,10 @@ export default {
 		  		return '正在进行';
 		  		case 2:
 		  		return '已结束';
+					case 3:
+		  		return '正在阅卷';
+					case 4:
+		  		return '阅卷结束';
 		  	}
 		},
 		stuStatusFormatter(row, column, cellValue){
@@ -961,7 +971,7 @@ export default {
 						var type = '';
 						if(comm == '2'){type = 'kaowu';}
 						if(comm == '3'){type = 'yuejuan';}
-						this.postHttp(this,{},"buttInterface/codeMsg",function(obj,res){
+						this.postHttp(this,{},"skip/codeMsg",function(obj,res){
 							var codeMsg = "";
 							if(res.code == "10000"){
 								codeMsg = res.result;
