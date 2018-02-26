@@ -28,7 +28,7 @@
 			</el-carousel>
 		</div>
 		<div class="achievementSelectBox">
-			<el-select v-model="changeSchool" class="myselect" @change="changeClassName" :placeholder="schoolList[0].classroomName">
+			<el-select v-model="changeSchool2" class="myselect" @change="changeClassName" :placeholder="schoolList[0].classroomName">
 				<el-option v-for="item in schoolList" :key="item.id" :label="item.classroomName" :value="item.id"></el-option>
 			</el-select>
 		</div>
@@ -491,6 +491,7 @@ export default{
 			}],
 			changeSchool:'',
 			changeSchoolS:'',
+			changeSchool2:'',
 			schoolList:[{
 				id:'001',
 				name:'1班'
@@ -1203,6 +1204,7 @@ export default{
 							obj.testList=res.result.exams;
 							obj.items=res.result[name].subject;
 							obj.schoolList=res.result[name].classroom;
+							obj.changeSchool2=obj.schoolList[0].classroomName;
 							obj.schoolList1=res.result[name].classroom;
 							obj.schoolList2=res.result[name].classroom;
 							obj.basicData.class=res.result[name].classroom[0].id;

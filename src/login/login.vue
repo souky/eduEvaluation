@@ -138,9 +138,6 @@ export default {
 #login .el-form-item{
 	margin-bottom: 30px;
 }
-#login .login-main-foot .el-form-item__content{
-	line-height: 0;
-}
 #login .login-main-body i{
 	width: 20px;
 	margin-left:10px;

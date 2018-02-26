@@ -1080,6 +1080,7 @@ export default {
 							obj.changeSchool='';
 							obj.displaystulList=true;
 							obj.stulList=res.result.schoolScores;
+							obj.changeSchool=obj.stulList[0].studentName;
 							obj.basicData.student=res.result.schoolScores[0].studentId;
 							obj.rainbow(0,0,"总分");
 						}else{
