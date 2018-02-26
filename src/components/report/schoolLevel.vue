@@ -31,7 +31,7 @@
 				</el-table-column>
 				<el-table-column width="80" :formatter="setRow" label="离均差">
 				</el-table-column>
-				<el-table-column :formatter="setRow" label=" 排名 (地区)">
+				<el-table-column :formatter="setRow" label=" 排+++++++++++++名 (地区)">
 				</el-table-column>
 				<el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
 				</el-table-column>
