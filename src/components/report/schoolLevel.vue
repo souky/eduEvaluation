@@ -317,14 +317,14 @@ export default {
 					objs.difficultList=[];
 	    		   objs.tableData1 = data.result.scoreVOList;
 	    		   for(var b=0;b<data.result.classScoreVOList.length;b++){
-										if(data.result.classScoreVOList[b].type!=null||data.result.classScoreVOList[b].type==undefined)
+										if(data.result.classScoreVOList[b].type=='1')
 											objs.difficultList.push(b);
 						}
 		           objs.tableData2 = data.result.classScoreVOList;
-		           objs.option2.series[0].data = data.result.avgList;
-		           objs.option2.series[0].data[0] = {value:data.result.avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
-				   objs.option2.xAxis[0].data = data.result.classList;
-				   objs.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgTotalScore;
+		            objs.option2.series[0].data = data.result.avgList;
+		            objs.option2.series[0].data[0] = {value:data.result.avgList[0],itemStyle:{normal:{color:"#FF8585"}}}
+				    objs.option2.xAxis[0].data = data.result.classList;
+				    objs.option2.series[0].markLine.data[0].yAxis = data.result.schoolAvgTotalScore;
 		           objs.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 		           objs.setmans = data.result.studentNum;
 		           objs.tableData3 = data.result.classSubScoreList;
@@ -453,8 +453,9 @@ export default {
     			return 'tableCenter'
     	},
     	cellstyles:function({row, column, rowIndex, columnIndex}){
-    		for(var i in this.difficultList){
-    			if(rowIndex==i&&columnIndex==8)
+    		var listDifficult = this.difficultList;
+    		for(var i in listDifficult){
+    			if(rowIndex==listDifficult[i]&&columnIndex==7)
     			return 'cellstylessa'
     		}
     		

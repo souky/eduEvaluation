@@ -250,6 +250,11 @@ export default {
                 show: true,
                 start: 1,
                 end: 50
+            },
+            {
+               type: 'inside',
+                start: 0,
+               end: 50
             }
         ],
         series : [
@@ -294,7 +299,12 @@ export default {
                     show: true,
                     start: 1,
                     end: 60
-                }
+                },
+            {
+               type: 'inside',
+                start: 0,
+               end: 60
+            }
         ],
         xAxis: [
             {
@@ -509,7 +519,12 @@ export default {
                     show: true,
                     start: 1,
                     end: 50
-                }
+                },
+            {
+               type: 'inside',
+                start: 0,
+               end: 50
+            }
             ],
             xAxis:  {
                 boundaryGap:['10%','10%'],

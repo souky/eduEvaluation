@@ -47,7 +47,7 @@
 		      </el-table-column>
 		      <el-table-column :formatter="setRow" :render-header="renders" label="排名 (地区)">
 		      </el-table-column>
-		      <el-table-column  prop="schoolTopScore" :formatter='setParse' label="最高分">
+		      <el-table-column width='60' prop="schoolTopScore" :formatter='setParse' label="最高分">
 		      	</el-table-column>
 		      	<el-table-column width='60'  prop="schoolMinScore" :formatter='setParse' label="最低分">
 		      </el-table-column>
@@ -314,7 +314,7 @@ export default {
     	},
     	setParse(row, column){
     		var e = row[column.property];
-	        if(e<1){
+	        if(e<1||e==1){
 	        	return e*1000000/10000 + '%';
 	        }else{
 	        	return e;
@@ -322,7 +322,7 @@ export default {
 	         
     	},
     	initPrate(e){
-    		if(e<1){
+    		if(e<1||e==1){
 	        	return e*1000000/10000;
 	        }else{
 	        	return e;
@@ -373,10 +373,11 @@ export default {
 									avgList  =[];avgXAxis = [];
 									objs.tableData1.push(data.result.scoreVO);
 									for(var b=0;b<data.result.classScoreVOList.length;b++){
-										if(data.result.classScoreVOList[b].type!=null||data.result.classScoreVOList[b].type==undefined)
+										
+										if(data.result.classScoreVOList[b].type=='1')
 											objs.difficultList.push(b);
 									}
-
+									console.log(objs.difficultList);
 									objs.tableData2=data.result.classScoreVOList;
 									objs.setmans = data.result.studentNum;
 							        for(var a of data.result.classScoreVOList){
@@ -524,8 +525,9 @@ export default {
     	   return createElement('div',[createElement('p',[column.label.substring(0,4)]),createElement('p',[column.label.substring(4,labellengths)])]);
     	},
     	cellstyles:function({row, column, rowIndex, columnIndex}){
-    		for(var i in this.difficultList){
-    			if(rowIndex==i&&columnIndex==8)
+    		var thisDifficultList = this.difficultList;
+    		for(var i in thisDifficultList){
+    			if(rowIndex==thisDifficultList[i]&&columnIndex==8)
     			return 'cellstylessa'
     		}
     		
@@ -593,7 +595,7 @@ export default {
 						objs.tableData1.push(data.result.scoreVO);
 						objs.setmans = data.result.studentNum;
 						for(var b=0;b<data.result.classScoreVOList.length;b++){
-										if(data.result.classScoreVOList[b].type!=null||data.result.classScoreVOList[b].type==undefined)
+										if(data.result.classScoreVOList[b].type=='1')
 											objs.difficultList.push(b);
 						}
 					   	objs.tableData2 = data.result.classScoreVOList;
@@ -790,7 +792,7 @@ czxc
 #teachLevel #averageCompare{
 	position: relative;
 }
-.cellstylessa{
+#teachLevel .cellstylessa{
 	color: red
 }
 #teachLevel #averageCompare .allaverag{
