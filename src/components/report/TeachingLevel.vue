@@ -112,9 +112,9 @@
 		      </el-table-column>
 		      <el-table-column prop="classTeacherName" label="班主任">
 		      </el-table-column>
-		      <el-table-column  prop="classAvgScore" :render-header="renders" label="平均分(班级)">
+		      <el-table-column width="70" prop="classAvgScore" :render-header="renders" label="平均分(班级)">
 		      </el-table-column>
-		      <el-table-column  prop="schoolAvgScore" :render-header="renders" label="平均分(校级)">
+		      <el-table-column width="70" prop="schoolAvgScore" :render-header="renders" label="平均分(校级)">
 		      </el-table-column>
 		      <el-table-column width="60" prop="classTopScore" label="最高分">
 		      </el-table-column>
@@ -122,7 +122,7 @@
 		      </el-table-column>
 		      <el-table-column width="60" prop="classSubjectStandardDeviation" label="标准差">
 		      </el-table-column>
-		      <el-table-column prop="classSubjectDiffCoefficient" label="分化程度">
+		      <el-table-column width="80" prop="classSubjectDiffCoefficient" label="分化程度">
 		      </el-table-column>
 		      <el-table-column prop="highRate" :render-header="renders" :formatter='setParse' label="高分率[90%-100%]">
 		      </el-table-column>
