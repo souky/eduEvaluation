@@ -28,7 +28,7 @@
 			</el-carousel>
 		</div>
 		<div class="achievementSelectBox">
-			<el-select v-model="changeSchool" class="myselect" @change="changeClassName" :placeholder="schoolList[0].classroomName">
+			<el-select v-model="changeSchool2" class="myselect" @change="changeClassName" :placeholder="schoolList[0].classroomName">
 				<el-option v-for="item in schoolList" :key="item.id" :label="item.classroomName" :value="item.id"></el-option>
 			</el-select>
 		</div>
@@ -292,7 +292,12 @@
 						<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 						<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
 						<el-table-column align="center" prop="divideAera" label="区级"></el-table-column>
-						<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)"></el-table-column>
+						<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)">
+							<template slot-scope="scope">
+								<span v-if="scope.row.differenceOfDivide < 0" v-bind:class="{activeS: (scope.row.differenceOfDivide < 0)}">{{ scope.row.differenceOfDivide }}</span>
+								<span v-else v-bind:class="{active: (scope.row.differenceOfDivide >= 0)}">{{ scope.row.differenceOfDivide }}</span>
+							</template>
+						</el-table-column>
 					</el-table-column>
 					<el-table-column align="center" prop="qid" label="对应题目"></el-table-column>
 				</el-table>
@@ -491,6 +496,7 @@ export default{
 			}],
 			changeSchool:'',
 			changeSchoolS:'',
+			changeSchool2:'',
 			schoolList:[{
 				id:'001',
 				name:'1班'
@@ -1203,6 +1209,7 @@ export default{
 							obj.testList=res.result.exams;
 							obj.items=res.result[name].subject;
 							obj.schoolList=res.result[name].classroom;
+							obj.changeSchool2=obj.schoolList[0].classroomName;
 							obj.schoolList1=res.result[name].classroom;
 							obj.schoolList2=res.result[name].classroom;
 							obj.basicData.class=res.result[name].classroom[0].id;
@@ -2134,6 +2141,9 @@ export default{
 		#classLevel #classknowledge2 .el-table thead.is-group th{
 			background: #70CDF3;
 			color: #fff;
+		}
+		#classLevel #classknowledge2 .activeS{
+			color:#FF4444;
 		}
 		#classLevel #knowledge-table-header .el-table__body-wrapper{
 			display: none;

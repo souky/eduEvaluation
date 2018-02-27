@@ -275,7 +275,12 @@
 								<el-table-column align="center" prop="divideClass" label="班级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="校级"></el-table-column>
 								<el-table-column align="center" prop="divideSchool" label="区级"></el-table-column>
-								<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)"></el-table-column>
+								<el-table-column align="center" prop="differenceOfDivide" label="差值(相对于校级)">
+									<template slot-scope="scope">
+										<span v-if="scope.row.differenceOfDivide < 0" v-bind:class="{activeS: (scope.row.differenceOfDivide < 0)}">{{ scope.row.differenceOfDivide }}</span>
+										<span v-else v-bind:class="{active: (scope.row.differenceOfDivide >= 0)}">{{ scope.row.differenceOfDivide }}</span>
+									</template>
+								</el-table-column>
 							</el-table-column>
 							<el-table-column align="center" prop="qid" label="对应题目"></el-table-column>
 						</el-table>
@@ -1080,6 +1085,7 @@ export default {
 							obj.changeSchool='';
 							obj.displaystulList=true;
 							obj.stulList=res.result.schoolScores;
+							obj.changeSchool=obj.stulList[0].studentName;
 							obj.basicData.student=res.result.schoolScores[0].studentId;
 							obj.rainbow(0,0,"总分");
 						}else{
@@ -2217,6 +2223,9 @@ objectSpanMethod({ row, column, rowIndex, columnIndex }) {
 		#studentlevel #knowledge-table .el-table thead.is-group th{
 			background: #70CDF3;
 			color: #fff;
+		}
+		#studentlevel #knowledge-table .activeS{
+			color: #FF4444;
 		}
 		#studentlevel #knowledge-table-header .el-table__body-wrapper{
 			display: none;
