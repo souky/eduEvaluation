@@ -30,34 +30,36 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="overallReport">
-		    <el-table :data="tableData1" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
+		    <el-table :data="tableData1" class="borders" style="width: 100%" 				   header-cell-class-name="formatRow" 
+		               :row-class-name="rowsClassName"
+		               >
 		      <el-table-column width="50" prop="subject" label="学科">
 		      </el-table-column>
 		      <el-table-column width="80" :formatter="setMan" label="统计人数">
 		      </el-table-column>
 		      <el-table-column width="50" prop="fullMarks" label="满分">
 		      </el-table-column>
-		      <el-table-column prop="schoolAvgScore" :formatter='setParse' label="平均分 (学校)">
+		      <el-table-column prop="schoolAvgScore" :render-header="renders" :formatter='setParse' label="平均分(学校)">
 		      </el-table-column>
-		      <el-table-column :formatter="setRow" label="平均分 (地区)">
+		      <el-table-column :formatter="setRow" :render-header="renders" label="平均分(地区)">
 		      </el-table-column>
-		      <el-table-column width="80" :formatter="setRow" label="离均差">
+		      <el-table-column width='60' :formatter="setRow" label="离均差">
 		      </el-table-column>
-		      <el-table-column :formatter="setRow" label=" 排名 (地区)">
+		      <el-table-column :formatter="setRow" :render-header="renders" label="排名 (地区)">
 		      </el-table-column>
-		      <el-table-column width="80" prop="schoolTopScore" :formatter='setParse' label="最高分">
+		      <el-table-column  prop="schoolTopScore" :formatter='setParse' label="最高分">
 		      	</el-table-column>
-		      	<el-table-column width="80" prop="schoolMinScore" :formatter='setParse' label="最低分">
+		      	<el-table-column width='60'  prop="schoolMinScore" :formatter='setParse' label="最低分">
 		      </el-table-column>
-		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 [90%-100%]">
+		      <el-table-column prop="highRate" :render-header="renders" :formatter='setParse' label="高分率[90%-100%]">
 		      </el-table-column>
-		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 [80%-90%)">
+		      <el-table-column prop="excellentRate" :render-header="renders" :formatter='setParse' label="优秀率[80%-90%)">
 		      </el-table-column>
-		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 [70%-80%)">
+		      <el-table-column prop="commissionRate" :render-header="renders" :formatter='setParse' label="良好率[70%-80%)">
 		      </el-table-column>
-		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 [60%-70%)">
+		      <el-table-column prop="passRate" :render-header="renders" :formatter='setParse' label="合格率[60%-70%)">
 		      </el-table-column>
-		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
+		      <el-table-column prop="failureRate" :render-header="rendersFour" :formatter='setParse' label="不及格率(60%以下)">
 		      </el-table-column>
 		    </el-table>
 		    <p style="text-align:center;margin-top:20px"><el-button type="primary" @click="compareTest" plain>考试对比</el-button></p>
@@ -98,34 +100,39 @@
 			<div class="header-title-foot"></div>
 		  </div>
 		  <div id="reportClass">
-		  		<el-table :data="tableData2" class="borders" style="width: 100%" header-cell-class-name="formatRow" :row-class-name="rowsClassName" >
-		      <el-table-column width="50" prop="schoolRanking" label="排名">
+		  		<el-table :data="tableData2" 
+		  				  class="borders" 
+		  				  style="width: 100%" 
+		  				  header-cell-class-name="formatRow"  
+		  				  :row-class-name="rowsClassName"
+		  				  :cell-class-name="cellstyles" >
+		      <el-table-column width="50"  prop="schoolRanking" label="排名">
 		      </el-table-column>
 		      <el-table-column  prop="classroomName" label="班级">
 		      </el-table-column>
 		      <el-table-column prop="classTeacherName" label="班主任">
 		      </el-table-column>
-		      <el-table-column prop="classAvgScore" label="平均分(班级)">
+		      <el-table-column  prop="classAvgScore" :render-header="renders" label="平均分(班级)">
 		      </el-table-column>
-		      <el-table-column prop="schoolAvgScore" label="平均分(校级)">
+		      <el-table-column  prop="schoolAvgScore" :render-header="renders" label="平均分(校级)">
 		      </el-table-column>
 		      <el-table-column width="60" prop="classTopScore" label="最高分">
 		      </el-table-column>
 		      <el-table-column width="60" prop="classMinScore" label="最低分">
 		      </el-table-column>
-		      <el-table-column prop="classSubjectStandardDeviation" label="标准差">
+		      <el-table-column width="60" prop="classSubjectStandardDeviation" label="标准差">
 		      </el-table-column>
-		      <el-table-column prop="classSubjectDiffCoefficient" label="分化程度(前三名提醒)">
+		      <el-table-column prop="classSubjectDiffCoefficient" label="分化程度">
 		      </el-table-column>
-		      <el-table-column prop="highRate" :formatter='setParse' label=" 高分率 [90%-100%]">
+		      <el-table-column prop="highRate" :render-header="renders" :formatter='setParse' label="高分率[90%-100%]">
 		      </el-table-column>
-		      <el-table-column prop="excellentRate" :formatter='setParse' label=" 优秀率 [80%-90%)">
+		      <el-table-column prop="excellentRate" :render-header="renders" :formatter='setParse' label="优秀率[80%-90%)">
 		      </el-table-column>
-		      <el-table-column prop="commissionRate" :formatter='setParse' label=" 良好率 [70%-80%)">
+		      <el-table-column prop="commissionRate" :render-header="renders" :formatter='setParse' label="良好率[70%-80%)">
 		      </el-table-column>
-		      <el-table-column prop="passRate" :formatter='setParse' label=" 合格率 [60%-70%)">
+		      <el-table-column prop="passRate" :render-header="renders" :formatter='setParse' label="合格率[60%-70%)">
 		      </el-table-column>
-		      <el-table-column prop="failureRate" :formatter='setParse' label=" 不及格率 (60%以下)">
+		      <el-table-column prop="failureRate" :render-header="rendersFour" :formatter='setParse' label="不及格率(60%以下)">
 		      </el-table-column>
 		    </el-table>
 		    <p class="testTips">{{eachClassSubjScore}}</p>
@@ -280,7 +287,7 @@ export default {
 			subjects:[],subjAvgComparation:'',
 			items:[],classroom:[],
 			optionTwoDimensionalAnalysis:{},
-			examination:[],
+			examination:[],difficultList:[],
 			diaLoading:true
 		}
 	},
@@ -346,7 +353,7 @@ export default {
 				    }
 				    obj.subjects=childs;
 					obj.postHttp(obj,{tab:'TEACHING_REPORT',examId:obj.testid,subject:obj.subname},"score/geReportCards",function(objs,data){
-							objs.tableData1 = [];objs.tableData2 = [];var avgList =[];var avgXAxis = [];
+							objs.tableData1 = [];objs.tableData2 = [];var avgList =[];var avgXAxis = [];objs.difficultList=[];
 							if(data.result == "该考试尚未制定双向细目表"||data.code=="20000"){
 								objs.tableData1 = [];obj.tableData2 = [];
 								objs.option2.xAxis[0].data = objs.classroom;
@@ -359,13 +366,19 @@ export default {
 					           obj.eachClassSubjScore = '';
 					           obj.option2.series[0].markLine.data[0].yAxis = 0;
 					           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
-							}else{
+							}else{	
+									obj.difficultList=[];
 									obj.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
 									obj.eachClassSubjScore = data.result.summaryVO.eachClassSubjScore;
 									avgList  =[];avgXAxis = [];
 									objs.tableData1.push(data.result.scoreVO);
+									for(var b=0;b<data.result.classScoreVOList.length;b++){
+										if(data.result.classScoreVOList[b].type!=null||data.result.classScoreVOList[b].type==undefined)
+											objs.difficultList.push(b);
+									}
+
 									objs.tableData2=data.result.classScoreVOList;
-							        objs.setmans = data.result.studentNum;
+									objs.setmans = data.result.studentNum;
 							        for(var a of data.result.classScoreVOList){
 							        	avgList.push(a.classSubjectAvgScore);
 							        	avgXAxis.push(a.classroomName);
@@ -502,6 +515,21 @@ export default {
       		else 
       			return 'tableCenter'
     	},
+    	renders:function(createElement,{column, $index}){
+    	   var labellengths = column.label.length;
+    	   return createElement('div',[createElement('p',[column.label.substring(0,3)]),createElement('p',[column.label.substring(3,labellengths)])]);
+    	},
+    	rendersFour:function(createElement,{column, $index}){
+    	   var labellengths = column.label.length;
+    	   return createElement('div',[createElement('p',[column.label.substring(0,4)]),createElement('p',[column.label.substring(4,labellengths)])]);
+    	},
+    	cellstyles:function({row, column, rowIndex, columnIndex}){
+    		for(var i in this.difficultList){
+    			if(rowIndex==i&&columnIndex==8)
+    			return 'cellstylessa'
+    		}
+    		
+    	},
     	compareTest:function(){
 			this.dialogVisible = true;
 			//console.log(document.getElementById("compareTestChart"));
@@ -545,7 +573,7 @@ export default {
 			var needDataR = {tab:'TEACHING_REPORT',examId:this.testid,subject:name};
 			this.postHttp(this,needDataR,"score/geReportCards",function(objs,data){
 					objs.tableData1 = [];objs.tableData2 = [];
-					var avgList =[];var avgXAxis = [];
+					var avgList =[];var avgXAxis = [];objs.difficultList=[];
 					if(data.result == "该考试尚未制定双向细目表"||data.code=="20000"){
 						objs.tableData1 = [];objs.tableData2 = [];
 						objs.option2.xAxis[0].data = objs.classroom;
@@ -559,10 +587,15 @@ export default {
 			           }
 			           obj.echarts.init(document.getElementById("averageChart")).setOption(obj.option2);
 					}else{
+						objs.difficultList=[];
 						objs.subjAvgComparation = data.result.summaryVO.subjAvgComparation;
 						objs.eachClassSubjScore = data.result.summaryVO.eachClassSubjScore;
 						objs.tableData1.push(data.result.scoreVO);
 						objs.setmans = data.result.studentNum;
+						for(var b=0;b<data.result.classScoreVOList.length;b++){
+										if(data.result.classScoreVOList[b].type!=null||data.result.classScoreVOList[b].type==undefined)
+											objs.difficultList.push(b);
+						}
 					   	objs.tableData2 = data.result.classScoreVOList;
 					   	for(var a of data.result.classScoreVOList){
 							avgList.push(a.classSubjectAvgScore);
@@ -757,6 +790,9 @@ czxc
 #teachLevel #averageCompare{
 	position: relative;
 }
+.cellstylessa{
+	color: red
+}
 #teachLevel #averageCompare .allaverag{
 	position: absolute;
 	font-size: 13px;
@@ -835,6 +871,8 @@ czxc
 	z-index: 999;
     background-color: white;
     width: 300px;
+    max-height: 125px;
+    overflow-y: auto;
     text-align: center;
 }
 #teachLevel .showselect li{
@@ -985,5 +1023,8 @@ czxc
 }
 #teachLevel .el-table .cell{
 	padding:5px;
+}
+#teachLevel .formatRow .cell p{
+	line-height: 16px
 }
 </style>
