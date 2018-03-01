@@ -42,7 +42,8 @@
 					</div>
 				</div>
 				<el-table :data="tableData" style="width: 100%">
-			      <el-table-column prop="specificationName" align="center" label="双向细目表名称"></el-table-column>
+			      <el-table-column prop="specificationName" align="center" label="双向细目表名称" show-overflow-tooltip></el-table-column>
+			      <el-table-column prop="examName" align="center" label="考试名称" show-overflow-tooltip></el-table-column>
 			      <el-table-column prop="gradeCode"  align="center" label="年级"></el-table-column>
 			      <el-table-column prop="subjectCode" align="center"  label="科目"></el-table-column>
 			      <el-table-column prop="createDate" align="center" :formatter="timeFormatter"  label="创建时间"></el-table-column>
