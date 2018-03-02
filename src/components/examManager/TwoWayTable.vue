@@ -389,6 +389,7 @@ export default {
 	editInfo(row){
 		var subjectName = row.subjectCode;
 		var gradeCode = row.gradeCode;
+		var examId = row.examId;
 		this.postHttp(this,{subjectName:subjectName,gradeCode:gradeCode},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.knowOption = res.result;
   	});
@@ -427,6 +428,7 @@ export default {
 				}
 				list[i].itemType += '';
 			}
+			res.result.twowayspecification['examId'] = examId;
 			obj.TwoWaySpecification = res.result.twowayspecification;
 			obj.two_way_D = list;
 			obj.dialogVisible = true;
