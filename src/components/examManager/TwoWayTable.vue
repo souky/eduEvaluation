@@ -392,6 +392,9 @@ export default {
 		this.postHttp(this,{subjectName:subjectName,gradeCode:gradeCode},'knowledgepoint/queryKnowledgePointsBySubjectName',function(obj,res){
 	  		obj.knowOption = res.result;
   	});
+		this.postHttp(this,{subjectName:subjectName},'subjectablity/querySubjectAblitys',function(obj,res){
+	  		obj.ablityArray = res.result;
+  	});
 		this.postHttp(this,{id:row.id},'twowayspecification/queryTwoWaySpecificationById',function(obj,res){
 			var ablityArray = obj.ablityArray;
 			var list = res.result.listDetail;
